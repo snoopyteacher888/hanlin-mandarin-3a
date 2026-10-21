@@ -115,3 +115,18 @@ button:disabled { cursor: default; }
 .map-card .pic { max-width: min(120px, 16vh); }
 .shake { animation: shake .35s; }
 @keyframes shake { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+
+/* 聽課文 */
+.read-tools { display: flex; gap: 12px; justify-content: center; margin-bottom: 12px; flex-wrap: wrap; }
+.reading { background: var(--surface); border-radius: var(--radius); padding: 20px 24px; max-width: 900px; margin: 0 auto; line-height: 2.1; }
+.read-title { text-align: center; margin: 0; } .reading > .small { text-align: center; margin-top: 0; }
+.read-heading { display: flex; align-items: center; gap: 8px; color: var(--brand); margin: 18px 0 4px; }
+.para-row { display: flex; gap: 10px; align-items: flex-start; }
+.para { flex: 1; margin: 6px 0; text-indent: 2em; }
+.sent { border-radius: 6px; transition: background .2s; }
+.sent.reading { background: #FFE8A3; }
+.vocab { font: inherit; background: none; border: 0; padding: 0; text-decoration: underline; text-decoration-color: var(--brand); text-decoration-thickness: 3px; text-underline-offset: 6px; color: inherit; }
+.vocab-pop { position: fixed; inset: 0; background: rgba(0,0,0,.35); display: flex; align-items: center; justify-content: center; z-index: 20; padding: 16px; }
+.vocab-box { background: var(--surface); border-radius: var(--radius); padding: 20px; max-width: 420px; width: 100%; text-align: center; }
+.vocab-box .pic { max-width: 200px; margin: 0 auto; }
+.vocab-box h3, .vocab-box p { display: flex; align-items: center; justify-content: center; gap: 8px; }
