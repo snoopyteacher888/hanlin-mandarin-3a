@@ -130,3 +130,21 @@ button:disabled { cursor: default; }
 .vocab-box { background: var(--surface); border-radius: var(--radius); padding: 20px; max-width: 420px; width: 100%; text-align: center; }
 .vocab-box .pic { max-width: 200px; margin: 0 auto; }
 .vocab-box h3, .vocab-box p { display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+/* 老師頁面 */
+.panel { background: var(--surface); border-radius: var(--radius); padding: 16px 20px; margin: 0 auto 16px; max-width: 1000px; }
+.panel h2 { margin-top: 0; }
+.form-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 8px 0; }
+.form-row .big-input { flex: 1; min-width: 160px; margin: 0; text-align: left; }
+.big-select { font: inherit; min-height: var(--tap); padding: 0 12px; border-radius: 14px; border: 2px solid var(--line); background: var(--surface); max-width: 100%; }
+.check { display: flex; align-items: center; gap: 8px; margin: 10px 0; }
+.check input { width: 28px; height: 28px; }
+.link-out { font-size: 0.7em; text-align: left; }
+.saved { color: var(--ok); margin-left: 8px; }
+.danger { color: #C0392B; }
+.table-wrap { overflow-x: auto; }
+.rec-table { width: 100%; border-collapse: collapse; font-size: 0.8em; }
+.rec-table th, .rec-table td { border-bottom: 1px solid var(--line); padding: 8px; text-align: left; vertical-align: top; }
+.rec-detail td { background: var(--bg); }
+.small-btn { min-height: 44px; padding: 0 12px; }
+.page > .form-row { max-width: 1000px; margin: 0 auto 12px; }

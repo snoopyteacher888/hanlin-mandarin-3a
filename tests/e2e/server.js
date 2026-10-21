@@ -16,7 +16,7 @@ function start(port, opts = {}) {
         res.setHeader('Access-Control-Allow-Origin', '*'); res.setHeader('Content-Type', 'application/json');
         if (msg.action === 'roster') return res.end(JSON.stringify({ roster }));
         if (msg.action === 'login') return res.end(JSON.stringify(msg.password === 'teacher-pass' ? { token: 't1' } : { error: 'BAD_PASSWORD' }));
-        if (msg.action === 'records') return res.end(JSON.stringify(msg.token === 't1' ? { records: posts.filter(p => p.action === 'submit').map(p => p.record) } : { error: 'AUTH' }));
+        if (msg.action === 'records') return res.end(JSON.stringify(msg.token === 't1' ? { records: posts.filter(p => p.action === 'submit').map(p => p.record), roster } : { error: 'AUTH' }));
         res.end(JSON.stringify({ ok: true }));
       });
       return;
