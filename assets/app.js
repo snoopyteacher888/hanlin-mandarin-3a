@@ -30,9 +30,12 @@
         if (bar && H3A.tts.status() === 'taiwan') bar.remove();
       };
     }
-    H3A.session.refreshRoster();
     H3A.api.flush();
-    H3A.router.start();
+    /* 先等名冊（最多 2.5 秒），才能判斷連結裡的學生代號還在不在 */
+    var started = false;
+    var go = function () { if (!started) { started = true; H3A.router.start(); } };
+    H3A.session.refreshRoster().then(go, go);
+    setTimeout(go, 2500);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })(this);
