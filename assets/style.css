@@ -102,3 +102,16 @@ button:disabled { cursor: default; }
 @media (orientation: portrait) and (max-width: 700px) {
   .options { grid-template-columns: 1fr; } .option { flex-direction: row; } .option .pic { width: 96px; flex: none; }
 }
+
+/* 課文地圖 */
+.map-slots { list-style: none; padding: 0; margin: 12px auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; max-width: 1100px; }
+.map-slot { min-height: 120px; border: 3px dashed var(--line); border-radius: 16px; background: rgba(255,255,255,.5);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 6px; text-align: center; font-size: 0.75em; }
+.map-slot.now { border-color: var(--brand); background: var(--surface); }
+.map-slot.filled { border-style: solid; border-color: var(--ok); background: var(--ok-soft); }
+.map-slot .pic { max-width: 80px; }
+.slot-no { font-size: 1.6em; font-weight: 700; color: var(--ink-soft); }
+.map-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-top: 12px; }
+.map-card .pic { max-width: min(120px, 16vh); }
+.shake { animation: shake .35s; }
+@keyframes shake { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
