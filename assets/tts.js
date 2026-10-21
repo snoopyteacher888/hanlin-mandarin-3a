@@ -38,7 +38,7 @@
         u.rate = 0.9;
         var done = function () { resolve(my === token); };
         u.onend = done; u.onerror = done;
-        synth.speak(u);
+        try { synth.speak(u); } catch (e) { resolve(false); }
       });
     }
     function status() {

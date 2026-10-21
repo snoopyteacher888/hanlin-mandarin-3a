@@ -36,3 +36,7 @@ test('status reports taiwan / other / none', () => {
   assert.equal(make(fakeSynth([]), Utt).status(), 'none');
 });
 test('no synth resolves silently', async () => { const t = make(null, null); await t.speak('x'); assert.equal(t.status(), 'none'); });
+test('speak resolves when synth.speak throws', async () => {
+  const s = { getVoices: () => [], cancel() {}, speak() { throw new Error('boom'); } };
+  assert.equal(await make(s, Utt).speak('x'), false);
+});
