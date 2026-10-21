@@ -22,7 +22,7 @@ function start(port, opts = {}) {
       return;
     }
     let file = url.pathname === '/' ? '/index.html' : url.pathname;
-    if (file === '/data/lesson06.enc.js') file = '/tests/fixtures/fake06.enc.js';
+    if (file === '/data/lesson06.enc.js') { if (opts.encFile) { res.setHeader('Content-Type', TYPES['.js']); return fs.createReadStream(opts.encFile).pipe(res); } file = '/tests/fixtures/fake06.enc.js'; }
     if (file === '/config.js') { res.setHeader('Content-Type', TYPES['.js']); return res.end(`window.H3A_CONFIG = { backendUrl: '${opts.backend === false ? '' : `http://localhost:${port}/fake-backend`}' };`); }
     const full = path.join(ROOT, decodeURIComponent(file));
     if (!full.startsWith(ROOT) || !fs.existsSync(full) || fs.statSync(full).isDirectory()) { res.statusCode = 404; return res.end('not found'); }

@@ -32,9 +32,15 @@
     main.appendChild(h('div', { class: 'read-tools' },
       h('button', { type: 'button', class: 'btn-primary', onclick: function () { playFrom(all.map(function (_, i) { return i; }), finish); } }, '▶ 從頭念'),
       h('button', { type: 'button', class: 'btn-secondary', onclick: stop }, '⏸ 停止')));
-    var article = h('article', { class: 'reading' }, h('h2', { class: 'read-title' }, lesson.title), lesson.author ? h('p', { class: 'small' }, lesson.author) : null);
+    var titleEl = h('span', { class: 'sent' }, lesson.title);
+    sentEls.push(titleEl); all.push({ text: lesson.title });
+    var article = h('article', { class: 'reading' }, h('h2', { class: 'read-title' }, titleEl), lesson.author ? h('p', { class: 'small' }, lesson.author) : null);
     lesson.paragraphs.forEach(function (p) {
-      if (p.heading) article.appendChild(h('h3', { class: 'read-heading' }, p.heading, H3A.ui.speaker(p.heading, null)));
+      if (p.heading) {
+        var hEl = h('span', { class: 'sent' }, p.heading);
+        sentEls.push(hEl); all.push({ text: p.heading });
+        article.appendChild(h('h3', { class: 'read-heading' }, hEl, H3A.ui.speaker(p.heading, null)));
+      }
       var first = all.length;
       var para = h('p', { class: 'para' });
       p.sentences.forEach(function (s) {

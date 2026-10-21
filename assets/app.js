@@ -9,7 +9,7 @@
     var msg = status === 'none' ? '這台裝置沒有中文語音' : '這台裝置沒有台灣口音的中文語音';
     var help = h('div', { class: 'voice-help', hidden: true },
       h('p', {}, 'iPhone／iPad：設定 → 輔助使用 → 朗讀內容 → 聲音 → 中文（台灣）→ 下載「美佳」。'),
-      h('p', {}, 'Android：設定 → 系統 → 語言 → 文字轉語音 → Google 語音引擎 → 安裝語音數據 → 中文（台灣）。'),
+      h('p', {}, 'Android：設定 → 系統 → 語言 → 文字轉語音 → Google 語音引擎 → 安裝語音資料 → 中文（台灣）。'),
       h('p', {}, 'Windows：設定 → 時間與語言 → 語音 → 新增語音 → 中文（台灣）。'),
       h('p', {}, '下載完成後，把這個網頁關掉再重新打開。'));
     return h('div', { class: 'voice-bar', role: 'status' },
