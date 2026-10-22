@@ -1,7 +1,8 @@
 /* 生字卡、語詞卡：格狀排列，點一張放大看細節 */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h;
-  var STROKE_URL = 'https://stroke-order.learningweb.moe.edu.tw/characterQueryResult.do?word=';
+  /* 教育部筆順學習網：網址的 ID 就是這個字的 Unicode 編碼（十進位） */
+  function strokeUrl(ch) { return 'https://stroke-order.learningweb.moe.edu.tw/dictView.jsp?ID=' + ch.codePointAt(0) + '&la=0'; }
   function popup(box) {
     var pop = h('div', { class: 'vocab-pop', role: 'dialog', onclick: function (e) { if (e.target === pop) pop.remove(); } }, box);
     box.appendChild(h('button', { type: 'button', class: 'btn-secondary', onclick: function () { pop.remove(); } }, '關閉'));
@@ -15,7 +16,7 @@
       h('p', { class: 'hanzi-words' }, item.words.map(function (w) { return h('span', {}, w, H3A.ui.speaker(w, null)); })),
       h('div', { class: 'result-actions' },
         H3A.ui.speaker(item.say, null, '念出：' + item.say),
-        h('a', { class: 'btn-secondary stroke-link', href: STROKE_URL + encodeURIComponent(item.char), target: '_blank', rel: 'noopener' }, '✍️ 看筆順')));
+        h('a', { class: 'btn-secondary stroke-link', href: strokeUrl(item.char), target: '_blank', rel: 'noopener' }, '✍️ 看筆順')));
     popup(box);
     H3A.tts.speak(item.say);
   }

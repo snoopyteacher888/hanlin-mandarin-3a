@@ -157,7 +157,7 @@ test('hanzi card shows zhuyin and radical', async () => {
   await p.click('.hanzi-card[data-id="h-芯"]');
   const t = await p.textContent('.hanzi-detail');
   assert.match(t, /ㄒㄧㄣ/); assert.match(t, /部首：艸/); assert.match(t, /8 畫/);
-  assert.match(await p.getAttribute('.stroke-link', 'href'), /word=%E8%8A%AF$/);
+  assert.equal(await p.getAttribute('.stroke-link', 'href'), 'https://stroke-order.learningweb.moe.edu.tw/dictView.jsp?ID=33455&la=0');
   await p.evaluate(() => { location.hash = '#/L06'; }); await p.waitForSelector('.activity-main');
   assert.equal(await p.$('.vocab-pop'), null);
 });
