@@ -40,11 +40,11 @@ const submits = () => srv.posts.filter(x => x.action === 'submit').map(x => x.re
 
 test('unlock with test-pass', async () => {
   const p = await page();
-  await p.goto(BASE + '#/L06?s=bear');
+  await p.goto(BASE + '#/L06/quiz?s=bear');
   await p.fill('input[type=password]', 'nope'); await p.click('button[type=submit]');
   await p.waitForFunction(() => document.querySelector('.error').textContent === '密碼不對，請問老師');
   await p.fill('input[type=password]', 'test-pass'); await p.click('button[type=submit]');
-  await p.waitForSelector('.activity-main');
+  await p.waitForSelector('.option');
   assert.deepEqual(p.errors, []);
 });
 
@@ -137,4 +137,72 @@ test('voice bar when only non-Taiwan voice', async () => {
   });
   await p.goto(BASE + '#/');
   assert.match(await p.textContent('.voice-bar'), /沒有台灣口音/);
+});
+
+/* ---------- 字詞練習 ---------- */
+const WORDS = require('../../data/lesson06.words.js');
+
+test('word practice works without unlock', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/hanzi?s=bear');
+  await p.waitForSelector('.hanzi-card');
+  assert.equal(await p.$$eval('.hanzi-card', x => x.length), 14);
+  assert.equal(await p.$('input[type=password]'), null);
+  await p.click('text=開始練習'); await p.waitForSelector('.option.big');
+  assert.equal(await p.$$eval('.option.big', x => x.length), 4);
+  assert.equal(await p.$$eval('.option.big .pic', x => x.length), 0);
+});
+
+test('hanzi card shows zhuyin and radical', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/hanzi?s=bear'); await p.waitForSelector('.hanzi-card');
+  await p.click('.hanzi-card[data-id="h-芯"]');
+  const t = await p.textContent('.hanzi-detail');
+  assert.match(t, /ㄒㄧㄣ/); assert.match(t, /部首：艸/); assert.match(t, /8 畫/);
+  assert.match(await p.getAttribute('.stroke-link', 'href'), /word=%E8%8A%AF$/);
+  await p.evaluate(() => { location.hash = '#/L06'; }); await p.waitForSelector('.activity-main');
+  assert.equal(await p.$('.vocab-pop'), null);
+});
+
+test('listen hides text and repeats on wrong', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/listen?s=bear'); await p.waitForSelector('.option');
+  assert.equal(await p.$eval('.prompt h2', e => e.hidden), true);
+  const text = await p.$eval('.prompt h2', e => e.textContent);
+  const item = WORDS.listen.find(l => l.text === text);
+  const right = item.options[item.answer].text;
+  const wrongIdx = await p.$$eval('.option .option-text', (x, r) => x.findIndex(e => e.textContent !== r), right);
+  await p.click(`.option[data-index="${wrongIdx}"]`);
+  await p.waitForFunction(t => window.__spoken.filter(s => s === t).length >= 2, text);
+  await p.click('text=看文字');
+  assert.equal(await p.$eval('.prompt h2', e => e.hidden), false);
+});
+
+test('similar wrong shows hint', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/similar?s=bear'); await p.waitForSelector('.option.big');
+  const sentence = await p.textContent('.prompt h2');
+  const item = WORDS.similar.find(s => s.sentence === sentence);
+  const wrongIdx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent !== a), item.answer);
+  await p.click(`.option[data-index="${wrongIdx}"]`);
+  assert.match(await p.textContent('.feedback'), new RegExp(item.hint.replace(/[「」]/g, '.')));
+});
+
+test('review without unlock shows word items only', async () => {
+  const p = await page(() => localStorage.setItem('h3a.review.bear', JSON.stringify({ q1: { last: '2000-01-01', streak: 0 }, s1: { last: '2000-01-01', streak: 0 } })));
+  await p.goto(BASE + '#/L06/review?s=bear'); await p.waitForSelector('.option');
+  assert.equal(await p.$$eval('.dot', x => x.length), 1);
+  assert.equal(await p.textContent('.prompt h2'), WORDS.similar[0].sentence);
+});
+
+test('word record posted with activity similar', async () => {
+  const before = submits().length;
+  const p = await page(); await p.goto(BASE + '#/L06/similar?s=cat');
+  for (let k = 0; k < WORDS.similar.length; k++) {
+    await p.waitForSelector('.option.big:not(:disabled)');
+    const sentence = await p.textContent('.prompt h2');
+    const ans = WORDS.similar.find(s => s.sentence === sentence).answer;
+    const idx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent === a), ans);
+    await p.click(`.option[data-index="${idx}"]`); await p.click('.btn-next');
+  }
+  await p.waitForSelector('.result');
+  for (let i = 0; i < 20 && submits().length === before; i++) await p.waitForTimeout(50);
+  const r = submits().at(-1);
+  assert.equal(r.activity, 'similar'); assert.equal(r.student, 'cat'); assert.equal(r.items.length, 11); assert.equal(r.stars, 3);
 });
