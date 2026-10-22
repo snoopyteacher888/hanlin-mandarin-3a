@@ -8,7 +8,7 @@
   }
 })(this, function () {
   /* 語音引擎常念錯、但只有一種讀音的字：念的時候換成同音字（畫面上的字不變） */
-  var SAY_FIX = [[/桿/g, '趕']];
+  var SAY_FIX = [[/筆桿/g, '鼻感'], [/桿/g, '感']];   // 筆桿：筆變二聲、桿三聲（老師確認）
   function fixSay(t) { SAY_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return t; }
   function norm(lang) { return String(lang || '').replace('_', '-').toLowerCase(); }
   function isTaiwan(v) {
