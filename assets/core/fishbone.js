@@ -1,4 +1,4 @@
-/* 魚骨圖：一根骨頭一根骨頭找出屬於它的圖卡；放錯套用提示規則（第 1 次停用選到的、第 2 次再多停用一張、第 3 次只剩正確的） */
+/* 魚骨圖：一根骨頭一根骨頭找出屬於它的圖卡；放錯只停用選錯的卡，第 3 次錯由畫面「老師教你」（不靠刪去法洩漏答案） */
 (function (root, factory) {
   var m = factory(root.H3A && root.H3A.quizgen || (typeof require === 'function' ? require('./quizgen.js') : null));
   if (typeof module === 'object' && module.exports) module.exports = m;
@@ -36,12 +36,10 @@
     n.wrongCount++;
     n.wrongPicked.push(id);
     n.disabled.push(id);
-    var others = enabledCards(null, n).filter(function (x) { return n.needed.indexOf(x) < 0; });
-    if (n.wrongCount === 2 && others.length > 1) n.disabled.push(others[Math.floor(rng() * others.length)]);
-    else if (n.wrongCount >= 3) n.disabled = n.disabled.concat(others);
     return { state: n, outcome: 'wrong', boneDone: false };
   }
-  function result(s) { return s.wrongCount === 0 ? 'first' : s.wrongCount === 1 ? 'hint1' : 'hint2'; }
+  function result(s) { return s.wrongCount === 0 ? 'first' : s.wrongCount === 1 ? 'hint1' : s.wrongCount === 2 ? 'hint2' : 'taught'; }
+  function mustTeach(s) { return s.wrongCount >= 3; }
   function wrongTexts(map, s) { return s.wrongPicked.map(function (id) { return card(map, id).text; }); }
 
   /* 錯題複習用：把一根骨頭變成選擇題 */
@@ -56,5 +54,5 @@
       answer: opts.indexOf(right), evidence: b.evidence };
   }
   return { allCards: allCards, bone: bone, card: card, createBone: createBone, enabledCards: enabledCards,
-    pick: pick, result: result, wrongTexts: wrongTexts, boneQuestion: boneQuestion };
+    pick: pick, result: result, mustTeach: mustTeach, wrongTexts: wrongTexts, boneQuestion: boneQuestion };
 });

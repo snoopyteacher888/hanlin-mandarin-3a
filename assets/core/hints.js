@@ -1,38 +1,29 @@
-/* 答錯提示：第 1 次停用選到的；第 2 次再多停用一個錯的；第 3 次只剩正確答案 */
+/* 答錯提示：只停用選錯的選項，而且永遠至少留 2 個選項（不會只剩正確答案）。
+   答錯第 3 次 → mustTeach：由畫面顯示答案並說明原因（「老師教你」）。 */
 (function (root, factory) {
   var m = factory();
   if (typeof module === 'object' && module.exports) module.exports = m;
   else { root.H3A = root.H3A || {}; root.H3A.hints = m; }
 })(this, function () {
+  var TEACH_AFTER = 3;
   function create(optionCount, correctIndex) {
     return { optionCount: optionCount, correctIndex: correctIndex, disabled: [], wrongCount: 0, wrongPicked: [] };
   }
-  function remainingWrong(disabled, s) {
-    var out = [];
-    for (var i = 0; i < s.optionCount; i++) {
-      if (i !== s.correctIndex && disabled.indexOf(i) < 0) out.push(i);
-    }
-    return out;
-  }
-  function pickWrong(state, index, rng) {
+  function pickWrong(state, index) {
     if (index === state.correctIndex) throw new Error('pickWrong called with the correct index');
     if (state.disabled.indexOf(index) >= 0) return state;
-    var disabled = state.disabled.concat([index]);
-    var wrongCount = state.wrongCount + 1;
-    if (wrongCount === 2) {
-      var rest = remainingWrong(disabled, state);
-      if (rest.length > 1) disabled.push(rest[Math.floor(rng() * rest.length)]);
-    } else if (wrongCount >= 3) {
-      disabled = disabled.concat(remainingWrong(disabled, state));
-    }
+    var enabledAfter = state.optionCount - state.disabled.length - 1;
     return {
-      optionCount: state.optionCount, correctIndex: state.correctIndex, disabled: disabled,
-      wrongCount: wrongCount, wrongPicked: state.wrongPicked.concat([index])
+      optionCount: state.optionCount, correctIndex: state.correctIndex,
+      disabled: enabledAfter >= 2 ? state.disabled.concat([index]) : state.disabled.slice(),
+      wrongCount: state.wrongCount + 1, wrongPicked: state.wrongPicked.concat([index])
     };
   }
+  function mustTeach(state) { return state.wrongCount >= TEACH_AFTER; }
   function result(state) {
     if (state.wrongCount === 0) return 'first';
-    return state.wrongCount === 1 ? 'hint1' : 'hint2';
+    if (state.wrongCount === 1) return 'hint1';
+    return state.wrongCount === 2 ? 'hint2' : 'taught';
   }
-  return { create: create, pickWrong: pickWrong, result: result };
+  return { create: create, pickWrong: pickWrong, mustTeach: mustTeach, result: result };
 });

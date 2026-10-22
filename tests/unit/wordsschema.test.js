@@ -12,4 +12,6 @@ test('similar answer in options', () => { const w = fresh(); w.similar[0].answer
 test('similar sentence has one blank', () => { const w = fresh(); w.similar[0].sentence = '我用杯子喝水。'; assert.ok(validateWords(w).length); });
 test('listen answer index valid', () => { const w = fresh(); w.listen[0].answer = 4; assert.ok(validateWords(w).length); });
 test('ids unique across kinds', () => { const w = fresh(); w.listen[0].id = 's1'; assert.ok(validateWords(w).some(e => e.includes('重複'))); });
+test('hanzi needs clue and explain', () => { const w = fresh(); delete w.hanzi[0].clue; assert.ok(validateWords(w).length); });
+test('vocab needs example with blank', () => { const w = fresh(); w.vocab[0].example = '沒有空格'; assert.ok(validateWords(w).length); });
 test('vocab answer is first option', () => { const w = fresh(); w.vocab[0].options = ['木頭', '紙', '布', '鐵']; assert.ok(validateWords(w).length); });

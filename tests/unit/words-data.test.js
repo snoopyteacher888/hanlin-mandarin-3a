@@ -16,3 +16,8 @@ test('all images exist', () => {
 test('cloze plus char forms one of the words', () => {
   for (const h of W.hanzi) assert.ok(h.words.includes(h.cloze.replace('＿', h.char)), h.id);
 });
+test('clues never contain the answer character', () => {
+  for (const s of W.similar) assert.ok(!s.clue.includes(s.answer), s.id + ': ' + s.clue);
+  for (const h of W.hanzi) assert.ok(!h.clue.includes(h.char), h.id + ': ' + h.clue);
+  for (const v of W.vocab) assert.ok(!v.example.includes(v.word), v.id + ': ' + v.example);
+});

@@ -18,17 +18,17 @@ test('wrong 1 disables picked card only', () => {
   const r = fb.pick(fb.createBone(map, 'b1', []), 'c-lead', rng(1));
   assert.equal(r.outcome, 'wrong'); assert.deepEqual(r.state.disabled, ['c-lead']); assert.equal(fb.result(r.state), 'hint1');
 });
-test('wrong 2 disables one more wrong card', () => {
+test('wrong 2 disables only the picked cards', () => {
   let s = fb.pick(fb.createBone(map, 'b1', []), 'c-lead', rng(1)).state;
   s = fb.pick(s, 'c-water', rng(1)).state;
-  const left = fb.enabledCards(map, s).filter(id => !s.needed.includes(id));
-  assert.equal(left.length, 1); assert.ok(!s.disabled.includes('c-sand')); assert.equal(fb.result(s), 'hint2');
+  assert.deepEqual(s.disabled.sort(), ['c-lead', 'c-water']); assert.equal(fb.result(s), 'hint2');
 });
-test('wrong 3 leaves only the needed cards', () => {
+test('wrong 3 asks to teach and does not reveal by elimination', () => {
   let s = fb.createBone(map, 'b1', []);
-  for (let k = 0; k < 3; k++) { const wrong = fb.enabledCards(map, s).find(id => !s.needed.includes(id)); if (wrong) s = fb.pick(s, wrong, rng(2)).state; }
-  assert.deepEqual(fb.enabledCards(map, s).sort(), ['c-fire', 'c-sand']);
+  for (const id of ['c-lead', 'c-water', 'c-blow']) s = fb.pick(s, id, rng(2)).state;
+  assert.equal(fb.mustTeach(s), true); assert.equal(fb.result(s), 'taught');
 });
+
 test('placed cards from earlier bones are not offered', () => {
   const s = fb.createBone(map, 'b2', ['c-sand', 'c-fire']);
   assert.deepEqual(fb.enabledCards(map, s).sort(), ['c-blow', 'c-lead', 'c-water']);

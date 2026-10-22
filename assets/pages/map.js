@@ -40,13 +40,6 @@
       promptEl.appendChild(H3A.ui.speaker(text, say));
       if (ctx.auto) H3A.tts.speak(text, say);
     }
-    function hint(evidence) {
-      feedback.className = 'feedback hint'; H3A.ui.clear(feedback);
-      feedback.appendChild(h('span', {}, '再想想看。課文說：「' + evidence + '」'));
-      feedback.appendChild(H3A.ui.speaker(evidence, null));
-      H3A.sfx.wrong();
-      H3A.tts.speak('再想想看').then(function (ok) { if (ok) H3A.tts.speak(evidence); });
-    }
     function ok(text, say) {
       feedback.className = 'feedback ok'; feedback.textContent = '答對了！';
       H3A.sfx.correct(); H3A.tts.speak(text, say);
@@ -86,7 +79,20 @@
       bs = res.state;
       if (res.outcome === 'wrong') {
         var el = cardEls[id]; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
-        hint(b.evidence); refreshCards(); return;
+        refreshCards();
+        var loc = H3A.locate.locate(ctx.lesson, b.evidence);
+        var where = loc.paras.length ? '答案在課文第 ' + loc.paras.join('、') + ' 段。' : '';
+        if (FB.mustTeach(bs)) {
+          var left = bs.needed.map(function (nid) { return FB.card(map, nid); });
+          left.forEach(function (c) { if (cardEls[c.id]) cardEls[c.id].classList.add('is-correct', 'pulse'); });
+          H3A.ui.showTeach(feedback, { text: '「' + b.title + '」還要找：' + left.map(function (c) { return '「' + c.text + '」'; }).join('') +
+            '。因為課文說：「' + b.evidence + '」' }, function () { feedback.className = 'feedback'; H3A.ui.clear(feedback); });
+          return;
+        }
+        H3A.ui.showHint(feedback, bs.wrongCount === 1
+          ? { text: '再想想看，這張卡跟「' + b.title + '」有關嗎？' + where, para: { paras: loc.paras, sentIds: loc.sentIds, highlight: false } }
+          : { text: '再找找看，注意亮起來的句子。', para: { paras: loc.paras, sentIds: loc.sentIds, highlight: true } }, ctx);
+        return;
       }
       var c = FB.card(map, id);
       placed.push(id);
@@ -124,9 +130,17 @@
       if (finished || ts.disabled.indexOf(i) >= 0) return;
       var q = tailOrder;
       if (i !== q.answer) {
-        ts = H3A.hints.pickWrong(ts, i, Math.random);
+        ts = H3A.hints.pickWrong(ts, i);
         ts.disabled.forEach(function (d) { cardEls[d].classList.add('is-off'); cardEls[d].disabled = true; });
-        hint(q.evidence); return;
+        var th = H3A.wordq.readingHints(ctx.lesson, q);
+        if (H3A.hints.mustTeach(ts)) {
+          Object.keys(cardEls).forEach(function (k) { cardEls[k].disabled = +k !== q.answer; });
+          cardEls[q.answer].classList.add('is-correct', 'pulse');
+          H3A.ui.showTeach(feedback, th.teach, function () { feedback.className = 'feedback'; H3A.ui.clear(feedback); });
+          return;
+        }
+        H3A.ui.showHint(feedback, ts.wrongCount === 1 ? th.h1 : th.h2, ctx);
+        return;
       }
       finished = true;
       items.push({ q: 'tail', result: H3A.hints.result(ts), wrong: ts.wrongPicked.map(function (k) { return q.options[k].text; }) });

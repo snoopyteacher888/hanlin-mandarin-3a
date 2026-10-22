@@ -4,7 +4,7 @@
   var ANIMALS = [['bear', '🐻', '小熊'], ['rabbit', '🐰', '兔子'], ['cat', '🐱', '小貓'], ['dog', '🐶', '小狗'], ['panda', '🐼', '熊貓'],
     ['tiger', '🐯', '老虎'], ['lion', '🦁', '獅子'], ['monkey', '🐵', '猴子'], ['pig', '🐷', '小豬'], ['frog', '🐸', '青蛙'],
     ['penguin', '🐧', '企鵝'], ['fox', '🦊', '狐狸']];
-  var RESULT = { first: '✅ 第一次就答對', hint1: '🟡 答錯 1 次後答對', hint2: '🟠 答錯 2 次以上', wrong: '❌ 答錯' };
+  var RESULT = { first: '✅ 第一次就答對', hint1: '🟡 答錯 1 次後答對', hint2: '🟠 答錯 2 次後答對', taught: '📘 答錯 3 次，看了老師說明', wrong: '❌ 答錯' };
   var PLACE = { home: '家裡', school: '學校' };
 
   function token() { try { return root.sessionStorage.getItem('h3a.token'); } catch (e) { return H3A.tokenMem || null; } }

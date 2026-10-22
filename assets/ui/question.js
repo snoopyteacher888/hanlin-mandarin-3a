@@ -26,6 +26,8 @@
     function show() {
       var q = questions[idx];
       var hs = H3A.hints.create(q.options.length, q.answer);
+      var hints = q.hints || (ctx.lesson && q.evidence ? H3A.wordq.readingHints(ctx.lesson, q) : null) ||
+        { h1: { text: '再想想看。' }, h2: { text: '再仔細看一次題目。' }, teach: { text: '答案是「' + q.options[q.answer].text + '」。' } };
       var locked = false;
       H3A.ui.clear(main);
       var buttons = [];
@@ -40,6 +42,7 @@
 
       function done(result, wrongTexts) {
         locked = true;
+        if (items.length && items[items.length - 1].q === q.id && items.length === idx + 1) return;
         items.push({ q: q.id, result: result, wrong: wrongTexts });
         buttons.forEach(function (b) { b.disabled = true; });
         nextBtn.hidden = false;
@@ -68,15 +71,20 @@
           done('wrong', wrongTexts());
           return;
         }
-        hs = H3A.hints.pickWrong(hs, i, Math.random);
+        hs = H3A.hints.pickWrong(hs, i);
         hs.disabled.forEach(function (d) { buttons[d].classList.add('is-off'); buttons[d].disabled = true; });
-        feedback.className = 'feedback hint';
-        H3A.ui.clear(feedback);
-        var hintText = q.hint || q.evidence;
-        feedback.appendChild(h('span', {}, q.hint ? '再想想看。' + q.hint : '再想想看。課文說：「' + q.evidence + '」'));
-        feedback.appendChild(H3A.ui.speaker(hintText, q.hint ? null : q.evidenceSay));
-        H3A.sfx.wrong();
-        H3A.tts.speak('再想想看').then(function (ok) { if (ok) H3A.tts.speak(hintText, q.hint ? null : q.evidenceSay); });
+        buttons[i].classList.remove('shake'); void buttons[i].offsetWidth; buttons[i].classList.add('shake');
+        if (H3A.hints.mustTeach(hs)) {
+          /* 老師教你：標出答案並說明，按「我懂了」才算完成這題 */
+          locked = true;
+          buttons.forEach(function (b) { b.disabled = true; });
+          buttons[q.answer].classList.add('is-correct');
+          H3A.ui.showTeach(feedback, hints.teach, function () { done('taught', wrongTexts()); nextBtn.click(); });
+          return;
+        }
+        var hint = hs.wrongCount === 1 ? hints.h1 : hints.h2;
+        if (hint.showText) { promptText.hidden = false; if (showBtn) showBtn.remove(); }
+        H3A.ui.showHint(feedback, hint, ctx);
       }
 
       var grid = h('div', { class: 'options' });

@@ -22,7 +22,7 @@
     }
     w.hanzi.forEach(function (h) {
       useId(h.id);
-      ['char', 'zhuyin', 'radical', 'say', 'cloze', 'hint'].forEach(function (k) { if (!nonEmpty(h[k])) errs.push(h.id + ' 缺少 ' + k); });
+      ['char', 'zhuyin', 'radical', 'say', 'cloze', 'clue', 'explain'].forEach(function (k) { if (!nonEmpty(h[k])) errs.push(h.id + ' 缺少 ' + k); });
       if (!(h.strokes > 0)) errs.push(h.id + ' 缺少筆畫數');
       if (!Array.isArray(h.words) || !h.words.length) errs.push(h.id + ' 缺少語詞');
       opts(h.id, h.options, 4);
@@ -32,6 +32,7 @@
     w.vocab.forEach(function (v) {
       useId(v.id);
       if (!nonEmpty(v.word) || !nonEmpty(v.meaning)) errs.push(v.id + ' 缺少語詞或解釋');
+      if (!nonEmpty(v.example) || v.example.indexOf('＿') < 0) errs.push(v.id + ' 的例句要有＿');
       opts(v.id, v.options, 4);
       if (Array.isArray(v.options) && v.options[0] !== v.word) errs.push(v.id + ' 的第一個選項要是正確的語詞');
     });
@@ -40,7 +41,7 @@
       if (!nonEmpty(s.sentence) || s.sentence.split('＿').length !== 2) errs.push(s.id + ' 的句子要剛好一個＿');
       opts(s.id, s.options, 2);
       if (Array.isArray(s.options) && s.options.indexOf(s.answer) < 0) errs.push(s.id + ' 的答案不在選項裡');
-      if (!nonEmpty(s.hint)) errs.push(s.id + ' 缺少提示');
+      if (!nonEmpty(s.clue) || !nonEmpty(s.explain)) errs.push(s.id + ' 缺少線索或說明');
     });
     w.listen.forEach(function (l) {
       useId(l.id);

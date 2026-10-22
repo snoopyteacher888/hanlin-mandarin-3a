@@ -48,20 +48,22 @@ test('unlock with test-pass', async () => {
   assert.deepEqual(p.errors, []);
 });
 
-test('quiz hints and next', async () => {
+test('quiz hints never reveal the answer, then teach', async () => {
   const p = await page(); await unlock(p, '#/L06/quiz?s=bear'); await p.waitForSelector('.option');
   const a = await answerIndex(p);
+  const answerText = await p.$eval(`.option[data-index="${a}"] .option-text`, e => e.textContent);
   let en = await enabled(p); await p.click(`.option[data-index="${en.find(i => i !== a)}"]`);
-  assert.equal((await enabled(p)).length, 3);
+  assert.match(await p.textContent('.feedback'), /答案在課文第 1 段/);
+  assert.ok(!(await p.innerText('.feedback')).includes(answerText));
   assert.equal(await p.$eval('.btn-next', b => b.hidden), true);
-  await p.waitForFunction(() => window.__spoken.includes('再想想看'));
-  await p.waitForFunction(() => window.__spoken.some(s => s.includes('玻璃做的')));
   en = await enabled(p); await p.click(`.option[data-index="${en.find(i => i !== a)}"]`);
-  assert.equal((await enabled(p)).length, 2);
+  assert.ok((await enabled(p)).length >= 2);
+  assert.ok(await p.$('.hint-para .sent.glow'));
   en = await enabled(p); await p.click(`.option[data-index="${en.find(i => i !== a)}"]`);
-  assert.deepEqual(await enabled(p), [a]);
-  await p.click(`.option[data-index="${a}"]`);
-  assert.equal(await p.$eval('.btn-next', b => b.hidden), false);
+  assert.match(await p.textContent('.feedback'), /老師教你/);
+  assert.match(await p.textContent('.feedback'), new RegExp('答案是「' + answerText + '」'));
+  await p.click('text=我懂了');
+  await p.waitForFunction(() => document.querySelectorAll('.dot.done').length === 1);
 });
 
 test('double tap advances once', async () => {
@@ -181,7 +183,10 @@ test('similar wrong shows hint', async () => {
   const item = WORDS.similar.find(s => s.sentence === sentence);
   const wrongIdx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent !== a), item.answer);
   await p.click(`.option[data-index="${wrongIdx}"]`);
-  assert.match(await p.textContent('.feedback'), new RegExp(item.hint.replace(/[「」]/g, '.')));
+  assert.match(await p.textContent('.feedback'), /再讀一次句子/);
+  assert.ok(!(await p.textContent('.feedback')).includes(item.answer));
+  await p.click(`.option[data-index="${wrongIdx}"]`);
+  assert.equal(await p.textContent('.feedback .hint-row span'), item.clue);
 });
 
 test('review without unlock shows word items only', async () => {
