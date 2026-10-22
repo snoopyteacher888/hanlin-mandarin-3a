@@ -13,7 +13,7 @@
       { id: 'h-凹', char: '凹', zhuyin: 'ㄠ', radical: '凵', strokes: 5, words: ['凹槽', '凹凸'], say: '凹，凹槽的凹', cloze: '＿槽', img: 'groove.png', options: ['凹', '凸', '山', '出'], hint: '中間往下凹進去' },
       { id: 'h-槽', char: '槽', zhuyin: 'ㄘㄠˊ', radical: '木', strokes: 15, words: ['凹槽', '水槽'], say: '槽，凹槽的槽', cloze: '凹＿', img: 'groove.png', options: ['槽', '遭', '糟', '曹'], hint: '左邊是「木」' },
       { id: 'h-入', char: '入', zhuyin: 'ㄖㄨˋ', radical: '入', strokes: 2, words: ['放入', '進入'], say: '入，放入的入', cloze: '放＿', img: 'put-core.png', options: ['入', '人', '八', '如'], hint: '左邊的筆畫比較短' },
-      { id: 'h-另', char: '另', zhuyin: 'ㄌㄧㄥˋ', radical: '口', strokes: 5, words: ['另外', '另一片'], say: '另，另外的另', cloze: '＿外', img: 'pencil-sandwich.png', options: ['另', '別', '令', '加'], hint: '上面是「口」，下面是「力」' },
+      { id: 'h-另', char: '另', zhuyin: 'ㄌㄧㄥˋ', radical: '口', strokes: 5, words: ['另外', '另一片'], say: '另，另外的另', cloze: '＿外', options: ['另', '別', '令', '加'], hint: '上面是「口」，下面是「力」' },
       { id: 'h-治', char: '治', zhuyin: 'ㄓˋ', radical: '水', strokes: 8, words: ['三明治', '治病'], say: '治，三明治的治', cloze: '三明＿', img: 'food-sandwich.png', options: ['治', '抬', '至', '製'], hint: '左邊是三點水' },
       { id: 'h-桿', char: '桿', zhuyin: 'ㄍㄢˇ', radical: '木', strokes: 11, words: ['筆桿', '電線桿'], say: '桿，筆桿的桿', cloze: '筆＿', img: 'barrel.png', options: ['桿', '趕', '干', '竿'], hint: '左邊是「木」' },
       { id: 'h-削', char: '削', zhuyin: 'ㄒㄧㄠ', radical: '刀', strokes: 9, words: ['削鉛筆', '削皮'], say: '削，削鉛筆的削', cloze: '＿鉛筆', img: 'sharpener.png', options: ['削', '消', '梢', '肖'], hint: '右邊是立刀旁' }

@@ -2,7 +2,9 @@
 (function (root) {
   var H3A = root.H3A;
   var h = H3A.ui.h;
-  var ACTIVITIES = ['read', 'map', 'quiz', 'review', 'test'];
+  var ACTIVITIES = ['read', 'map', 'quiz', 'review', 'test', 'hanzi', 'vocab', 'similar', 'listen'];
+  /* 不需要教室密碼的頁面（課次選單、字詞練習、錯題複習） */
+  var NO_KEY = [null, 'hanzi', 'vocab', 'similar', 'listen', 'review'];
   var renderToken = 0;
 
   function lessonMeta(id) { return (root.H3A_LESSONS || []).filter(function (l) { return l.id === id; })[0]; }
@@ -26,6 +28,8 @@
 
   function render() {
     H3A.tts.stop();
+    /* 換頁時關掉還開著的小卡 */
+    Array.prototype.forEach.call(document.querySelectorAll('.vocab-pop'), function (el) { el.remove(); });
     var my = ++renderToken;
     var parsed = H3A.links.parseHash(root.location.hash);
     var p = parsed.path;
@@ -54,10 +58,15 @@
       return;
     }
     var main = shell({ back: back, title: titleText, titleSay: true, student: H3A.session.studentInfo(who.student) });
-    H3A.session.getLesson(meta.id).then(function (lesson) {
+    var words = (root.H3A_WORDS && root.H3A_WORDS[meta.id]) || null;
+    var noKey = NO_KEY.indexOf(activity) >= 0;
+    H3A.session.getLesson(meta.id).catch(function (err) {
+      if (noKey) return null;
+      throw err;
+    }).then(function (lesson) {
       if (my !== renderToken) return;
       var ctx = {
-        lessonId: meta.id, lesson: lesson, meta: meta, activity: activity, params: parsed.params,
+        lessonId: meta.id, lesson: lesson, words: words, meta: meta, activity: activity, params: parsed.params,
         student: who.student, place: settings.mode === 'class' ? 'school' : 'home',
         auto: !!(settings.auto || parsed.params.auto), settings: settings, go: go, rerender: render
       };

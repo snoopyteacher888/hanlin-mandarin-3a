@@ -72,26 +72,35 @@
         hs.disabled.forEach(function (d) { buttons[d].classList.add('is-off'); buttons[d].disabled = true; });
         feedback.className = 'feedback hint';
         H3A.ui.clear(feedback);
-        feedback.appendChild(h('span', {}, '再想想看。課文說：「' + q.evidence + '」'));
-        feedback.appendChild(H3A.ui.speaker(q.evidence, q.evidenceSay));
+        var hintText = q.hint || q.evidence;
+        feedback.appendChild(h('span', {}, q.hint ? '再想想看。' + q.hint : '再想想看。課文說：「' + q.evidence + '」'));
+        feedback.appendChild(H3A.ui.speaker(hintText, q.hint ? null : q.evidenceSay));
         H3A.sfx.wrong();
-        H3A.tts.speak('再想想看').then(function (ok) { if (ok) H3A.tts.speak(q.evidence, q.evidenceSay); });
+        H3A.tts.speak('再想想看').then(function (ok) { if (ok) H3A.tts.speak(hintText, q.hint ? null : q.evidenceSay); });
       }
 
       var grid = h('div', { class: 'options' });
       q.options.forEach(function (o, i) {
-        var b = h('button', { type: 'button', class: 'option', 'data-index': i, onclick: function () { pick(i); } },
-          H3A.ui.picture(ctx.lessonId, o.img, o.text), h('span', { class: 'option-text' }, o.text));
+        var b = o.big
+          ? h('button', { type: 'button', class: 'option big', 'data-index': i, onclick: function () { pick(i); } }, h('span', { class: 'option-text' }, o.text))
+          : h('button', { type: 'button', class: 'option' + (o.img ? '' : ' text-only'), 'data-index': i, onclick: function () { pick(i); } },
+            o.img ? H3A.ui.picture(ctx.lessonId, o.img, o.text) : null, h('span', { class: 'option-text' }, o.text));
         buttons.push(b);
         grid.appendChild(h('div', { class: 'option-wrap' }, b, H3A.ui.speaker(o.text, o.say)));
       });
 
       main.appendChild(dots(questions.length, idx));
-      main.appendChild(h('div', { class: 'prompt' }, h('h2', {}, q.prompt), H3A.ui.speaker(q.prompt, q.say)));
+      var promptText = h('h2', { hidden: !!q.hideText }, q.prompt);
+      var showBtn = q.hideText ? h('button', { type: 'button', class: 'btn-secondary small-btn', onclick: function () { promptText.hidden = false; showBtn.remove(); } }, '👀 看文字') : null;
+      main.appendChild(h('div', { class: 'prompt' + (q.img ? ' with-img' : '') },
+        q.img ? h('div', { class: 'prompt-img' }, H3A.ui.picture(ctx.lessonId, q.img, '')) : null,
+        q.hideText ? h('span', { class: 'listen-icon', 'aria-hidden': 'true' }, '👂') : null,
+        promptText, showBtn, H3A.ui.speaker(q.prompt, q.say)));
       main.appendChild(feedback);
       main.appendChild(grid);
       main.appendChild(h('div', { class: 'next-bar' }, nextBtn));
-      if (ctx.auto) H3A.tts.speak(q.prompt, q.say);
+      if (q.autoSay) H3A.tts.speak(q.autoSay);
+      else if (ctx.auto) H3A.tts.speak(q.prompt, q.say);
     }
     show();
   }

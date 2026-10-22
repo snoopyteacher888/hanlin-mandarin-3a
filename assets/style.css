@@ -236,3 +236,35 @@ button:disabled { cursor: default; }
 @media (orientation: portrait) and (max-width: 700px) {
   .fish-head-box, .fish-tail-box { border-radius: 16px; padding-left: 10px; }
 }
+
+/* 字詞練習：大字選項、題目提示圖、聽聽看 */
+.options .option.big { justify-content: center; min-height: 120px; }
+.option.big .option-text { font-size: 3.2em; line-height: 1.1; font-weight: 700; font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", var(--font); }
+.options .option.text-only { justify-content: center; min-height: 96px; }
+.option.text-only .option-text { font-size: 1.4em; }
+.prompt.with-img { flex-wrap: wrap; }
+.prompt-img .pic { width: min(150px, 18vh); height: min(150px, 18vh); }
+.prompt h2 { font-size: 1.4em; }
+.listen-icon { font-size: 2.4em; }
+@media (orientation: portrait) and (max-width: 700px) {
+  .options .option.big, .options .option.text-only { justify-content: center; }
+  .options:has(.option.big) { grid-template-columns: 1fr 1fr; }
+}
+
+/* 課次選單分區 */
+.menu-section { margin-bottom: 18px; }
+.menu-title { font-size: 1em; color: var(--ink-soft); margin: 6px 4px 10px; }
+.activity-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+.activity-main { min-height: 140px; }
+/* 生字卡、語詞卡 */
+.word-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; max-width: 1100px; margin: 0 auto; }
+.vocab-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.word-card { border: 3px solid var(--line); border-radius: var(--radius); background: var(--surface); min-height: 110px; padding: 8px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; }
+.word-card .pic { width: 96px; height: 96px; }
+.hanzi-mid { font-size: 2.6em; line-height: 1.1; font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", var(--font); }
+.zhuyin { font-size: 1.2em; letter-spacing: 2px; } .zhuyin.small { font-size: 0.7em; color: var(--ink-soft); }
+.hanzi-big { font-size: 6em; line-height: 1.1; font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", var(--font); }
+.hanzi-words { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.hanzi-words span { display: inline-flex; align-items: center; gap: 4px; }
+.stroke-link { display: inline-flex; align-items: center; text-decoration: none; color: var(--ink); }

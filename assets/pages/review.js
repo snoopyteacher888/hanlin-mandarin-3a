@@ -4,7 +4,14 @@
   H3A.pages.review = function run(main, ctx) {
     var today = H3A.review.todayStr(new Date());
     var due = H3A.review.due(H3A.session.reviewQueue(ctx.student), today);
-    var questions = H3A.reviewgen.buildReviewQuestions(ctx.lesson, due, H3A.quizgen.rng(Date.now() & 0xffffffff));
+    var r = H3A.quizgen.rng(Date.now() & 0xffffffff);
+    /* 閱讀題要有解鎖的課文；字詞題不用 */
+    var questions = [];
+    due.forEach(function (id) {
+      var q = ctx.words ? H3A.wordq.findWordQuestion(ctx.words, id, r) : null;
+      if (!q && ctx.lesson) q = H3A.reviewgen.buildReviewQuestions(ctx.lesson, [id], r)[0] || null;
+      if (q) questions.push(q);
+    });
     if (!questions.length) {
       H3A.ui.clear(main);
       main.appendChild(h('div', { class: 'result' }, h('h2', {}, '今天沒有要複習的題目 🎉', H3A.ui.speaker('今天沒有要複習的題目', null)),

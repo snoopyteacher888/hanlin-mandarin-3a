@@ -10,7 +10,7 @@ test('counts', () => {
   assert.equal(W.hanzi.map(h => h.char).join(''), '墨製部芯斷機器凹槽入另治桿削');
 });
 test('all images exist', () => {
-  const imgs = [...W.hanzi.map(h => h.img), ...W.vocab.map(v => v.img), ...W.listen.flatMap(l => l.options.map(o => o.img))];
+  const imgs = [...W.hanzi.map(h => h.img).filter(Boolean), ...W.vocab.map(v => v.img), ...W.listen.flatMap(l => l.options.map(o => o.img))];
   for (const f of imgs) assert.ok(fs.existsSync(path.join(__dirname, '../../images/L06', f)), f);
 });
 test('cloze plus char forms one of the words', () => {

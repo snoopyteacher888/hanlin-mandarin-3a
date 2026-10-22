@@ -2,7 +2,7 @@
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h;
   H3A.pages = H3A.pages || {};
-  var NAMES = { read: '聽課文', map: '課文地圖', quiz: '理解提問', review: '錯題複習', test: '單元測驗' };
+  var NAMES = { read: '聽課文', map: '課文地圖', quiz: '理解提問', review: '錯題複習', test: '單元測驗', hanzi: '生字', vocab: '語詞', similar: '形近字', listen: '聽聽看' };
   H3A.pages.activityTitle = function (a) { return NAMES[a] || ''; };
   H3A.pages.home = function (main, ctx) {
     main.appendChild(h('h1', { class: 'page-title' }, '國語三上學習樂園'));
