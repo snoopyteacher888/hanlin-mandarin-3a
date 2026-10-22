@@ -163,3 +163,25 @@ button:disabled { cursor: default; }
 .map-cards .option-wrap .map-card { width: 100%; padding-top: 14px; }
 .map-cards .option-wrap .speaker { position: absolute; top: -10px; right: -6px; min-width: 52px; min-height: 52px; box-shadow: 0 2px 4px rgba(0,0,0,.08); }
 .pic-missing { overflow: hidden; line-height: 1.3; font-size: 0.7em; }
+
+/* 所有圖卡、選項大小一致（不論文字幾行） */
+.map-cards { grid-auto-rows: 1fr; align-items: stretch; }
+.map-cards .option-wrap { height: 100%; }
+.map-cards .option-wrap .map-card { height: 100%; justify-content: flex-start; }
+.map-card .pic { width: 84px; height: 84px; max-width: none; flex: none; }
+.map-card .option-text { min-height: 3.2em; display: flex; align-items: center; justify-content: center; text-align: center; }
+.map-slot .pic { width: 64px; height: 64px; max-width: none; }
+.options { grid-auto-rows: 1fr; }
+.options .option-wrap { height: 100%; }
+.options .option { height: 100%; justify-content: center; }
+.options .option .pic { width: min(160px, 20vh); height: min(160px, 20vh); max-width: none; flex: none; }
+@media (orientation: portrait) and (max-width: 700px) {
+  .options .option .pic { width: 88px; height: 88px; }
+  .map-card .pic { width: 64px; height: 64px; }
+}
+.map-cards { grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); }
+.map-card .option-text { font-size: 0.78em; line-height: 1.35; min-height: 2.7em; }
+.map-card { gap: 4px; }
+@media (orientation: portrait) and (max-width: 700px) {
+  .options .option { justify-content: flex-start; gap: 14px; text-align: left; }
+}
