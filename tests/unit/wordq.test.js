@@ -18,7 +18,7 @@ test('vocab pic: h1 asks to look again, h2 gives example sentence', () => {
 });
 test('vocab meaning: h1 repeats meaning', () => {
   const q = Q.vocabQuestion(W.vocab[0], 'meaning', rng(2));
-  assert.equal(q.autoSay, '透明、容易破的材料。'); assert.equal(q.hints.h1.say, '透明、容易破的材料。'); assert.ok(!leaks(q));
+  assert.equal(q.autoSay, '透明、容易破的材料。'); assert.equal(q.hints.h1.text, '提示：透明、容易破的材料。'); assert.equal(q.hints.h1.say, '透明、容易破的材料。'); assert.ok(!leaks(q));
 });
 test('similar: h1 reads sentence with blank, h2 clue, teach explains', () => {
   const q = Q.similarQuestion(W.similar[0], rng(3));

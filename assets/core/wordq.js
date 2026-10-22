@@ -27,7 +27,7 @@
       q.hints = { h1: { text: '再仔細看看圖片，想想看它是什麼？' }, h2: h2, teach: teach };
     } else {
       q.prompt = '哪一個語詞的意思是：「' + v.meaning + '」'; q.say = '哪一個語詞的意思是：' + v.meaning; q.autoSay = v.meaning;
-      q.hints = { h1: { text: '再聽一次意思：' + v.meaning, say: v.meaning }, h2: h2, teach: teach };
+      q.hints = { h1: { text: '提示：' + v.meaning, say: v.meaning }, h2: h2, teach: teach };
     }
     return q;
   }
