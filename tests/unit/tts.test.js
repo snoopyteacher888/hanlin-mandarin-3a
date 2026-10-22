@@ -40,3 +40,8 @@ test('speak resolves when synth.speak throws', async () => {
   const s = { getVoices: () => [], cancel() {}, speak() { throw new Error('boom'); } };
   assert.equal(await make(s, Utt).speak('x'), false);
 });
+test('pronunciation fixes: 桿 is spoken as 趕 (ㄍㄢˇ), screen text untouched', async () => {
+  const s = fakeSynth([{ lang: 'zh-TW', name: 'Mei' }]); const t = make(s, Utt);
+  await t.speak('切成筆桿、上色'); assert.equal(s.spoken[0].text, '切成筆趕、上色');
+  await t.speak('筆桿', '筆桿'); assert.equal(s.spoken[1].text, '筆趕');
+});

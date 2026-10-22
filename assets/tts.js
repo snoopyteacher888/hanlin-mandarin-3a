@@ -7,6 +7,9 @@
     root.H3A.tts = m.make(root.speechSynthesis || null, root.SpeechSynthesisUtterance || null);
   }
 })(this, function () {
+  /* 語音引擎常念錯、但只有一種讀音的字：念的時候換成同音字（畫面上的字不變） */
+  var SAY_FIX = [[/桿/g, '趕']];
+  function fixSay(t) { SAY_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return t; }
   function norm(lang) { return String(lang || '').replace('_', '-').toLowerCase(); }
   function isTaiwan(v) {
     var l = norm(v.lang);
@@ -31,7 +34,7 @@
       var my = token;
       if (!synth || !Utterance) return Promise.resolve();
       return new Promise(function (resolve) {
-        var u = new Utterance(String(say || text).replace(/[\uDB40][\uDDE0-\uDDEF]/g, ''));
+        var u = new Utterance(fixSay(String(say || text).replace(/[\uDB40][\uDDE0-\uDDEF]/g, '')));
         var v = voice();
         if (v) u.voice = v;
         u.lang = v ? v.lang : 'zh-TW';
