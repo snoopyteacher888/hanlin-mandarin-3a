@@ -6,7 +6,7 @@ const rec = (o = {}) => Object.assign({ id: 'r1', ts: '2026-10-21T11:00:00.000Z'
   items: [{ q: 'q1', result: 'first', wrong: [] }], firstTryRate: 1, score: null, stars: 3, durationSec: 60 }, o);
 
 test('valid record passes', () => { assert.equal(B.validateRecord(rec()), null); });
-test('invalid activity rejected', () => { assert.ok(B.validateRecord(rec({ activity: 'hack' }))); });
+test('invalid activity rejected', () => { assert.ok(B.validateRecord(rec({ activity: 'x<script>' }))); });
 test('long student rejected', () => { assert.ok(B.validateRecord(rec({ student: 'x'.repeat(21) }))); });
 test('too many items rejected', () => { assert.ok(B.validateRecord(rec({ items: new Array(51).fill({ q: 'q1', result: 'first', wrong: [] }) }))); });
 test('missing id rejected', () => { assert.ok(B.validateRecord(rec({ id: '' }))); });
@@ -41,3 +41,5 @@ test('validateRoster', () => {
   assert.ok(B.validateRoster([{ id: 'Bad Id!', emoji: '🐻', name: '小熊' }]));
   assert.ok(B.validateRoster([{ id: 'a', emoji: '🐻', name: 'x' }, { id: 'a', emoji: '🐱', name: 'y' }]));
 });
+test('any lowercase activity accepted', () => { assert.equal(B.validateRecord(rec({ activity: 'hanzi' })), null); });
+test('activity with symbols rejected', () => { assert.ok(B.validateRecord(rec({ activity: 'Han-zi' }))); assert.ok(B.validateRecord(rec({ activity: 'a' }))); });

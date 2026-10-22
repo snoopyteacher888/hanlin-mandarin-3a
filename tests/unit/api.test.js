@@ -31,3 +31,11 @@ test('concurrent flush sends each record once', async () => {
   await Promise.all([api.submit({ id: 'a' }), api.flush(), api.flush()]);
   assert.deepEqual(sent, ['a']);
 });
+test('server rejection of one record does not block others', async () => {
+  const st = store.make(null);
+  const api = make({ fetch: async (u, i) => okResp(JSON.parse(i.body).record.id === 'bad' ? { error: 'BAD_RECORD' } : { ok: true }), store: st, url: 'u' });
+  st.set('outbox', [{ id: 'bad' }, { id: 'good' }]);
+  assert.equal(await api.flush(), 1);
+  assert.equal(api.pending(), 0);
+  assert.deepEqual(st.get('rejected', []).map(r => r.id), ['bad']);
+});

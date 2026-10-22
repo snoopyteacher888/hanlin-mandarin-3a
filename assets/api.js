@@ -32,6 +32,12 @@
         if (!box.length) return Promise.resolve(sent);
         var rec = box[0];
         return call('submit', { record: rec }).then(function (res) {
+          if (res && res.error === 'BAD_RECORD') {
+            /* 後台不收的紀錄移到 rejected，不擋住後面的紀錄 */
+            o.store.set('rejected', o.store.get('rejected', []).concat([rec]).slice(-50));
+            o.store.set('outbox', outbox().filter(function (r) { return r.id !== rec.id; }));
+            return next();
+          }
           if (!res || !res.ok) return sent;
           o.store.set('outbox', outbox().filter(function (r) { return r.id !== rec.id; }));
           sent++;

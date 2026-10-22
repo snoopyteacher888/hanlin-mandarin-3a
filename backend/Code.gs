@@ -7,7 +7,6 @@
  * 3. 「部署 → 新增部署作業 → 網頁應用程式」，執行身分選「我」，存取權選「所有人」。
  */
 
-var ACTIVITIES = ['read', 'map', 'quiz', 'review', 'test'];
 var COLUMNS = ['id', 'ts', 'student', 'place', 'lesson', 'activity', 'firstTryRate', 'score', 'stars', 'durationSec', 'items'];
 var MAX_FAILS = 5;
 var LOCK_MS = 15 * 60 * 1000;
@@ -19,7 +18,7 @@ function validateRecord(r) {
   if (!r || typeof r !== 'object') return 'record missing';
   if (typeof r.id !== 'string' || !r.id || r.id.length > 64) return 'bad id';
   if (typeof r.student !== 'string' || !r.student || r.student.length > 20) return 'bad student';
-  if (ACTIVITIES.indexOf(r.activity) < 0) return 'bad activity';
+  if (typeof r.activity !== 'string' || !/^[a-z]{2,12}$/.test(r.activity)) return 'bad activity';
   if (typeof r.lesson !== 'string' || !/^L\d{2}$/.test(r.lesson)) return 'bad lesson';
   if (r.place !== 'home' && r.place !== 'school') return 'bad place';
   if (!Array.isArray(r.items) || r.items.length > 50) return 'bad items';
