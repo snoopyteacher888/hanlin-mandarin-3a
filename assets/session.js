@@ -6,7 +6,7 @@
 
   function settings() {
     var s = store.get('settings', {});
-    return { mode: s.mode === 'class' ? 'class' : 'student', student: s.student || null, auto: !!s.auto };
+    return { mode: s.mode === 'class' ? 'class' : 'student', student: s.student || null, auto: !!s.auto, zhuyin: s.zhuyin !== false };
   }
   function saveSettings(patch) {
     var s = settings(); Object.keys(patch).forEach(function (k) { s[k] = patch[k]; });

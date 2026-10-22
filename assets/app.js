@@ -18,7 +18,33 @@
       help);
   };
 
+  /* 注音：整個網站用注音字型，並把新出現的文字自動標上正確的破音字讀音 */
+  function walk(node) {
+    if (node.nodeType === 3) {
+      var t = node.nodeValue, m = H3A.zhuyin.mark(t);
+      if (m !== t) node.nodeValue = m;
+      return;
+    }
+    if (node.nodeType !== 1 || /^(SCRIPT|STYLE|TEXTAREA|INPUT)$/.test(node.nodeName)) return;
+    for (var c = node.firstChild; c; c = c.nextSibling) walk(c);
+  }
+  H3A.applyZhuyin = function () {
+    var on = H3A.session.settings().zhuyin;
+    document.documentElement.classList.toggle('zhuyin', on);
+    if (H3A.zhuyinObserver) { H3A.zhuyinObserver.disconnect(); H3A.zhuyinObserver = null; }
+    if (!on || !root.MutationObserver) return;
+    walk(document.body);
+    H3A.zhuyinObserver = new MutationObserver(function (list) {
+      list.forEach(function (m) {
+        if (m.type === 'characterData') walk(m.target);
+        else Array.prototype.forEach.call(m.addedNodes, walk);
+      });
+    });
+    H3A.zhuyinObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
+  };
+
   function boot() {
+    H3A.applyZhuyin();
     /* iOS 要先點過畫面才能發聲 */
     document.addEventListener('pointerdown', function once() {
       H3A.tts.unlock(); document.removeEventListener('pointerdown', once);

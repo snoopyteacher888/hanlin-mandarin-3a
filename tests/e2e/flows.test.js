@@ -19,6 +19,8 @@ async function page(init) {
   const p = await ctx.newPage();
   p.errors = []; p.on('pageerror', e => p.errors.push(e.message));
   await p.addInitScript(() => {
+    /* 大部分測試關掉注音，比對文字比較單純；注音另有專門測試 */
+    try { const st = JSON.parse(localStorage.getItem('h3a.settings') || '{}'); if (!('zhuyin' in st)) { st.zhuyin = false; localStorage.setItem('h3a.settings', JSON.stringify(st)); } } catch (e) {}
     window.__spoken = [];
     Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: { getVoices: () => [{ lang: 'zh-TW', name: 'Mei-Jia' }], cancel() {},
       speak(u) { window.__spoken.push(u.text); setTimeout(() => u.onend && u.onend(), 5); } } });
@@ -110,7 +112,7 @@ test('unknown student id shows picker', async () => {
 
 test('class mode records class', async () => {
   const before = submits().length;
-  const p = await page(() => localStorage.setItem('h3a.settings', JSON.stringify({ mode: 'class' })));
+  const p = await page(() => localStorage.setItem('h3a.settings', JSON.stringify({ mode: 'class', zhuyin: false })));
   await unlock(p, '#/L06/read?s=bear');
   await p.click('text=我讀完了'); await p.waitForSelector('.result');
   for (let i = 0; i < 20 && submits().length === before; i++) await p.waitForTimeout(50);
@@ -185,7 +187,8 @@ test('similar wrong shows hint', async () => {
   await p.click(`.option[data-index="${wrongIdx}"]`);
   assert.match(await p.textContent('.feedback'), /再讀一次句子/);
   assert.ok(!(await p.textContent('.feedback')).includes(item.answer));
-  await p.click(`.option[data-index="${wrongIdx}"]`);
+  const second = await p.$$eval('.option:not(:disabled) .option-text', (x, a) => x.find(e => e.textContent !== a).closest('.option').dataset.index, item.answer);
+  await p.click(`.option[data-index="${second}"]`);
   assert.equal(await p.textContent('.feedback .hint-text'), item.clue);
 });
 
@@ -210,4 +213,15 @@ test('word record posted with activity similar', async () => {
   for (let i = 0; i < 20 && submits().length === before; i++) await p.waitForTimeout(50);
   const r = submits().at(-1);
   assert.equal(r.activity, 'similar'); assert.equal(r.student, 'cat'); assert.equal(r.items.length, 11); assert.equal(r.stars, 3);
+});
+
+test('zhuyin on: font class, polyphone marks, speech without marks', async () => {
+  const p = await page(() => localStorage.setItem('h3a.settings', JSON.stringify({ zhuyin: true })));
+  await p.goto(BASE + '#/L06/vocab?s=bear'); await p.waitForSelector('.word-card');
+  assert.equal(await p.evaluate(() => document.documentElement.classList.contains('zhuyin')), true);
+  const card = await p.$eval('.word-card[data-id="v-部分"] .option-text', e => e.textContent);
+  assert.equal(card, '部分' + String.fromCodePoint(0xE01E1));
+  await p.click('.word-card[data-id="v-部分"]');
+  await p.waitForFunction(() => window.__spoken.includes('部分'));
+  assert.ok(!(await p.evaluate(() => window.__spoken.some(s => /[\uDB40]/.test(s)))));
 });

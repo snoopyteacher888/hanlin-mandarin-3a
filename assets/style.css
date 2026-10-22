@@ -293,3 +293,10 @@ button:disabled { cursor: default; }
 .feedback.hint .hint-row { flex-wrap: nowrap; justify-content: flex-start; }
 .feedback.hint .hint-text { flex: 1; min-width: 0; text-align: left; }
 .feedback.hint .hint-row .small-btn { flex: none; }
+
+/* 注音字型（字嗨楷體注音版）：開啟注音時全站使用 */
+html.zhuyin body, html.zhuyin button, html.zhuyin input, html.zhuyin select,
+html.zhuyin .hanzi-mid, html.zhuyin .hanzi-big, html.zhuyin .option.big .option-text {
+  font-family: 'Bpmf Zihi Kai Std', "LXGW WenKai TC", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+}
+html.zhuyin .zhuyin { display: none; }

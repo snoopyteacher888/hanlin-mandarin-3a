@@ -26,6 +26,9 @@
     var auto = h('input', { type: 'checkbox', id: 'auto' }); auto.checked = s.auto;
     auto.addEventListener('change', function () { H3A.session.saveSettings({ auto: auto.checked }); saved(mode); });
     mode.appendChild(h('label', { class: 'check', for: 'auto' }, auto, ' 每題自動念出題目'));
+    var zy = h('input', { type: 'checkbox', id: 'zhuyin' }); zy.checked = s.zhuyin;
+    zy.addEventListener('change', function () { H3A.session.saveSettings({ zhuyin: zy.checked }); H3A.router.render(); H3A.applyZhuyin(); });
+    mode.appendChild(h('label', { class: 'check', for: 'zhuyin' }, zy, ' 國字旁邊顯示注音'));
     main.appendChild(mode);
 
     // 任務連結

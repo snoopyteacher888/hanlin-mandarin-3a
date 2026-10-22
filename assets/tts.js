@@ -31,7 +31,7 @@
       var my = token;
       if (!synth || !Utterance) return Promise.resolve();
       return new Promise(function (resolve) {
-        var u = new Utterance(say || text);
+        var u = new Utterance(String(say || text).replace(/[\uDB40][\uDDE0-\uDDEF]/g, ''));
         var v = voice();
         if (v) u.voice = v;
         u.lang = v ? v.lang : 'zh-TW';
