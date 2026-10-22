@@ -71,11 +71,23 @@ test('double tap advances once', async () => {
   assert.equal(await p.$$eval('.dot.done', x => x.length), 1);
 });
 
-test('map ordering', async () => {
+test('fishbone map', async () => {
   const p = await page(); await unlock(p, '#/L06/map?s=cat'); await p.waitForSelector('.map-card');
-  for (const id of ['m1', 'm2', 'm3']) await p.click(`.map-card[data-step="${id}"]`);
-  await p.waitForSelector('.result', { timeout: 3000 });
-  assert.equal(await p.textContent('.result p'), '第一次就答對 3 題，共 3 題');
+  await p.click('.map-card[data-card="c-lead"]');
+  assert.equal(await p.$$eval('.map-card.is-off', x => x.length), 1);
+  await p.waitForFunction(() => window.__spoken.includes('再想想看'));
+  for (const id of ['c-sand', 'c-fire']) await p.click(`.map-card[data-card="${id}"]`);
+  await p.waitForSelector('.bone-box[data-bone="b2"].now');
+  await p.click('.map-card[data-card="c-blow"]');
+  await p.waitForSelector('.bone-box[data-bone="b3"].now');
+  await p.click('.map-card[data-card="c-water"]');
+  await p.waitForSelector('.fish-tail-box.now');
+  const idx = await p.$$eval('.map-card .option-text', x => x.findIndex(e => e.textContent === '水杯可以裝水'));
+  await p.click(`.map-card[data-card="opt${idx}"]`);
+  await p.waitForSelector('.fish.complete');
+  await p.click('.btn-next'); await p.waitForSelector('.result');
+  assert.equal(await p.textContent('.result p'), '第一次就答對 3 題，共 4 題');
+  assert.deepEqual(p.errors, []);
 });
 
 test('record posted with student from link', async () => {

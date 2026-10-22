@@ -185,3 +185,43 @@ button:disabled { cursor: default; }
 @media (orientation: portrait) and (max-width: 700px) {
   .options .option { justify-content: flex-start; gap: 14px; text-align: left; }
 }
+
+/* 魚骨圖：寬螢幕用格線排成一條魚（左魚尾、右魚頭、上兩根骨頭、下一根）；手機直式改成上下排列 */
+.fish { position: relative; max-width: 1150px; margin: 4px auto 8px; display: grid;
+  grid-template-columns: minmax(120px, 15%) 1fr 1fr minmax(150px, 15%); grid-template-rows: auto 56px auto; column-gap: 18px; }
+.fish-spine { grid-row: 2; grid-column: 1 / 5; align-self: center; height: 10px; border-radius: 5px; background: var(--ink-soft); }
+.fish-head-box, .fish-tail-box, .bone-box { position: relative; background: var(--surface); border: 3px solid var(--line); border-radius: 16px;
+  padding: 6px 10px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.8em; text-align: center; z-index: 1; }
+.fish-tail-box { grid-row: 1 / 4; grid-column: 1; align-self: center; border-radius: 16px 40px 40px 16px; }
+.fish-head-box { grid-row: 1 / 4; grid-column: 4; align-self: center; border-radius: 40px 50% 50% 40px; padding-right: 18px; }
+.bone-1 { grid-row: 1; grid-column: 2; align-self: end; }
+.bone-2 { grid-row: 1; grid-column: 3; align-self: end; }
+.bone-3 { grid-row: 3; grid-column: 2 / 4; justify-self: center; align-self: start; min-width: 45%; }
+.bone-box::after { content: ""; position: absolute; left: 50%; width: 10px; height: 46px; background: var(--ink-soft); border-radius: 5px; z-index: -1; }
+.bone-1::after, .bone-2::after { top: 100%; transform: translateX(-50%) skewX(-30deg); transform-origin: top; }
+.bone-3::after { bottom: 100%; transform: translateX(-50%) skewX(30deg); transform-origin: bottom; }
+.fish.complete .fish-spine, .fish.complete .bone-box::after { background: var(--ok); }
+.fish.complete .fish-head-box { border-color: var(--ok); background: var(--ok-soft); }
+.fish-label { font-size: 0.75em; color: var(--ink-soft); }
+.fish-q { font-size: 1.6em; color: var(--ink-soft); }
+.bone-box.now, .fish-tail-box.now { border-color: var(--brand); box-shadow: 0 0 0 4px rgba(224,122,46,.2); }
+.bone-box.done, .fish-tail-box.done { border-color: var(--ok); background: var(--ok-soft); }
+.bone-title { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 1.1em; }
+.bone-title .speaker, .fish-head-box .speaker, .fish-tail-box .speaker { min-width: 40px; min-height: 40px; }
+.bone-slots { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
+.bone-slot { width: 72px; min-height: 60px; border: 2px dashed var(--line); border-radius: 10px; display: flex; flex-direction: column; align-items: center; font-size: 0.68em; line-height: 1.2; padding: 2px; cursor: pointer; }
+.bone-slot:not(:empty) { border-style: solid; border-color: var(--ok); background: var(--surface); }
+.bone-slot .pic { width: 40px; height: 40px; max-width: none; flex: none; }
+.step-q { font-size: 1.15em; margin: 4px 0; }
+@media (orientation: portrait) and (max-width: 700px) {
+  .fish { display: flex; flex-direction: column; gap: 8px; }
+  .fish-spine, .bone-box::after { display: none; }
+  .fish-head-box, .fish-tail-box { border-radius: 16px; }
+  .fish-head-box { order: 0; } .bone-1 { order: 1; } .bone-2 { order: 2; } .bone-3 { order: 3; min-width: 0; } .fish-tail-box { order: 4; }
+}
+.fish-head-box strong { white-space: nowrap; }
+@media (orientation: portrait) and (max-width: 700px) {
+  .fish-head-box, .fish-tail-box, .bone-box { align-self: stretch; justify-self: stretch; }
+  .map-cards { grid-template-columns: 1fr 1fr; }
+  .map-cards .option { flex-direction: column; justify-content: flex-start; text-align: center; gap: 4px; }
+}

@@ -18,7 +18,7 @@ test('duplicate ids rejected', () => {
   const l = fixture(); l.quiz[1].id = l.quiz[0].id; assert.ok(validateLesson(l).some(e => e.includes('重複')));
 });
 test('empty evidence rejected', () => {
-  const l = fixture(); l.mapSteps[0].evidence = ''; assert.ok(validateLesson(l).length > 0);
+  const l = fixture(); l.storyMap.bones[0].evidence = ''; assert.ok(validateLesson(l).length > 0);
 });
 test('missing paragraphs rejected', () => {
   const l = fixture(); delete l.paragraphs; assert.ok(validateLesson(l).length > 0);
@@ -26,5 +26,15 @@ test('missing paragraphs rejected', () => {
 test('real lesson06 is valid (if present)', { skip: !fs.existsSync(path.join(__dirname, '../../content/lesson06.plain.json')) }, () => {
   const l = JSON.parse(fs.readFileSync(path.join(__dirname, '../../content/lesson06.plain.json'), 'utf8'));
   assert.deepEqual(validateLesson(l), []);
-  assert.equal(l.quiz.length, 10); assert.equal(l.mapSteps.length, 7); assert.equal(l.testExtra.length, 3);
+  assert.equal(l.quiz.length, 10); assert.equal(l.storyMap.bones.length, 3); assert.equal(l.testExtra.length, 3);
+});
+
+test('fishbone bone needs cards', () => {
+  const l = fixture(); l.storyMap.bones[0].cards = []; assert.ok(validateLesson(l).some(e => e.includes('b1')));
+});
+test('unknown storyMap type rejected', () => {
+  const l = fixture(); l.storyMap.type = 'spiral'; assert.ok(validateLesson(l).length > 0);
+});
+test('duplicate card id rejected', () => {
+  const l = fixture(); l.storyMap.decoys[0].id = 'c-sand'; assert.ok(validateLesson(l).some(e => e.includes('重複')));
 });
