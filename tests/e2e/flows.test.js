@@ -186,7 +186,7 @@ test('similar wrong shows hint', async () => {
   assert.match(await p.textContent('.feedback'), /再讀一次句子/);
   assert.ok(!(await p.textContent('.feedback')).includes(item.answer));
   await p.click(`.option[data-index="${wrongIdx}"]`);
-  assert.equal(await p.textContent('.feedback .hint-row span'), item.clue);
+  assert.equal(await p.textContent('.feedback .hint-text'), item.clue);
 });
 
 test('review without unlock shows word items only', async () => {

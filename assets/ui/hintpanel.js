@@ -23,7 +23,7 @@
   H3A.ui.showHint = function (feedback, hint, ctx) {
     H3A.ui.clear(feedback);
     feedback.className = 'feedback hint';
-    var row = h('div', { class: 'hint-row' }, h('span', {}, hint.text), H3A.ui.speaker(hint.say || hint.text, null));
+    var row = h('div', { class: 'hint-row' }, h('span', { class: 'hint-icon', 'aria-hidden': 'true' }, '💡'), h('span', { class: 'hint-text' }, hint.text), H3A.ui.speaker(hint.say || hint.text, null));
     feedback.appendChild(row);
     if (hint.para && ctx.lesson && hint.para.paras.length) {
       var block = paraBlock(ctx.lesson, hint.para);

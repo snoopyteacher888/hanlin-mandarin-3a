@@ -282,3 +282,14 @@ button:disabled { cursor: default; }
 .pulse { animation: pulse 1.2s ease-in-out infinite; }
 @keyframes pulse { 50% { box-shadow: 0 0 0 8px rgba(46,158,91,.25); } }
 @media (prefers-reduced-motion: reduce) { .pulse, .shake, .option.is-correct { animation: none; } }
+
+/* 提示框更明顯：琥珀色粗框＋燈泡 */
+.feedback.hint { background: #FFF4D6; border: 3px solid #F2A900; border-radius: 16px; padding: 12px 16px;
+  box-shadow: 0 3px 0 rgba(242,169,0,.35); margin: 10px auto 14px; animation: hintIn .25s ease-out; }
+.feedback.hint .hint-text { font-size: 1.1em; font-weight: 700; color: #6B4A00; }
+.hint-icon { font-size: 1.8em; line-height: 1; }
+@keyframes hintIn { from { transform: scale(.96); opacity: .4; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .feedback.hint { animation: none; } }
+.feedback.hint .hint-row { flex-wrap: nowrap; justify-content: flex-start; }
+.feedback.hint .hint-text { flex: 1; min-width: 0; text-align: left; }
+.feedback.hint .hint-row .small-btn { flex: none; }
