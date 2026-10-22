@@ -79,7 +79,7 @@ test('fishbone map', async () => {
   const p = await page(); await unlock(p, '#/L06/map?s=cat'); await p.waitForSelector('.map-card');
   await p.click('.map-card[data-card="c-lead"]');
   assert.equal(await p.$$eval('.map-card.is-off', x => x.length), 1);
-  await p.waitForFunction(() => window.__spoken.includes('再想想看'));
+  await p.waitForFunction(() => window.__spoken.some(s => s.includes('這張卡跟')));
   for (const id of ['c-sand', 'c-fire']) await p.click(`.map-card[data-card="${id}"]`);
   await p.waitForSelector('.bone-box[data-bone="b2"].now');
   await p.click('.map-card[data-card="c-blow"]');
@@ -174,7 +174,7 @@ test('listen hides text and repeats on wrong', async () => {
   const right = item.options[item.answer].text;
   const wrongIdx = await p.$$eval('.option .option-text', (x, r) => x.findIndex(e => e.textContent !== r), right);
   await p.click(`.option[data-index="${wrongIdx}"]`);
-  await p.waitForFunction(t => window.__spoken.filter(s => s === t).length >= 2, text);
+  await p.waitForFunction(t => window.__spoken.filter(s => s === window.H3A.ttsLib.fixSay(t)).length >= 2, text);
   await p.click('text=看文字');
   assert.equal(await p.$eval('.prompt h2', e => e.hidden), false);
 });

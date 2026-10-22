@@ -8,7 +8,13 @@
   }
 })(this, function () {
   /* 語音引擎常念錯、但只有一種讀音的字：念的時候換成同音字（畫面上的字不變） */
-  var SAY_FIX = [[/筆桿/g, '鼻感'], [/桿/g, '感']];   // 筆桿：筆變二聲、桿三聲（老師確認）
+  /* 三聲＋三聲的詞，第一個字要變二聲：換成只有一個讀音的二聲同音字（老師要求）。
+     沒有合適同音字的詞（所以、短短、找找、整理、點點、數數、小狗）交給語音引擎自己變調。 */
+  var SAY_FIX = [
+    [/筆桿/g, '鼻感'], [/桿/g, '感'],
+    [/可以/g, '咳以'], [/只有/g, '直有'], [/好(?=[好幾久短])/g, '豪'], [/想想/g, '詳想'],
+    [/理解/g, '離解'], [/網址/g, '王址'], [/老虎/g, '勞虎'], [/火腿/g, '活腿']
+  ];
   function fixSay(t) { SAY_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return t; }
   function norm(lang) { return String(lang || '').replace('_', '-').toLowerCase(); }
   function isTaiwan(v) {
@@ -52,5 +58,5 @@
     function unlock() { if (synth && Utterance) { var u = new Utterance(''); u.volume = 0; synth.speak(u); } }
     return { speak: speak, stop: stop, status: status, unlock: unlock, hasChinese: function () { return status() !== 'none'; } };
   }
-  return { pickVoice: pickVoice, isTaiwan: isTaiwan, make: make };
+  return { pickVoice: pickVoice, isTaiwan: isTaiwan, make: make, fixSay: fixSay };
 });

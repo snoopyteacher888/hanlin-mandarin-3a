@@ -46,3 +46,9 @@ test('pronunciation fixes: 筆桿 sounds like 鼻感, 桿 alone like 感', async
   await t.speak('桿，筆桿的桿'); assert.equal(s.spoken[1].text, '感，鼻感的感');
   await t.speak('電線桿'); assert.equal(s.spoken[2].text, '電線感');
 });
+test('3+3 words: first syllable spoken as 2nd tone', async () => {
+  const s = fakeSynth([{ lang: 'zh-TW', name: 'Mei' }]); const t = make(s, Utt);
+  const cases = [['可以', '咳以'], ['只有', '直有'], ['好好使用', '豪好使用'], ['好幾個', '豪幾個'], ['用了好久', '用了豪久'],
+    ['好短', '豪短'], ['想想看', '詳想看'], ['理解提問', '離解提問'], ['網址', '王址'], ['老虎', '勞虎'], ['火腿', '活腿']];
+  for (const [i, [from, to]] of cases.entries()) { await t.speak(from); assert.equal(s.spoken[i].text, to, from); }
+});
