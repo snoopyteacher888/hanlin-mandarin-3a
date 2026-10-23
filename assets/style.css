@@ -387,3 +387,18 @@ html.zhuyin .zhuyin { display: none; }
 .options.pt-res .option { background: #F3FBF6; border-color: #9BD3B1; }
 .options.pt-conj .option { background: #FFF5EA; border-color: #F2B98A; }
 .options.pt-conj .option-text { color: #A44E0F; }
+
+/* 排版：多行文字一律靠左對齊，上下行從同一條線開始 */
+.prompt h2 { text-align: left; }
+.learn-box { align-items: stretch; }
+.learn-box > h3, .learn-box > .pt-formula, .learn-box > .prompt-img, .learn-box > .phrase-parts { align-self: center; }
+.learn-line { justify-content: space-between; text-align: left; }
+.learn-line > span { flex: 1 1 auto; }
+.pt-sentence { flex-direction: column; align-items: stretch; }
+.pt-block { align-items: flex-start; text-align: left; }
+.pt-sentence > .speaker { align-self: flex-end; }
+.options.list .option { justify-content: flex-start !important; text-align: left; }
+.speak-front .pt-block { text-align: left; }
+.feedback.hint .hint-text, .feedback.teach p { text-align: left; }
+.options.list .option { align-items: flex-start; }
+.options.list .option-text { width: 100%; text-align: left; }
