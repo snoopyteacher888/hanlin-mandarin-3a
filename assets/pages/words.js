@@ -77,7 +77,7 @@
   H3A.pages.similar = function run(main, ctx) {
     var w = ctx.words; if (!w) return missing(main);
     var r = rng();
-    practice(main, ctx, 'similar', shuffle(w.similar, r).map(function (x) { return F.dragify(H3A.wordq.similarQuestion(x, r)); }), function () { run(main, ctx); });
+    practice(main, ctx, 'similar', shuffle(w.similar, r).map(function (x) { return F.dragify(H3A.wordq.similarQuestion(F.plainSimilar(x), r)); }), function () { run(main, ctx); });
   };
   H3A.pages.listen = function run(main, ctx) {
     var w = ctx.words; if (!w) return missing(main);

@@ -65,7 +65,15 @@
     return out;
   }
 
+  /* 形近字拖拉填空：選項只放那一個不一樣的字（不要整個詞重複出現），句子裡只空那一個字 */
+  function plainSimilar(s) {
+    if (!s.frame) return s;
+    var o = {}; for (var k in s) if (Object.prototype.hasOwnProperty.call(s, k)) o[k] = s[k];
+    delete o.frame;
+    return o;
+  }
+
   function missing(main) { main.appendChild(h('p', { class: 'notice' }, '這一課的練習還沒準備好。')); }
 
-  H3A.ui.flow = { dragify: dragify, matchRounds: matchRounds, learn: learn, sayLine: sayLine, run: runFlow, retry: retrySpeak, missing: missing };
+  H3A.ui.flow = { dragify: dragify, plainSimilar: plainSimilar, matchRounds: matchRounds, learn: learn, sayLine: sayLine, run: runFlow, retry: retrySpeak, missing: missing };
 })(this);

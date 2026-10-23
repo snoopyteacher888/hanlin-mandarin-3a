@@ -222,10 +222,12 @@ test('similar wrong shows hint', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/similar?s=bear'); await p.waitForSelector('.option');
   const sentence = (await p.textContent('.prompt h2')).replace('　', '＿');
   const item = WORDS.similar.find(s => s.sentence === sentence);
-  const wrongIdx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent !== a), item.frame.replace('＿', item.answer));
+  /* 選項只有那一個字，不會整個詞重複出現 */
+  assert.deepEqual((await p.$$eval('.option .option-text', x => x.map(e => e.textContent))).sort(), item.options.slice().sort());
+  const wrongIdx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent !== a), item.answer);
   await dragTo(p, `.option[data-index="${wrongIdx}"]`, '.drop-slot');
   /* 答錯一次就直接給第二層的線索（老師要求） */
-  assert.equal(await p.textContent('.feedback .hint-text'), item.clue);
+  assert.equal(await p.textContent('.feedback .hint-text'), item.clue.replace(/＿+/g, ''));
   assert.ok(!(await p.textContent('.feedback')).includes(item.frame.replace('＿', item.answer)));
   /* 答錯的選項一律變淡 */
   assert.equal(await p.$eval(`.option[data-index="${wrongIdx}"]`, b => b.disabled && b.classList.contains('is-off')), true);
@@ -252,7 +254,7 @@ test('word record posted with activity similar', async () => {
   for (let k = 0; k < WORDS.similar.length; k++) {
     await p.waitForSelector('.option:not(:disabled)');
     const sentence = (await p.textContent('.prompt h2')).replace('　', '＿');
-    const it = WORDS.similar.find(s => s.sentence === sentence); const ans = it.frame.replace('＿', it.answer);
+    const it = WORDS.similar.find(s => s.sentence === sentence); const ans = it.answer;
     const idx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent === a), ans);
     await dragTo(p, `.option[data-index="${idx}"]`, '.drop-slot'); await p.click('.btn-next');
   }
@@ -271,4 +273,16 @@ test('zhuyin on: font class, polyphone marks, speech without marks', async () =>
   await p.click('.word-card[data-id="v-部分"]');
   await p.waitForFunction(() => window.__spoken.includes('部分'));
   assert.ok(!(await p.evaluate(() => window.__spoken.some(s => /[\uDB40]/.test(s)))));
+});
+
+test('unit test draws 10-15 questions from reading and word practice', async () => {
+  const p = await page(); await unlock(p, '#/L06/test?s=bear'); await p.waitForSelector('.option');
+  const n = await p.$$eval('.dot', x => x.length);
+  assert.ok(n >= 10 && n <= 15, String(n));
+  assert.equal(await p.$('.hint-btn'), null);
+  /* 每一類至少一題：生字、語詞、形近字、成語、句型、修辭 */
+  const ids = await p.evaluate(() => window.H3A.pages.pickTest({ words: window.H3A_WORDS.L06, lesson: null }, Math.random).map(q => q.id));
+  assert.ok(ids.length >= 10 && ids.length <= 15);
+  for (const re of [/^h-/, /^v-/, /^s\d/, /^is-/, /^pt-/, /^rh/]) assert.ok(ids.some(i => re.test(i)), re + ' ' + ids.join(','));
+  assert.deepEqual(p.errors, []);
 });
