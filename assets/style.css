@@ -502,3 +502,4 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .para.poem .sent, .hint-para .poem .sent { display: block; margin: 0 0 6px; }
 .hint-para .poem .para-no { display: block; }
 .feedback.teach p { white-space: pre-line; }
+.activity-icon img { width: 2em; height: 2em; object-fit: contain; display: block; }

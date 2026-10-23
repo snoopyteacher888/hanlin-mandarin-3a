@@ -144,3 +144,26 @@
 | 34 | `cw-music.png` | 欣賞音樂 | 生字語詞 |
 | 35 | `cw-moon.png` | 賞月 | 生字語詞 |
 | 36 | `cw-hide-paper.png` | 瞞不了 | 生字語詞 |
+
+## 活動圖示（待生成）
+
+放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。
+
+| # | 檔名 | 活動 |
+|---|---|---|
+| 1 | `map.png` | 課文地圖 |
+| 2 | `quiz.png` | 理解提問 |
+| 3 | `hanzi.png` | 生字 |
+| 4 | `vocab.png` | 語詞 |
+| 5 | `charword.png` | 生字語詞 |
+| 6 | `similar.png` | 形近字 |
+| 7 | `listen.png` | 聽聽看 |
+| 8 | `phrase.png` | 短語短句 |
+| 9 | `pattern.png` | 句型 |
+| 10 | `rhetoric.png` | 修辭 |
+| 11 | `challenge.png` | 語詞挑戰 |
+| 12 | `idiom.png` | 生字變成語 |
+| 13 | `review.png` | 錯題複習 |
+| 14 | `test.png` | 單元測驗 |
+| 15 | `build.png` | 部件組字 |
+| 16 | `memory.png` | 翻牌配對 |

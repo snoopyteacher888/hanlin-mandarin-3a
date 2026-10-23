@@ -2,7 +2,7 @@
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h;
   var SECTIONS = [
-    { title: '📖 閱讀理解', cards: [{ a: 'map', icon: '🐟' }, { a: 'quiz', icon: '❓' }] },
+    { title: '📖 閱讀理解', cards: [{ a: 'map', icon: '🗺️' }, { a: 'quiz', icon: '❓' }] },
     { title: '✏️ 字詞練習', words: true, cards: [{ a: 'hanzi', icon: '✍️' }, { a: 'vocab', icon: '📚' }, { a: 'charword', icon: '🔤' }, { a: 'similar', icon: '🔍' }, { a: 'listen', icon: '👂' },
       { a: 'phrase', icon: '📒' }, { a: 'pattern', icon: '🧩' }, { a: 'rhetoric', icon: '🎨' }, { a: 'challenge', icon: '🎮' }, { a: 'idiom', icon: '📜' }] },
     { title: '🌟 複習與測驗', cards: [{ a: 'review', icon: '🔁' }, { a: 'test', icon: '📝' }] }
@@ -41,7 +41,7 @@
           c.a === 'test' && prog.tests && prog.tests.length ? '上次 ' + prog.tests[prog.tests.length - 1].score + ' 分' : starsText(stars[c.a]);
         grid.appendChild(h('div', { class: 'activity-card' },
           h('button', { type: 'button', class: 'activity-main', 'data-activity': c.a, onclick: function () { ctx.go('#/' + ctx.lessonId + '/' + c.a); } },
-            h('span', { class: 'activity-icon', 'aria-hidden': 'true' }, c.icon),
+            H3A.ui.activityIcon(c.a, c.icon),
             h('span', { class: 'activity-name' }, name),
             h('span', { class: 'activity-extra' }, extra)),
           H3A.ui.speaker(name, null)));

@@ -43,7 +43,7 @@
     main.appendChild(h('div', { class: 'activity-grid' }, list.map(function (pt) {
       return h('div', { class: 'activity-card' },
         h('button', { type: 'button', class: 'activity-main', 'data-pattern': pt.key, onclick: function () { ctx.go('#/' + ctx.lessonId + '/pattern?p=' + pt.key); } },
-          h('span', { class: 'activity-icon', 'aria-hidden': 'true' }, '🧩'), h('span', { class: 'activity-name' }, pt.title)),
+          H3A.ui.activityIcon('pattern', '🧩'), h('span', { class: 'activity-name' }, pt.title)),
         H3A.ui.speaker(pt.title, pt.title.replace(/…+/g, '，')));
     })));
     if (ctx.auto) H3A.tts.speak(say);

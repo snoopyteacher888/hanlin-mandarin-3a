@@ -15,7 +15,7 @@
       var n = stars['challenge-' + g[0]] || 0;
       return h('div', { class: 'activity-card' + (n ? ' done' : '') },
         h('button', { type: 'button', class: 'activity-main', 'data-game': g[0], onclick: function () { go(ctx, g[0]); } },
-          h('span', { class: 'activity-icon', 'aria-hidden': 'true' }, g[1]), h('span', { class: 'activity-name' }, g[2]),
+          H3A.ui.activityIcon(g[0], g[1]), h('span', { class: 'activity-name' }, g[2]),
           h('span', { class: 'activity-extra' }, n ? '⭐'.repeat(n) : '')),
         H3A.ui.speaker(g[2], null));
     })));

@@ -31,6 +31,14 @@
     box.appendChild(img);
     return box;
   }
+  /* 活動圖示：images/icons/<名稱>.png（ChatGPT 畫的同一套圖示）；圖還沒上傳就先顯示 emoji */
+  function activityIcon(name, emoji) {
+    var box = h('span', { class: 'activity-icon', 'aria-hidden': 'true' });
+    var img = h('img', { src: 'images/icons/' + name + '.png', alt: '', draggable: 'false' });
+    img.onerror = function () { clear(box); box.appendChild(document.createTextNode(emoji)); };
+    box.appendChild(img);
+    return box;
+  }
   /* 老師頭像（Q 版老師，images/teacher.png）；圖還沒上傳就顯示 👩‍🏫 */
   function teacherFace() {
     var box = h('span', { class: 'teacher-face', 'aria-hidden': 'true' });
@@ -39,5 +47,5 @@
     box.appendChild(img);
     return box;
   }
-  H3A.ui.h = h; H3A.ui.clear = clear; H3A.ui.picture = picture; H3A.ui.teacherFace = teacherFace;
+  H3A.ui.h = h; H3A.ui.clear = clear; H3A.ui.picture = picture; H3A.ui.teacherFace = teacherFace; H3A.ui.activityIcon = activityIcon;
 })(this);
