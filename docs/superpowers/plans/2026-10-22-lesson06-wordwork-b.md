@@ -37,7 +37,7 @@
 
 **Interfaces:**
 - Produces: `normalize(s: string) -> string`（去掉空白與中英標點）；`check(rule, said) -> { status: 'correct'|'pending'|'bad', reason: string|null }`。
-  - `rule = { kind: 'phrase', accept: string[] }`：normalize 後在 accept 裡 → correct；符合 `/^.{3,}的.{1,}$/` → pending；否則 bad `'phrase'`。
+  - `rule = { kind: 'phrase', accept: string[] }`：normalize 後在 accept 裡 → correct；符合 `/^.{2,}的.+$/` → pending；否則 bad `'phrase'`。
   - `rule = { kind: 'word', word: string, min: 6 }`：含 word 且長度 ≥ min → pending；沒有 word → bad `'word'`；太短 → bad `'short'`。
   - `rule = { kind: 'pattern', key: 'zhiyao'|'ruguo', front?: string }`：front 有給就先接在 said 前面再檢查。zhiyao 依序找「只要」「就」；ruguo 依序找「如果」「不但」「還」；每段至少 2 字、最後一段至少 2 字。缺詞 → bad `'missing:<詞>'`；順序錯 → bad `'order'`；段太短 → bad `'short'`；都過 → pending。
 

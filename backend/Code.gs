@@ -100,8 +100,12 @@ function validateSpeech(r) {
   return null;
 }
 
+/* 開頭是 = + - @ 的文字，試算表會當成公式執行；前面加 ' 讓它只是文字 */
 function speechToRow(r) {
-  return SPEECH_COLUMNS.map(function (c) { return r[c] === null || r[c] === undefined ? '' : r[c]; });
+  return SPEECH_COLUMNS.map(function (c) {
+    var v = r[c] === null || r[c] === undefined ? '' : r[c];
+    return typeof v === 'string' && /^[=+\-@]/.test(v) ? "'" + v : v;
+  });
 }
 
 function speechFromRow(row) {
@@ -281,6 +285,6 @@ function doPost(e) {
 if (typeof module !== 'undefined') {
   module.exports = { validateRecord: validateRecord, lockState: lockState, registerFail: registerFail, toRow: toRow,
     fromRow: fromRow, submitRecord: submitRecord, filterRecords: filterRecords, validateRoster: validateRoster,
-    validateSpeech: validateSpeech, speechToRow: speechToRow, speechFromRow: speechFromRow, filterSpeech: filterSpeech,
+    SPEECH_COLUMNS: SPEECH_COLUMNS, validateSpeech: validateSpeech, speechToRow: speechToRow, speechFromRow: speechFromRow, filterSpeech: filterSpeech,
     applyGrade: applyGrade, feedbackFor: feedbackFor };
 }

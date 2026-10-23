@@ -78,3 +78,11 @@ test('feedback returns only that student without names', () => {
   f.forEach(x => { assert.ok(!('student' in x)); assert.ok(!('name' in x)); });
   assert.equal(f[0].teacherNote, '好');
 });
+test('speech row escapes formula-like text', () => {
+  const row = B.speechToRow(sp({ said: '=IMPORTXML("http://x","//a")', prompt: '+1', teacherNote: '@x' }));
+  const i = n => B.SPEECH_COLUMNS.indexOf(n);
+  assert.equal(row[i('said')], "'=IMPORTXML(\"http://x\",\"//a\")");
+  assert.equal(row[i('prompt')], "'+1");
+  assert.equal(row[i('teacherNote')], "'@x");
+  assert.equal(B.speechToRow(sp())[i('said')], '只要我練習就會進步');
+});

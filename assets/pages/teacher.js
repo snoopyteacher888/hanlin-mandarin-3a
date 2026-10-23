@@ -58,6 +58,12 @@
     function loadSpeech() {
       H3A.api.call('speechList', { token: token(), filter: { student: fStu.value || undefined } }).then(function (res) {
         if (res.error === 'AUTH') { setToken(null); login(main, ctx); return; }
+        if (res.error === 'UNKNOWN_ACTION') {
+          H3A.ui.clear(gradeBox);
+          gradeBox.appendChild(h('h2', {}, '📝 待批改'));
+          gradeBox.appendChild(h('p', { class: 'error' }, '後台需要更新：請照「老師使用說明」貼上新的 Code.gs，再用「管理部署作業 → 編輯 → 新版本」部署。更新後，學生說的句子就會送進來。'));
+          return;
+        }
         showSpeech(res.speech || []);
       }, function () { H3A.ui.clear(gradeBox); gradeBox.appendChild(h('p', { class: 'error' }, '待批改：無法連線，請檢查網路')); });
     }

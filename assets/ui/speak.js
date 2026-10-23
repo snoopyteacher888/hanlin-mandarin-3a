@@ -78,9 +78,15 @@
       actions.appendChild(h('button', { type: 'button', class: 'btn-secondary', onclick: toggle }, '🔁 再說一次'));
       H3A.tts.speak((q.front || '') + t);
     }
-    function submit(text) {
+    function showEscape(text) {
+      var old = box.querySelector('.speak-escape'); if (old) old.remove();
+      box.appendChild(h('div', { class: 'speak-escape speak-actions' },
+        h('button', { type: 'button', class: 'btn-primary', onclick: function () { submit(text, true); } }, '📨 送給老師看'),
+        typing ? null : h('button', { type: 'button', class: 'btn-secondary', onclick: function (e) { e.currentTarget.remove(); useTyping(); } }, '⌨️ 請大人幫忙打字')));
+    }
+    function submit(text, toTeacher) {
       if (finished) return;
-      var r = H3A.speechcheck.check(q.rule, text);
+      var r = toTeacher ? { status: 'pending' } : H3A.speechcheck.check(q.rule, text);
       if (r.status === 'bad') {
         badCount++;
         actions.hidden = true;
@@ -95,10 +101,13 @@
           return;
         }
         H3A.ui.showHint(feedback, badCount === 1 ? q.hints.h1 : q.hints.h2, ctx);
+        /* 老師示範後還是不行（例如電腦一直聽錯），讓學生能把句子交給老師，或請大人打字 */
+        if (taught) showEscape(text);
         return;
       }
       finished = true;
       mic.disabled = true; actions.hidden = true;
+      var esc = box.querySelector('.speak-escape'); if (esc) esc.remove();
       if (typing) typing.querySelectorAll('button, textarea').forEach(function (el) { el.disabled = true; });
       var full = ((q.front || '') + text).slice(0, 200);
       var st = r.status === 'correct' ? 'auto' : 'pending';

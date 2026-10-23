@@ -17,3 +17,7 @@ test('sinceFor today/week/all', () => {
   assert.equal(sinceFor('week', now), new Date(2026, 9, 14, 15, 0).toISOString());
   assert.equal(sinceFor('all', now), undefined);
 });
+test('topMissed ignores speak items waiting for the teacher', () => {
+  const recs = [{ items: [{ q: 'pt-zy-w1', result: 'pending', status: 'pending' }, { q: 'ps1', result: 'hint1', said: 'x', status: 'auto' }, { q: 'q1', result: 'hint1' }] }];
+  assert.deepEqual(topMissed(recs, 5), [{ q: 'q1', count: 1 }]);
+});

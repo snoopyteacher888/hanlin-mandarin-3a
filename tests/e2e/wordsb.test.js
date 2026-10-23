@@ -202,3 +202,26 @@ test('teacher grades and student sees feedback', async () => {
   await s.waitForSelector('.fb-banner >> text=老師的批改');
   assert.deepEqual(s.errors, []); assert.deepEqual(t.errors, []);
 });
+
+test('after teacher demo, a stuck student can send to teacher or ask for typing', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/phrase?s=bear&retry=pm1');
+  for (let k = 0; k < 3; k++) { await say(p, '我把顏料混和在一起'); await p.waitForTimeout(50); }
+  await p.waitForSelector('.feedback.teach'); await p.click('text=我懂了 ▶');
+  await say(p, '我把顏料混和在一起');
+  await p.waitForSelector('.speak-escape');
+  assert.ok(await p.$('.speak-escape >> text=請大人幫忙打字'));
+  await p.click('.speak-escape >> text=送給老師看');
+  await p.waitForSelector('.feedback.ok >> text=等老師批改');
+  assert.equal(speechFor('pm1').at(-1).said, '我把顏料混和在一起');
+  assert.equal(speechFor('pm1').at(-1).status, 'pending');
+  assert.deepEqual(p.errors, []);
+});
+
+test('teacher is told to update Apps Script when backend is old', async () => {
+  const old = await start(8183, { oldBackend: true });
+  try {
+    const t = await page(); await t.goto('http://localhost:8183/#/teacher');
+    await t.fill('input[type=password]', 'teacher-pass'); await t.click('button[type=submit]');
+    await t.waitForSelector('.grade-panel >> text=後台需要更新');
+  } finally { await old.close(); }
+});

@@ -30,7 +30,7 @@
     var t = normalize(said);
     if (rule.kind === 'phrase') {
       if (rule.accept.map(normalize).indexOf(t) >= 0) return { status: 'correct', reason: null };
-      return /^.{3,}的.+$/.test(t) ? { status: 'pending', reason: null } : bad('phrase');
+      return /^.{2,}的.+$/.test(t) ? { status: 'pending', reason: null } : bad('phrase');
     }
     if (rule.kind === 'word') {
       if (t.indexOf(rule.word) < 0) return bad('word');

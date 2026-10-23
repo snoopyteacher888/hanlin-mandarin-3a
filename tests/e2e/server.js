@@ -18,6 +18,7 @@ function start(port, opts = {}) {
         if (msg.action === 'roster') return res.end(JSON.stringify({ roster }));
         if (msg.action === 'login') return res.end(JSON.stringify(msg.password === 'teacher-pass' ? { token: 't1' } : { error: 'BAD_PASSWORD' }));
         if (msg.action === 'records') return res.end(JSON.stringify(msg.token === 't1' ? { records: posts.filter(p => p.action === 'submit').map(p => p.record), roster } : { error: 'AUTH' }));
+        if (opts.oldBackend && ['speech', 'feedback', 'speechList', 'grade'].includes(msg.action)) return res.end(JSON.stringify({ error: 'UNKNOWN_ACTION' }));
         if (msg.action === 'speech') { if (!speech.some(x => x.id === msg.speech.id)) speech.push(Object.assign({ teacherNote: '', gradedAt: '' }, msg.speech)); return res.end(JSON.stringify({ ok: true })); }
         if (msg.action === 'feedback') return res.end(JSON.stringify({ feedback: B.feedbackFor(speech, msg.student) }));
         if (msg.action === 'speechList') return res.end(JSON.stringify(msg.token === 't1' ? { speech: B.filterSpeech(speech, msg.filter || {}).slice().reverse(), roster } : { error: 'AUTH' }));

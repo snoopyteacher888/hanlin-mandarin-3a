@@ -7,7 +7,8 @@
   function topMissed(records, n) {
     var counts = {};
     records.forEach(function (rec) {
-      (rec.items || []).forEach(function (it) { if (it.result !== 'first') counts[it.q] = (counts[it.q] || 0) + 1; });
+      /* 說說看的題目（有 status）由老師批改，不算「答錯」 */
+      (rec.items || []).forEach(function (it) { if (it.result !== 'first' && !it.status) counts[it.q] = (counts[it.q] || 0) + 1; });
     });
     return Object.keys(counts).map(function (q) { return { q: q, count: counts[q] }; })
       .sort(function (a, b) { return b.count - a.count || (a.q < b.q ? -1 : 1); }).slice(0, n);
