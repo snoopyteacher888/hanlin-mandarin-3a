@@ -1,9 +1,9 @@
 /* 檢查字詞練習資料（生字、語詞、形近字、聽聽看），回傳錯誤訊息清單 */
 (function (root, factory) {
-  var m = factory();
+  var m = factory(root.H3A && root.H3A.speechcheck || (typeof require === 'function' ? require('./speechcheck.js') : null));
   if (typeof module === 'object' && module.exports) module.exports = m;
   else { root.H3A = root.H3A || {}; root.H3A.wordsschema = m; }
-})(this, function () {
+})(this, function (speechcheck) {
   function nonEmpty(s) { return typeof s === 'string' && s.trim().length > 0; }
   function unique(arr) { return arr.filter(function (x, i) { return arr.indexOf(x) === i; }).length === arr.length; }
   function validateWords(w) {
@@ -49,7 +49,60 @@
       opts(l.id, (l.options || []).map(function (o) { return o.text; }), 4);
       if (!(l.answer >= 0 && l.answer < (l.options || []).length)) errs.push(l.id + ' 的答案編號不對');
     });
+    if (w.phrase) phrase(w.phrase);
+    if (w.pattern) pattern(w.pattern);
+    if (w.rhetoric) rhetoric(w.rhetoric);
     return errs;
+
+    /* ---------- B 批 ---------- */
+    function choice(x, min, answer) {
+      useId(x.id);
+      opts(x.id, x.options, min);
+      if (!nonEmpty(x.clue) || !nonEmpty(x.explain)) errs.push(x.id + ' 缺少線索或說明');
+      else if (x.clue.indexOf(answer) >= 0) errs.push(x.id + ' 的提示說出了答案');
+    }
+    function speak(x, rule) {
+      useId(x.id);
+      if (!nonEmpty(x.clue) || !nonEmpty(x.model)) { errs.push(x.id + ' 缺少線索或示範句'); return; }
+      var full = (rule.front || '') + x.model;
+      if (speechcheck.check(rule, full).status === 'bad') errs.push(x.id + ' 的示範句不符合句型');
+    }
+    function phrase(p) {
+      if (!p.intro || !Array.isArray(p.intro.parts)) errs.push('phrase 缺少 intro');
+      (p.pick || []).forEach(function (x) { choice(x, 4, x.options && x.options[0]); if (!nonEmpty(x.noun)) errs.push(x.id + ' 缺少 noun'); });
+      (p.say || []).forEach(function (x) {
+        if (!Array.isArray(x.accept) || !x.accept.length) errs.push(x.id + ' 缺少 accept');
+        speak(x, { kind: 'phrase', accept: x.accept || [] });
+      });
+      (p.choose || []).forEach(function (x) { choice(x, 2, x.options && x.options[0]); });
+      (p.make || []).forEach(function (x) { speak(x, { kind: 'word', word: x.word, min: 6 }); });
+    }
+    function pattern(list) {
+      list.forEach(function (pt) {
+        if (!speechcheck.PATTERNS[pt.key]) { errs.push('不認得的句型：' + pt.key); return; }
+        if (!nonEmpty(pt.title) || !Array.isArray(pt.examples) || !pt.examples.length) errs.push(pt.key + ' 缺少標題或例句');
+        (pt.match || []).forEach(function (x) { choice(x, 3, x.options && x.options[0]); });
+        (pt.conj || []).forEach(function (x) {
+          choice(x, 3, x.options && x.options[0]);
+          if (!nonEmpty(x.sentence) || x.sentence.indexOf('＿') < 0) errs.push(x.id + ' 的句子要有＿');
+        });
+        (pt.half || []).forEach(function (x) {
+          if (!nonEmpty(x.front)) errs.push(x.id + ' 缺少前半句');
+          speak(x, { kind: 'pattern', key: pt.key, front: x.front });
+        });
+        (pt.whole || []).forEach(function (x) { speak(x, { kind: 'pattern', key: pt.key }); });
+      });
+    }
+    function rhetoric(rh) {
+      var names = (rh.cards || []).map(function (c) { return c.name; });
+      if (names.length !== 4 || !unique(names)) errs.push('修辭卡要剛好 4 張、不重複');
+      (rh.quiz || []).forEach(function (x) {
+        useId(x.id);
+        if (names.indexOf(x.answer) < 0) errs.push(x.id + ' 的答案不是修辭卡');
+        if (!nonEmpty(x.sentence) || !nonEmpty(x.clue) || !nonEmpty(x.explain)) errs.push(x.id + ' 缺少句子、線索或說明');
+        else if (x.clue.indexOf(x.answer) >= 0) errs.push(x.id + ' 的提示說出了答案');
+      });
+    }
   }
   return { validateWords: validateWords };
 });

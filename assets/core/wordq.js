@@ -54,6 +54,54 @@
       teach: { text: '答案是「' + q.options[q.answer].text + '」。因為課文說：「' + q.evidence + '」' }
     };
   }
+  /* ---------- B 批：短語短句、句型、修辭 ---------- */
+  function first(item, prompt, extra, r) {
+    var s = shuffled(item.options, item.options[0], r, extra || {});
+    return { id: item.id, prompt: prompt, options: s.options, answer: s.answer };
+  }
+  function phrasePickQuestion(p, r) {
+    var q = first(p, '＿＿＿的' + p.noun, { big: true }, r);
+    q.say = '什麼樣的' + p.noun; q.img = p.img;
+    q.hints = { h1: { text: '再看看圖片，它是什麼顏色、什麼樣子？' }, h2: { text: p.clue }, teach: { text: p.explain } };
+    return q;
+  }
+  function chooseQuestion(c, r) {
+    var q = first(c, '哪一句的「' + c.word + '」用得對？', null, r);
+    q.hints = { h1: { text: '兩個句子都聽一次，想想「' + c.word + '」是什麼意思。' }, h2: { text: c.clue }, teach: { text: c.explain } };
+    return q;
+  }
+  function matchQuestion(m, r) {
+    var q = first(m, m.front + '……', null, r);
+    q.say = m.front;
+    q.hints = { h1: { text: '想一想，做了前面的事以後，會有什麼結果？' }, h2: { text: m.clue }, teach: { text: m.explain } };
+    return q;
+  }
+  function conjQuestion(c, r) {
+    var q = first(c, c.sentence, null, r);
+    q.say = c.sentence.replace(/＿+/g, '什麼');
+    q.hints = { h1: { text: '把句子念一次，想想前後兩句是什麼關係。' }, h2: { text: c.clue }, teach: { text: c.explain } };
+    return q;
+  }
+  function rhetoricQuestion(x, cards, r) {
+    var order = quizgen.shuffle(cards, r);
+    return { id: x.id, prompt: '「' + x.sentence + '」用了什麼修辭？', say: x.sentence + '。這句話用了什麼修辭？', autoSay: x.sentence,
+      options: order.map(function (c) { return { text: c.name, icon: c.icon }; }),
+      answer: order.map(function (c) { return c.name; }).indexOf(x.answer),
+      hints: { h1: { text: '想一想：這句話是把東西寫得像人、把東西比成別的東西、有重複的字，還是用問句？' }, h2: { text: x.clue }, teach: { text: x.explain } } };
+  }
+  var PATTERN_WORDS = { zhiyao: '「只要」和「就」', ruguo: '「如果」、「不但」、「還」' };
+  function speakMethod(rule) {
+    if (rule.kind === 'phrase') return '先說它是什麼樣子，再說「的」，最後說它是什麼。';
+    if (rule.kind === 'word') return '記得句子裡要說到「' + rule.word + '」，而且要說完整的一句話喔。';
+    return '記得要用' + PATTERN_WORDS[rule.key] + '喔。';
+  }
+  /* 說說看：h1 給方法、h2 給線索、teach 示範一句後讓學生自己再說一次 */
+  function speakQuestion(item, rule, prompt) {
+    var model = (item.front || '') + item.model;
+    return { type: 'speak', id: item.id, prompt: prompt, img: item.img, front: item.front, rule: rule, model: model,
+      hints: { h1: { text: speakMethod(rule) }, h2: { text: item.clue }, teach: { text: '老師示範：「' + model + '」。換你說說看！' } } };
+  }
+
   function findWordQuestion(w, id, r) {
     var pick = function (list) { return (list || []).filter(function (x) { return x.id === id; })[0]; };
     var x;
@@ -61,8 +109,17 @@
     if ((x = pick(w.vocab))) return vocabQuestion(x, x.noPic || r() < 0.5 ? 'meaning' : 'pic', r);
     if ((x = pick(w.similar))) return similarQuestion(x, r);
     if ((x = pick(w.listen))) return listenQuestion(x, r);
+    if (w.phrase && (x = pick(w.phrase.pick))) return phrasePickQuestion(x, r);
+    if (w.phrase && (x = pick(w.phrase.choose))) return chooseQuestion(x, r);
+    for (var i = 0; i < (w.pattern || []).length; i++) {
+      if ((x = pick(w.pattern[i].match))) return matchQuestion(x, r);
+      if ((x = pick(w.pattern[i].conj))) return conjQuestion(x, r);
+    }
+    if (w.rhetoric && (x = pick(w.rhetoric.quiz))) return rhetoricQuestion(x, w.rhetoric.cards, r);
     return null;
   }
   return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, similarQuestion: similarQuestion,
-    listenQuestion: listenQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
+    listenQuestion: listenQuestion,
+    phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
+    rhetoricQuestion: rhetoricQuestion, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
 });

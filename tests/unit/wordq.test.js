@@ -42,3 +42,41 @@ test('readingHints points to paragraph, highlights, then teaches with evidence',
   assert.equal(h.h2.para.highlight, true);
   assert.equal(h.teach.text, '答案是「裝水」。因為課文說：「水杯可以裝水。」');
 });
+
+test('phrase pick question: blank then noun, answer is first option', () => {
+  const q = Q.phrasePickQuestion(W.phrase.pick[0], rng(2));
+  assert.equal(q.prompt, '＿＿＿的杯子'); assert.equal(q.img, 'cup.png');
+  assert.equal(q.options[q.answer].text, '亮晶晶'); assert.ok(!leaks(q)); assert.match(q.hints.teach.text, /亮晶晶/);
+});
+test('choose question: answer is first sentence', () => {
+  const q = Q.chooseQuestion(W.phrase.choose[0], rng(3));
+  assert.equal(q.options[q.answer].text, '杯子裡裝滿了水。'); assert.match(q.prompt, /「裝滿」/); assert.equal(q.options.length, 2);
+});
+test('match question: front shown, answer is first option', () => {
+  const q = Q.matchQuestion(W.pattern[0].match[0], rng(4));
+  assert.equal(q.prompt, '只要你把杯子洗乾淨，……'); assert.equal(q.options[q.answer].text, '就能裝果汁了。');
+});
+test('conj question: blanks spoken as 什麼', () => {
+  const q = Q.conjQuestion(W.pattern[0].conj[0], rng(5));
+  assert.equal(q.options[q.answer].text, '只要……就……'); assert.ok(!q.say.includes('＿')); assert.ok(!leaks(q));
+});
+test('rhetoric options carry icons', () => {
+  const q = Q.rhetoricQuestion(W.rhetoric.quiz[0], W.rhetoric.cards, rng(6));
+  assert.equal(q.options.length, 4); assert.ok(q.options.every(o => o.icon));
+  assert.equal(q.options[q.answer].text, '擬人'); assert.equal(q.autoSay, W.rhetoric.quiz[0].sentence); assert.ok(!leaks(q));
+});
+test('speak question has rule and hints', () => {
+  const q = Q.speakQuestion(W.pattern[0].half[0], { kind: 'pattern', key: 'zhiyao', front: '只要我每天練習，' }, '把句子說完');
+  assert.equal(q.type, 'speak'); assert.equal(q.front, '只要我每天練習，'); assert.equal(q.rule.key, 'zhiyao');
+  assert.match(q.hints.h1.text, /只要/); assert.equal(q.hints.h2.text, W.pattern[0].half[0].clue); assert.match(q.hints.teach.text, /就會越來越厲害/);
+});
+test('findWordQuestion finds rh and pt match', () => {
+  assert.equal(Q.findWordQuestion(W, 'rh1', rng(1)).options.length, 4);
+  assert.equal(Q.findWordQuestion(W, 'pt-zy-m1', rng(1)).id, 'pt-zy-m1');
+  assert.equal(Q.findWordQuestion(W, 'pt-zy-c1', rng(1)).id, 'pt-zy-c1');
+  assert.equal(Q.findWordQuestion(W, 'ph1', rng(1)).id, 'ph1');
+  assert.equal(Q.findWordQuestion(W, 'pw1', rng(1)).id, 'pw1');
+});
+test('findWordQuestion skips speak ids', () => {
+  ['ps1', 'pm1', 'pt-zy-h1', 'pt-zy-w1'].forEach(id => assert.equal(Q.findWordQuestion(W, id, rng(1)), null));
+});
