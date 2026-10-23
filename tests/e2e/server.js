@@ -3,10 +3,11 @@ const http = require('node:http');
 const fs = require('node:fs');
 const path = require('node:path');
 const ROOT = path.join(__dirname, '../..');
+const B = require('../../backend/Code.gs');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.png': 'image/png', '.json': 'application/json' };
 
 function start(port, opts = {}) {
-  const posts = [];
+  const posts = [], speech = [];
   const roster = opts.roster || [{ id: 'bear', emoji: '🐻', name: '小熊' }, { id: 'cat', emoji: '🐱', name: '小貓' }];
   const server = http.createServer((req, res) => {
     const url = new URL(req.url, 'http://x');
@@ -17,6 +18,15 @@ function start(port, opts = {}) {
         if (msg.action === 'roster') return res.end(JSON.stringify({ roster }));
         if (msg.action === 'login') return res.end(JSON.stringify(msg.password === 'teacher-pass' ? { token: 't1' } : { error: 'BAD_PASSWORD' }));
         if (msg.action === 'records') return res.end(JSON.stringify(msg.token === 't1' ? { records: posts.filter(p => p.action === 'submit').map(p => p.record), roster } : { error: 'AUTH' }));
+        if (msg.action === 'speech') { if (!speech.some(x => x.id === msg.speech.id)) speech.push(Object.assign({ teacherNote: '', gradedAt: '' }, msg.speech)); return res.end(JSON.stringify({ ok: true })); }
+        if (msg.action === 'feedback') return res.end(JSON.stringify({ feedback: B.feedbackFor(speech, msg.student) }));
+        if (msg.action === 'speechList') return res.end(JSON.stringify(msg.token === 't1' ? { speech: B.filterSpeech(speech, msg.filter || {}).slice().reverse(), roster } : { error: 'AUTH' }));
+        if (msg.action === 'grade') {
+          if (msg.token !== 't1') return res.end(JSON.stringify({ error: 'AUTH' }));
+          const i = speech.findIndex(x => x.id === msg.id); const g = i >= 0 && B.applyGrade(speech[i], msg, new Date().toISOString());
+          if (!g) return res.end(JSON.stringify({ error: 'BAD_GRADE' }));
+          speech[i] = g; return res.end(JSON.stringify({ ok: true, speech: g }));
+        }
         res.end(JSON.stringify({ ok: true }));
       });
       return;
@@ -29,7 +39,7 @@ function start(port, opts = {}) {
     res.setHeader('Content-Type', TYPES[path.extname(full)] || 'application/octet-stream');
     fs.createReadStream(full).pipe(res);
   });
-  return new Promise(r => server.listen(port, () => r({ server, posts, close: () => new Promise(c => server.close(c)) })));
+  return new Promise(r => server.listen(port, () => r({ server, posts, speech, close: () => new Promise(c => server.close(c)) })));
 }
 module.exports = { start };
 if (require.main === module) start(Number(process.argv[2] || 8080)).then(() => console.log('serving'));

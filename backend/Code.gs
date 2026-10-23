@@ -8,6 +8,7 @@
  */
 
 var COLUMNS = ['id', 'ts', 'student', 'place', 'lesson', 'activity', 'firstTryRate', 'score', 'stars', 'durationSec', 'items'];
+var SPEECH_COLUMNS = ['id', 'ts', 'student', 'place', 'lesson', 'activity', 'qid', 'prompt', 'said', 'status', 'teacherNote', 'gradedAt'];
 var MAX_FAILS = 5;
 var LOCK_MS = 15 * 60 * 1000;
 var TOKEN_SECONDS = 2 * 60 * 60;
@@ -83,6 +84,59 @@ function validateRoster(list) {
 
 /* ---------- Apps Script 端 ---------- */
 
+/* ---------- 說說看（學生說的句子、老師批改） ---------- */
+
+function validateSpeech(r) {
+  if (!r || typeof r !== 'object') return 'record missing';
+  if (typeof r.id !== 'string' || !r.id || r.id.length > 64) return 'bad id';
+  if (typeof r.student !== 'string' || !r.student || r.student.length > 20) return 'bad student';
+  if (typeof r.activity !== 'string' || !/^[a-z]{2,12}$/.test(r.activity)) return 'bad activity';
+  if (typeof r.lesson !== 'string' || !/^L\d{2}$/.test(r.lesson)) return 'bad lesson';
+  if (r.place !== 'home' && r.place !== 'school') return 'bad place';
+  if (typeof r.qid !== 'string' || !r.qid || r.qid.length > 20) return 'bad qid';
+  if (typeof r.prompt !== 'string' || r.prompt.length > 200) return 'bad prompt';
+  if (typeof r.said !== 'string' || !r.said || r.said.length > 200) return 'bad said';
+  if (r.status !== 'auto' && r.status !== 'pending') return 'bad status';
+  return null;
+}
+
+function speechToRow(r) {
+  return SPEECH_COLUMNS.map(function (c) { return r[c] === null || r[c] === undefined ? '' : r[c]; });
+}
+
+function speechFromRow(row) {
+  var r = {};
+  SPEECH_COLUMNS.forEach(function (c, i) {
+    var v = row[i];
+    r[c] = v instanceof Date ? v.toISOString() : (v === null || v === undefined ? '' : String(v));
+  });
+  return r;
+}
+
+function filterSpeech(rows, f) {
+  return rows.filter(function (r) {
+    if (f.student && r.student !== f.student) return false;
+    if (f.status && r.status !== f.status) return false;
+    return true;
+  });
+}
+
+function applyGrade(r, g, nowIso) {
+  if (!g || (g.grade !== 'ok' && g.grade !== 'redo')) return null;
+  var note = typeof g.note === 'string' ? g.note : '';
+  if (note.length > 100) return null;
+  var out = {}; for (var k in r) out[k] = r[k];
+  out.status = g.grade; out.teacherNote = note; out.gradedAt = nowIso;
+  return out;
+}
+
+/* 學生查自己的批改：只回傳這位學生、老師已批改的，不含學生代號和名字 */
+function feedbackFor(rows, student) {
+  return rows.filter(function (r) { return r.student === student && (r.status === 'ok' || r.status === 'redo'); })
+    .map(function (r) { return { id: r.id, qid: r.qid, lesson: r.lesson, activity: r.activity, prompt: r.prompt, said: r.said,
+      status: r.status, teacherNote: r.teacherNote, gradedAt: r.gradedAt }; });
+}
+
 function json(o) {
   return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON);
 }
@@ -95,6 +149,8 @@ function sheetNamed(name, header) {
 }
 
 function recordsSheet() { return sheetNamed('records', COLUMNS); }
+function speechSheet() { return sheetNamed('speech', SPEECH_COLUMNS); }
+function readSpeech() { return speechSheet().getDataRange().getValues().slice(1).filter(function (r) { return r[0]; }).map(speechFromRow); }
 function rosterSheet() { return sheetNamed('roster', ['id', 'emoji', 'name']); }
 
 function readRoster() {
@@ -133,6 +189,54 @@ function doPost(e) {
       };
       return json(submitRecord(adapter, body.record));
     } finally { lock.releaseLock(); }
+  }
+
+  if (action === 'speech') {
+    var badS = validateSpeech(body.speech);
+    if (badS) return json({ error: 'BAD_RECORD', detail: badS });
+    var lockS = LockService.getScriptLock();
+    lockS.waitLock(10000);
+    try {
+      var ss = speechSheet();
+      var sAdapter = {
+        ids: function () {
+          var n = ss.getLastRow() - 1;
+          return n > 0 ? ss.getRange(2, 1, n, 1).getValues().map(function (r) { return String(r[0]); }) : [];
+        },
+        append: function (row) { ss.appendRow(row); }
+      };
+      if (sAdapter.ids().indexOf(body.speech.id) >= 0) return json({ ok: true, dup: true });
+      sAdapter.append(speechToRow(body.speech));
+      return json({ ok: true });
+    } finally { lockS.releaseLock(); }
+  }
+
+  if (action === 'feedback') {
+    if (typeof body.student !== 'string' || !body.student) return json({ error: 'BAD_STUDENT' });
+    return json({ feedback: feedbackFor(readSpeech(), body.student) });
+  }
+
+  if (action === 'speechList' || action === 'grade') {
+    if (!checkToken(body.token)) return json({ error: 'AUTH' });
+    if (action === 'speechList') {
+      var sl = filterSpeech(readSpeech(), body.filter || {});
+      sl.sort(function (a, b) { return String(b.ts).localeCompare(String(a.ts)); });
+      return json({ speech: sl.slice(0, 500), roster: readRoster() });
+    }
+    var gl = LockService.getScriptLock();
+    gl.waitLock(10000);
+    try {
+      var gs = speechSheet();
+      var vals = gs.getDataRange().getValues();
+      for (var i = 1; i < vals.length; i++) {
+        if (String(vals[i][0]) !== body.id) continue;
+        var graded = applyGrade(speechFromRow(vals[i]), body, new Date().toISOString());
+        if (!graded) return json({ error: 'BAD_GRADE' });
+        gs.getRange(i + 1, 1, 1, SPEECH_COLUMNS.length).setValues([speechToRow(graded)]);
+        return json({ ok: true, speech: graded });
+      }
+      return json({ error: 'NOT_FOUND' });
+    } finally { gl.releaseLock(); }
   }
 
   if (action === 'roster') return json({ roster: readRoster() });
@@ -176,5 +280,7 @@ function doPost(e) {
 
 if (typeof module !== 'undefined') {
   module.exports = { validateRecord: validateRecord, lockState: lockState, registerFail: registerFail, toRow: toRow,
-    fromRow: fromRow, submitRecord: submitRecord, filterRecords: filterRecords, validateRoster: validateRoster };
+    fromRow: fromRow, submitRecord: submitRecord, filterRecords: filterRecords, validateRoster: validateRoster,
+    validateSpeech: validateSpeech, speechToRow: speechToRow, speechFromRow: speechFromRow, filterSpeech: filterSpeech,
+    applyGrade: applyGrade, feedbackFor: feedbackFor };
 }
