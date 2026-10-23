@@ -54,6 +54,12 @@
       else q.options.forEach(function (o, j) { if (!nonEmpty(o.text)) errs.push(q.id + ' 選項 ' + (j + 1) + ' 沒有文字'); });
       if (!(q.answer >= 0 && q.answer <= 3 && q.answer === Math.floor(q.answer))) errs.push(q.id + ' 的答案編號不對');
     });
+    /* 說說你的想法（🎤 自由回答，老師批改）：可以沒有 */
+    if (l.talk !== undefined && !Array.isArray(l.talk)) errs.push('talk 要是清單');
+    else (l.talk || []).forEach(function (t, i) {
+      useId(t.id, '說說看 ' + (i + 1));
+      if (!nonEmpty(t.prompt) || !nonEmpty(t.model) || !nonEmpty(t.clue)) errs.push((t.id || '說說看 ' + (i + 1)) + ' 要有 prompt、model、clue');
+    });
     return errs;
   }
   return { validateLesson: validateLesson };

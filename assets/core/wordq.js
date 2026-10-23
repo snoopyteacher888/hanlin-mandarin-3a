@@ -36,6 +36,19 @@
     }
     return q;
   }
+  /* 生字語詞：看句子選語詞，選項裡的生字標顏色 */
+  function charWordQuestion(c, r, chars) {
+    var order = quizgen.shuffle(c.options, r);
+    var options = order.map(function (t) {
+      var ch = (chars || [c.char]).filter(function (x) { return t.indexOf(x) >= 0; })[0];
+      return { text: t, mark: ch, markClass: 'char-mark' };
+    });
+    var say = c.example.replace(/＿+/, '什麼');
+    return { id: c.id, prompt: c.example, say: say, autoSay: say, options: options, answer: order.indexOf(c.word),
+      hints: { h1: { text: '再讀一次句子，想一想哪一個語詞放進去最通順。', say: say },
+        h2: { text: '提示：要找的語詞，意思是「' + c.meaning + '」' },
+        teach: { text: '答案是「' + c.word + '」。「' + c.word + '」的意思是：' + c.meaning } } };
+  }
   /* 有 frame（例如「真＿糕」）時，選項是整個詞（真糟糕／真槽糕／真遭糕），不一樣的那個字標顏色 */
   function similarQuestion(s, r) {
     var x = s.frame ? framed(s, r) : shuffled(s.options, s.answer, r, { big: true });
@@ -169,6 +182,7 @@
   function speakMethod(rule) {
     if (rule.kind === 'phrase') return '先說它是什麼樣子，再說「的」，最後說它是什麼。';
     if (rule.kind === 'word') return '記得句子裡要說到「' + rule.word + '」，而且要說完整的一句話喔。';
+    if (rule.kind === 'free') return '想一想課文說了什麼，再用一句完整的話說出你自己的想法。';
     return '記得要用' + PATTERN_WORDS[rule.key] + '喔。';
   }
   /* 說說看：h1 給方法、h2 給線索、teach 示範一句後讓學生自己再說一次 */
@@ -184,6 +198,7 @@
     if ((x = pick(w.hanzi))) return hanziQuestion(x, r);
     if ((x = pick(w.vocab))) return vocabQuestion(x, x.noPic || r() < 0.5 ? 'meaning' : 'pic', r);
     if ((x = pick(w.similar))) return similarQuestion(x, r);
+    if ((x = pick(w.charwords))) return charWordQuestion(x, r, (w.hanzi || []).map(function (y) { return y.char; }));
     if ((x = pick(w.listen))) return listenQuestion(x, r);
     if (w.phrase && (x = pick(w.phrase.pick))) return phrasePickQuestion(x, r);
     if (w.phrase && (x = pick(w.phrase.choose))) {
@@ -202,7 +217,7 @@
     }
     return null;
   }
-  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, similarQuestion: similarQuestion,
+  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, charWordQuestion: charWordQuestion, similarQuestion: similarQuestion,
     listenQuestion: listenQuestion,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
     rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };

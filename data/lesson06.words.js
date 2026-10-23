@@ -32,6 +32,23 @@
       { id: 'v-筆桿', word: '筆桿', meaning: '筆拿在手上的那一段。', example: '寫字的時候，手要握住鉛筆的＿＿。', img: 'barrel.png', options: ['筆桿', '筆芯', '削鉛筆機', '三明治'] },
       { id: 'v-削鉛筆機', word: '削鉛筆機', meaning: '把鉛筆削尖的機器。', example: '鉛筆鈍了，用＿＿＿＿把它削尖。', img: 'sharpener.png', options: ['削鉛筆機', '凹槽', '筆桿', '石墨'] }
     ],
+    /* 生字語詞：每個生字再學一個課本以外的語詞（options 第一個是正確答案，其他也都是本課生字組成的語詞） */
+    charwords: [
+      { id: 'cw-墨', char: '墨', word: '墨汁', meaning: '寫毛筆字用的黑色汁液。', example: '寫書法的時候，要用毛筆沾＿＿。', options: ['墨汁', '水槽', '樂器', '入口'] },
+      { id: 'cw-製', char: '製', word: '製造', meaning: '用材料把東西做出來。', example: '這家工廠專門＿＿玩具。', options: ['製造', '打斷', '削皮', '治病'] },
+      { id: 'cw-部', char: '部', word: '全部', meaning: '所有的，一個都不少。', example: '我把碗裡的飯＿＿吃光了。', options: ['全部', '另外', '凹凸', '燈芯'] },
+      { id: 'cw-芯', char: '芯', word: '燈芯', meaning: '油燈中間可以點火的那一條線。', example: '油燈裡的＿＿點著了，屋子就亮起來。', options: ['燈芯', '墨汁', '飛機', '電線桿'] },
+      { id: 'cw-斷', char: '斷', word: '打斷', meaning: '讓別人的話說不下去。', example: '別人說話的時候，不要隨便＿＿。', options: ['打斷', '製造', '削皮', '入口'] },
+      { id: 'cw-機', char: '機', word: '飛機', meaning: '在天上飛的交通工具。', example: '暑假我們坐＿＿去澎湖玩。', options: ['飛機', '水槽', '燈芯', '樂器'] },
+      { id: 'cw-器', char: '器', word: '樂器', meaning: '可以演奏出音樂的東西。', example: '小提琴是我最喜歡的＿＿。', options: ['樂器', '墨汁', '全部', '電線桿'] },
+      { id: 'cw-凹', char: '凹', word: '凹凸', meaning: '有的地方低下去，有的地方高起來。', example: '這條路＿＿不平，騎車要小心。', options: ['凹凸', '另外', '治病', '打斷'] },
+      { id: 'cw-槽', char: '槽', word: '水槽', meaning: '廚房裡洗碗、洗菜的地方。', example: '吃完飯，把碗放進＿＿裡洗乾淨。', options: ['水槽', '飛機', '全部', '製造'] },
+      { id: 'cw-入', char: '入', word: '入口', meaning: '走進去的地方。', example: '請從公園的＿＿走進去。', options: ['入口', '樂器', '削皮', '凹凸'] },
+      { id: 'cw-另', char: '另', word: '另外', meaning: '除了前面說的，還有別的。', example: '我有一枝紅筆，＿＿還有一枝藍筆。', options: ['另外', '全部', '打斷', '燈芯'] },
+      { id: 'cw-治', char: '治', word: '治病', meaning: '把病醫好。', example: '醫生的工作是幫人＿＿。', options: ['治病', '製造', '水槽', '墨汁'] },
+      { id: 'cw-桿', char: '桿', word: '電線桿', meaning: '路邊撐著電線的長柱子。', example: '路邊有一根高高的＿＿＿。', options: ['電線桿', '飛機', '入口', '樂器'] },
+      { id: 'cw-削', char: '削', word: '削皮', meaning: '用刀子把外面的皮刮掉。', example: '媽媽用刀子幫我把蘋果＿＿。', options: ['削皮', '治病', '另外', '凹凸'] }
+    ],
     similar: [
       { id: 's1', sentence: '爸爸寫毛筆字要用＿汁。', frame: '＿汁', options: ['墨', '黑'], answer: '墨', clue: '提示：這是寫毛筆字用的黑色汁液，這裡不是在說顏色。', explain: '答案是「墨」。「墨汁」是寫毛筆字用的汁；「黑」是在說顏色。' },
       { id: 's2', sentence: '這件衣服是用棉花＿成的。', frame: '＿成', options: ['製', '制'], answer: '製', clue: '提示：這句話在說「做出來」，而且跟衣服有關。', explain: '答案是「製」。「製成」是做成的意思，下面有「衣」；「制」是規定、限制的意思。' },

@@ -42,7 +42,7 @@
     H3A.session.getLesson('L06').then(function (l) { lesson = l; }, function () {});
     var fStu = h('select', { class: 'big-select', 'aria-label': '學生' }, h('option', { value: '' }, '全部學生'));
     var fAct = h('select', { class: 'big-select', 'aria-label': '活動' }, h('option', { value: '' }, '全部活動'),
-      ['read', 'map', 'quiz', 'review', 'test', 'hanzi', 'vocab', 'similar', 'listen', 'phrase', 'pattern', 'rhetoric'].map(function (a) { return h('option', { value: a }, H3A.pages.activityTitle(a)); }));
+      ['read', 'map', 'quiz', 'review', 'test', 'hanzi', 'vocab', 'charword', 'similar', 'listen', 'phrase', 'pattern', 'rhetoric'].map(function (a) { return h('option', { value: a }, H3A.pages.activityTitle(a)); }));
     var fRange = h('select', { class: 'big-select', 'aria-label': '日期' },
       h('option', { value: 'week' }, '最近 7 天'), h('option', { value: 'today' }, '今天'), h('option', { value: 'all' }, '全部'));
     var gradeBox = h('div', { class: 'panel grade-panel' });
@@ -104,7 +104,7 @@
     }
     function qText(id) {
       if (lesson) {
-        var q = lesson.quiz.concat(lesson.testExtra).filter(function (x) { return x.id === id; })[0];
+        var q = lesson.quiz.concat(lesson.testExtra, lesson.talk || []).filter(function (x) { return x.id === id; })[0];
         if (q) return q.prompt;
         var map = lesson.storyMap;
         if (map && id === 'tail') return '課文地圖：結論';

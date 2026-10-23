@@ -57,3 +57,8 @@ test('ruguo order', () => {
 test('two-character description before 的 is pending', () => {
   ['紅紅的蘋果', '可愛的小狗', '白色的小狗'].forEach(s => assert.equal(check({ kind: 'phrase', accept: ['毛茸茸的小狗'] }, s).status, 'pending', s));
 });
+
+test('free：夠長就等老師批改，太短要再說', () => {
+  assert.equal(check({ kind: 'free', min: 6 }, '我會好好愛惜鉛筆').status, 'pending');
+  assert.deepEqual(check({ kind: 'free', min: 6 }, '鉛筆'), { status: 'bad', reason: 'short' });
+});

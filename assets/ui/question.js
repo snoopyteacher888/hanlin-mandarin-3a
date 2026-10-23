@@ -12,7 +12,7 @@
   function marked(o) {
     if (!o.mark || o.text.indexOf(o.mark) < 0) return o.text;
     return o.text.split(o.mark).reduce(function (acc, part, i) {
-      if (i) acc.push(h('span', { class: 'mark-word' }, o.mark));
+      if (i) acc.push(h('span', { class: o.markClass || 'mark-word' }, o.mark));
       if (part) acc.push(part);
       return acc;
     }, []);

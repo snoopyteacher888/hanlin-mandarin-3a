@@ -155,3 +155,16 @@ test('similar with frame: options are whole words, the changing character marked
   assert.equal(q.options[q.answer].text, '真糟糕');
   assert.ok(q.options.every(o => !o.big && o.mark && o.text.includes(o.mark)));
 });
+
+test('charWordQuestion：句子選語詞，生字標顏色，提示不說答案', () => {
+  const W3 = require('../../data/lesson06.words.js');
+  const chars = W3.hanzi.map(h => h.char);
+  const c = W3.charwords[0];
+  const q = Q.charWordQuestion(c, rng(3), chars);
+  assert.equal(q.options[q.answer].text, c.word);
+  assert.equal(q.say, c.example.replace(/＿+/, '什麼'));
+  q.options.forEach(o => { assert.ok(o.text.includes(o.mark)); assert.equal(o.markClass, 'char-mark'); });
+  assert.ok(!q.hints.h1.text.includes(c.word) && !q.hints.h2.text.includes(c.word));
+  assert.ok(q.hints.teach.text.includes(c.word));
+  assert.equal(Q.findWordQuestion(W3, c.id, rng(1)).id, c.id);
+});

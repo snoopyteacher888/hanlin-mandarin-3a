@@ -49,10 +49,28 @@
       opts(l.id, (l.options || []).map(function (o) { return o.text; }), 4);
       if (!(l.answer >= 0 && l.answer < (l.options || []).length)) errs.push(l.id + ' 的答案編號不對');
     });
+    if (w.charwords) charwords(w.charwords);
     if (w.phrase) phrase(w.phrase);
     if (w.pattern) pattern(w.pattern);
     if (w.rhetoric) rhetoric(w.rhetoric);
     return errs;
+
+    /* 生字語詞：每個生字都要有，解釋不能說出答案 */
+    function charwords(list) {
+      list.forEach(function (c) {
+        useId(c.id);
+        ['char', 'word', 'meaning', 'example'].forEach(function (k) { if (!nonEmpty(c[k])) errs.push(c.id + ' 缺少 ' + k); });
+        if (!nonEmpty(c.word)) return;
+        if (c.word.indexOf(c.char) < 0) errs.push(c.id + ' 的語詞裡沒有生字「' + c.char + '」');
+        if ((c.example || '').indexOf(new Array(c.word.length + 1).join('＿')) < 0) errs.push(c.id + ' 的例句要有和語詞一樣長的＿');
+        if ((c.meaning || '').indexOf(c.word) >= 0) errs.push(c.id + ' 的解釋說出了答案');
+        opts(c.id, c.options, 4);
+        if (Array.isArray(c.options) && c.options[0] !== c.word) errs.push(c.id + ' 的第一個選項要是正確的語詞');
+      });
+      w.hanzi.forEach(function (h) {
+        if (!list.some(function (c) { return c.char === h.char; })) errs.push('生字語詞少了「' + h.char + '」');
+      });
+    }
 
     /* ---------- B 批 ---------- */
     function choice(x, min, answer) {

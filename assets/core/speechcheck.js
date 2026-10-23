@@ -37,6 +37,8 @@
       return t.length >= (rule.min || 6) ? { status: 'pending', reason: null } : bad('short');
     }
     if (rule.kind === 'pattern') return pattern(PATTERNS[rule.key], normalize(rule.front) + t);
+    /* 自由回答（說說你的想法）：電腦判斷不了對錯，夠長就交給老師批改 */
+    if (rule.kind === 'free') return t.length >= (rule.min || 6) ? { status: 'pending', reason: null } : bad('short');
     return bad('rule');
   }
 

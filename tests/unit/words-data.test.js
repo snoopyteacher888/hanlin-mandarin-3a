@@ -95,3 +95,11 @@ test('every 形近字 item has a word frame that fits its sentence', () => {
     assert.ok(s.sentence.replace('＿', s.answer).includes(s.frame.replace('＿', s.answer)), s.id);
   }
 });
+
+test('每個生字都出現在課本語詞裡，也各有一個生字語詞', () => {
+  const words = W.vocab.map(v => v.word).join('');
+  W.hanzi.forEach(h => assert.ok(words.includes(h.char), '課本語詞少了「' + h.char + '」'));
+  assert.deepEqual(W.charwords.map(c => c.char).join(''), W.hanzi.map(h => h.char).join(''));
+  const chars = W.hanzi.map(h => h.char);
+  W.charwords.forEach(c => c.options.forEach(o => assert.ok(chars.some(ch => o.includes(ch)), c.id + ' 的選項「' + o + '」沒有本課生字')));
+});
