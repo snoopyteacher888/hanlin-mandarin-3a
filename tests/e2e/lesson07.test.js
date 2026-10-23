@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
-const { start } = require('./server.js');
+const { start, dragTo } = require('./server.js');
 const W = require('../../data/lesson07.words.js');
 const Q = require('../../assets/core/wordq.js');
 
@@ -97,7 +97,7 @@ test('第 7 課生字：認識生字卡片，再拖字填空', async () => {
     const hz = W.hanzi.find(x => x.cloze === t);
     assert.ok(hz, t);
     const idx = await p.$$eval('.option', (os, c) => os.findIndex(o => o.querySelector('.option-text').textContent === c), hz.char);
-    await p.click(`.option[data-index="${idx}"]`);
+    await dragTo(p, `.option[data-index="${idx}"]`, '.drop-slot');
     await p.click('.btn-next:not([hidden])');
   }
   await p.waitForSelector('.step-done');

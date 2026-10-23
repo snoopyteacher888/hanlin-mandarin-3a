@@ -1,4 +1,4 @@
-/* 配對遊戲：左邊（圖或語詞）配右邊（語詞或意思）。把左邊的卡拖到右邊，或先點左邊再點右邊。
+/* 配對遊戲：左邊（圖或語詞）配右邊（語詞或意思）。一定要把左邊的卡拖到右邊才算；點卡片只會念。
    q = { type:'match', id, prompt, pairs:[{ id, left:{ text, img }, right:{ text }, say }] }
    每一對各自記結果（id 是原本的題目 id，錯題複習時出原本那一題）。同一對錯 3 次，老師幫忙配好。 */
 (function (root) {
@@ -6,7 +6,7 @@
   var COLORS = ['#E07A2E', '#2E86C1', '#2E9E5B', '#8E44AD', '#C0392B', '#B7950B'];
 
   function matchQuestion(box, ctx, q, done, feedback, r) {
-    var misses = {}, taught = {}, left = q.pairs.length, picked = null, finished = false, color = 0;
+    var misses = {}, taught = {}, left = q.pairs.length, picked = null, finished = false, color = {};
     var rights = H3A.quizgen.shuffle(q.pairs.slice(), r || Math.random);
     var L = {}, R = {};
     var lcol = h('div', { class: 'match-col left' }), rcol = h('div', { class: 'match-col right' });
@@ -14,18 +14,22 @@
       var el = h('button', { type: 'button', class: 'match-card' + (p.left.img ? ' has-pic' : ''), 'data-id': p.id },
         p.left.img ? H3A.ui.picture(ctx.lessonId, p.left.img, p.left.text) : null,
         p.left.img ? null : h('span', { class: 'match-text' }, p.left.text));
+      /* 左邊每一張一開始就有自己的顏色；配對成功，右邊的意思也亮起一樣的顏色 */
+      color[p.id] = COLORS[Object.keys(color).length % COLORS.length];
+      el.style.setProperty('--pair', color[p.id]);
       L[p.id] = el;
-      H3A.ui.dragTo(el, openRights, function (t) { pick(p.id); drop(t.getAttribute('data-id')); }, function () { pick(p.id); });
+      /* 一定要拖過去才算；點一下只會念 */
+      H3A.ui.dragTo(el, openRights, function (t) { pick(p.id); drop(t.getAttribute('data-id')); }, function () { H3A.tts.speak(p.say || p.left.text); });
       lcol.appendChild(el);
     });
     rights.forEach(function (p) {
-      var el = h('button', { type: 'button', class: 'match-card right', 'data-id': p.id, onclick: function () { if (picked) drop(p.id); else H3A.tts.speak(p.right.text); } },
+      var el = h('button', { type: 'button', class: 'match-card right', 'data-id': p.id, onclick: function () { H3A.tts.speak(p.right.text); } },
         h('span', { class: 'match-text' }, p.right.text));
       R[p.id] = el; rcol.appendChild(el);
     });
     var bulb = h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: hint }, '💡');
-    box.appendChild(h('div', { class: 'match-board' }, lcol, h('div', { class: 'match-mid', 'aria-hidden': 'true' }, '🔗'), rcol));
-    box.appendChild(h('div', { class: 'match-tools' }, bulb));
+    box.appendChild(h('div', { class: 'match-board' }, lcol, rcol));
+    box.appendChild(bulb);
 
     function openRights() { return Object.keys(R).filter(function (k) { return !R[k].disabled; }).map(function (k) { return R[k]; }); }
     function pick(id) {
@@ -40,12 +44,13 @@
       var id = picked;
       if (rid === id) return pair(id);
       misses[id] = (misses[id] || 0) + 1;
+      L[id].classList.remove('picked'); picked = null;
       [L[id], R[rid]].forEach(function (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); });
-      if (misses[id] >= 3) { taught[id] = true; pair(id, true); return; }
+      if (misses[id] >= 3) { taught[id] = true; picked = id; pair(id, true); return; }
       H3A.ui.showHint(feedback, { text: misses[id] === 1 ? '不是這一個，再想一想。' : '再看一次左邊這一個，聽聽看它是什麼。' }, ctx, false);
     }
     function pair(id, byTeacher) {
-      var c = COLORS[color++ % COLORS.length];
+      var c = color[id];
       [L[id], R[id]].forEach(function (el) { el.disabled = true; el.classList.remove('picked'); el.classList.add('matched'); el.style.setProperty('--pair', c); });
       picked = null;
       var p = q.pairs.filter(function (x) { return x.id === id; })[0];

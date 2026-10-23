@@ -91,12 +91,14 @@
         }
         return;
       }
-      if (n === 2 && step === 'find') chars.forEach(function (c, k) { if (k >= q.zone[0] && k <= q.zone[1]) c.classList.add('zone'); });
-      if (n === 2 && step === 'pick') {
+      /* 答錯一次就直接給第二層（框出範圍／拿掉一個選項）；自己按 💡 才從第一層開始 */
+      var lv = n === 1 && !asked ? 2 : n;
+      if (lv === 2 && step === 'find') chars.forEach(function (c, k) { if (k >= q.zone[0] && k <= q.zone[1]) c.classList.add('zone'); });
+      if (lv === 2 && step === 'pick') {
         /* 拿掉一個不是錯字、也不是答案的選項 */
         buttons.forEach(function (b, k) { if (k !== q.answer && q.options[k].text !== q.wrong) { b.disabled = true; b.classList.add('is-off'); } });
       }
-      H3A.ui.showHint(feedback, n === 1 ? hs.h1 : hs.h2, ctx, asked);
+      H3A.ui.showHint(feedback, lv === 1 ? hs.h1 : hs.h2, ctx, asked);
     }
   }
   H3A.ui.fixQuestion = fixQuestion;

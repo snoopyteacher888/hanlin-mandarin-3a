@@ -88,7 +88,9 @@
         });
         return;
       }
-      var hint = bad === 1 ? q.hints.h1 : q.hints.h2, n = bad === 1 ? q.hints.h1Give : q.hints.h2Give;
+      /* 排錯一次就直接給第二層（放好前兩個字）；自己按 💡 才從第一層開始 */
+      var lv1 = bad === 1 && asked;
+      var hint = lv1 ? q.hints.h1 : q.hints.h2, n = lv1 ? q.hints.h1Give : q.hints.h2Give;
       if (n) { if (busy) setTimeout(function () { give(n); }, 950); else give(n); }
       H3A.ui.showHint(feedback, hint, ctx, asked);
     }

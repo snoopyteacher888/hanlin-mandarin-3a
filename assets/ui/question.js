@@ -24,9 +24,19 @@
   }
   H3A.ui.hlWords = hlWords;
 
+  /* 句子裡的空格（＿＿）畫成一個方框 */
+  function blanks(text) {
+    if (typeof text !== 'string' || text.indexOf('＿') < 0) return text;
+    return text.split(/＿+/).reduce(function (acc, part, i) {
+      if (i) acc.push(h('span', { class: 'blank-box', 'aria-label': '空格' }));
+      if (part) acc.push(part);
+      return acc;
+    }, []);
+  }
+  H3A.ui.blanks = blanks;
   /* 選項裡要標顏色的語詞（例如「混合」） */
   function marked(o) {
-    if (!o.mark || o.text.indexOf(o.mark) < 0) return o.text;
+    if (!o.mark || o.text.indexOf(o.mark) < 0) return blanks(o.text);
     return o.text.split(o.mark).reduce(function (acc, part, i) {
       if (i) acc.push(h('span', { class: o.markClass || 'mark-word' }, o.mark));
       if (part) acc.push(part);
@@ -158,9 +168,8 @@
           H3A.ui.showTeach(feedback, hints.teach, function () { done('taught', wrongTexts()); nextBtn.click(); });
           return;
         }
-        /* 二選一答錯一次就只剩答案，方法提示沒有意義，直接給線索（老師要求） */
-        var twoWrong = !asked && q.options.length === 2;
-        var hint = hs.level === 1 && !twoWrong ? hints.h1 : hints.h2;
+        /* 答錯一次就直接給第二層的線索（資源班的孩子，方法提示幫助不大；老師要求）；自己按 💡 才從第一層開始 */
+        var hint = hs.level === 1 && asked ? hints.h1 : hints.h2;
         if (hint.showText) { promptText.hidden = false; if (showBtn) showBtn.remove(); }
         H3A.ui.showHint(feedback, hint, ctx, asked);
       }
@@ -178,16 +187,18 @@
       else if (speak) H3A.ui.speakQuestion(grid, ctx, q, function (result, extra) { done(result, [], extra); }, feedback);
       else q.options.forEach(function (o, i) {
         if (q.drag) {
-          /* 拖拉填空：把字（語詞）拖到題目的空格裡；點一下也可以 */
+          /* 拖拉填空：一定要把字（語詞）拖到題目的空格裡才算作答；點一下只會念（老師要求） */
           var t = h('button', { type: 'button', class: 'option drag-tile' + (o.big ? ' big' : ''), 'data-index': i }, h('span', { class: 'option-text' }, o.text));
-          H3A.ui.dragTo(t, function () { return slot ? [slot] : []; }, function () { pick(i); }, function () { pick(i); });
+          H3A.ui.dragTo(t, function () { return slot ? [slot] : []; }, function () { pick(i); }, function () { H3A.tts.speak(o.text, o.say); });
           buttons.push(t);
           grid.appendChild(h('div', { class: 'option-wrap' }, t));
           return;
         }
+        /* 拖進句子的題目：句子只能拿來放成語，點一下只會念 */
+        var onPick = q.dragChip ? function () { H3A.tts.speak(o.say || o.text); } : function () { pick(i); };
         var b = o.big
-          ? h('button', { type: 'button', class: 'option big', 'data-index': i, onclick: function () { pick(i); } }, h('span', { class: 'option-text' }, o.text))
-          : h('button', { type: 'button', class: 'option' + (o.img ? '' : ' text-only'), 'data-index': i, onclick: function () { pick(i); } },
+          ? h('button', { type: 'button', class: 'option big', 'data-index': i, onclick: onPick }, h('span', { class: 'option-text' }, o.text))
+          : h('button', { type: 'button', class: 'option' + (o.img ? '' : ' text-only'), 'data-index': i, onclick: onPick },
             o.img ? H3A.ui.picture(ctx.lessonId, o.img, o.text) : null,
             o.icon ? h('span', { class: 'option-icon', 'aria-hidden': 'true' }, o.icon) : null, h('span', { class: 'option-text' }, q.hl && !o.mark ? hlWords(o.text, q.hl) : marked(o)));
         buttons.push(b);
@@ -196,7 +207,7 @@
 
       main.appendChild(dots(questions.length, idx));
       var slot = null;
-      var promptText = h('h2', { hidden: !!q.hideText }, q.headChar ? headLine() : q.drag ? withSlot(q.prompt) : q.hl ? hlWords(q.prompt, q.hl) : q.prompt);
+      var promptText = h('h2', { hidden: !!q.hideText }, q.headChar ? headLine() : q.drag ? withSlot(q.prompt) : q.hl ? hlWords(q.prompt, q.hl) : blanks(q.prompt));
       if (!q.hideText) H3A.ui.sayable(promptText, q.prompt, q.say);
       function withSlot(text) {
         var m = /＿+/.exec(text);
@@ -222,6 +233,9 @@
         q.img ? h('div', { class: 'prompt-img' }, H3A.ui.picture(ctx.lessonId, q.img, '')) : null,
         q.hideText ? h('span', { class: 'listen-icon', 'aria-hidden': 'true' }, '👂') : null,
         promptText, showBtn, q.hideText ? H3A.ui.speaker(q.prompt, q.say) : null, bulb));
+      /* 排字、改錯字、配對自己做的 💡 也搬到題目右邊（老師要求：提示燈泡都放在題目旁邊） */
+      var ownBulb = grid.querySelector('.hint-btn');
+      if (ownBulb) main.lastChild.appendChild(ownBulb);
       if (chip) main.appendChild(h('div', { class: 'drag-chip-row' }, chip, h('span', { class: 'drag-chip-tip' }, '👉 拖到適合的句子上')));
       main.appendChild(feedback);
       if (q.drag) grid.classList.add('drag-opts');

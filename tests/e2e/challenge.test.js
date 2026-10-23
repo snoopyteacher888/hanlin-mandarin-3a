@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
-const { start } = require('./server.js');
+const { start, dragTo } = require('./server.js');
 const W = require('../../data/lesson06.words.js');
 const Q = require('../../assets/core/wordq.js');
 
@@ -113,6 +113,7 @@ test('圖片配對：拖圖到語詞上，拖錯會提示', async () => {
       /* 用滑鼠真的拖：先拖錯一次 */
       const drag = async (from, to) => {
         const a = await p.$(from), b = await p.$(to);
+        await b.scrollIntoViewIfNeeded(); await a.scrollIntoViewIfNeeded();
         const ra = await a.boundingBox(), rb = await b.boundingBox();
         await p.mouse.move(ra.x + ra.width / 2, ra.y + ra.height / 2); await p.mouse.down();
         await p.mouse.move(ra.x + 30, ra.y + 30, { steps: 4 });
@@ -125,7 +126,7 @@ test('圖片配對：拖圖到語詞上，拖錯會提示', async () => {
     }
     for (const id of ids) {
       if (await p.$eval(`.match-col.left [data-id="${id}"]`, e => e.disabled)) continue;
-      await p.click(`.match-col.left [data-id="${id}"]`); await p.click(`.match-col.right [data-id="${id}"]`);
+      await dragTo(p, `.match-col.left [data-id="${id}"]`, `.match-col.right [data-id="${id}"]`);
     }
     await p.waitForSelector('.match-board .big-check');
     await p.click('.btn-next:not([hidden])');

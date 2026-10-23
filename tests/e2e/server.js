@@ -49,5 +49,13 @@ function start(port, opts = {}) {
   });
   return new Promise(r => server.listen(port, () => r({ server, posts, speech, close: () => new Promise(c => server.close(c)) })));
 }
-module.exports = { start };
+/* 拖拉作答（拖字填空、拖成語進句子、配對遊戲只能用拖的；點一下只會念） */
+async function dragTo(p, from, to) {
+  await (await p.$(to)).scrollIntoViewIfNeeded(); await (await p.$(from)).scrollIntoViewIfNeeded();
+  const a = await (await p.$(from)).boundingBox(), b = await (await p.$(to)).boundingBox();
+  await p.mouse.move(a.x + a.width / 2, a.y + a.height / 2); await p.mouse.down();
+  await p.mouse.move(a.x + a.width / 2 + 20, a.y + a.height / 2 + 20, { steps: 3 });
+  await p.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 8 }); await p.mouse.up();
+}
+module.exports = { start, dragTo };
 if (require.main === module) start(Number(process.argv[2] || 8080)).then(() => console.log('serving'));

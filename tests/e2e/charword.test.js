@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
-const { start } = require('./server.js');
+const { start, dragTo } = require('./server.js');
 const W = require('../../data/lesson06.words.js');
 const Q = require('../../assets/core/wordq.js');
 
@@ -92,7 +92,10 @@ test('生字語詞：翻翻卡、拖詞填空、意思配對，十四個生字�
     const c = W.charwords.find(x => x.example.replace(/＿+/, '＿') === t);
     assert.ok(c, '找不到題目 ' + t);
     const idx = await p.$$eval('.option', (os, w) => os.findIndex(o => o.querySelector('.option-text').textContent === w), c.word);
+    /* 點一下只會念，不算作答 */
     await p.click(`.option[data-index="${idx}"]`);
+    assert.equal(await p.$('.drop-slot.filled'), null);
+    await dragTo(p, `.option[data-index="${idx}"]`, '.drop-slot');
     assert.equal(await p.textContent('.drop-slot.filled'), c.word);
     await p.click('.btn-next:not([hidden])');
   }
@@ -100,7 +103,7 @@ test('生字語詞：翻翻卡、拖詞填空、意思配對，十四個生字�
   for (let round = 0; round < 6; round++) {
     await p.waitForSelector('.match-col.left .match-card:not(:disabled)');
     for (const id of await p.$$eval('.match-col.left .match-card', cs => cs.map(c => c.dataset.id))) {
-      await p.click(`.match-col.left [data-id="${id}"]`); await p.click(`.match-col.right [data-id="${id}"]`);
+      await dragTo(p, `.match-col.left [data-id="${id}"]`, `.match-col.right [data-id="${id}"]`);
     }
     await p.waitForSelector('.match-board .big-check');
     await p.click('.btn-next:not([hidden])');

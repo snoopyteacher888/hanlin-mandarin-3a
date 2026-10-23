@@ -56,8 +56,11 @@ W.rhetoric.cards.forEach(c => {
 async function answerChoice(p) {
   await p.waitForSelector('.option:not(:disabled)');
   const idx = await p.evaluate(c => {
-    const t = document.querySelector('.prompt h2').textContent;
-    return [...document.querySelectorAll('.option')].findIndex(o => (c[t] || []).includes(o.querySelector('.option-text').textContent));
+    /* 空格畫成方框，文字裡就沒有＿了 */
+    const n = s => s.replace(/＿+/g, '');
+    const t = n(document.querySelector('.prompt h2').textContent);
+    const key = Object.keys(c).find(k => n(k) === t);
+    return [...document.querySelectorAll('.option')].findIndex(o => (c[key] || []).map(n).includes(n(o.querySelector('.option-text').textContent)));
   }, CORRECT);
   assert.ok(idx >= 0, 'no answer for ' + await p.textContent('.prompt h2'));
   await p.click(`.option[data-index="${idx}"]`);

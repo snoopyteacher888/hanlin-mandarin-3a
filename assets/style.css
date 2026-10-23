@@ -774,3 +774,34 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
   .options:has(.option.big) .option-wrap > .speaker { width: 32px; height: 32px; min-width: 32px; min-height: 32px; top: -10px; right: -6px; }
 }
 .order-slot.given { border-color: #F2A900; background: #FFF4D6; color: #8A5A00; animation: pop .4s; }
+
+/* 句子裡的空格畫成方框 */
+.blank-box { display: inline-block; width: 4.2em; height: 1.5em; margin: 0 4px; border: 2.5px dashed #C9A97E; border-radius: 8px; background: #FFF9F1; vertical-align: middle; }
+
+/* 配對遊戲：拿掉中間的鎖鏈；左邊每張有自己的顏色，配對成功右邊亮同一個顏色 */
+.match-board { position: relative; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 14px 28px; }
+.match-col.left .match-card { border-color: var(--pair); background: color-mix(in srgb, var(--pair) 10%, #fff); box-shadow: 0 3px 0 color-mix(in srgb, var(--pair) 45%, #fff); }
+.match-col.left .match-card.picked { background: color-mix(in srgb, var(--pair) 24%, #fff); transform: translateY(-2px) scale(1.03); box-shadow: 0 6px 0 color-mix(in srgb, var(--pair) 55%, #fff); }
+.match-card.matched { border-width: 3px; }
+.match-col.left .match-card.matched { transform: none; }
+/* 打勾放在配對區正中間 */
+.match-board .check-wrap.at-option, .mem-grid .check-wrap.at-option { position: absolute; left: 50%; top: 50%; width: 96px; height: 96px; margin: -48px 0 0 -48px; z-index: 3; }
+.match-board .check-wrap.at-option .big-check, .mem-grid .check-wrap.at-option .big-check { width: 96px; height: 96px; font-size: 58px; line-height: 96px; }
+.match-board.has-check, .mem-grid.has-check { padding-left: 0 !important; }
+.mem-grid { position: relative; }
+@media (max-width: 600px) { .match-board { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 10px 12px; } }
+
+/* 拖詞填空（選項是語詞）：字放大、一個語詞排一行，不要斷成兩行 */
+.drag-opts .drag-tile .option-text { font-size: 1.9em; white-space: nowrap; letter-spacing: .04em; }
+.drag-opts .option-wrap { flex: 0 0 auto !important; min-width: 130px; }
+.drag-opts .drag-tile { padding: 10px 22px; }
+.drag-opts .drag-tile.has-check { padding-left: 84px !important; }
+.drop-slot { white-space: nowrap; }
+.drop-slot.filled { font-size: .95em; padding: 0 14px; width: auto !important; min-width: 2.4em; }
+@media (max-width: 600px) { .drag-opts .drag-tile .option-text { font-size: 1.4em; } .drag-opts .option-wrap { min-width: 0; } .drag-opts .drag-tile { padding: 8px 12px; } }
+.options.drag-opts { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; max-width: 980px; }
+
+/* 長句子分兩行時，兩行一樣長（不會只剩一兩個字掉到下一行） */
+.learn-line > span, .prompt h2, .hint-text, .step-text, .lc-desc, .feedback.teach p, .match-text, .info-line { text-wrap: balance; }
+.learn-line { max-width: 980px; margin-left: auto; margin-right: auto; }
+.learn-line > span { text-align: center; }

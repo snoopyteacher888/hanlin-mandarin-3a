@@ -44,7 +44,6 @@
         h('button', { type: 'button', class: 'btn-primary', onclick: function () { ctx.go('#/' + ctx.lessonId + '/feedback'); } }, H3A.ui.teacherFace(), text),
         H3A.ui.speaker(text, null)));
     });
-    var nextShown = false;
     SECTIONS.forEach(function (sec) {
       var grid = h('div', { class: 'lesson-grid-cards' });
       sec.cards.forEach(function (c) {
@@ -53,12 +52,8 @@
         var n = stars[c.a] || 0;
         var status = c.a === 'review' ? (dueCount ? '有 ' + dueCount + ' 題要複習' : '目前沒有錯題 🎉') :
           c.a === 'test' && prog.tests && prog.tests.length ? '上次 ' + prog.tests[prog.tests.length - 1].score + ' 分' : null;
-        /* 「下一步」：本課先完成裡，第一個還沒拿到星星的 */
-        var isNext = !nextShown && sec === SECTIONS[0] && !n;
-        if (isNext) nextShown = true;
         var go = function () { ctx.go('#/' + ctx.lessonId + '/' + c.a); };
-        grid.appendChild(h('div', { class: 'lc-card' + (isNext ? ' is-next' : ''), style: '--c:' + c.c },
-          isNext ? h('span', { class: 'next-badge' }, '下一步') : null,
+        grid.appendChild(h('div', { class: 'lc-card', style: '--c:' + c.c },
           h('div', { class: 'lc-head' }, h('span', { class: 'lc-icon' }, H3A.ui.activityIcon(c.a, c.icon)),
             H3A.ui.sayable(h('h3', { class: 'lc-name' }, name), name + '。' + c.desc)),
           h('p', { class: 'lc-desc' }, c.desc),
