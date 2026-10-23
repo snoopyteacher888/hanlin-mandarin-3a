@@ -208,7 +208,7 @@
 | 3 | `hz-cheng.png` | L07 乘（會意字） |
 | 4 | `fix.png` | 改錯字的圖示（放 `images/icons/`） |
 
-## 句型填空（待生成）
+## 句型填空（已完成）
 
 指令在 `docs/chatgpt-image-prompts-pattern-fill.txt`，放在 `images/L06/`。
 
