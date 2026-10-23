@@ -197,7 +197,7 @@
 | 9 | `id-swim-race.png` | L07 乘風破浪 |
 | 10 | `id-think-earth.png` | L07 發人深省 |
 
-## 生字卡圖（待生成）
+## 生字卡圖（已完成）
 
 指令在 `docs/chatgpt-image-prompts-hanzi.txt`。
 

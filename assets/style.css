@@ -724,7 +724,7 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 
 /* ===== 點標題就念 ===== */
 .sayable { cursor: pointer; border-radius: 12px; transition: background .15s; }
-.sayable:hover { background: rgba(224, 122, 46, .08); }
+@media (hover: hover) { .sayable:hover { background: rgba(224, 122, 46, .08); } }
 .sayable:active { background: rgba(224, 122, 46, .16); }
 .sayable:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
 .prompt h2.sayable { padding: 2px 10px; }
@@ -805,3 +805,44 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .learn-line > span, .prompt h2, .hint-text, .step-text, .lc-desc, .feedback.teach p, .match-text, .info-line { text-wrap: balance; }
 .learn-line { max-width: 980px; margin-left: auto; margin-right: auto; }
 .learn-line > span { text-align: center; }
+
+/* 短語短句「認識語詞」：卡片置中、解釋文字好好排，不要擠成一直條 */
+.vocab-grid:has(.learn-word) { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; }
+.learn-word { width: min(100%, 360px); display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 18px 20px; }
+.learn-word .pic { max-width: 180px; }
+.learn-word strong { display: flex; align-items: center; gap: 10px; font-size: 1.35em; }
+.learn-word .learn-line { flex-wrap: nowrap; font-size: 1.05em; gap: 10px; width: 100%; }
+.learn-word .learn-line > span { flex: 1 1 auto; min-width: 0; }
+.learn-word .speaker { width: 42px; height: 42px; min-width: 42px; min-height: 42px; flex: none; }
+
+/* ===== 卡片排列一律置中（一排不滿的時候也在中間，不靠左） ===== */
+.activity-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 300px)); justify-content: center; }
+.lesson-grid-cards { grid-template-columns: repeat(auto-fit, minmax(250px, 300px)); justify-content: center; }
+.lesson-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 260px)); justify-content: center; }
+.picker-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 190px)); justify-content: center; }
+.word-grid { grid-template-columns: repeat(auto-fit, minmax(110px, 150px)); justify-content: center; }
+.vocab-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 190px)); }
+.flip-grid { grid-template-columns: repeat(auto-fit, minmax(190px, 230px)); justify-content: center; }
+.hl-list { grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 520px)); justify-content: center; }
+.menu-title { text-align: center; }
+@media (max-width: 600px) {
+  .activity-grid, .lesson-grid-cards, .lesson-grid { grid-template-columns: 1fr; }
+  .word-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+  .vocab-grid, .flip-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* ===== 說明和例句置中，框框配合句子長度；兩行時頭尾對齊 ===== */
+.learn-box { align-items: center; }
+.learn-line { justify-content: center; text-align: center; width: auto; }
+.learn-line > span { flex: 0 1 auto; min-width: 0; text-align: justify; text-align-last: justify; text-wrap: balance; }
+.learn-label { align-self: center; width: auto; text-align: center; }
+.pt-sentence { width: fit-content; max-width: 100%; align-self: center; }
+.learn-word .learn-line { width: 100%; }
+
+/* 上方標題放大 */
+.topbar .title { font-size: 1.3em; letter-spacing: .04em; }
+@media (max-width: 600px) {
+  .topbar .title { font-size: 1.1em; }
+  /* 手機上會變成很多行，最後一行不要硬拉開 */
+  .learn-line > span { text-align-last: start; }
+}

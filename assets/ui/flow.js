@@ -6,7 +6,31 @@
   function learn(prompt, render, autoSay, topic, gate) { return { type: 'learn', prompt: prompt, render: render, autoSay: autoSay, topic: topic, gate: !!gate }; }
 
   /* 可以點來聽的一句話 */
-  function sayLine(text, cls) { return h('p', { class: 'learn-line' + (cls ? ' ' + cls : '') }, h('span', {}, text), H3A.ui.speaker(text, null)); }
+  function sayLine(text, cls) {
+    var span = h('span', { class: 'fit-lines' }, text);
+    fitSoon(span);
+    return h('p', { class: 'learn-line' + (cls ? ' ' + cls : '') }, span, H3A.ui.speaker(text, null));
+  }
+  /* 兩行以上的說明：把框縮到剛好裝得下同樣行數，兩行就會一樣長、頭尾對齊（老師要求） */
+  function fitLines(el) {
+    if (!el.isConnected) return;
+    el.style.maxWidth = '';
+    var lh = parseFloat(getComputedStyle(el).lineHeight) || 30, full = el.getBoundingClientRect(), h0 = full.height;
+    if (h0 < lh * 1.6) return;
+    var lo = full.width * 0.4, hi = full.width;
+    for (var i = 0; i < 12; i++) {
+      var mid = (lo + hi) / 2;
+      el.style.maxWidth = mid + 'px';
+      if (el.getBoundingClientRect().height > h0 + 2) lo = mid; else hi = mid;
+    }
+    el.style.maxWidth = Math.ceil(hi) + 'px';
+  }
+  function fitSoon(el) { setTimeout(function () { fitLines(el); }, 0); }
+  var resizeTimer = null;
+  root.addEventListener && root.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () { Array.prototype.forEach.call(document.querySelectorAll('.fit-lines'), fitLines); }, 150);
+  });
 
   function runFlow(main, ctx, activity, questions, again, extra) {
     /* 正確答案平均分到各個位置，不會老是第一個 */
