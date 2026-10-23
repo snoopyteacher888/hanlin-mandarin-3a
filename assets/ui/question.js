@@ -25,6 +25,7 @@
 
     function show() {
       var q = questions[idx];
+      if (q.type === 'learn') return showLearn(q);
       var speak = q.type === 'speak';
       var hs = speak ? null : H3A.hints.create(q.options.length, q.answer);
       var hints = speak ? q.hints : q.hints || (ctx.lesson && q.evidence ? H3A.wordq.readingHints(ctx.lesson, q) : null) ||
@@ -96,7 +97,8 @@
         var b = o.big
           ? h('button', { type: 'button', class: 'option big', 'data-index': i, onclick: function () { pick(i); } }, h('span', { class: 'option-text' }, o.text))
           : h('button', { type: 'button', class: 'option' + (o.img ? '' : ' text-only'), 'data-index': i, onclick: function () { pick(i); } },
-            o.img ? H3A.ui.picture(ctx.lessonId, o.img, o.text) : null, h('span', { class: 'option-text' }, o.text));
+            o.img ? H3A.ui.picture(ctx.lessonId, o.img, o.text) : null,
+            o.icon ? h('span', { class: 'option-icon', 'aria-hidden': 'true' }, o.icon) : null, h('span', { class: 'option-text' }, o.text));
         buttons.push(b);
         grid.appendChild(h('div', { class: 'option-wrap' }, b, H3A.ui.speaker(o.text, o.say)));
       });
@@ -113,6 +115,21 @@
       main.appendChild(h('div', { class: 'next-bar' }, nextBtn));
       if (q.autoSay) H3A.tts.speak(q.autoSay);
       else if (ctx.auto) H3A.tts.speak(q.prompt, q.say);
+    }
+    /* 認識頁：只看、只聽，不算分；按「下一步 ▶」繼續 */
+    function showLearn(q) {
+      H3A.ui.clear(main);
+      main.appendChild(dots(questions.length, idx));
+      main.appendChild(h('div', { class: 'prompt' }, h('h2', {}, q.prompt), H3A.ui.speaker(q.prompt, q.say)));
+      main.appendChild(q.render());
+      var next = h('button', { type: 'button', class: 'btn-next', onclick: function () {
+        if (next.disabled) return;
+        next.disabled = true; H3A.tts.stop();
+        idx++;
+        if (idx < questions.length) show(); else finish();
+      } }, '下一步 ▶');
+      main.appendChild(h('div', { class: 'next-bar' }, next));
+      H3A.tts.speak(q.autoSay || q.prompt);
     }
     show();
   }

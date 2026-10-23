@@ -4,7 +4,7 @@
   var ANIMALS = [['bear', '🐻', '小熊'], ['rabbit', '🐰', '兔子'], ['cat', '🐱', '小貓'], ['dog', '🐶', '小狗'], ['panda', '🐼', '熊貓'],
     ['tiger', '🐯', '老虎'], ['lion', '🦁', '獅子'], ['monkey', '🐵', '猴子'], ['pig', '🐷', '小豬'], ['frog', '🐸', '青蛙'],
     ['penguin', '🐧', '企鵝'], ['fox', '🦊', '狐狸']];
-  var RESULT = { first: '✅ 第一次就答對', hint1: '🟡 答錯 1 次後答對', hint2: '🟠 答錯 2 次後答對', taught: '📘 答錯 3 次，看了老師說明', wrong: '❌ 答錯' };
+  var RESULT = { first: '✅ 第一次就答對', hint1: '🟡 答錯 1 次後答對', hint2: '🟠 答錯 2 次後答對', taught: '📘 答錯 3 次，看了老師說明', wrong: '❌ 答錯', pending: '👩‍🏫 等老師批改' };
   var PLACE = { home: '家裡', school: '學校' };
 
   function token() { try { return root.sessionStorage.getItem('h3a.token'); } catch (e) { return H3A.tokenMem || null; } }
@@ -42,15 +42,54 @@
     H3A.session.getLesson('L06').then(function (l) { lesson = l; }, function () {});
     var fStu = h('select', { class: 'big-select', 'aria-label': '學生' }, h('option', { value: '' }, '全部學生'));
     var fAct = h('select', { class: 'big-select', 'aria-label': '活動' }, h('option', { value: '' }, '全部活動'),
-      ['read', 'map', 'quiz', 'review', 'test'].map(function (a) { return h('option', { value: a }, H3A.pages.activityTitle(a)); }));
+      ['read', 'map', 'quiz', 'review', 'test', 'hanzi', 'vocab', 'similar', 'listen', 'phrase', 'pattern', 'rhetoric'].map(function (a) { return h('option', { value: a }, H3A.pages.activityTitle(a)); }));
     var fRange = h('select', { class: 'big-select', 'aria-label': '日期' },
       h('option', { value: 'week' }, '最近 7 天'), h('option', { value: 'today' }, '今天'), h('option', { value: 'all' }, '全部'));
+    var gradeBox = h('div', { class: 'panel grade-panel' });
     var listBox = h('div', { class: 'panel' }), missBox = h('div', { class: 'panel' }), rosterBox = h('div', { class: 'panel' });
     var roster = [];
     main.appendChild(h('div', { class: 'form-row' }, fStu, fAct, fRange,
       h('button', { type: 'button', class: 'btn-secondary', onclick: function () { setToken(null); login(main, ctx); } }, '登出')));
-    main.appendChild(missBox); main.appendChild(listBox); main.appendChild(rosterBox);
+    main.appendChild(gradeBox); main.appendChild(missBox); main.appendChild(listBox); main.appendChild(rosterBox);
     [fStu, fAct, fRange].forEach(function (el) { el.addEventListener('change', load); });
+    fStu.addEventListener('change', loadSpeech);
+
+    /* 📝 待批改：學生用「說說看」說的句子，老師判斷合不合理 */
+    function loadSpeech() {
+      H3A.api.call('speechList', { token: token(), filter: { student: fStu.value || undefined } }).then(function (res) {
+        if (res.error === 'AUTH') { setToken(null); login(main, ctx); return; }
+        showSpeech(res.speech || []);
+      }, function () { H3A.ui.clear(gradeBox); gradeBox.appendChild(h('p', { class: 'error' }, '待批改：無法連線，請檢查網路')); });
+    }
+    function speechRow(r) {
+      var note = h('input', { type: 'text', class: 'big-input note-input', maxlength: '100', value: r.teacherNote || '', placeholder: '老師的話（可以不填）', 'aria-label': '老師的話' });
+      var msg = h('span', { class: 'saved' });
+      function grade(g) {
+        H3A.api.call('grade', { token: token(), id: r.id, grade: g, note: note.value.trim() }).then(function (res) {
+          if (res.error === 'AUTH') { setToken(null); login(main, ctx); return; }
+          if (res.error) { msg.textContent = '儲存失敗'; return; }
+          loadSpeech();
+        }, function () { msg.textContent = '無法連線'; });
+      }
+      var status = r.status === 'ok' ? '✅ 合理' : r.status === 'redo' ? '🔁 再試一次' : '';
+      return h('div', { class: 'speech-row', 'data-id': r.id },
+        h('p', { class: 'small' }, who(r.student) + '　' + H3A.pages.activityTitle(r.activity) + '　' + fmtDate(r.ts) + (status ? '　目前：' + status : '')),
+        h('p', {}, '題目：' + r.prompt),
+        h('p', { class: 'speech-said' }, h('strong', {}, r.said), H3A.ui.speaker(r.said, null)),
+        h('div', { class: 'form-row' }, note,
+          h('button', { type: 'button', class: 'btn-primary', 'data-grade': 'ok', onclick: function () { grade('ok'); } }, '✅ 合理'),
+          h('button', { type: 'button', class: 'btn-secondary', 'data-grade': 'redo', onclick: function () { grade('redo'); } }, '🔁 再試一次'), msg));
+    }
+    function showSpeech(list) {
+      H3A.ui.clear(gradeBox);
+      var pending = list.filter(function (r) { return r.status === 'pending'; });
+      var done = list.filter(function (r) { return r.status === 'ok' || r.status === 'redo'; });
+      gradeBox.appendChild(h('h2', {}, '📝 待批改（' + pending.length + ' 句）'));
+      if (!pending.length) gradeBox.appendChild(h('p', {}, '目前沒有要批改的句子。'));
+      pending.forEach(function (r) { gradeBox.appendChild(speechRow(r)); });
+      if (done.length) gradeBox.appendChild(h('details', { class: 'graded' }, h('summary', {}, '已批改（' + done.length + ' 句，可以再改）'),
+        done.map(speechRow)));
+    }
 
     function who(id) {
       if (id === 'class') return '👨‍👩‍👧‍👦 全班';
@@ -58,12 +97,17 @@
       return r ? r.emoji + ' ' + r.name : id;
     }
     function qText(id) {
-      if (!lesson) return id;
-      var all = lesson.quiz.concat(lesson.testExtra);
-      var q = all.filter(function (x) { return x.id === id; })[0];
-      if (q) return q.prompt;
-      var m = lesson.mapSteps.filter(function (x) { return x.id === id; })[0];
-      return m ? '課文地圖：' + m.text : id;
+      if (lesson) {
+        var q = lesson.quiz.concat(lesson.testExtra).filter(function (x) { return x.id === id; })[0];
+        if (q) return q.prompt;
+        var map = lesson.storyMap;
+        if (map && id === 'tail') return '課文地圖：結論';
+        var b = map && map.bones ? map.bones.filter(function (x) { return x.id === id; })[0] : null;
+        if (b) return '課文地圖：' + b.title;
+      }
+      var w = root.H3A_WORDS && root.H3A_WORDS.L06;
+      var wq = w ? H3A.wordq.findWordQuestion(w, id, function () { return 0; }) : null;
+      return wq ? wq.prompt : id;
     }
     function load() {
       H3A.ui.clear(listBox); listBox.appendChild(h('p', {}, '載入中…'));
@@ -72,6 +116,7 @@
         if (res.error === 'AUTH') { setToken(null); login(main, ctx); return; }
         if (res.roster) { roster = res.roster; fillRoster(); }
         showList(res.records || []);
+        loadSpeech();
       }, function () { H3A.ui.clear(listBox); listBox.appendChild(h('p', { class: 'error' }, '無法連線，請檢查網路')); });
     }
     function fillRoster() {

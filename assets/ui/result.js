@@ -4,8 +4,11 @@
   function showResult(main, ctx, summary, again) {
     H3A.ui.clear(main);
     var stars = '⭐'.repeat(summary.stars) + '☆'.repeat(3 - summary.stars);
+    var graded = summary.items.filter(function (i) { return i.result !== 'pending'; });
+    var waiting = summary.items.length - graded.length;
     var line = summary.score !== null && summary.score !== undefined ? summary.score + ' 分' :
-      summary.items.length ? '第一次就答對 ' + summary.items.filter(function (i) { return i.result === 'first'; }).length + ' 題，共 ' + summary.items.length + ' 題' : '讀完了！';
+      summary.items.length ? (graded.length ? '第一次就答對 ' + graded.filter(function (i) { return i.result === 'first'; }).length + ' 題，共 ' + graded.length + ' 題' : '') +
+        (waiting ? (graded.length ? '，' : '') + waiting + ' 題等老師批改' : '') : '讀完了！';
     var praise = summary.stars === 3 ? '太棒了！' : summary.stars === 2 ? '很不錯！' : '完成了，你很努力！';
     main.appendChild(h('div', { class: 'result' },
       h('div', { class: 'result-stars', 'aria-label': summary.stars + ' 顆星' }, stars),
@@ -22,7 +25,8 @@
     if (addMisses) {
       var today = H3A.review.todayStr(new Date());
       var q = H3A.session.reviewQueue(ctx.student);
-      summary.items.forEach(function (it) { if (it.result !== 'first') q = H3A.review.addMiss(q, it.q, today); });
+      /* 說說看的題目由老師批改，不進錯題複習 */
+      summary.items.forEach(function (it) { if (it.result !== 'first' && !it.status) q = H3A.review.addMiss(q, it.q, today); });
       H3A.session.saveReviewQueue(ctx.student, q);
     }
     H3A.session.saveStars(ctx.student, ctx.lessonId, activity, summary.stars);

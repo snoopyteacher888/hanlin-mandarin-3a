@@ -60,7 +60,7 @@
     return { id: item.id, prompt: prompt, options: s.options, answer: s.answer };
   }
   function phrasePickQuestion(p, r) {
-    var q = first(p, '＿＿＿的' + p.noun, { big: true }, r);
+    var q = first(p, '＿＿＿的' + p.noun, null, r);
     q.say = '什麼樣的' + p.noun; q.img = p.img;
     q.hints = { h1: { text: '再看看圖片，它是什麼顏色、什麼樣子？' }, h2: { text: p.clue }, teach: { text: p.explain } };
     return q;

@@ -3,7 +3,8 @@
   var H3A = root.H3A; var h = H3A.ui.h;
   var SECTIONS = [
     { title: '📖 閱讀理解', cards: [{ a: 'read', icon: '📖' }, { a: 'map', icon: '🐟' }, { a: 'quiz', icon: '❓' }] },
-    { title: '✏️ 字詞練習', words: true, cards: [{ a: 'hanzi', icon: '✍️' }, { a: 'vocab', icon: '📚' }, { a: 'similar', icon: '🔍' }, { a: 'listen', icon: '👂' }] },
+    { title: '✏️ 字詞練習', words: true, cards: [{ a: 'hanzi', icon: '✍️' }, { a: 'vocab', icon: '📚' }, { a: 'similar', icon: '🔍' }, { a: 'listen', icon: '👂' },
+      { a: 'phrase', icon: '📒' }, { a: 'pattern', icon: '🧩' }, { a: 'rhetoric', icon: '🎨' }] },
     { title: '🌟 複習與測驗', cards: [{ a: 'review', icon: '🔁' }, { a: 'test', icon: '📝' }] }
   ];
   function starsText(n) { return n ? '⭐'.repeat(n) : ''; }
@@ -11,6 +12,16 @@
     var prog = (H3A.session.progress(ctx.student)[ctx.lessonId]) || {};
     var stars = prog.stars || {};
     var dueCount = H3A.review.due(H3A.session.reviewQueue(ctx.student), H3A.review.todayStr(new Date())).length;
+    /* 老師批改過說說看的句子，就在最上面出現「老師的批改」 */
+    var fbSlot = h('div', { class: 'fb-banner-slot' });
+    main.appendChild(fbSlot);
+    H3A.feedback.unseenCount(ctx).then(function (n) {
+      if (!n.total) return;
+      var text = n.unseen ? '👩‍🏫 老師批改了 ' + n.unseen + ' 題' : '👩‍🏫 老師的批改';
+      fbSlot.appendChild(h('div', { class: 'fb-banner' + (n.unseen ? ' new' : '') },
+        h('button', { type: 'button', class: 'btn-primary', onclick: function () { ctx.go('#/' + ctx.lessonId + '/feedback'); } }, text),
+        H3A.ui.speaker(text.replace('👩‍🏫 ', ''), null)));
+    });
     SECTIONS.forEach(function (sec) {
       if (sec.words && !ctx.words) return;
       var grid = h('div', { class: 'activity-grid' });

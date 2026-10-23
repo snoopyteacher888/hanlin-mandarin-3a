@@ -1,0 +1,204 @@
+// 端對端測試：B 批（短語短句、句型、修辭）＋說說看＋老師批改。語音辨識用假的：window.__sayNext 是要「說」的句子
+const test = require('node:test');
+const assert = require('node:assert/strict');
+const { chromium } = require('playwright');
+const { start } = require('./server.js');
+const W = require('../../data/lesson06.words.js');
+
+const PORT = 8182, BASE = `http://localhost:${PORT}/`;
+let srv, browser;
+test.before(async () => {
+  srv = await start(PORT);
+  browser = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium', headless: false, args: ['--headless=new'] });
+});
+test.after(async () => { await browser.close(); await srv.close(); });
+
+async function page() {
+  const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } });
+  const p = await ctx.newPage();
+  p.errors = []; p.on('pageerror', e => p.errors.push(e.message));
+  await p.addInitScript(() => {
+    try { localStorage.setItem('h3a.settings', JSON.stringify({ zhuyin: false })); } catch (e) {}
+    window.__spoken = [];
+    Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: { getVoices: () => [{ lang: 'zh-TW', name: 'Mei-Jia' }], cancel() {},
+      speak(u) { window.__spoken.push(u.text); setTimeout(() => u.onend && u.onend(), 5); } } });
+    Object.defineProperty(window, 'SpeechSynthesisUtterance', { configurable: true, writable: true, value: function (t) { this.text = t; } });
+    window.__sayNext = []; window.__sayError = null;
+    function R() {}
+    R.prototype.start = function () {
+      const self = this;
+      setTimeout(() => {
+        if (window.__sayError) { self.onerror && self.onerror({ error: window.__sayError }); self.onend && self.onend(); return; }
+        const t = window.__sayNext.shift();
+        if (t) self.onresult && self.onresult({ results: [[{ transcript: t }]] });
+        self.onend && self.onend();
+      }, 10);
+    };
+    R.prototype.stop = function () {};
+    window.SpeechRecognition = R; window.webkitSpeechRecognition = R;
+  });
+  return p;
+}
+
+/* 每一題的正確選項（用題目文字找） */
+const CORRECT = {};
+const add = (prompt, text) => { (CORRECT[prompt] = CORRECT[prompt] || []).push(text); };
+W.phrase.pick.forEach(x => add('＿＿＿的' + x.noun, x.options[0]));
+W.phrase.choose.forEach(x => add('哪一句的「' + x.word + '」用得對？', x.options[0]));
+W.pattern.forEach(pt => { pt.match.forEach(x => add(x.front + '……', x.options[0])); pt.conj.forEach(x => add(x.sentence, x.options[0])); });
+W.rhetoric.quiz.forEach(x => add('「' + x.sentence + '」用了什麼修辭？', x.answer));
+
+async function answerChoice(p) {
+  await p.waitForSelector('.option:not(:disabled)');
+  const idx = await p.evaluate(c => {
+    const t = document.querySelector('.prompt h2').textContent;
+    return [...document.querySelectorAll('.option')].findIndex(o => (c[t] || []).includes(o.querySelector('.option-text').textContent));
+  }, CORRECT);
+  assert.ok(idx >= 0, 'no answer for ' + await p.textContent('.prompt h2'));
+  await p.click(`.option[data-index="${idx}"]`);
+  await p.click('.btn-next:not([hidden])');
+}
+async function nextLearn(p) { await p.waitForSelector('text=下一步 ▶'); await p.click('text=下一步 ▶'); }
+async function say(p, text) {
+  await p.evaluate(t => window.__sayNext.push(t), text);
+  await p.click('.mic-btn');
+  await p.waitForSelector('.said-box:not([hidden])');
+  await p.click('.speak-actions >> text=✅ 送出');
+}
+async function next(p) { await p.click('.btn-next:not([hidden])'); }
+const speechFor = qid => srv.speech.filter(s => s.qid === qid);
+
+test('phrase speak exact answer is correct', async () => {
+  const before = srv.posts.filter(x => x.action === 'submit').length;
+  const p = await page(); await p.goto(BASE + '#/L06/phrase?s=bear');
+  await nextLearn(p);
+  for (let i = 0; i < 8; i++) await answerChoice(p);
+  await p.waitForSelector('.mic-btn');
+  await say(p, '閃亮亮的鉛筆。');
+  await p.waitForSelector('.feedback.ok >> text=答對了');
+  await next(p);
+  await say(p, '圓滾滾的小狗');
+  await p.waitForSelector('.feedback.ok >> text=等老師批改');
+  await next(p);
+  await nextLearn(p);
+  for (let i = 0; i < 4; i++) await answerChoice(p);
+  /* 沒說到語詞 → 提示 */
+  await say(p, '我把紅色和白色放在一起');
+  await p.waitForSelector('.feedback.hint');
+  assert.match(await p.textContent('.feedback.hint'), /記得句子裡要說到「混合」/);
+  await say(p, '我把紅色和白色的顏料混合在一起');
+  await p.waitForSelector('.feedback.ok >> text=等老師批改');
+  await next(p);
+  await say(p, '鉛筆掉到地上筆芯斷裂了');
+  await p.waitForSelector('.feedback.ok >> text=等老師批改');
+  await p.click('text=看結果 ▶');
+  await p.waitForSelector('.result');
+  assert.match(await p.textContent('.result p'), /共 13 題，3 題等老師批改/);
+  assert.equal(speechFor('ps1').at(-1).status, 'auto');
+  assert.equal(speechFor('ps2').at(-1).status, 'pending');
+  assert.equal(speechFor('pm1').at(-1).said, '我把紅色和白色的顏料混合在一起');
+  const recs = srv.posts.filter(x => x.action === 'submit').slice(before).map(x => x.record);
+  const rec = recs.find(r => r.activity === 'phrase');
+  assert.ok(rec, 'phrase record posted');
+  assert.equal(rec.items.find(i => i.q === 'pm1').result, 'pending');
+  assert.equal(rec.items.find(i => i.q === 'pm1').status, 'pending');
+  /* 說說看不進錯題複習 */
+  const queue = await p.evaluate(() => JSON.parse(localStorage.getItem('h3a.review.bear') || '[]'));
+  assert.ok(!JSON.stringify(queue).includes('pm1'));
+  assert.deepEqual(p.errors, []);
+});
+
+test('pattern five steps finish', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/pattern?s=cat');
+  await p.click('[data-pattern="zhiyao"]');
+  await p.waitForSelector('.conj-word');
+  assert.deepEqual([...new Set(await p.$$eval('.conj-word', x => x.map(e => e.textContent)))].sort(), ['只要', '就'].sort());
+  await nextLearn(p);
+  for (let i = 0; i < 6; i++) await answerChoice(p);
+  /* 說後半句：前半句已經給了 */
+  assert.match(await p.textContent('.speak-front'), /只要我每天練習寫字/);
+  await say(p, '我會越寫越漂亮');
+  await p.waitForSelector('.feedback.hint');
+  assert.match(await p.textContent('.feedback.hint'), /「只要」和「就」/);
+  await say(p, '字就會越寫越漂亮');
+  await p.waitForSelector('.feedback.ok >> text=等老師批改');
+  assert.equal(speechFor('pt-zy-h1').at(-1).said, '只要我每天練習寫字，字就會越寫越漂亮');
+  await next(p);
+  await say(p, '我就會穿外套');
+  await p.waitForSelector('.feedback.ok');
+  await next(p);
+  /* 三次句型不對 → 老師教你 */
+  for (let k = 0; k < 3; k++) { await say(p, '我喜歡運動'); await p.waitForTimeout(50); }
+  await p.waitForSelector('.feedback.teach');
+  assert.match(await p.textContent('.feedback.teach'), /老師示範/);
+  await p.click('text=我懂了 ▶');
+  await say(p, '只要我多運動，身體就會很強壯');
+  await p.waitForSelector('.feedback.ok >> text=等老師批改');
+  await p.click('text=看結果 ▶');
+  await p.waitForSelector('.result');
+  const rec = srv.posts.filter(x => x.action === 'submit').map(x => x.record).filter(r => r.activity === 'pattern').at(-1);
+  assert.equal(rec.items.length, 9);
+  assert.deepEqual(p.errors, []);
+});
+
+test('rhetoric wrong shows hint', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/rhetoric?s=bear');
+  for (let i = 0; i < 4; i++) await nextLearn(p);
+  await p.waitForSelector('.option .option-icon');
+  const wrong = await p.evaluate(c => {
+    const t = document.querySelector('.prompt h2').textContent;
+    return [...document.querySelectorAll('.option')].findIndex(o => !(c[t] || []).includes(o.querySelector('.option-text').textContent));
+  }, CORRECT);
+  await p.click(`.option[data-index="${wrong}"]`);
+  await p.waitForSelector('.feedback.hint');
+  assert.match(await p.textContent('.feedback.hint'), /擬人|比成|重複|問句/);
+  assert.deepEqual(p.errors, []);
+});
+
+test('speak falls back to typing on error', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/pattern?s=bear&retry=pt-rg-w1');
+  await p.evaluate(() => { window.__sayError = 'not-allowed'; });
+  await p.click('.mic-btn');
+  await p.waitForSelector('textarea.type-box');
+  assert.equal(await p.$eval('.mic-btn', e => e.hidden), true);
+  await p.fill('textarea.type-box', '如果你不吃早餐，不但會肚子餓，上課還會想睡覺');
+  await p.click('.type-wrap >> text=✅ 送出');
+  await p.waitForSelector('.feedback.ok >> text=等老師批改');
+  await p.click('.btn-next:not([hidden])');
+  await p.waitForSelector('text=回到老師的批改');
+  assert.equal(speechFor('pt-rg-w1').at(-1).status, 'pending');
+  assert.deepEqual(p.errors, []);
+});
+
+test('no-speech asks to try again', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/pattern?s=bear&retry=pt-zy-w1');
+  await p.click('.mic-btn');
+  await p.waitForSelector('.speak-status >> text=我沒聽到');
+  assert.equal(await p.$('textarea.type-box'), null);
+});
+
+test('teacher grades and student sees feedback', async () => {
+  const s = await page(); await s.goto(BASE + '#/L06/pattern?s=cat&retry=pt-zy-w1');
+  await say(s, '只要我認真讀書，考試就會考得很好');
+  await s.waitForSelector('.feedback.ok >> text=等老師批改');
+  await s.waitForFunction(() => !JSON.parse(localStorage.getItem('h3a.speechbox') || '[]').length);
+  const id = speechFor('pt-zy-w1').filter(x => x.student === 'cat').at(-1).id;
+
+  const t = await page(); await t.goto(BASE + '#/teacher');
+  await t.fill('input[type=password]', 'teacher-pass'); await t.click('button[type=submit]');
+  const row = `.speech-row[data-id="${id}"]`;
+  await t.waitForSelector(row);
+  await t.fill(`${row} .note-input`, '說得很完整，很棒！');
+  await t.click(`${row} [data-grade="ok"]`);
+  await t.waitForSelector(`.graded ${row}`, { state: 'attached' });
+  assert.equal(speechFor('pt-zy-w1').find(x => x.id === id).status, 'ok');
+
+  await s.goto(BASE + '#/L06?s=cat');
+  await s.waitForSelector('.fb-banner >> text=老師批改了 1 題');
+  await s.click('.fb-banner .btn-primary');
+  await s.waitForSelector(`.fb-card[data-id="${id}"]`);
+  await s.waitForFunction(() => window.__spoken.some(x => x.includes('說得很完整')));
+  await s.goto(BASE + '#/L06?s=cat');
+  await s.waitForSelector('.fb-banner >> text=老師的批改');
+  assert.deepEqual(s.errors, []); assert.deepEqual(t.errors, []);
+});

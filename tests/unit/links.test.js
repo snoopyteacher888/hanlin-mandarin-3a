@@ -17,3 +17,7 @@ test('round trip', () => {
   const url = buildTaskLink('https://x/', { lesson: 'L06', activity: 'test', student: 'cat', auto: true });
   assert.deepEqual(parseHash(url.slice(url.indexOf('#'))), { path: ['L06', 'test'], params: { s: 'cat', auto: true } });
 });
+test('parseHash keeps pattern and retry params, rejects odd values', () => {
+  assert.deepEqual(parseHash('#/L06/pattern?p=zhiyao&retry=pt-zy-w1').params, { p: 'zhiyao', retry: 'pt-zy-w1' });
+  assert.deepEqual(parseHash('#/L06/pattern?retry=<x>').params, {});
+});

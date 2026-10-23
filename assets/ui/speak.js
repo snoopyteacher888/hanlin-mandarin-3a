@@ -68,6 +68,7 @@
     }
     function showSaid(t) {
       lastText = t;
+      box.classList.add('has-said');
       H3A.ui.clear(said); said.hidden = false;
       said.appendChild(h('span', { class: 'said-label' }, '你說的是：'));
       said.appendChild(h('strong', {}, (q.front || '') + t));
