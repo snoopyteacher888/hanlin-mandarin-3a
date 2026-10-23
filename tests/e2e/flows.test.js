@@ -132,18 +132,19 @@ test('class mode records class', async () => {
   assert.equal(r.student, 'class'); assert.equal(r.place, 'school');
 });
 
-test('review card appears next day', async () => {
+test('review card counts misses right away, per lesson', async () => {
   const p = await page(); await unlock(p, '#/L06/quiz?s=bear'); await p.waitForSelector('.option');
   const a = await answerIndex(p);
   await p.click(`.option[data-index="${(await enabled(p)).find(i => i !== a)}"]`);
-  await p.click(`.option[data-index="${a}"]`); await p.click('.btn-next');
-  for (let k = 0; k < 2; k++) { await p.waitForSelector('.option:not(:disabled)'); await p.click(`.option[data-index="${await answerIndex(p)}"]`); await p.click('.btn-next'); }
-  await p.waitForSelector('.result');
-  await p.goto(BASE + '#/L06'); await p.waitForSelector('.activity-main');
-  assert.equal(await p.$('.activity-main[data-activity="review"]'), null);
-  await p.evaluate(() => { const q = JSON.parse(localStorage.getItem('h3a.review.bear')); for (const k in q) q[k].last = '2000-01-01'; localStorage.setItem('h3a.review.bear', JSON.stringify(q)); });
-  await p.reload(); await p.waitForSelector('.activity-main');
-  assert.equal(await p.textContent('.activity-main[data-activity="review"] .activity-extra'), '1 題');
+  await p.click(`.option[data-index="${a}"]`);
+  /* 還沒做完這個活動就已經記下來了 */
+  await p.goto(BASE + '#/L06'); await p.waitForSelector('.lc-go');
+  assert.equal(await p.textContent('.lc-card:has([data-activity="review"]) .lc-status'), '有 1 題要複習');
+  assert.equal(await p.$eval('[data-activity="review"]', b => b.disabled), false);
+  /* 舊資料（沒有課次）算第 6 課，不算第 7 課 */
+  await p.evaluate(() => localStorage.setItem('h3a.review.bear', JSON.stringify({ s1: { last: '2000-01-01', streak: 0 } })));
+  await p.reload(); await p.waitForSelector('.lc-go');
+  assert.equal(await p.textContent('.lc-card:has([data-activity="review"]) .lc-status'), '有 1 題要複習');
 });
 
 test('voice bar when only non-Taiwan voice', async () => {
@@ -165,7 +166,8 @@ test('word practice works without unlock', async () => {
   assert.equal(await p.$('input[type=password]'), null);
   const cards = await p.$$('.hl-card');
   for (const c of cards) { assert.ok(await p.isHidden('.btn-next')); await c.click(); }
-  await p.click('.btn-next:not([hidden])'); await p.waitForSelector('.option.big');
+  await p.click('.btn-next:not([hidden])'); await p.waitForSelector('.hl-card');
+  await p.click('.step-tab[data-step="pick"]'); await p.waitForSelector('.option.big');
   assert.equal(await p.$$eval('.option.big', x => x.length), 4);
   assert.equal(await p.$$eval('.option.big .pic', x => x.length), 0);
 });
@@ -182,7 +184,7 @@ test('hanzi learn card shows radical and speaks', async () => {
 });
 
 test('fix wrong char: find it, then pick the right one', async () => {
-  const p = await page(); await p.goto(BASE + '#/L06/fix?s=bear'); await p.waitForSelector('.fix-char');
+  const p = await page(); await p.goto(BASE + '#/L06/hanzi?step=fix&s=bear'); await p.waitForSelector('.fix-char');
   assert.ok(await p.isHidden('.fix-options'));
   const sent = (await p.$$eval('.fix-sentence > *', xs => xs.map(x => x.textContent))).join('').replace(/\uDB40[\uDC00-\uDFFF]/g, '');
   const it = WORDS.fix.find(x => x.sentence.replace(x.char, x.wrong) === sent);
@@ -217,7 +219,7 @@ test('listen hides text and repeats on wrong', async () => {
 
 test('similar wrong shows hint', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/similar?s=bear'); await p.waitForSelector('.option');
-  const sentence = await p.textContent('.prompt h2');
+  const sentence = (await p.textContent('.prompt h2')).replace('　', '＿');
   const item = WORDS.similar.find(s => s.sentence === sentence);
   const wrongIdx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent !== a), item.frame.replace('＿', item.answer));
   await p.click(`.option[data-index="${wrongIdx}"]`);
@@ -234,6 +236,13 @@ test('review without unlock shows word items only', async () => {
   await p.goto(BASE + '#/L06/review?s=bear'); await p.waitForSelector('.option');
   assert.equal(await p.$$eval('.dot', x => x.length), 1);
   assert.equal(await p.textContent('.prompt h2'), WORDS.similar[0].sentence);
+  /* 第一次就答對，連續 2 次才移除 */
+  const it = WORDS.similar[0], ans = it.frame ? it.frame.replace('＿', it.answer) : it.answer;
+  const idx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent === a), ans);
+  await p.click(`.option[data-index="${idx}"]`); await p.click('.btn-next');
+  await p.waitForSelector('.result');
+  const q = await p.evaluate(() => JSON.parse(localStorage.getItem('h3a.review.bear')));
+  assert.equal(q.s1.streak, 1);
 });
 
 test('word record posted with activity similar', async () => {
@@ -241,7 +250,7 @@ test('word record posted with activity similar', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/similar?s=cat');
   for (let k = 0; k < WORDS.similar.length; k++) {
     await p.waitForSelector('.option:not(:disabled)');
-    const sentence = await p.textContent('.prompt h2');
+    const sentence = (await p.textContent('.prompt h2')).replace('　', '＿');
     const it = WORDS.similar.find(s => s.sentence === sentence); const ans = it.frame.replace('＿', it.answer);
     const idx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent === a), ans);
     await p.click(`.option[data-index="${idx}"]`); await p.click('.btn-next');

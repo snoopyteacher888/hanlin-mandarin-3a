@@ -25,3 +25,14 @@ test('does not mutate input', () => {
 test('todayStr uses local date', () => {
   assert.equal(todayStr(new Date(2026, 0, 5, 23, 59)), '2026-01-05');
 });
+
+test('review keys are per lesson; old keys count as L06', () => {
+  const R = require('../../assets/core/review.js');
+  let q = R.addMiss({ s1: { last: '2000-01-01', streak: 0 } }, R.key('L07', 'h-鹹'), '2026-10-23');
+  q = R.addMiss(q, R.key('L06', 'q1'), '2026-10-23');
+  assert.deepEqual(R.forLesson(q, 'L06').map(x => x.q).sort(), ['q1', 's1']);
+  assert.deepEqual(R.forLesson(q, 'L07').map(x => x.q), ['h-鹹']);
+  q = R.recordReview(q, 'L07|h-鹹', true, '2026-10-23');
+  q = R.recordReview(q, 'L07|h-鹹', true, '2026-10-23');
+  assert.equal(R.forLesson(q, 'L07').length, 0);
+});

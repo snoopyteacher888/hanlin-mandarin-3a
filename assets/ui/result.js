@@ -26,17 +26,21 @@
      extra：{ starKey（另外記一份星星，例如修辭的某一關）, backHash, backText（結果頁的返回按鈕） } */
   function finishActivity(main, ctx, activity, summary, again, addMisses, extra) {
     if (addMisses) {
-      var today = H3A.review.todayStr(new Date());
-      var q = H3A.session.reviewQueue(ctx.student);
       /* 說說看的題目由老師批改，不進錯題複習 */
-      summary.items.forEach(function (it) { if (it.result !== 'first' && !it.status) q = H3A.review.addMiss(q, it.q, today); });
-      H3A.session.saveReviewQueue(ctx.student, q);
+      summary.items.forEach(function (it) { if (it.result !== 'first' && !it.status) addMiss(ctx, it.q); });
     }
     H3A.session.saveStars(ctx.student, ctx.lessonId, activity, summary.stars);
     if (extra && extra.starKey) H3A.session.saveStars(ctx.student, ctx.lessonId, extra.starKey, summary.stars);
     H3A.api.submit(H3A.ui.buildRecord(ctx, activity, summary));
     showResult(main, ctx, summary, again, extra);
   }
+  /* 答錯（或用了提示）的題目記進這個學生自己的錯題複習 */
+  function addMiss(ctx, qid) {
+    if (!ctx.student || !qid) return;
+    var q = H3A.session.reviewQueue(ctx.student);
+    H3A.session.saveReviewQueue(ctx.student, H3A.review.addMiss(q, H3A.review.key(ctx.lessonId, qid), H3A.review.todayStr(new Date())));
+  }
+  H3A.ui.addMiss = addMiss;
   H3A.ui.showResult = showResult;
   H3A.ui.finishActivity = finishActivity;
 })(this);

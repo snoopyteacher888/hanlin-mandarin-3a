@@ -48,16 +48,16 @@ test('第 7 課課次頁：有字詞活動，沒有句型', async () => {
   const p = await page(); await p.goto(BASE + '#/L07?s=bear');
   await p.waitForSelector('[data-activity="hanzi"]');
   const acts = await p.$$eval('[data-activity]', x => x.map(e => e.dataset.activity));
-  ['hanzi', 'vocab', 'charword', 'similar', 'listen', 'phrase', 'rhetoric', 'challenge', 'idiom'].forEach(a => assert.ok(acts.includes(a), a));
+  ['hanzi', 'vocab', 'charword', 'similar', 'listen', 'phrase', 'rhetoric', 'idiom'].forEach(a => assert.ok(acts.includes(a), a));
   assert.ok(!acts.includes('pattern'));
   assert.deepEqual(p.errors, []);
 });
 
 test('第 7 課每個字詞活動的第一個畫面都正常', async () => {
   const p = await page();
-  for (const a of ['hanzi', 'vocab', 'charword', 'similar', 'listen', 'phrase', 'rhetoric', 'challenge', 'idiom', 'challenge?p=build', 'challenge?p=memory', 'rhetoric?p=repeat']) {
+  for (const a of ['hanzi', 'vocab', 'charword', 'similar', 'listen', 'phrase', 'rhetoric', 'idiom', 'hanzi?step=pick', 'hanzi?step=fix', 'vocab?step=picmatch', 'vocab?step=memory', 'charword?step=meaning', 'idiom?step=fill', 'rhetoric?p=repeat']) {
     await p.goto(BASE + '#/L07/' + a + (a.includes('?') ? '&' : '?') + 's=bear');
-    await p.waitForSelector('main .prompt, main h2', { timeout: 5000 });
+    await p.waitForSelector('main .prompt, main h2, main .mem-card', { timeout: 5000 });
     assert.equal(await p.$('.notice'), null, a + ' 顯示「還沒準備好」');
   }
   /* 修辭：三關加綜合挑戰 */
@@ -68,7 +68,7 @@ test('第 7 課每個字詞活動的第一個畫面都正常', async () => {
 });
 
 test('第 7 課改錯字：全部改完', async () => {
-  const p = await page(); await p.goto(BASE + '#/L07/fix?s=bear');
+  const p = await page(); await p.goto(BASE + '#/L07/hanzi?step=fix&s=bear');
   for (let i = 0; i < W.fix.length; i++) {
     await p.waitForSelector('.fix-char:not(:disabled)');
     const sent = (await p.$$eval('.fix-sentence > *', xs => xs.map(x => x.textContent))).join('').replace(/\uDB40[\uDC00-\uDFFF]/g, '');
@@ -83,22 +83,23 @@ test('第 7 課改錯字：全部改完', async () => {
   assert.deepEqual(p.errors, []);
 });
 
-test('第 7 課生字：選對字', async () => {
+test('第 7 課生字：認識生字卡片，再拖字填空', async () => {
   const p = await page(); await p.goto(BASE + '#/L07/hanzi?s=bear');
+  for (let pg = 0; pg < Math.ceil(W.hanzi.length / 5); pg++) {
+    await p.waitForSelector('.hl-card');
+    for (const c of await p.$$('.hl-card')) await c.click();
+    await p.click('.btn-next:not([hidden])');
+  }
+  await p.click('.step-go');
   for (let i = 0; i < W.hanzi.length; i++) {
-    if (i % 5 === 0) {
-      await p.waitForSelector('.hl-card');
-      for (const c of await p.$$('.hl-card')) await c.click();
-      await p.click('.btn-next:not([hidden])');
-    }
-    await p.waitForSelector('.option:not(:disabled)');
-    const t = await p.textContent('.prompt h2');
+    await p.waitForSelector('.drag-tile:not(:disabled)');
+    const t = (await p.textContent('.prompt h2')).replace('　', '＿');
     const hz = W.hanzi.find(x => x.cloze === t);
     assert.ok(hz, t);
     const idx = await p.$$eval('.option', (os, c) => os.findIndex(o => o.querySelector('.option-text').textContent === c), hz.char);
     await p.click(`.option[data-index="${idx}"]`);
     await p.click('.btn-next:not([hidden])');
   }
-  await p.waitForSelector('.result');
+  await p.waitForSelector('.step-done');
   assert.deepEqual(p.errors, []);
 });

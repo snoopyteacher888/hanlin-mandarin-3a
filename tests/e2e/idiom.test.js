@@ -51,41 +51,50 @@ async function tapTiles(p, word) {
   }
 }
 
-test('生字變成語：排錯會提示、可以拿回字，排對再做情境題', async () => {
+test('生字變成語：五個步驟——成語卡、排成語、放進句子、看情境、配對', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/idiom?s=bear');
-  let first = true;
+  assert.deepEqual(await p.$$eval('.step-tab', x => x.map(e => e.dataset.step)), ['cards', 'order', 'fill', 'situation', 'match']);
   for (let g = 0; g < 3; g++) {
     await p.waitForSelector('.idiom-card');
     await p.click('.btn-next:not([hidden])');
-    for (let k = 0; k < 2; k++) {
-      await p.waitForSelector('.order-tile');
-      const prompt = await p.textContent('.prompt h2');
-      const it = W.idioms.find(x => prompt.includes(x.meaning));
-      assert.ok(it, prompt);
-      if (first) {
-        first = false;
-        /* 拿回一個字 */
-        await tapTiles(p, it.idiom.slice(0, 1));
-        await p.click('.order-slot.filled');
-        assert.equal(await p.$$eval('.order-slot.filled', x => x.length), 0);
-        /* 排錯：提示不說整個答案 */
-        await tapTiles(p, it.idiom.split('').reverse().join(''));
-        await p.waitForSelector('.feedback.hint');
-        assert.ok(!(await p.textContent('.feedback.hint')).includes(it.idiom));
-        await p.waitForFunction(() => document.querySelectorAll('.order-slot.filled').length === 0);
-      }
-      await tapTiles(p, it.idiom);
-      await p.waitForSelector('.order-slots .big-check');
-      await p.click('.btn-next:not([hidden])');
-      /* 排完接著：哪一句適合填入這個成語？ */
-      await p.waitForSelector('.option:not(:disabled)');
-      assert.equal(await p.textContent('.prompt h2'), '哪一句適合填入「' + it.idiom + '」？');
-      const right = it.fill.options[0];
-      const fi = await p.$$eval('.option', (os, a) => os.findIndex(o => o.querySelector('.option-text').textContent === a), right);
-      await p.click(`.option[data-index="${fi}"]`);
-      await p.click('.btn-next:not([hidden])');
-    }
   }
+  await p.click('.step-go');
+  let first = true;
+  for (let k = 0; k < W.idioms.length; k++) {
+    await p.waitForSelector('.order-tile');
+    const prompt = await p.textContent('.prompt h2');
+    const it = W.idioms.find(x => prompt.includes(x.meaning));
+    assert.ok(it, prompt);
+    if (first) {
+      first = false;
+      /* 拿回一個字 */
+      await tapTiles(p, it.idiom.slice(0, 1));
+      await p.click('.order-slot.filled');
+      assert.equal(await p.$$eval('.order-slot.filled', x => x.length), 0);
+      /* 排錯：提示不說整個答案 */
+      await tapTiles(p, it.idiom.split('').reverse().join(''));
+      await p.waitForSelector('.feedback.hint');
+      assert.ok(!(await p.textContent('.feedback.hint')).includes(it.idiom));
+      await p.waitForFunction(() => document.querySelectorAll('.order-slot.filled').length === 0);
+    }
+    await tapTiles(p, it.idiom);
+    await p.waitForSelector('.order-slots .big-check');
+    await p.click('.btn-next:not([hidden])');
+  }
+  await p.click('.step-go');
+  /* 放進句子：把成語拖到適合的句子上 */
+  for (let k = 0; k < W.idioms.filter(x => x.fill).length; k++) {
+    await p.waitForSelector('.drag-chip');
+    const chip = await p.textContent('.drag-chip');
+    const it = W.idioms.find(x => x.idiom === chip);
+    const fi = await p.$$eval('.option', (os, a) => os.findIndex(o => o.querySelector('.option-text').textContent === a), it.fill.options[0]);
+    const a = await (await p.$('.drag-chip')).boundingBox(), b = await (await p.$(`.option[data-index="${fi}"]`)).boundingBox();
+    await p.mouse.move(a.x + 20, a.y + 10); await p.mouse.down();
+    await p.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 10 }); await p.mouse.up();
+    await p.waitForSelector('.option.is-correct');
+    await p.click('.btn-next:not([hidden])');
+  }
+  await p.click('.step-go');
   for (let k = 0; k < 6; k++) {
     await p.waitForSelector('.option:not(:disabled)');
     const t = await p.textContent('.prompt h2');
@@ -94,6 +103,16 @@ test('生字變成語：排錯會提示、可以拿回字，排對再做情境�
     const idx = await p.$$eval('.option', (os, a) => os.findIndex(o => o.querySelector('.option-text').textContent === a), it.idiom);
     await p.click(`.option[data-index="${idx}"]`);
     await p.click('.btn-next:not([hidden])');
+  }
+  await p.click('.step-go');
+  for (let round = 0; round < 3; round++) {
+    await p.waitForSelector('.match-col.left .match-card:not(:disabled)');
+    for (const id of await p.$$eval('.match-col.left .match-card', cs => cs.map(c => c.dataset.id))) {
+      await p.click(`.match-col.left [data-id="${id}"]`); await p.click(`.match-col.right [data-id="${id}"]`);
+    }
+    await p.waitForSelector('.match-board .big-check');
+    await p.click('.btn-next:not([hidden])');
+    if (await p.$('.result')) break;
   }
   await p.waitForSelector('.result');
   assert.deepEqual(p.errors, []);

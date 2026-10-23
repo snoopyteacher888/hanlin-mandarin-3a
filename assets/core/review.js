@@ -1,4 +1,6 @@
-/* 錯題複習：隔一個日曆日才出現，在複習中連續 2 次第一次就答對才移除 */
+/* 錯題複習：答錯馬上記下來，馬上就可以複習；在複習中連續 2 次第一次就答對才移除。
+   每個學生各自一份（存在自己的裝置上）。題目 id 前面加課次（L07|h-鹹），不同課的 id 才不會撞在一起；
+   舊資料沒有課次的，當作第 6 課 */
 (function (root, factory) {
   var m = factory();
   if (typeof module === 'object' && module.exports) module.exports = m;
@@ -20,7 +22,15 @@
     else q[qid] = { last: today, streak: streak };
     return q;
   }
+  function key(lessonId, qid) { return lessonId + '|' + qid; }
+  /* 這一課要複習的題目：回傳 [{ key, q }] */
+  function forLesson(queue, lessonId) {
+    return Object.keys(queue).map(function (k) {
+      var at = k.indexOf('|');
+      return at < 0 ? { key: k, lesson: 'L06', q: k } : { key: k, lesson: k.slice(0, at), q: k.slice(at + 1) };
+    }).filter(function (x) { return x.lesson === lessonId; });
+  }
   function pad(n) { return (n < 10 ? '0' : '') + n; }
   function todayStr(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
-  return { addMiss: addMiss, due: due, recordReview: recordReview, todayStr: todayStr };
+  return { addMiss: addMiss, due: due, key: key, forLesson: forLesson, recordReview: recordReview, todayStr: todayStr };
 });

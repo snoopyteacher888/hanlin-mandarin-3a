@@ -43,9 +43,9 @@ async function page() {
 
 
 
-test('部件組字：選出缺的部件，部首念名稱', async () => {
-  const p = await page(); await p.goto(BASE + '#/L06/challenge?s=bear');
-  await p.click('[data-game="build"]');
+test('組合字（生字第 3 步）：選出缺的那一塊，做完接改錯字', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/hanzi?step=build&s=bear');
+  assert.match(await p.textContent('.step-tab.now'), /組合字/);
   await p.waitForSelector('.btn-next:not([hidden])'); await p.click('.btn-next:not([hidden])');
   const list = W.hanzi.filter(x => x.build);
   for (let i = 0; i < list.length; i++) {
@@ -53,9 +53,9 @@ test('部件組字：選出缺的部件，部首念名稱', async () => {
     const t = await p.textContent('.prompt h2');
     const hz = list.find(x => t.startsWith(x.char));
     assert.ok(hz, t);
-    if (i === 0) { await p.waitForTimeout(200); assert.ok(!(await p.evaluate(() => window.__spoken.join('|'))).includes('會變成'), '部件組字不自動念題目'); }
+    if (i === 0) { await p.waitForTimeout(200); assert.ok(!(await p.evaluate(() => window.__spoken.join('|'))).includes('會變成'), '組合字不自動念題目'); }
     if (i === 0) {
-      /* 錯一次：提示不說答案 */
+      /* 錯一次：提示不說答案，而且馬上記進錯題複習 */
       const wrong = await p.$$eval('.option', (os, a) => os.findIndex(o => o.querySelector('.option-text').textContent !== a), hz.build.answer);
       await p.click(`.option[data-index="${wrong}"]`);
       await p.waitForSelector('.feedback.hint');
@@ -63,14 +63,22 @@ test('部件組字：選出缺的部件，部首念名稱', async () => {
     }
     const idx = await p.$$eval('.option', (os, a) => os.findIndex(o => o.querySelector('.option-text').textContent === a), hz.build.answer);
     await p.click(`.option[data-index="${idx}"]`);
+    if (i === 0) {
+      const q = await p.evaluate(() => JSON.parse(localStorage.getItem('h3a.review.bear') || '{}'));
+      assert.ok(q['L06|b-' + hz.char], JSON.stringify(q));
+    }
     await p.click('.btn-next:not([hidden])');
   }
-  await p.waitForSelector('.result');
+  await p.waitForSelector('.step-done');
+  assert.match(await p.textContent('.step-tab[data-step="build"]'), /✓/);
+  await p.click('.step-go');
+  assert.match(await p.textContent('.step-tab.now'), /改錯字/);
+  await p.waitForSelector('.fix-char');
   assert.deepEqual(p.errors, []);
 });
 
-test('翻牌配對：翻錯會蓋回去，全部配對完看結果', async () => {
-  const p = await page(); await p.goto(BASE + '#/L06/challenge?p=memory&s=bear');
+test('翻牌配對（語詞最後一步）：翻錯會蓋回去，全部配對完看結果', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/vocab?step=memory&s=bear');
   for (let round = 0; round < 5; round++) {
     await p.waitForSelector('.mem-card');
     if (round === 0) {
@@ -87,8 +95,42 @@ test('翻牌配對：翻錯會蓋回去，全部配對完看結果', async () =>
     await p.waitForSelector('.btn-next:not([hidden])');
     const label = await p.textContent('.btn-next:not([hidden])');
     await p.click('.btn-next:not([hidden])');
-    if (label.includes('看結果')) break;
+    if (label.includes('完成')) break;
   }
   await p.waitForSelector('.result');
+  /* 翻錯的兩張都進錯題複習 */
+  const q = await p.evaluate(() => JSON.parse(localStorage.getItem('h3a.review.bear') || '{}'));
+  assert.equal(Object.keys(q).filter(k => k.startsWith('L06|')).length, 2);
+  assert.deepEqual(p.errors, []);
+});
+
+test('圖片配對：拖圖到語詞上，拖錯會提示', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/vocab?step=picmatch&s=bear');
+  for (let round = 0; round < 5; round++) {
+    await p.waitForSelector('.match-col.left .match-card:not(:disabled)');
+    const ids = await p.$$eval('.match-col.left .match-card', cs => cs.map(c => c.dataset.id));
+    if (round === 0) {
+      /* 用滑鼠真的拖：先拖錯一次 */
+      const drag = async (from, to) => {
+        const a = await p.$(from), b = await p.$(to);
+        const ra = await a.boundingBox(), rb = await b.boundingBox();
+        await p.mouse.move(ra.x + ra.width / 2, ra.y + ra.height / 2); await p.mouse.down();
+        await p.mouse.move(ra.x + 30, ra.y + 30, { steps: 4 });
+        await p.mouse.move(rb.x + rb.width / 2, rb.y + rb.height / 2, { steps: 8 }); await p.mouse.up();
+      };
+      await drag(`.match-col.left [data-id="${ids[0]}"]`, `.match-col.right [data-id="${ids[1]}"]`);
+      await p.waitForSelector('.feedback.hint');
+      await drag(`.match-col.left [data-id="${ids[0]}"]`, `.match-col.right [data-id="${ids[0]}"]`);
+      await p.waitForSelector(`.match-col.right [data-id="${ids[0]}"].matched`);
+    }
+    for (const id of ids) {
+      if (await p.$eval(`.match-col.left [data-id="${id}"]`, e => e.disabled)) continue;
+      await p.click(`.match-col.left [data-id="${id}"]`); await p.click(`.match-col.right [data-id="${id}"]`);
+    }
+    await p.waitForSelector('.match-board .big-check');
+    await p.click('.btn-next:not([hidden])');
+    if (await p.$('.step-done')) break;
+  }
+  await p.waitForSelector('.step-done');
   assert.deepEqual(p.errors, []);
 });

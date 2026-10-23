@@ -69,7 +69,7 @@ test('理解提問：選擇題做完，最後說想法，送給老師批改', as
   assert.deepEqual(p.errors, []);
 });
 
-test('生字語詞：先認識，再看句子選語詞，十四個生字都練到', async () => {
+test('生字語詞：翻翻卡、拖詞填空、意思配對，十四個生字都練到', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/charword?s=bear');
   const seen = [];
   for (let half = 0; half < 2; half++) {
@@ -83,18 +83,29 @@ test('生字語詞：先認識，再看句子選語詞，十四個生字都練�
     }
     assert.equal(await p.$$eval('.flip-card.flipped', x => x.length), cards.length);
     await p.click('.btn-next:not([hidden])');
-    for (let i = 0; i < 7; i++) {
-      await p.waitForSelector('.option:not(:disabled)');
-      const t = await p.textContent('.prompt h2');
-      const c = W.charwords.find(x => x.example === t);
-      assert.ok(c, '找不到題目 ' + t);
-      assert.equal(await p.$$eval('.option .char-mark', x => x.length), 4);
-      const idx = await p.$$eval('.option', (os, w) => os.findIndex(o => o.querySelector('.option-text').textContent === w), c.word);
-      await p.click(`.option[data-index="${idx}"]`);
-      await p.click('.btn-next:not([hidden])');
+  }
+  assert.equal(seen.join(''), W.hanzi.map(h => h.char).join(''));
+  await p.click('.step-go');
+  for (let i = 0; i < W.charwords.length; i++) {
+    await p.waitForSelector('.drag-tile:not(:disabled)');
+    const t = (await p.textContent('.prompt h2')).replace('　', '＿');
+    const c = W.charwords.find(x => x.example.replace(/＿+/, '＿') === t);
+    assert.ok(c, '找不到題目 ' + t);
+    const idx = await p.$$eval('.option', (os, w) => os.findIndex(o => o.querySelector('.option-text').textContent === w), c.word);
+    await p.click(`.option[data-index="${idx}"]`);
+    assert.equal(await p.textContent('.drop-slot.filled'), c.word);
+    await p.click('.btn-next:not([hidden])');
+  }
+  await p.click('.step-go');
+  for (let round = 0; round < 6; round++) {
+    await p.waitForSelector('.match-col.left .match-card:not(:disabled)');
+    for (const id of await p.$$eval('.match-col.left .match-card', cs => cs.map(c => c.dataset.id))) {
+      await p.click(`.match-col.left [data-id="${id}"]`); await p.click(`.match-col.right [data-id="${id}"]`);
     }
+    await p.waitForSelector('.match-board .big-check');
+    await p.click('.btn-next:not([hidden])');
+    if (await p.$('.result')) break;
   }
   await p.waitForSelector('.result');
-  assert.equal(seen.join(''), W.hanzi.map(h => h.char).join(''));
   assert.deepEqual(p.errors, []);
 });

@@ -18,7 +18,7 @@
       var v = decodeURIComponent(i >= 0 ? kv.slice(i + 1) : '');
       if (k === 's') params.s = v;
       else if (k === 'auto') params.auto = v === '1';
-      else if ((k === 'p' || k === 'retry') && /^[a-z0-9-]{1,20}$/.test(v)) params[k] = v;
+      else if ((k === 'p' || k === 'retry' || k === 'step') && /^[a-z0-9-]{1,20}$/.test(v)) params[k] = v;
     });
     return { path: path, params: params };
   }

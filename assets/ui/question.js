@@ -71,7 +71,7 @@
     function show() {
       var q = questions[idx];
       if (q.type === 'learn') return showLearn(q);
-      var speak = q.type === 'speak' || q.type === 'order' || q.type === 'fix';
+      var speak = q.type === 'speak' || q.type === 'order' || q.type === 'fix' || q.type === 'match';
       var hs = speak ? null : H3A.hints.create(q.options.length, q.answer);
       var hints = speak ? q.hints : q.hints || (ctx.lesson && q.evidence ? H3A.wordq.readingHints(ctx.lesson, q) : null) ||
         { h1: { text: '再想想看。' }, h2: { text: '再仔細看一次題目。' }, teach: { text: '答案是「' + q.options[q.answer].text + '」。' } };
@@ -87,12 +87,19 @@
       } }, idx + 1 < questions.length ? '下一題 ▶' : '看結果 ▶');
       var feedback = h('div', { class: 'feedback', role: 'status' });
 
+      var recorded = false;
       function done(result, wrongTexts, extra) {
         locked = true;
-        if (items.length && items[items.length - 1].q === q.id && items.length === idx + 1) return;
-        var item = { q: q.id, result: result, wrong: wrongTexts };
-        if (extra) { item.said = extra.said; item.status = extra.status; }
-        items.push(item);
+        if (recorded) return;
+        recorded = true;
+        /* 配對遊戲一題有好幾對，每一對各記一筆 */
+        var list = extra && extra.items ? extra.items : [{ q: q.id, result: result, wrong: wrongTexts }];
+        if (extra && !extra.items) { list[0].said = extra.said; list[0].status = extra.status; }
+        list.forEach(function (item) {
+          items.push(item);
+          /* 錯題馬上記進自己的錯題複習（老師批改的說說看除外） */
+          if (practice && item.result !== 'first' && !item.status && opts.recordMiss !== false) H3A.ui.addMiss(ctx, item.q);
+        });
         buttons.forEach(function (b) { b.disabled = true; });
         if (bulb) bulb.remove();
         nextBtn.hidden = false;
@@ -117,6 +124,7 @@
         if (locked || hs.disabled.indexOf(i) >= 0) return;
         if (i === q.answer) {
           buttons[i].classList.add('is-correct');
+          fillSlot();
           H3A.ui.celebrate(feedback, null, null, buttons[i]);
           revealMarks();
           done(practice ? H3A.hints.result(hs) : (hs.wrongCount ? 'wrong' : 'first'), wrongTexts());
@@ -146,7 +154,7 @@
           if (bulb) bulb.remove();
           buttons.forEach(function (b) { b.disabled = true; });
           buttons[q.answer].classList.add('is-correct');
-          revealMarks();
+          revealMarks(); fillSlot();
           H3A.ui.showTeach(feedback, hints.teach, function () { done('taught', wrongTexts()); nextBtn.click(); });
           return;
         }
@@ -163,11 +171,20 @@
       }
 
       var bulb = practice && !speak ? h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: askHint }, '💡') : null;
-      var grid = h('div', { class: q.type === 'order' ? 'order-area' : q.type === 'fix' ? 'fix-area' : speak ? 'speak-area' : 'options' + (q.list ? ' list' : '') + (q.optionsClass ? ' ' + q.optionsClass : '') });
-      if (q.type === 'fix') H3A.ui.fixQuestion(grid, ctx, q, function (result, wrong) { done(result, wrong); }, feedback);
+      var grid = h('div', { class: q.type === 'order' ? 'order-area' : q.type === 'fix' ? 'fix-area' : q.type === 'match' ? 'match-area' : speak ? 'speak-area' : 'options' + (q.list ? ' list' : '') + (q.optionsClass ? ' ' + q.optionsClass : '') });
+      if (q.type === 'match') H3A.ui.matchQuestion(grid, ctx, q, function (list) { done(null, [], { items: list }); }, feedback);
+      else if (q.type === 'fix') H3A.ui.fixQuestion(grid, ctx, q, function (result, wrong) { done(result, wrong); }, feedback);
       else if (q.type === 'order') H3A.ui.orderQuestion(grid, ctx, q, function (result) { done(result, []); }, feedback);
       else if (speak) H3A.ui.speakQuestion(grid, ctx, q, function (result, extra) { done(result, [], extra); }, feedback);
       else q.options.forEach(function (o, i) {
+        if (q.drag) {
+          /* 拖拉填空：把字（語詞）拖到題目的空格裡；點一下也可以 */
+          var t = h('button', { type: 'button', class: 'option drag-tile' + (o.big ? ' big' : ''), 'data-index': i }, h('span', { class: 'option-text' }, o.text));
+          H3A.ui.dragTo(t, function () { return slot ? [slot] : []; }, function () { pick(i); }, function () { pick(i); });
+          buttons.push(t);
+          grid.appendChild(h('div', { class: 'option-wrap' }, t));
+          return;
+        }
         var b = o.big
           ? h('button', { type: 'button', class: 'option big', 'data-index': i, onclick: function () { pick(i); } }, h('span', { class: 'option-text' }, o.text))
           : h('button', { type: 'button', class: 'option' + (o.img ? '' : ' text-only'), 'data-index': i, onclick: function () { pick(i); } },
@@ -178,13 +195,30 @@
       });
 
       main.appendChild(dots(questions.length, idx));
-      var promptText = h('h2', { hidden: !!q.hideText }, q.hl ? hlWords(q.prompt, q.hl) : q.prompt);
+      var slot = null;
+      var promptText = h('h2', { hidden: !!q.hideText }, q.drag ? withSlot(q.prompt) : q.hl ? hlWords(q.prompt, q.hl) : q.prompt);
+      function withSlot(text) {
+        var m = /＿+/.exec(text);
+        if (!m) return text;
+        slot = h('span', { class: 'drop-slot' }, '　');
+        return [text.slice(0, m.index), slot, text.slice(m.index + m[0].length)];
+      }
+      function fillSlot() { if (slot) { slot.textContent = q.options[q.answer].text; slot.classList.add('filled'); } }
+      /* 拖進句子：把上面的成語拖到適合的那一句（選項是句子） */
+      var chip = null;
+      if (q.dragChip) {
+        chip = h('button', { type: 'button', class: 'drag-chip' }, q.dragChip);
+        H3A.ui.dragTo(chip, function () { return buttons.filter(function (b) { return !b.disabled; }); },
+          function (t) { pick(buttons.indexOf(t)); }, function () { H3A.tts.speak(q.dragChip); });
+      }
       var showBtn = q.hideText ? h('button', { type: 'button', class: 'btn-secondary small-btn', onclick: function () { promptText.hidden = false; showBtn.remove(); } }, '👀 看文字') : null;
       main.appendChild(h('div', { class: 'prompt' + (q.img ? ' with-img' : '') + (q.promptClass ? ' ' + q.promptClass : '') },
         q.img ? h('div', { class: 'prompt-img' }, H3A.ui.picture(ctx.lessonId, q.img, '')) : null,
         q.hideText ? h('span', { class: 'listen-icon', 'aria-hidden': 'true' }, '👂') : null,
         promptText, showBtn, H3A.ui.speaker(q.prompt, q.say), bulb));
+      if (chip) main.appendChild(h('div', { class: 'drag-chip-row' }, chip, h('span', { class: 'drag-chip-tip' }, '👉 拖到適合的句子上')));
       main.appendChild(feedback);
+      if (q.drag) grid.classList.add('drag-opts');
       main.appendChild(grid);
       main.appendChild(h('div', { class: 'next-bar' }, nextBtn));
       /* quiet：視覺提示夠清楚的題目（例如組合字），一開始不自動念題目 */

@@ -28,7 +28,20 @@
     } });
   }
 
+  /* 題目有空格（＿）就改成拖拉填空 */
+  function dragify(q) { if (q && !q.type && /＿/.test(q.prompt)) q.drag = true; return q; }
+  /* 配對遊戲：平均分成幾回，每回最多 per 對；mapper(x) → { id, left, right, say } */
+  function matchRounds(id, prompt, list, per, mapper) {
+    var n = Math.ceil(list.length / per), out = [];
+    for (var i = 0, at = 0; i < n; i++) {
+      var size = Math.ceil((list.length - at) / (n - i));
+      out.push({ type: 'match', id: id + '-' + i, prompt: prompt, pairs: list.slice(at, at + size).map(mapper) });
+      at += size;
+    }
+    return out;
+  }
+
   function missing(main) { main.appendChild(h('p', { class: 'notice' }, '這一課的練習還沒準備好。')); }
 
-  H3A.ui.flow = { learn: learn, sayLine: sayLine, run: runFlow, retry: retrySpeak, missing: missing };
+  H3A.ui.flow = { dragify: dragify, matchRounds: matchRounds, learn: learn, sayLine: sayLine, run: runFlow, retry: retrySpeak, missing: missing };
 })(this);

@@ -1,4 +1,4 @@
-/* 生字語詞：每個生字再學一個語詞。分兩半，每半先認識 7 個語詞，再看句子選語詞 */
+/* 生字語詞：每個生字再學一個語詞。分步驟——翻翻卡、拖詞填空、意思配對 */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow;
   var HALF = 7;
@@ -36,13 +36,20 @@
   H3A.pages.charword = function run(main, ctx) {
     var list = ctx.words && ctx.words.charwords; if (!list) return F.missing(main);
     var chars = ctx.words.hanzi.map(function (x) { return x.char; });
-    var r = H3A.quizgen.rng(Date.now() & 0xffffffff);
-    var qs = [];
-    for (var i = 0; i < list.length; i += HALF) {
-      var part = list.slice(i, i + HALF);
-      qs.push(learnSlide(ctx, part, i / HALF + 1));
-      qs = qs.concat(H3A.quizgen.shuffle(part, r).map(function (c) { return H3A.wordq.charWordQuestion(c, r, chars); }));
-    }
-    F.run(main, ctx, 'charword', qs, function () { run(main, ctx); });
+    H3A.ui.runSteps(main, ctx, 'charword', [
+      { key: 'cards', name: '翻翻卡', say: '點卡片翻過來，看看語詞的意思。', make: function () {
+        var qs = [];
+        for (var i = 0; i < list.length; i += HALF) qs.push(learnSlide(ctx, list.slice(i, i + HALF), i / HALF + 1));
+        return qs;
+      } },
+      { key: 'choose', name: '拖詞填空', say: '把正確的語詞拖到句子的空格裡。', make: function (r) {
+        return H3A.quizgen.shuffle(list, r).map(function (c) { return F.dragify(H3A.wordq.charWordQuestion(c, r, chars)); });
+      } },
+      { key: 'meaning', name: '意思配對', say: '把語詞拖到它的意思上。', make: function (r) {
+        return F.matchRounds('cm', '意思配對：把語詞拖到它的意思上', H3A.quizgen.shuffle(list, r), 4, function (c) {
+          return { id: c.id, left: { text: c.word }, right: { text: c.meaning }, say: c.word };
+        });
+      } }
+    ], function () { run(main, ctx); });
   };
 })(this);
