@@ -49,6 +49,18 @@
         h2: { text: '提示：要找的語詞，意思是「' + c.meaning + '」' },
         teach: { text: '答案是「' + c.word + '」。「' + c.word + '」的意思是：' + c.meaning } } };
   }
+  /* 部件組字：「墨 ＝ 黑 ＋ ？」選出缺的部件。部首念名稱（阝念「耳朵旁」） */
+  var PART_NAME = { '阝': '耳朵旁', '艹': '草字頭', '刂': '立刀旁', '氵': '三點水', '扌': '提手旁', '辶': '辵字旁', '亻': '單人旁' };
+  function partSay(x) { return x === '？' ? '什麼' : PART_NAME[x] || x; }
+  function buildQuestion(hz, r) {
+    var b = hz.build;
+    var order = quizgen.shuffle(b.options, r);
+    var say = b.show.map(partSay).join('，加上') + '，會變成「' + hz.char + '」？';
+    return { id: 'b-' + hz.char, prompt: hz.char + ' ＝ ' + b.show.join(' ＋ '), say: say, autoSay: say, promptClass: 'build-prompt',
+      options: order.map(function (x) { return { text: x, say: PART_NAME[x] || x, big: true }; }), answer: order.indexOf(b.answer),
+      hints: { h1: { text: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？', say: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？' },
+        h2: { text: '提示：' + hz.clue }, teach: { text: hz.story } } };
+  }
   /* 有 frame（例如「真＿糕」）時，選項是整個詞（真糟糕／真槽糕／真遭糕），不一樣的那個字標顏色 */
   function similarQuestion(s, r) {
     var x = s.frame ? framed(s, r) : shuffled(s.options, s.answer, r, { big: true });
@@ -198,6 +210,8 @@
     if ((x = pick(w.hanzi))) return hanziQuestion(x, r);
     if ((x = pick(w.vocab))) return vocabQuestion(x, x.noPic || r() < 0.5 ? 'meaning' : 'pic', r);
     if ((x = pick(w.similar))) return similarQuestion(x, r);
+    var bz = (w.hanzi || []).filter(function (y) { return y.build && 'b-' + y.char === id; })[0];
+    if (bz) return buildQuestion(bz, r);
     if ((x = pick(w.charwords))) return charWordQuestion(x, r, (w.hanzi || []).map(function (y) { return y.char; }));
     if ((x = pick(w.listen))) return listenQuestion(x, r);
     if (w.phrase && (x = pick(w.phrase.pick))) return phrasePickQuestion(x, r);
@@ -217,7 +231,7 @@
     }
     return null;
   }
-  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, charWordQuestion: charWordQuestion, similarQuestion: similarQuestion,
+  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, similarQuestion: similarQuestion,
     listenQuestion: listenQuestion,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
     rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };

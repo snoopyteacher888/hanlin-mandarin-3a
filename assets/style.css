@@ -471,3 +471,19 @@ html.zhuyin .zhuyin { display: none; }
   .parts-row { gap: 4px; }
   .card-sec .hanzi-words { flex-direction: row; }
 }
+
+/* 語詞挑戰 */
+.parts-row.center { justify-content: center; }
+.prompt.build-prompt h2 { font-size: 2.2em; letter-spacing: 0.1em; }
+.round-no { text-align: center; color: var(--ink-soft); margin: 0; }
+.mem-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 900px; margin: 12px auto; }
+.mem-card { aspect-ratio: 1; border-radius: 16px; border: 3px solid #E8CFAE; background: #C98B4E; position: relative; padding: 6px; display: flex; align-items: center; justify-content: center; }
+.mem-back { font-size: 2.4em; }
+.mem-face { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; }
+.mem-face .pic { max-width: 100%; max-height: 100%; }
+.mem-word { font-size: 1.5em; font-weight: 700; }
+.mem-card.open, .mem-card.matched { background: var(--surface); }
+.mem-card.open .mem-back, .mem-card.matched .mem-back { display: none; }
+.mem-card.open .mem-face, .mem-card.matched .mem-face { display: flex; }
+.mem-card.matched { border-color: var(--ok); background: var(--ok-soft); }
+@media (max-width: 600px) { .mem-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; } .mem-word { font-size: 1.1em; } }

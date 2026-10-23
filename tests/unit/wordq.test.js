@@ -168,3 +168,15 @@ test('charWordQuestion：句子選語詞，生字標顏色，提示不說答案'
   assert.ok(q.hints.teach.text.includes(c.word));
   assert.equal(Q.findWordQuestion(W3, c.id, rng(1)).id, c.id);
 });
+
+test('buildQuestion：缺一個部件，部首念名稱，提示不說答案', () => {
+  const W4 = require('../../data/lesson06.words.js');
+  const hz = W4.hanzi.find(x => x.char === '部');
+  const q = Q.buildQuestion(hz, rng(5));
+  assert.equal(q.prompt, '部 ＝ 咅 ＋ ？');
+  assert.equal(q.options[q.answer].text, '阝');
+  assert.equal(q.options[q.answer].say, '耳朵旁');
+  assert.match(q.say, /咅，加上什麼，會變成「部」/);
+  assert.ok(!q.hints.h1.text.includes('阝') && !q.hints.h2.text.includes('阝'));
+  assert.equal(Q.findWordQuestion(W4, 'b-部', rng(1)).id, 'b-部');
+});

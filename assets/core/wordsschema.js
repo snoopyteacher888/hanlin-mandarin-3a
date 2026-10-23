@@ -28,6 +28,12 @@
       opts(h.id, h.options, 4);
       if (Array.isArray(h.options) && h.options[0] !== h.char) errs.push(h.id + ' 的第一個選項要是正確的字');
       if (nonEmpty(h.cloze) && h.cloze.indexOf('＿') < 0) errs.push(h.id + ' 的挖空要有＿');
+      if (h.build) {
+        if (!Array.isArray(h.build.show) || h.build.show.indexOf('？') < 0) errs.push(h.id + ' 的組字要有一個「？」');
+        opts(h.id + ' 的組字', h.build.options, 4);
+        if (Array.isArray(h.build.options) && h.build.options[0] !== h.build.answer) errs.push(h.id + ' 的組字第一個選項要是答案');
+        if ((h.clue || '').indexOf(h.build.answer) >= 0 && h.build.answer.length === 1 && /[阝艹刂氵扌辶亻]/.test(h.build.answer)) errs.push(h.id + ' 的線索說出了答案');
+      }
       /* 生字卡的拆一拆、例句（可以沒有；有的話要完整） */
       if (h.story !== undefined || h.parts !== undefined || h.sentence !== undefined) {
         if (!nonEmpty(h.story) || !Array.isArray(h.parts) || !h.parts.length) errs.push(h.id + ' 的拆一拆要有 parts 和 story');
