@@ -47,6 +47,7 @@
       if (!nonEmpty(v.example) || v.example.indexOf('＿') < 0) errs.push(v.id + ' 的例句要有＿');
       opts(v.id, v.options, 4);
       if (Array.isArray(v.options) && v.options[0] !== v.word) errs.push(v.id + ' 的第一個選項要是正確的語詞');
+      if (v.clozeOptions) { opts(v.id + ' 的挖空選項', v.clozeOptions, 4); if (v.clozeOptions[0] !== v.word) errs.push(v.id + ' 的挖空選項第一個要是答案'); }
       /* 挖空題的提示是意思，意思裡不能有語詞的字 */
       if (v.cloze && nonEmpty(v.word) && v.word.split('').some(function (c) { return (v.meaning || '').indexOf(c) >= 0; })) errs.push(v.id + ' 的意思裡有答案的字');
     });

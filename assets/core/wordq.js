@@ -31,7 +31,8 @@
     return v.noPic || alt ? 'meaning' : 'pic';
   }
   function vocabQuestion(v, kind, r) {
-    var s = shuffled(v.options, v.word, r, {});
+    /* 挖空題用容易混淆的同類詞當選項（clozeOptions） */
+    var s = shuffled(kind === 'cloze' && v.clozeOptions ? v.clozeOptions : v.options, v.word, r, {});
     var q = { id: v.id, options: s.options, answer: s.answer };
     var teach = { text: '答案是「' + v.word + '」，意思是：' + v.meaning };
     var h2 = { text: '提示：' + v.example, say: '提示：' + v.example.replace(/＿+/, '什麼') };

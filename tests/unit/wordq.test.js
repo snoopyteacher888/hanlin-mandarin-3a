@@ -212,6 +212,7 @@ test('抽象的語詞用例句挖空，提示給意思', () => {
   assert.equal(Q.vocabKind(v, 0), 'cloze');
   const q = Q.vocabQuestion(v, 'cloze', rng(2));
   assert.equal(q.prompt, v.example); assert.equal(q.options[q.answer].text, '部分');
+  assert.deepEqual(q.options.map(o => o.text).sort(), [...v.clozeOptions].sort());
   assert.ok(q.hints.h1.text.includes(v.meaning)); assert.ok(!q.hints.h1.text.includes('部分'));
   assert.equal(Q.vocabKind(W6.vocab.find(x => x.word === '石墨'), 0), 'pic');
 });
