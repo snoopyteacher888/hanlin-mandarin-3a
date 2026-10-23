@@ -172,7 +172,9 @@
       main.appendChild(feedback);
       main.appendChild(grid);
       main.appendChild(h('div', { class: 'next-bar' }, nextBtn));
-      if (q.autoSay) H3A.tts.speak(q.autoSay);
+      /* quiet：視覺提示夠清楚的題目（例如部件組字），一開始不自動念題目 */
+      if (q.quiet) { /* 不自動念，要聽可以按 🔊 */ }
+      else if (q.autoSay) H3A.tts.speak(q.autoSay);
       else if (ctx.auto) H3A.tts.speak(q.prompt, q.say);
     }
     /* 認識頁：只看、只聽，不算分；按「下一步 ▶」繼續 */

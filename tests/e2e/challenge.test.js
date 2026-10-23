@@ -53,6 +53,7 @@ test('部件組字：選出缺的部件，部首念名稱', async () => {
     const t = await p.textContent('.prompt h2');
     const hz = list.find(x => t.startsWith(x.char));
     assert.ok(hz, t);
+    if (i === 0) { await p.waitForTimeout(200); assert.ok(!(await p.evaluate(() => window.__spoken.join('|'))).includes('會變成'), '部件組字不自動念題目'); }
     if (i === 0) {
       /* 錯一次：提示不說答案 */
       const wrong = await p.$$eval('.option', (os, a) => os.findIndex(o => o.querySelector('.option-text').textContent !== a), hz.build.answer);

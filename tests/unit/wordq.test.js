@@ -177,6 +177,7 @@ test('buildQuestion：缺一個部件，部首念名稱，提示不說答案', (
   assert.equal(q.options[q.answer].text, '阝');
   assert.equal(q.options[q.answer].say, '耳朵旁');
   assert.match(q.say, /咅，加上什麼，會變成「部」/);
+  assert.equal(q.quiet, true); assert.equal(q.autoSay, undefined);
   assert.ok(!q.hints.h1.text.includes('阝') && !q.hints.h2.text.includes('阝'));
   assert.equal(Q.findWordQuestion(W4, 'b-部', rng(1)).id, 'b-部');
 });
