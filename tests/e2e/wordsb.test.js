@@ -144,7 +144,7 @@ test('pattern five steps finish', async () => {
 test('rhetoric wrong shows hint', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/rhetoric?s=bear');
   for (let i = 0; i < 4; i++) await nextLearn(p);
-  await p.waitForSelector('.option .option-icon');
+  await p.waitForSelector('.option'); assert.equal(await p.$('.option-icon'), null);
   const wrong = await p.evaluate(c => {
     const t = document.querySelector('.prompt h2').textContent;
     return [...document.querySelectorAll('.option')].findIndex(o => !(c[t] || []).includes(o.querySelector('.option-text').textContent));

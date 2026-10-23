@@ -341,8 +341,9 @@ html.zhuyin .zhuyin { display: none; }
 .part-role { font-size: .55em; font-weight: 400; color: #6b5a4a; }
 .conj-word { color: #C2410C; font-weight: 700; background: #FFE8CC; border-radius: 6px; padding: 0 3px; }
 .rhetoric-card h3 { font-size: 2em; margin: 0; display: flex; align-items: center; gap: 8px; }
-.rhetoric-head { display: flex; align-items: center; gap: 16px; }
-.rhetoric-icon { font-size: 3em; line-height: 1; }
+.rhetoric-card { gap: 6px; }
+.learn-label { margin: 10px 0 0; font-weight: 700; color: #6b5a4a; align-self: flex-start; max-width: 900px; width: 100%; }
+.rhetoric-card .learn-line.example { width: 100%; box-sizing: border-box; justify-content: space-between; }
 .learn-word { cursor: default; }
 .option-icon { font-size: 2.2em; line-height: 1; }
 

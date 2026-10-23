@@ -28,3 +28,7 @@ test('batch B polyphones', () => {
   assert.equal(mark('吹得斷裂'), '吹得' + V(1) + '斷裂');
   assert.equal(mark('笑得甜甜的'), '笑得' + V(1) + '甜甜的');
 });
+test('吵得 理得 use neutral 得', () => {
+  assert.equal(mark('吵得像'), '吵得' + V(1) + '像');
+  assert.equal(mark('整理得乾乾淨淨'), '整理得' + V(1) + '乾乾淨淨');
+});

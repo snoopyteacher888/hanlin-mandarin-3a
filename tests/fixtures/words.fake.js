@@ -18,8 +18,8 @@ module.exports = {
     half: [{ id: 'pt-zy-h1', front: '只要我每天練習，', clue: '提示：每天練習以後，會變得怎麼樣？', model: '就會越來越厲害' }],
     whole: [{ id: 'pt-zy-w1', clue: '提示：先說要做什麼事，再說會有什麼好結果。', model: '只要我早點睡覺，就能早點起床。' }] }],
   rhetoric: {
-    cards: [{ name: '擬人', icon: '🧑', meaning: '把東西寫得像人一樣', example: '木板要幫忙' }, { name: '譬喻', icon: '🔁', meaning: '把一樣東西比成另一樣東西', example: '筆芯三明治' },
-      { name: '疊字', icon: '👯', meaning: '同一個字重複用', example: '閃亮亮' }, { name: '設問', icon: '❓', meaning: '用問句引起你的好奇', example: '想不想知道呢？' }],
+    cards: [{ name: '擬人', meaning: '把東西寫得像人一樣', example: '木板要幫忙' }, { name: '譬喻', meaning: '把一樣東西比成另一樣東西', example: '筆芯三明治' },
+      { name: '疊字', meaning: '同一個字重複用', example: '閃亮亮' }, { name: '設問', meaning: '用問句引起你的好奇', example: '想不想知道呢？' }],
     quiz: [{ id: 'rh1', sentence: '小杯子笑著說：「快來喝水吧！」', answer: '擬人', clue: '提示：杯子會不會笑、會不會說話？', explain: '答案是「擬人」，杯子不會笑也不會說話，這句把杯子寫得像人一樣。' }]
   }
 };

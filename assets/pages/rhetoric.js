@@ -5,12 +5,13 @@
   function cardSlide(c) {
     return F.learn('認識修辭：' + c.name, function () {
       return h('div', { class: 'learn-box rhetoric-card' },
-        h('div', { class: 'rhetoric-head' },
-          h('span', { class: 'rhetoric-icon', 'aria-hidden': 'true' }, c.icon),
-          h('h3', {}, c.name, H3A.ui.speaker(c.name, null))),
+        h('h3', {}, c.name, H3A.ui.speaker(c.name, null)),
         F.sayLine(c.meaning),
-        F.sayLine(c.example, 'example'));
-    }, c.name + '。' + c.meaning + c.example);
+        h('p', { class: 'learn-label' }, '📖 課文裡'),
+        F.sayLine(c.example, 'example'),
+        h('p', { class: 'learn-label' }, '🏠 生活中'),
+        (c.life || []).map(function (e) { return F.sayLine(e, 'example'); }));
+    }, c.name + '。' + c.meaning);
   }
 
   H3A.pages.rhetoric = function run(main, ctx) {

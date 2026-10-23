@@ -60,9 +60,9 @@ test('conj question: blanks spoken as 什麼', () => {
   const q = Q.conjQuestion(W.pattern[0].conj[0], rng(5));
   assert.equal(q.options[q.answer].text, '只要……就……'); assert.ok(!q.say.includes('＿')); assert.ok(!leaks(q));
 });
-test('rhetoric options carry icons', () => {
+test('rhetoric options are plain text', () => {
   const q = Q.rhetoricQuestion(W.rhetoric.quiz[0], W.rhetoric.cards, rng(6));
-  assert.equal(q.options.length, 4); assert.ok(q.options.every(o => o.icon));
+  assert.equal(q.options.length, 4); assert.ok(q.options.every(o => !o.icon && !o.img));
   assert.equal(q.options[q.answer].text, '擬人'); assert.equal(q.autoSay, W.rhetoric.quiz[0].sentence); assert.ok(!leaks(q));
 });
 test('speak question has rule and hints', () => {

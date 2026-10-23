@@ -51,3 +51,11 @@ test('batch B text has no textbook sentence', () => {
   const all = JSON.stringify([W.phrase, W.pattern, W.rhetoric.quiz]);
   ['直接拿筆芯來書寫', '輕輕的按一按', '一道道的凹槽', '幫忙解決問題了'].forEach(t => assert.ok(!all.includes(t), t));
 });
+
+test('rhetoric cards have no icon and three life examples each', () => {
+  const quiz = W.rhetoric.quiz.map(q => q.sentence);
+  for (const c of W.rhetoric.cards) {
+    assert.ok(!c.icon, c.name); assert.equal(c.life.length, 3, c.name);
+    c.life.forEach(e => assert.ok(!quiz.includes(e), e));
+  }
+});

@@ -88,7 +88,7 @@
   function rhetoricQuestion(x, cards, r) {
     var order = quizgen.shuffle(cards, r);
     return { id: x.id, prompt: '「' + x.sentence + '」用了什麼修辭？', say: x.sentence + '。這句話用了什麼修辭？', autoSay: x.sentence,
-      options: order.map(function (c) { return { text: c.name, icon: c.icon }; }),
+      options: order.map(function (c) { return { text: c.name }; }),
       answer: order.map(function (c) { return c.name; }).indexOf(x.answer),
       hints: { h1: { text: '想一想：這句話是把東西寫得像人、把東西比成別的東西、有重複的字，還是用問句？' }, h2: { text: x.clue }, teach: { text: x.explain } } };
   }
