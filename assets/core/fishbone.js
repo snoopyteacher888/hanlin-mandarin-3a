@@ -14,7 +14,7 @@
 
   function createBone(map, boneId, placed) {
     return { bone: boneId, all: allCards(map).map(function (c) { return c.id; }), placed: placed.slice(),
-      needed: bone(map, boneId).cards.map(function (c) { return c.id; }), disabled: [], wrongCount: 0, wrongPicked: [] };
+      needed: bone(map, boneId).cards.map(function (c) { return c.id; }), disabled: [], wrongCount: 0, wrongPicked: [], level: 0 };
   }
   function enabledCards(map, s) {
     return s.all.filter(function (id) {
@@ -23,7 +23,7 @@
   }
   function copy(s) {
     return { bone: s.bone, all: s.all, placed: s.placed.slice(), needed: s.needed.slice(), disabled: s.disabled.slice(),
-      wrongCount: s.wrongCount, wrongPicked: s.wrongPicked.slice() };
+      wrongCount: s.wrongCount, wrongPicked: s.wrongPicked.slice(), level: s.level || 0 };
   }
   function pick(s, id, rng) {
     if (s.placed.indexOf(id) >= 0 || s.disabled.indexOf(id) >= 0) return { state: s, outcome: 'ignored', boneDone: false };
@@ -34,12 +34,16 @@
       return { state: n, outcome: 'correct', boneDone: n.needed.length === 0 };
     }
     n.wrongCount++;
+    n.level++;
     n.wrongPicked.push(id);
     n.disabled.push(id);
     return { state: n, outcome: 'wrong', boneDone: false };
   }
-  function result(s) { return s.wrongCount === 0 ? 'first' : s.wrongCount === 1 ? 'hint1' : s.wrongCount === 2 ? 'hint2' : 'taught'; }
-  function mustTeach(s) { return s.wrongCount >= 3; }
+  /* 提示層級：放錯一次或自己按 💡 一次，都往上一層；第 3 層「老師教你」 */
+  function askHint(s) { var n = copy(s); n.level++; return n; }
+  function lv(s) { return s.level === undefined ? s.wrongCount : s.level; }
+  function result(s) { var n = lv(s); return n === 0 ? 'first' : n === 1 ? 'hint1' : n === 2 ? 'hint2' : 'taught'; }
+  function mustTeach(s) { return lv(s) >= 3; }
   function wrongTexts(map, s) { return s.wrongPicked.map(function (id) { return card(map, id).text; }); }
 
   /* 錯題複習用：把一根骨頭變成選擇題 */
@@ -54,5 +58,5 @@
       answer: opts.indexOf(right), evidence: b.evidence };
   }
   return { allCards: allCards, bone: bone, card: card, createBone: createBone, enabledCards: enabledCards,
-    pick: pick, result: result, mustTeach: mustTeach, wrongTexts: wrongTexts, boneQuestion: boneQuestion };
+    pick: pick, askHint: askHint, result: result, mustTeach: mustTeach, wrongTexts: wrongTexts, boneQuestion: boneQuestion };
 });

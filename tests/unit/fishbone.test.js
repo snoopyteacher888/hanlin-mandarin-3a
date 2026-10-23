@@ -51,3 +51,13 @@ test('boneQuestion: one card from the bone plus others', () => {
     assert.ok(q.options.length >= 2 && q.options.length <= 4);
   }
 });
+test('askHint climbs the same ladder as a wrong pick, without disabling cards', () => {
+  const b = lesson.storyMap.bones[0].id;
+  let s = fb.askHint(fb.createBone(lesson.storyMap, b, []));
+  assert.equal(s.level, 1); assert.deepEqual(s.disabled, []); assert.equal(fb.result(s), 'hint1');
+  const wrong = s.all.find(id => s.needed.indexOf(id) < 0);
+  s = fb.pick(s, wrong, Math.random).state;
+  assert.equal(s.level, 2); assert.equal(fb.mustTeach(s), false);
+  s = fb.askHint(s);
+  assert.equal(fb.mustTeach(s), true); assert.equal(fb.result(s), 'taught');
+});

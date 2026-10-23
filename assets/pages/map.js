@@ -34,12 +34,16 @@
     main.appendChild(pool);
     main.appendChild(nextBar);
 
-    function setPrompt(text, say) {
+    var bulb = null;
+    function setPrompt(text, say, onHint) {
       H3A.ui.clear(promptEl);
       promptEl.appendChild(h('h2', { class: 'step-q' }, '👉 ' + text));
       promptEl.appendChild(H3A.ui.speaker(text, say));
+      bulb = onHint ? h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: function () { if (!finished) onHint(); } }, '💡') : null;
+      if (bulb) promptEl.appendChild(bulb);
       if (ctx.auto) H3A.tts.speak(text, say);
     }
+    function dropBulb() { if (bulb) { bulb.remove(); bulb = null; } }
     function ok(text, say) {
       feedback.className = 'feedback ok'; feedback.textContent = '答對了！';
       H3A.sfx.correct(); H3A.tts.speak(text, say);
@@ -55,7 +59,7 @@
       var b = FB.bone(map, steps[stepIdx]);
       bs = FB.createBone(map, b.id, placed);
       Object.keys(boneEls).forEach(function (id) { boneEls[id].classList.toggle('now', id === b.id); });
-      setPrompt(b.prompt, null);
+      setPrompt(b.prompt, null, function () { bs = FB.askHint(bs); boneHint(true); });
       H3A.ui.clear(pool); cardEls = {};
       H3A.quizgen.shuffle(FB.allCards(map), r).forEach(function (c) {
         if (placed.indexOf(c.id) >= 0) return;
@@ -71,6 +75,24 @@
         cardEls[id].classList.toggle('is-off', !on && bs.placed.indexOf(id) < 0);
       });
     }
+    /* 骨頭的提示：放錯（asked=false）或自己按 💡（asked=true）都往上一層 */
+    function boneHint(asked) {
+      var b = FB.bone(map, bs.bone);
+      var loc = H3A.locate.locate(ctx.lesson, b.evidence);
+      var where = loc.paras.length ? '答案在課文第 ' + loc.paras.join('、') + ' 段。' : '';
+      if (FB.mustTeach(bs)) {
+        dropBulb();
+        var left = bs.needed.map(function (nid) { return FB.card(map, nid); });
+        left.forEach(function (c) { if (cardEls[c.id]) cardEls[c.id].classList.add('is-correct', 'pulse'); });
+        H3A.ui.showTeach(feedback, { text: '「' + b.title + '」還要找：' + left.map(function (c) { return '「' + c.text + '」'; }).join('') +
+          '。因為課文說：「' + b.evidence + '」' }, function () { feedback.className = 'feedback'; H3A.ui.clear(feedback); });
+        return;
+      }
+      var lead = asked ? '想想看，哪些卡跟「' + b.title + '」有關？' : '再想想看，這張卡跟「' + b.title + '」有關嗎？';
+      H3A.ui.showHint(feedback, bs.level === 1
+        ? { text: lead + where, para: { paras: loc.paras, sentIds: loc.sentIds, highlight: false } }
+        : { text: '再找找看，注意亮起來的句子。', para: { paras: loc.paras, sentIds: loc.sentIds, highlight: true } }, ctx, asked);
+    }
     function pickCard(id) {
       if (finished) return;
       var b = FB.bone(map, bs.bone);
@@ -80,18 +102,7 @@
       if (res.outcome === 'wrong') {
         var el = cardEls[id]; el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake');
         refreshCards();
-        var loc = H3A.locate.locate(ctx.lesson, b.evidence);
-        var where = loc.paras.length ? '答案在課文第 ' + loc.paras.join('、') + ' 段。' : '';
-        if (FB.mustTeach(bs)) {
-          var left = bs.needed.map(function (nid) { return FB.card(map, nid); });
-          left.forEach(function (c) { if (cardEls[c.id]) cardEls[c.id].classList.add('is-correct', 'pulse'); });
-          H3A.ui.showTeach(feedback, { text: '「' + b.title + '」還要找：' + left.map(function (c) { return '「' + c.text + '」'; }).join('') +
-            '。因為課文說：「' + b.evidence + '」' }, function () { feedback.className = 'feedback'; H3A.ui.clear(feedback); });
-          return;
-        }
-        H3A.ui.showHint(feedback, bs.wrongCount === 1
-          ? { text: '再想想看，這張卡跟「' + b.title + '」有關嗎？' + where, para: { paras: loc.paras, sentIds: loc.sentIds, highlight: false } }
-          : { text: '再找找看，注意亮起來的句子。', para: { paras: loc.paras, sentIds: loc.sentIds, highlight: true } }, ctx);
+        boneHint(false);
         return;
       }
       var c = FB.card(map, id);
@@ -119,12 +130,24 @@
       var q = H3A.quizgen.prepare(t, r);
       tailOrder = q;
       ts = H3A.hints.create(q.options.length, q.answer);
-      setPrompt(q.prompt, q.say);
+      setPrompt(q.prompt, q.say, function () { ts = H3A.hints.askHint(ts); tailHint(true); });
       H3A.ui.clear(pool); cardEls = {};
       q.options.forEach(function (o, i) {
         var wrap = cardButton({ id: 'opt' + i, text: o.text, img: o.img, say: o.say }, function () { pickTail(i); });
         cardEls[i] = wrap.firstChild; pool.appendChild(wrap);
       });
+    }
+    function tailHint(asked) {
+      var q = tailOrder;
+      var th = H3A.wordq.readingHints(ctx.lesson, q);
+      if (H3A.hints.mustTeach(ts)) {
+        dropBulb();
+        Object.keys(cardEls).forEach(function (k) { cardEls[k].disabled = +k !== q.answer; });
+        cardEls[q.answer].classList.add('is-correct', 'pulse');
+        H3A.ui.showTeach(feedback, th.teach, function () { feedback.className = 'feedback'; H3A.ui.clear(feedback); });
+        return;
+      }
+      H3A.ui.showHint(feedback, ts.level === 1 ? th.h1 : th.h2, ctx, asked);
     }
     function pickTail(i) {
       if (finished || ts.disabled.indexOf(i) >= 0) return;
@@ -132,14 +155,7 @@
       if (i !== q.answer) {
         ts = H3A.hints.pickWrong(ts, i);
         ts.disabled.forEach(function (d) { cardEls[d].classList.add('is-off'); cardEls[d].disabled = true; });
-        var th = H3A.wordq.readingHints(ctx.lesson, q);
-        if (H3A.hints.mustTeach(ts)) {
-          Object.keys(cardEls).forEach(function (k) { cardEls[k].disabled = +k !== q.answer; });
-          cardEls[q.answer].classList.add('is-correct', 'pulse');
-          H3A.ui.showTeach(feedback, th.teach, function () { feedback.className = 'feedback'; H3A.ui.clear(feedback); });
-          return;
-        }
-        H3A.ui.showHint(feedback, ts.wrongCount === 1 ? th.h1 : th.h2, ctx);
+        tailHint(false);
         return;
       }
       finished = true;

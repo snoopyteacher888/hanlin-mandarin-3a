@@ -94,6 +94,18 @@ test('fishbone map', async () => {
   assert.deepEqual(p.errors, []);
 });
 
+test('fishbone bulb gives a hint without disabling cards', async () => {
+  const p = await page(); await unlock(p, '#/L06/map?s=cat'); await p.waitForSelector('.map-card');
+  await p.click('.prompt .hint-btn');
+  await p.waitForSelector('.feedback.hint');
+  assert.match(await p.textContent('.feedback.hint'), /哪些卡跟/);
+  assert.equal(await p.$$eval('.map-card.is-off', x => x.length), 0);
+  await p.click('.prompt .hint-btn'); await p.click('.prompt .hint-btn');
+  await p.waitForSelector('.feedback.teach');
+  assert.equal(await p.$('.prompt .hint-btn'), null);
+  assert.deepEqual(p.errors, []);
+});
+
 test('record posted with student from link', async () => {
   const before = submits().length;
   const p = await page(); await unlock(p, '#/L06/quiz?s=bear');
