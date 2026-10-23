@@ -436,3 +436,5 @@ html.zhuyin .zhuyin { display: none; }
 .learn-label-inline { font-weight: 700; color: var(--ink-soft); margin-right: 4px; }
 .line-mark { text-decoration: underline; text-decoration-color: #D9432F; text-decoration-thickness: 3px; text-underline-offset: 6px; }
 .topic-word { color: #C2410C; font-size: 1.3em; margin-left: 4px; }
+/* 說明頁的例句方框：淺棕色（老師要求） */
+.learn-line.example, .pt-sentence { background: #E8D5BE; }
