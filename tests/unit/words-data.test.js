@@ -103,3 +103,7 @@ test('每個生字都出現在課本語詞裡，也各有一個生字語詞', ()
   const chars = W.hanzi.map(h => h.char);
   W.charwords.forEach(c => c.options.forEach(o => assert.ok(chars.some(ch => o.includes(ch)), c.id + ' 的選項「' + o + '」沒有本課生字')));
 });
+
+test('生字卡都有拆一拆、字理和例句', () => {
+  W.hanzi.forEach(h => { assert.ok(h.parts.length && h.story && h.sentence.includes(h.char), h.id); });
+});

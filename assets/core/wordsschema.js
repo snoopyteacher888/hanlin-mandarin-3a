@@ -28,6 +28,11 @@
       opts(h.id, h.options, 4);
       if (Array.isArray(h.options) && h.options[0] !== h.char) errs.push(h.id + ' 的第一個選項要是正確的字');
       if (nonEmpty(h.cloze) && h.cloze.indexOf('＿') < 0) errs.push(h.id + ' 的挖空要有＿');
+      /* 生字卡的拆一拆、例句（可以沒有；有的話要完整） */
+      if (h.story !== undefined || h.parts !== undefined || h.sentence !== undefined) {
+        if (!nonEmpty(h.story) || !Array.isArray(h.parts) || !h.parts.length) errs.push(h.id + ' 的拆一拆要有 parts 和 story');
+        if (!nonEmpty(h.sentence) || h.sentence.indexOf(h.char) < 0) errs.push(h.id + ' 的例句要用到「' + h.char + '」');
+      }
     });
     w.vocab.forEach(function (v) {
       useId(v.id);
