@@ -44,7 +44,7 @@ test('batch B counts', () => {
 });
 test('batch B images exist or are pending', () => {
   const p = W.phrase;
-  const imgs = [p.intro.img, ...p.pick.map(x => x.img), ...p.say.map(x => x.img), ...p.words.map(x => x.img), ...W.pattern.map(x => x.img)];
+  const imgs = [p.intro.img, ...p.pick.map(x => x.img), ...p.say.map(x => x.img), ...p.words.map(x => x.img), ...W.pattern.map(x => x.img), ...W.pattern.flatMap(pt => pt.match.map(m => m.img))];
   for (const f of imgs) assert.ok(imgOk(f), f);
 });
 test('batch B text has no textbook sentence', () => {

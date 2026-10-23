@@ -167,3 +167,15 @@
 | 14 | `test.png` | 單元測驗 |
 | 15 | `build.png` | 部件組字 |
 | 16 | `memory.png` | 翻牌配對 |
+
+## 句型配對（待生成）
+
+放在 `images/L06/`。指令在 `docs/chatgpt-image-prompts-pattern.txt`。
+
+| # | 檔名 | 前半句 |
+|---|---|---|
+| 1 | `pt-press-pencil.png` | 只要你按一下自動鉛筆 |
+| 2 | `pt-sleep-early.png` | 只要每天早點睡覺 |
+| 3 | `pt-skip-breakfast.png` | 如果你不吃早餐 |
+| 4 | `pt-tidy-room.png` | 如果你把房間收拾乾淨 |
+| 5 | `pt-not-focus.png` | 如果你上課不專心 |

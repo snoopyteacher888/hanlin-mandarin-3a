@@ -138,6 +138,7 @@
   function matchQuestion(m, r) {
     var q = first(m, m.front + '……', null, r);
     q.say = m.front;
+    if (m.img) q.img = m.img;
     q.hints = { h1: { text: '想一想，做了前面的事以後，會有什麼結果？' }, h2: { text: m.clue }, teach: { text: m.explain } };
     q.list = true;
     q.promptClass = 'pt-cond'; q.optionsClass = 'pt-res';

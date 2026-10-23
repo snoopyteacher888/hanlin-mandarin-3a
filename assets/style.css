@@ -524,3 +524,4 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .check-wrap.at-option { position: absolute; left: 10px; top: 50%; width: 56px; height: 56px; margin-top: -28px; }
 .check-wrap.at-option .big-check { width: 56px; height: 56px; font-size: 34px; line-height: 56px; box-shadow: 0 3px 0 #1E6B3E; }
 .order-slots .check-wrap.at-option { position: relative; left: auto; top: auto; margin: 0 8px 0 0; }
+.prompt-img:has(.pic-missing) { display: none; }
