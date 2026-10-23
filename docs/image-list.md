@@ -180,7 +180,7 @@
 | 4 | `pt-tidy-room.png` | 如果你把房間收拾乾淨 |
 | 5 | `pt-not-focus.png` | 如果你上課不專心 |
 
-## 成語情境題（待生成）
+## 成語情境題（已完成）
 
 指令在 `docs/chatgpt-image-prompts-idiom.txt`。
 
