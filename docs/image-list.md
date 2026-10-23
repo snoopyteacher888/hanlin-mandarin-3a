@@ -101,3 +101,46 @@
 | 12 | `cw-doctor.png` | 治病 |
 | 13 | `cw-pole.png` | 電線桿 |
 | 14 | `cw-peel.png` | 削皮 |
+
+## 第 7 課（待生成）
+
+放在 `images/L07/`。指令在 `docs/chatgpt-image-prompts-L07.txt`。
+
+| # | 檔名 | 要畫什麼 | 用在 |
+|---|---|---|---|
+| 1 | `salty.png` | 鹹味 | 語詞 |
+| 2 | `blue-sea.png` | 蔚藍 | 語詞 |
+| 3 | `ship-return.png` | 回航 | 語詞 |
+| 4 | `ride-bus.png` | 乘車 | 語詞 |
+| 5 | `sled.png` | 雪橇 | 語詞 |
+| 6 | `slope.png` | 山坡 | 語詞 |
+| 7 | `field.png` | 原野 | 語詞 |
+| 8 | `eyes-closed.png` | 閉上眼睛 | 語詞 |
+| 9 | `deep-breath.png` | 深呼吸 | 語詞 |
+| 10 | `enjoy-view.png` | 欣賞 | 語詞 |
+| 11 | `keep-secret.png` | 瞞 | 語詞 |
+| 12 | `wind.png` | 風（魚頭） | 魚骨圖 |
+| 13 | `snowflake.png` | 冰涼的雪花 | 魚骨圖、短語 |
+| 14 | `roll-grass.png` | 快樂的打滾 | 魚骨圖 |
+| 15 | `candy.png` | 甜甜的糖果味 | 魚骨圖 |
+| 16 | `cold-juice.png` | 冰涼的果汁 | 短語 |
+| 17 | `tree-shade.png` | 涼爽的樹蔭 | 短語 |
+| 18 | `soft-quilt.png` | 柔軟的棉被 | 短語 |
+| 19 | `night-market.png` | 熱鬧的夜市 | 短語 |
+| 20 | `black-hair.png` | 烏黑的頭髮 | 短語 |
+| 21 | `warm-sun.png` | 溫暖的陽光 | 短語 |
+| 22 | `clear-river.png` | 清澈的河水 | 短語 |
+| 23 | `tall-tree.png` | 高大的大樹 | 短語 |
+| 24 | `cw-salted-egg.png` | 鹹蛋 | 生字語詞 |
+| 25 | `cw-blue-sky.png` | 蔚藍天空 | 生字語詞 |
+| 26 | `cw-sailing.png` | 航行 | 生字語詞 |
+| 27 | `cw-times.png` | 乘法 | 生字語詞 |
+| 28 | `cw-dog-sled.png` | 狗拉雪橇 | 生字語詞 |
+| 29 | `cw-ramp.png` | 斜坡 | 生字語詞 |
+| 30 | `cw-picnic.png` | 野餐 | 生字語詞 |
+| 31 | `cw-closed.png` | 關閉 | 生字語詞 |
+| 32 | `cw-deep-pool.png` | 深水區 | 生字語詞 |
+| 33 | `cw-straw.png` | 吸管 | 生字語詞 |
+| 34 | `cw-music.png` | 欣賞音樂 | 生字語詞 |
+| 35 | `cw-moon.png` | 賞月 | 生字語詞 |
+| 36 | `cw-hide-paper.png` | 瞞不了 | 生字語詞 |

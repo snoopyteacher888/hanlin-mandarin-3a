@@ -496,3 +496,9 @@ html.zhuyin .zhuyin { display: none; }
 .order-slot.filled { font-weight: 700; }
 /* 部件組字的選項是部件，不要注音（用一般楷體） */
 html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .option-text { font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", "Noto Serif TC", "Noto Sans TC", serif; }
+
+/* 詩歌：一行一行排；句子裡的換行要保留 */
+.sent { white-space: pre-line; }
+.para.poem .sent, .hint-para .poem .sent { display: block; margin: 0 0 6px; }
+.hint-para .poem .para-no { display: block; }
+.feedback.teach p { white-space: pre-line; }

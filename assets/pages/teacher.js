@@ -38,8 +38,10 @@
 
   function dashboard(main, ctx) {
     H3A.ui.clear(main);
-    var lesson = null;
-    H3A.session.getLesson('L06').then(function (l) { lesson = l; }, function () {});
+    var lessons = {};
+    (root.H3A_LESSONS || []).forEach(function (m) {
+      if (m.open) H3A.session.getLesson(m.id).then(function (l) { lessons[m.id] = l; }, function () {});
+    });
     var fStu = h('select', { class: 'big-select', 'aria-label': '學生' }, h('option', { value: '' }, '全部學生'));
     var fAct = h('select', { class: 'big-select', 'aria-label': '活動' }, h('option', { value: '' }, '全部活動'),
       ['read', 'map', 'quiz', 'review', 'test', 'hanzi', 'vocab', 'charword', 'similar', 'listen', 'phrase', 'pattern', 'rhetoric', 'challenge', 'idiom'].map(function (a) { return h('option', { value: a }, H3A.pages.activityTitle(a)); }));
@@ -102,7 +104,13 @@
       var r = roster.filter(function (x) { return x.id === id; })[0];
       return r ? r.emoji + ' ' + r.name : id;
     }
-    function qText(id) {
+    function qText(id, lessonId) {
+      lessonId = lessonId || 'L06';
+      var lesson = lessons[lessonId];
+      var prefix = lessonId === 'L06' ? '' : '第 ' + parseInt(lessonId.slice(1), 10) + ' 課：';
+      return prefix + qTextIn(id, lesson, lessonId);
+    }
+    function qTextIn(id, lesson, lessonId) {
       if (lesson) {
         var q = lesson.quiz.concat(lesson.testExtra, lesson.talk || []).filter(function (x) { return x.id === id; })[0];
         if (q) return q.prompt;
@@ -111,7 +119,7 @@
         var b = map && map.bones ? map.bones.filter(function (x) { return x.id === id; })[0] : null;
         if (b) return '課文地圖：' + b.title;
       }
-      var w = root.H3A_WORDS && root.H3A_WORDS.L06;
+      var w = root.H3A_WORDS && root.H3A_WORDS[lessonId];
       var wq = w ? H3A.wordq.findWordQuestion(w, id, function () { return 0; }) : null;
       return wq ? wq.prompt : id;
     }
@@ -139,7 +147,7 @@
       missBox.appendChild(h('h2', {}, '最常錯的題目'));
       var top = H3A.dashboard.topMissed(records, 5);
       if (!top.length) missBox.appendChild(h('p', {}, '目前沒有答錯的題目。'));
-      else missBox.appendChild(h('ol', {}, top.map(function (t) { return h('li', {}, qText(t.q) + '　錯 ' + t.count + ' 次'); })));
+      else missBox.appendChild(h('ol', {}, top.map(function (t) { return h('li', {}, qText(t.q, t.lesson) + '　錯 ' + t.count + ' 次'); })));
       H3A.ui.clear(listBox);
       listBox.appendChild(h('h2', {}, '作答紀錄（' + records.length + ' 筆）'));
       if (!records.length) { listBox.appendChild(h('p', {}, '這段時間還沒有紀錄。')); return; }
@@ -148,7 +156,7 @@
       records.forEach(function (r) {
         var detail = h('tr', { class: 'rec-detail', hidden: true }, h('td', { colspan: '6' },
           r.items.length ? h('ul', {}, r.items.map(function (it) {
-            return h('li', {}, qText(it.q) + '：' + (RESULT[it.result] || it.result) + (it.wrong && it.wrong.length ? '（選錯：' + it.wrong.join('、') + '）' : ''));
+            return h('li', {}, qText(it.q, r.lesson) + '：' + (RESULT[it.result] || it.result) + (it.wrong && it.wrong.length ? '（選錯：' + it.wrong.join('、') + '）' : ''));
           })) : '讀完課文', h('p', { class: 'small' }, '花費 ' + Math.floor(r.durationSec / 60) + ' 分 ' + (r.durationSec % 60) + ' 秒')));
         var res = r.score !== null && r.score !== undefined ? r.score + ' 分' : r.activity === 'read' ? '完成' : Math.round(r.firstTryRate * 100) + '%';
         tb.appendChild(h('tr', {},

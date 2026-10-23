@@ -12,7 +12,7 @@
     main.appendChild(h('form', { class: 'panel', onsubmit: function (e) {
       e.preventDefault(); H3A.ui.clear(msg); ok.textContent = '';
       var f = file.files && file.files[0];
-      if (!f) { msg.textContent = '請先選擇原稿檔（lesson06.plain.json）'; return; }
+      if (!f) { msg.textContent = '請先選擇原稿檔（例如 lesson07.plain.json）'; return; }
       if (pw1.value.length < 6) { msg.textContent = '密碼至少 6 個字'; return; }
       if (pw1.value !== pw2.value) { msg.textContent = '兩次輸入的密碼不一樣'; return; }
       btn.disabled = true;

@@ -7,6 +7,14 @@
       { a: 'phrase', icon: '📒' }, { a: 'pattern', icon: '🧩' }, { a: 'rhetoric', icon: '🎨' }, { a: 'challenge', icon: '🎮' }, { a: 'idiom', icon: '📜' }] },
     { title: '🌟 複習與測驗', cards: [{ a: 'review', icon: '🔁' }, { a: 'test', icon: '📝' }] }
   ];
+  /* 字詞活動要用到的資料；這一課沒有就不顯示（例如第 7 課沒有句型） */
+  var NEEDS = { hanzi: 'hanzi', vocab: 'vocab', charword: 'charwords', similar: 'similar', listen: 'listen', phrase: 'phrase',
+    pattern: 'pattern', rhetoric: 'rhetoric', challenge: 'hanzi', idiom: 'idioms' };
+  function hasData(words, a) {
+    var k = NEEDS[a]; if (!k) return true;
+    var v = words && words[k];
+    return !!v && (!Array.isArray(v) || v.length > 0);
+  }
   function starsText(n) { return n ? '⭐'.repeat(n) : ''; }
   H3A.pages.lesson = function (main, ctx) {
     var prog = (H3A.session.progress(ctx.student)[ctx.lessonId]) || {};
@@ -27,6 +35,7 @@
       var grid = h('div', { class: 'activity-grid' });
       sec.cards.forEach(function (c) {
         if (c.a === 'review' && !dueCount) return;
+        if (sec.words && !hasData(ctx.words, c.a)) return;
         var name = H3A.pages.activityTitle(c.a);
         var extra = c.a === 'review' ? dueCount + ' 題' :
           c.a === 'test' && prog.tests && prog.tests.length ? '上次 ' + prog.tests[prog.tests.length - 1].score + ' 分' : starsText(stars[c.a]);

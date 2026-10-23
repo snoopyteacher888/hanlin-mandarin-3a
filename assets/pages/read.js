@@ -42,7 +42,7 @@
         article.appendChild(h('h3', { class: 'read-heading' }, hEl, H3A.ui.speaker(p.heading, null)));
       }
       var first = all.length;
-      var para = h('p', { class: 'para' });
+      var para = h('p', { class: 'para' + (lesson.poem ? ' poem' : '') });
       p.sentences.forEach(function (s) {
         var idx = all.length; all.push(s);
         var span = h('span', { class: 'sent', 'data-sid': s.id });

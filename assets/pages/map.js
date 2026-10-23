@@ -50,7 +50,7 @@
     }
     function cardButton(c, onPick) {
       var b = h('button', { type: 'button', class: 'option map-card', 'data-card': c.id, onclick: function () { onPick(c.id); } },
-        H3A.ui.picture(ctx.lessonId, c.img, c.text), h('span', { class: 'option-text' }, c.text));
+        c.img ? H3A.ui.picture(ctx.lessonId, c.img, c.text) : null, h('span', { class: 'option-text' }, c.text));
       return h('div', { class: 'option-wrap' }, b, H3A.ui.speaker(c.text, c.say));
     }
 

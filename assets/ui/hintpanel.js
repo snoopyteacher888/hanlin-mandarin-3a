@@ -8,7 +8,7 @@
     var texts = [];
     para.paras.forEach(function (n) {
       var p = lesson.paragraphs[n - 1];
-      var line = h('p', {}, h('span', { class: 'para-no' }, '第 ' + n + ' 段'));
+      var line = h('p', { class: lesson.poem ? 'poem' : '' }, h('span', { class: 'para-no' }, '第 ' + n + ' 段'));
       p.sentences.forEach(function (s) {
         texts.push(s.text);
         line.appendChild(h('span', { class: 'sent' + (para.highlight && para.sentIds.indexOf(s.id) >= 0 ? ' glow' : '') }, s.text));

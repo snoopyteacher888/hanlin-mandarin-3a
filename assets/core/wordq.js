@@ -59,14 +59,14 @@
     return { id: 'b-' + hz.char, prompt: hz.char + ' ＝ ' + b.show.join(' ＋ '), say: say, quiet: true, promptClass: 'build-prompt', optionsClass: 'parts-opts',
       options: order.map(function (x) { return { text: x, say: PART_NAME[x] || x, big: true }; }), answer: order.indexOf(b.answer),
       hints: { h1: { text: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？', say: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？' },
-        h2: { text: '提示：' + hz.clue }, teach: { text: hz.story } } };
+        h2: { text: '提示：' + (b.clue || hz.clue) }, teach: { text: hz.story } } };
   }
   /* 生字變成語：排字（把打亂的字排成成語）、情境題（這是哪一個成語？） */
   function idiomOrderQuestion(it, r) {
     var chars = it.idiom.split(''), tiles = chars;
     for (var k = 0; k < 10 && tiles.join('') === it.idiom; k++) tiles = quizgen.shuffle(chars, r);
     var say = '把字排一排，變成成語。意思是：' + it.meaning;
-    return { type: 'order', id: 'io-' + it.idiom, prompt: '「' + it.meaning + '」\n把字排成成語', say: say, autoSay: say,
+    return { type: 'order', id: 'io-' + it.idiom, prompt: '「' + it.meaning + '」', say: say, autoSay: say,
       tiles: tiles, answer: it.idiom, mark: it.char,
       hints: { h1: { text: '本課的生字「' + it.char + '」也在這個成語裡，想想看它排在第幾個。' },
         h2: { text: '提示：第一個字是「' + chars[0] + '」。' },
