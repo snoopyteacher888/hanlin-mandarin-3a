@@ -25,8 +25,9 @@
 
     function show() {
       var q = questions[idx];
-      var hs = H3A.hints.create(q.options.length, q.answer);
-      var hints = q.hints || (ctx.lesson && q.evidence ? H3A.wordq.readingHints(ctx.lesson, q) : null) ||
+      var speak = q.type === 'speak';
+      var hs = speak ? null : H3A.hints.create(q.options.length, q.answer);
+      var hints = speak ? q.hints : q.hints || (ctx.lesson && q.evidence ? H3A.wordq.readingHints(ctx.lesson, q) : null) ||
         { h1: { text: '再想想看。' }, h2: { text: '再仔細看一次題目。' }, teach: { text: '答案是「' + q.options[q.answer].text + '」。' } };
       var locked = false;
       H3A.ui.clear(main);
@@ -40,10 +41,12 @@
       } }, idx + 1 < questions.length ? '下一題 ▶' : '看結果 ▶');
       var feedback = h('div', { class: 'feedback', role: 'status' });
 
-      function done(result, wrongTexts) {
+      function done(result, wrongTexts, extra) {
         locked = true;
         if (items.length && items[items.length - 1].q === q.id && items.length === idx + 1) return;
-        items.push({ q: q.id, result: result, wrong: wrongTexts });
+        var item = { q: q.id, result: result, wrong: wrongTexts };
+        if (extra) { item.said = extra.said; item.status = extra.status; }
+        items.push(item);
         buttons.forEach(function (b) { b.disabled = true; });
         nextBtn.hidden = false;
         nextBtn.focus();
@@ -87,8 +90,9 @@
         H3A.ui.showHint(feedback, hint, ctx);
       }
 
-      var grid = h('div', { class: 'options' });
-      q.options.forEach(function (o, i) {
+      var grid = h('div', { class: speak ? 'speak-area' : 'options' });
+      if (speak) H3A.ui.speakQuestion(grid, ctx, q, function (result, extra) { done(result, [], extra); }, feedback);
+      else q.options.forEach(function (o, i) {
         var b = o.big
           ? h('button', { type: 'button', class: 'option big', 'data-index': i, onclick: function () { pick(i); } }, h('span', { class: 'option-text' }, o.text))
           : h('button', { type: 'button', class: 'option' + (o.img ? '' : ' text-only'), 'data-index': i, onclick: function () { pick(i); } },

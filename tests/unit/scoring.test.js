@@ -11,3 +11,7 @@ test('firstTryRate', () => {
   assert.equal(firstTryRate([]), 0);
 });
 test('testScore', () => { assert.equal(testScore(5, 8), 63); assert.equal(testScore(0, 0), 0); });
+test('pending excluded from first try rate', () => {
+  assert.equal(firstTryRate(['first', 'pending', 'hint1']), 0.5);
+  assert.equal(firstTryRate(['pending', 'pending']), 0);
+});
