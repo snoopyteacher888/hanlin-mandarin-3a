@@ -39,3 +39,15 @@ test('rhetoric level readings', () => {
   assert.equal(mark('小草長在公園'), '小草長' + V(1) + '在公園');
   assert.equal(mark('嘩啦嘩啦'), '嘩' + V(1) + '啦嘩' + V(1) + '啦');
 });
+test('一 before a 4th-tone character is marked 2nd tone (ㄧˊ)', () => {
+  assert.equal(mark('一個'), '一' + V(1) + '個');
+  assert.equal(mark('一樣'), '一' + V(1) + '樣');
+  assert.equal(mark('一道道'), '一' + V(1) + '道道');
+  assert.equal(mark('第一個'), '第一個');
+  assert.equal(mark('十一個'), '十一個');
+  assert.equal(mark('一天'), '一天');
+  assert.equal(mark('統一'), '統一');
+});
+test('reduplicated family words: second character light tone', () => {
+  ['弟弟', '妹妹', '姊姊', '哥哥', '奶奶', '爺爺', '寶寶', '娃娃', '謝謝', '叔叔', '姑姑', '舅舅'].forEach(w => assert.equal(mark(w), w + V(1), w));
+});
