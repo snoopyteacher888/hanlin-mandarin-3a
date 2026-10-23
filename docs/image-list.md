@@ -207,3 +207,16 @@
 | 2 | `hz-ru.png` | L06 入（象形字） |
 | 3 | `hz-cheng.png` | L07 乘（會意字） |
 | 4 | `fix.png` | 改錯字的圖示（放 `images/icons/`） |
+
+## 句型填空（待生成）
+
+指令在 `docs/chatgpt-image-prompts-pattern-fill.txt`，放在 `images/L06/`。
+
+| # | 檔名 | 用在 |
+|---|---|---|
+| 1 | `pt-streetlight.png` | 只要天黑了，路燈就會亮起來 |
+| 2 | `pt-veggies.png` | 只要多吃青菜，身體就會更健康 |
+| 3 | `pt-dance-music.png` | 妹妹只要聽到音樂，就會開心的跳舞 |
+| 4 | `pt-phone-eyes.png` | 如果你一直看手機，眼睛不但會很累，還可能會近視 |
+| 5 | `pt-brush-teeth.png` | 如果你不刷牙，嘴巴不但會臭臭的，牙齒還會蛀牙 |
+| 6 | `pt-chores.png` | 如果你常常幫忙做家事，不但能讓媽媽輕鬆一點，自己還會學到很多本領 |

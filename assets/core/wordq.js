@@ -173,6 +173,30 @@
     q.hl = CONJ_WORDS;
     return q;
   }
+  /* 句型填空：關聯詞（如果、不但、還）印好，其他每一塊挖空，把句子的每一塊拖進對的空格（老師要求） */
+  function patternFillQuestion(c, key, r) {
+    var words = speechcheck.PATTERNS[key], text = c.full, segs = [], rest = text;
+    while (rest) {
+      var best = -1, wd = null;
+      words.forEach(function (k) { var at = rest.indexOf(k); if (at >= 0 && (best < 0 || at < best)) { best = at; wd = k; } });
+      var head = best < 0 ? rest : rest.slice(0, best);
+      head.split(/([，。！？、])/).forEach(function (t) {
+        if (!t) return;
+        segs.push(/^[，。！？、]$/.test(t) ? { text: t, kind: 'punct' } : { text: t, kind: 'blank' });
+      });
+      if (best < 0) break;
+      segs.push({ text: wd, kind: 'conj' });
+      rest = rest.slice(best + wd.length);
+    }
+    var blanks = segs.filter(function (s) { return s.kind === 'blank'; }).map(function (s) { return s.text; });
+    var tiles = blanks.slice();
+    for (var k = 0; k < 10 && tiles.join('|') === blanks.join('|'); k++) tiles = quizgen.shuffle(blanks, r);
+    return { type: 'fill', id: c.id, prompt: '把每一塊拖到對的空格裡，變成一句完整的話。', say: '把每一塊拖到對的空格裡，變成一句完整的話。' + text,
+      img: c.img, segs: segs, tiles: tiles, full: text,
+      hints: { h1: { text: '按喇叭聽一聽整句話，再想想每一塊要放在哪裡。', say: text },
+        h2: { text: '這一塊要放在一閃一閃的格子裡。' },
+        teach: { text: '整句話是：「' + text + '」' } } };
+  }
   /* 把句型例句切成「條件（cond）／結果（res1、res2）」，關聯詞標 conj，給畫面上色用 */
   function patternClauses(text, key) {
     var words = speechcheck.PATTERNS[key], clauses = [], cur = '';
@@ -296,7 +320,7 @@
     }
     for (var i = 0; i < (w.pattern || []).length; i++) {
       if ((x = pick(w.pattern[i].match))) return matchQuestion(x, r);
-      if ((x = pick(w.pattern[i].conj))) return conjQuestion(x, r);
+      if ((x = pick(w.pattern[i].conj))) return x.full ? patternFillQuestion(x, w.pattern[i].key, r) : conjQuestion(x, r);
     }
     if (w.rhetoric && (x = pick(w.rhetoric.quiz))) return rhetoricQuestion(x, w.rhetoric.cards, r);
     for (var j = 0; w.rhetoric && j < w.rhetoric.cards.length; j++) {
@@ -309,5 +333,5 @@
   return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, vocabKind: vocabKind, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion, fixQuestion: fixQuestion,
     listenQuestion: listenQuestion,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
-    rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
+    patternFillQuestion: patternFillQuestion, rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
 });

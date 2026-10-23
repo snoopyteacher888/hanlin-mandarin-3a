@@ -846,3 +846,19 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
   /* 手機上會變成很多行，最後一行不要硬拉開 */
   .learn-line > span { text-align-last: start; }
 }
+
+/* ===== 句型填空：關聯詞印好，其他每一塊拖進空格 ===== */
+.fill-area { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.fill-line { display: flex; align-items: center; gap: 12px; background: var(--surface); border-radius: 18px; padding: 16px 18px; box-shadow: 0 2px 8px rgba(80,60,30,.06); max-width: 100%; }
+.fill-sentence { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 6px; font-size: 1.35em; }
+.fill-conj { font-weight: 700; padding: 2px 6px; }
+.fill-punct { margin: 0 -2px; }
+.fill-slot { min-width: 3em; min-height: 2.2em; }
+.fill-slot.filled { width: auto; padding: 4px 12px; font-size: .9em; color: #1F6B42; }
+.fill-tiles { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+.fill-tile { font-size: 1.25em; font-weight: 700; padding: 10px 18px; min-height: 56px; border-radius: 14px; border: 3px solid #E8CFAE; background: var(--surface); box-shadow: 0 4px 0 #E8CFAE; cursor: grab; }
+.fill-tile.used { visibility: hidden; }
+.fill-tile.flash, .fill-slot.flash { animation: flash 1.2s 2; }
+@media (max-width: 600px) { .fill-sentence { font-size: 1.1em; } .fill-tile { font-size: 1.05em; padding: 8px 12px; } }
+@media (max-width: 600px) { .fill-line { flex-direction: column; } }
+.blank-box.filled { width: auto; height: auto; padding: 0 10px; border-style: solid; border-color: var(--ok); background: #fff; color: #1F6B42; font-weight: 700; }

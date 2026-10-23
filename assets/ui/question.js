@@ -81,7 +81,7 @@
     function show() {
       var q = questions[idx];
       if (q.type === 'learn') return showLearn(q);
-      var speak = q.type === 'speak' || q.type === 'order' || q.type === 'fix' || q.type === 'match';
+      var speak = q.type === 'speak' || q.type === 'order' || q.type === 'fix' || q.type === 'match' || q.type === 'fill';
       var hs = speak ? null : H3A.hints.create(q.options.length, q.answer);
       var hints = speak ? q.hints : q.hints || (ctx.lesson && q.evidence ? H3A.wordq.readingHints(ctx.lesson, q) : null) ||
         { h1: { text: '再想想看。' }, h2: { text: '再仔細看一次題目。' }, teach: { text: '答案是「' + q.options[q.answer].text + '」。' } };
@@ -180,8 +180,9 @@
       }
 
       var bulb = practice && !speak ? h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: askHint }, '💡') : null;
-      var grid = h('div', { class: q.type === 'order' ? 'order-area' : q.type === 'fix' ? 'fix-area' : q.type === 'match' ? 'match-area' : speak ? 'speak-area' : 'options' + (q.list ? ' list' : '') + (q.optionsClass ? ' ' + q.optionsClass : '') });
-      if (q.type === 'match') H3A.ui.matchQuestion(grid, ctx, q, function (list) { done(null, [], { items: list }); }, feedback);
+      var grid = h('div', { class: q.type === 'order' ? 'order-area' : q.type === 'fix' ? 'fix-area' : q.type === 'match' ? 'match-area' : q.type === 'fill' ? 'fill-area' : speak ? 'speak-area' : 'options' + (q.list ? ' list' : '') + (q.optionsClass ? ' ' + q.optionsClass : '') });
+      if (q.type === 'fill') H3A.ui.fillQuestion(grid, ctx, q, function (result, wrong) { done(result, wrong); }, feedback);
+      else if (q.type === 'match') H3A.ui.matchQuestion(grid, ctx, q, function (list) { done(null, [], { items: list }); }, feedback);
       else if (q.type === 'fix') H3A.ui.fixQuestion(grid, ctx, q, function (result, wrong) { done(result, wrong); }, feedback);
       else if (q.type === 'order') H3A.ui.orderQuestion(grid, ctx, q, function (result) { done(result, []); }, feedback);
       else if (speak) H3A.ui.speakQuestion(grid, ctx, q, function (result, extra) { done(result, [], extra); }, feedback);
@@ -220,7 +221,15 @@
         var lines = q.prompt.split('\n'), rest = lines[0].slice(q.headChar.length).trim();
         return [h('span', { class: 'head-char' }, q.headChar), h('span', { class: 'head-tag' }, rest), h('span', { class: 'head-line' }, lines.slice(1).join(''))];
       }
-      function fillSlot() { if (slot) { slot.textContent = q.options[q.answer].text; slot.classList.add('filled'); } }
+      function fillSlot() {
+        if (slot) { slot.textContent = q.options[q.answer].text; slot.classList.add('filled'); }
+        /* 拖進句子：成語放進那一句的方框，上面的成語收起來 */
+        if (chip) {
+          var box = buttons[q.answer].querySelector('.blank-box');
+          if (box) { box.textContent = q.dragChip; box.classList.add('filled'); }
+          if (chip.parentNode) chip.parentNode.remove();
+        }
+      }
       /* 拖進句子：把上面的成語拖到適合的那一句（選項是句子） */
       var chip = null;
       if (q.dragChip) {

@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
-const { start } = require('./server.js');
+const { start, dragTo } = require('./server.js');
 const W = require('../../data/lesson06.words.js');
 const Q = require('../../assets/core/wordq.js');
 
@@ -66,6 +66,18 @@ async function answerChoice(p) {
   await p.click(`.option[data-index="${idx}"]`);
   await p.click('.btn-next:not([hidden])');
 }
+async function fillSlots(p) {
+  await p.waitForSelector('.fill-tile');
+  await p.click('.fill-tile >> nth=0');
+  assert.equal(await p.$$eval('.fill-slot.filled', x => x.length), 0);
+  const n = await p.$$eval('.fill-slot', x => x.length);
+  for (let k = 0; k < n; k++) {
+    const ans = await p.$eval('.fill-slot:not(.filled)', e => e.dataset.answer);
+    await dragTo(p, `.fill-tile[data-text="${ans}"]`, '.fill-slot:not(.filled)');
+    await p.waitForFunction(c => document.querySelectorAll('.fill-slot.filled').length === c, k + 1);
+  }
+  await p.click('.btn-next:not([hidden])');
+}
 async function nextLearn(p) { await p.waitForSelector('text=下一步 ▶'); await p.click('text=下一步 ▶'); }
 async function say(p, text) {
   await p.evaluate(t => window.__sayNext.push(t), text);
@@ -122,7 +134,9 @@ test('pattern five steps finish', async () => {
   await p.waitForSelector('.conj-word');
   assert.deepEqual([...new Set(await p.$$eval('.conj-word', x => x.map(e => e.textContent)))].sort(), ['只要', '就'].sort());
   await nextLearn(p);
-  for (let i = 0; i < 6; i++) await answerChoice(p);
+  for (let i = 0; i < 3; i++) await answerChoice(p);
+  /* 句型填空：關聯詞印好，其他每一塊拖進空格；點一下只會念 */
+  for (let i = 0; i < 3; i++) await fillSlots(p);
   /* 說後半句：前半句已經給了 */
   assert.match(await p.textContent('.speak-front'), /只要我每天練習寫字/);
   await say(p, '我會越寫越漂亮');

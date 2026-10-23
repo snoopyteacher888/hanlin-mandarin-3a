@@ -1,4 +1,4 @@
-/* 句型：先選句型，再走五步：認識 → 前後配對 → 選關聯詞 → 說後半句 → 自己說一整句 */
+/* 句型：先選句型，再走五步：認識 → 前後配對 → 把句子的每一塊拖進空格 → 說後半句 → 自己說一整句 */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow, Q = H3A.wordq;
 
@@ -66,7 +66,7 @@
     var r = H3A.quizgen.rng(Date.now() & 0xffffffff);
     var qs = [introSlide(ctx, pt)]
       .concat(H3A.quizgen.shuffle(pt.match, r).map(function (y) { return Q.matchQuestion(y, r); }))
-      .concat(H3A.quizgen.shuffle(pt.conj, r).map(function (y) { return Q.conjQuestion(y, r); }))
+      .concat(H3A.quizgen.shuffle(pt.conj, r).map(function (y) { return y.full ? Q.patternFillQuestion(y, pt.key, r) : Q.conjQuestion(y, r); }))
       .concat(pt.half.map(function (y) { return halfQ(pt, y); }))
       .concat(pt.whole.map(function (y) { return wholeQ(pt, y); }));
     F.run(main, ctx, 'pattern', qs, function () { run(main, ctx); });
