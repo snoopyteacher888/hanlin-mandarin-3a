@@ -75,3 +75,11 @@ test('得 is light tone by default, even when the next character is in another t
   assert.equal(mark('值得'), '值得');
 });
 test('彷彿 reads ㄈㄤˇ ㄈㄨˊ', () => { assert.equal(mark('彷彿'), '彷' + V(1) + '彿'); });
+test('隨機應變的應念ㄧㄥˋ，到處、重複、背包、發人深省也標對', () => {
+  assert.equal(mark('隨機應變'), '隨機應' + V(1) + '變');
+  assert.equal(mark('應該'), '應該');
+  assert.equal(mark('到處去'), '到處' + V(1) + '去');
+  assert.equal(mark('重複'), '重' + V(1) + '複');
+  assert.equal(mark('背著小背包'), '背' + V(1) + '著小背' + V(1) + '包');
+  assert.equal(mark('發人深省'), '發人深省' + V(1));
+});

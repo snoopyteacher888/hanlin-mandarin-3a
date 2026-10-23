@@ -46,7 +46,7 @@ async function page() {
 
 async function tapTiles(p, word) {
   for (const ch of word) {
-    const i = await p.$$eval('.order-tile', (ts, c) => ts.findIndex(t => !t.disabled && t.textContent === c), ch);
+    const i = await p.$$eval('.order-tile', (ts, c) => ts.findIndex(t => !t.disabled && t.textContent.replace(/[\uDB40][\uDDE0-\uDDEF]/g, '') === c), ch);
     await p.click(`.order-tile[data-i="${i}"]`);
   }
 }

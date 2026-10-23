@@ -7,10 +7,21 @@
      done(result)：first/hint1/hint2/taught */
   function orderQuestion(box, ctx, q, done, feedback) {
     var bad = 0, taught = false, finished = false, busy = false;
+    /* 拆開的單字沒有前後文，破音字要照它在整個詞裡的讀音標注音（例如隨機應變的「應」念ㄧㄥˋ） */
+    var show = {}, marked = H3A.zhuyin ? H3A.zhuyin.mark(q.answer) : q.answer, at = 0;
+    q.answer.split('').forEach(function (ch) {
+      var piece = ch; at++;
+      if (marked.charCodeAt(at) === 0xDB40) { piece += marked.substr(at, 2); at += 2; }
+      if (!show[ch]) show[ch] = piece;
+    });
+    function disp(t) { return show[t] || t; }
+    /* 單獨念一個破音字時，語音會念成常用讀音，改念同音字（應ㄧㄥˋ → 硬） */
+    var TILE_SAY = { '應\uDB40\uDDE1': '硬', '省\uDB40\uDDE1': '醒', '乘\uDB40\uDDE1': '剩' };
+    function sayTile(t) { return TILE_SAY[disp(t)] || t; }
     var slots = q.answer.split('').map(function () { return h('button', { type: 'button', class: 'order-slot', 'aria-label': '空格' }); });
     var placed = slots.map(function () { return null; });
     var tiles = q.tiles.map(function (t, i) {
-      return h('button', { type: 'button', class: 'order-tile' + (t === q.mark ? ' is-mark' : ''), 'data-i': i, onclick: function () { put(i); } }, t);
+      return h('button', { type: 'button', class: 'order-tile' + (t === q.mark ? ' is-mark' : ''), 'data-i': i, onclick: function () { put(i); } }, disp(t));
     });
     var bulb = h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: function () {
       if (finished || taught) return;
@@ -24,8 +35,8 @@
       if (finished || busy || tiles[i].disabled) return;
       var k = placed.indexOf(null); if (k < 0) return;
       placed[k] = i; tiles[i].disabled = true; tiles[i].classList.add('used');
-      slots[k].textContent = q.tiles[i]; slots[k].classList.add('filled');
-      H3A.tts.speak(q.tiles[i]);
+      slots[k].textContent = disp(q.tiles[i]); slots[k].classList.add('filled');
+      H3A.tts.speak(q.tiles[i], sayTile(q.tiles[i]));
       if (placed.indexOf(null) < 0) check();
     }
     function take(k) {

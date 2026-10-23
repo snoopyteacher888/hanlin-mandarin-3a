@@ -131,7 +131,7 @@
     }
     function rhetoric(rh) {
       var names = (rh.cards || []).map(function (c) { return c.name; });
-      if (names.length !== 4 || !unique(names)) errs.push('修辭卡要剛好 4 張、不重複');
+      if (names.length < 2 || names.length > 4 || !unique(names)) errs.push('修辭卡要 2～4 張、不重複');
       (rh.cards || []).forEach(function (c) {
         if (!nonEmpty(c.key) || !nonEmpty(c.meaning) || !c.show || !nonEmpty(c.show.sentence)) errs.push((c.name || '?') + ' 缺少 key、意思或例句');
         (c.yesno || []).forEach(function (y) {

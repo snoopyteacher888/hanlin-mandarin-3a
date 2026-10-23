@@ -191,8 +191,8 @@
     return out;
   }
   /* 修辭闖關：是不是？（⭕ 在前、❌ 在後，不打亂） */
-  /* 疊字說「有沒有疊字」「哪一句有疊字」；其他修辭說「是不是」「哪一句用了」 */
-  function isRedup(card) { return card.key === 'redup'; }
+  /* 疊字、類疊說「有沒有」「哪一句有」；其他修辭說「是不是」「哪一句用了」 */
+  function isRedup(card) { return card.key === 'redup' || card.key === 'repeat'; }
   function rhYesNoQuestion(y, card) {
     var ask = isRedup(card) ? '有沒有' : '是不是', yes = isRedup(card) ? '有' : '是', no = isRedup(card) ? '沒有' : '不是';
     /* 問句換到第二行；自動念時連問句一起念 */

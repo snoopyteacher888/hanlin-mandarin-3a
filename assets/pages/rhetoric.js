@@ -1,4 +1,4 @@
-/* 修辭闖關：一關一種修辭（認識 → 看圖聽例句 → 是不是 → 二選一 → 三選一 → 四選一），四關都過了才能玩綜合挑戰 */
+/* 修辭闖關：一關一種修辭（認識 → 看圖聽例句 → 是不是 → 二選一 → 三選一 → 四選一），每一關都過了才能玩綜合挑戰 */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow, Q = H3A.wordq;
 
@@ -27,8 +27,8 @@
       h('button', { type: 'button', class: 'activity-main', 'data-level': 'mix', disabled: !allDone, onclick: function () { go(ctx, 'mix'); } },
         h('span', { class: 'level-no' }, allDone ? '🏆' : '🔒'),
         h('span', { class: 'activity-name' }, '綜合挑戰'),
-        h('span', { class: 'activity-extra' }, allDone ? (mixStars ? '⭐'.repeat(mixStars) : '') : '四關都過了才能玩')),
-      H3A.ui.speaker(allDone ? '綜合挑戰' : '綜合挑戰，四關都過了才能玩', null)));
+        h('span', { class: 'activity-extra' }, allDone ? (mixStars ? '⭐'.repeat(mixStars) : '') : '每一關都過了才能玩')),
+      H3A.ui.speaker(allDone ? '綜合挑戰' : '綜合挑戰，每一關都過了才能玩', null)));
     main.appendChild(grid);
     if (ctx.auto) H3A.tts.speak(say);
   }
@@ -43,9 +43,9 @@
     }, c.name + '。' + c.meaning + c.example, c.name);
   }
   function showSlide(ctx, c) {
-    return F.learn('看圖聽一聽', function () {
+    return F.learn(c.show.img ? '看圖聽一聽' : '聽一聽', function () {
       return h('div', { class: 'learn-box rhetoric-show' },
-        h('div', { class: 'show-img' }, H3A.ui.picture(ctx.lessonId, c.show.img, '')),
+        c.show.img ? h('div', { class: 'show-img' }, H3A.ui.picture(ctx.lessonId, c.show.img, '')) : null,
         F.sayLine(c.show.sentence, 'example'));
     }, c.show.sentence);
   }
