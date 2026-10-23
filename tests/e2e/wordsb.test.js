@@ -263,3 +263,18 @@ test('teacher is told to update Apps Script when backend is old', async () => {
     await t.waitForSelector('.grade-panel >> text=後台需要更新');
   } finally { await old.close(); }
 });
+
+test('learn page shows next only after the explanation has been read aloud', async () => {
+  const p = await page();
+  await p.addInitScript(() => {
+    /* 念得慢一點：每次念 400ms 才結束 */
+    Object.defineProperty(window, 'speechSynthesis', { configurable: true, value: { getVoices: () => [{ lang: 'zh-TW', name: 'Mei-Jia' }], cancel() {},
+      speak(u) { window.__spoken.push(u.text); setTimeout(() => u.onend && u.onend(), 400); } } });
+  });
+  await p.goto(BASE + '#/L06/pattern?s=bear&p=zhiyao');
+  await p.waitForSelector('.learn-box');
+  assert.equal(await p.$eval('.next-bar .btn-next', b => b.hidden), true);
+  assert.ok(await p.$('.learn-wait'));
+  await p.waitForSelector('.next-bar .btn-next:not([hidden])', { timeout: 3000 });
+  assert.equal(await p.$('.learn-wait'), null);
+});
