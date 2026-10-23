@@ -173,10 +173,10 @@ test('buildQuestion：缺一個部件，部首念名稱，提示不說答案', (
   const W4 = require('../../data/lesson06.words.js');
   const hz = W4.hanzi.find(x => x.char === '部');
   const q = Q.buildQuestion(hz, rng(5));
-  assert.equal(q.prompt, '部 ＝ 咅 ＋ ？');
+  assert.equal(q.prompt, '部　左右組合\n左邊是「咅」，右邊是「？」');
   assert.equal(q.options[q.answer].text, '阝');
   assert.equal(q.options[q.answer].say, '耳朵旁');
-  assert.match(q.say, /咅，加上什麼，會變成「部」/);
+  assert.equal(q.say, '部，左右組合。左邊是咅，右邊是什麼？');
   assert.equal(q.quiet, true); assert.equal(q.autoSay, undefined);
   assert.ok(!q.hints.h1.text.includes('阝') && !q.hints.h2.text.includes('阝'));
   assert.equal(Q.findWordQuestion(W4, 'b-部', rng(1)).id, 'b-部');

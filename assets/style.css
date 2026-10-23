@@ -495,7 +495,7 @@ html.zhuyin .zhuyin { display: none; }
 .order-tile.used { opacity: 0.25; }
 @media (max-width: 600px) { .order-slot, .order-tile { font-size: 1.3em; } .idiom-word { font-size: 1.4em; } }
 .order-slot.filled { font-weight: 700; }
-/* 部件組字的選項是部件，不要注音（用一般楷體） */
+/* 組合字的選項不要注音（用一般楷體） */
 html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .option-text { font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", "Noto Serif TC", "Noto Sans TC", serif; }
 
 /* 詩歌：一行一行排；句子裡的換行要保留 */
@@ -543,3 +543,59 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .vocab-box.wide > .btn-secondary { display: block; margin: 14px auto 0; }
 .fish-head-box .head-line { display: block; white-space: nowrap; }
 .options .option.has-check, .options.list .option.has-check { padding-left: 80px !important; }
+
+/* 修辭闖關：關卡地圖 */
+.level-map { position: relative; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 18px 30px; max-width: 1150px; margin: 10px auto 30px; padding: 20px 10px 10px; }
+.lv-path { position: absolute; left: 6%; right: 6%; top: 120px; border-top: 6px dashed #E8CFAE; z-index: 0; }
+.lv-node { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 170px; }
+.lv-node.low { margin-top: 70px; }
+.lv-badge { position: relative; width: 132px; height: 132px; border-radius: 50%; border: 6px solid #fff; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; font-weight: 800;
+  box-shadow: 0 8px 0 rgba(0,0,0,.15), 0 0 0 4px var(--lv-c); background: radial-gradient(circle at 35% 30%, var(--lv-light), var(--lv-c)); transition: transform .15s; }
+.lv-badge:active { transform: translateY(4px) scale(.97); box-shadow: 0 4px 0 rgba(0,0,0,.15), 0 0 0 4px var(--lv-c); }
+.lv-icon { font-size: 2.1em; line-height: 1; filter: drop-shadow(0 2px 0 rgba(0,0,0,.12)); }
+.lv-icon.big { font-size: 3.4em; }
+.lv-num { font-size: 1.9em; line-height: 1; text-shadow: 0 3px 0 rgba(0,0,0,.18); font-family: var(--font); }
+.lv-done { position: absolute; right: -4px; top: -4px; width: 38px; height: 38px; border-radius: 50%; background: var(--ok); color: #fff; font-size: 22px; line-height: 38px; border: 3px solid #fff; }
+.lv-name { display: inline-flex; align-items: center; gap: 4px; background: #fff; border-radius: 999px; padding: 2px 6px 2px 16px; font-weight: 800; font-size: 1.15em; box-shadow: 0 3px 0 var(--lv-c); color: var(--ink); }
+.lv-name .speaker { min-width: 44px; min-height: 44px; }
+.lv-stars { display: flex; gap: 2px; font-size: 1.6em; line-height: 1; }
+.lv-star { color: #E4DCCB; text-shadow: 0 2px 0 rgba(0,0,0,.08); }
+.lv-star.on { color: #FFC83D; text-shadow: 0 2px 0 #E0A100; }
+.lv-node.next .lv-icon, .lv-node.next .lv-num { animation: lv-bounce 1.2s ease-in-out infinite; }
+.lv-node.next .lv-badge::after { content: ''; position: absolute; inset: -12px; border-radius: 50%; border: 4px solid var(--lv-c); animation: lv-ring 1.4s ease-out infinite; pointer-events: none; }
+@keyframes lv-ring { from { transform: scale(.9); opacity: .9; } to { transform: scale(1.18); opacity: 0; } }
+@keyframes lv-bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.c-pink { --lv-c: #F06C9B; --lv-light: #FFB3CD; }
+.c-sky { --lv-c: #3BA7E0; --lv-light: #9BD8FA; }
+.c-green { --lv-c: #5CB85C; --lv-light: #A8E6A1; }
+.c-purple { --lv-c: #9B6FD8; --lv-light: #D2B8F5; }
+.c-orange { --lv-c: #F2994A; --lv-light: #FFD0A1; }
+.lv-node.mix { --lv-c: #E0A100; --lv-light: #FFE680; }
+.lv-node.mix .lv-badge { width: 150px; height: 150px; }
+.lv-node.mix:not(.locked) .lv-badge { box-shadow: 0 8px 0 rgba(0,0,0,.15), 0 0 0 4px var(--lv-c), 0 0 28px 8px rgba(255,200,61,.55); }
+.lv-node.locked { --lv-c: #B9B2A5; --lv-light: #E2DDD3; }
+.lv-node.locked .lv-badge { cursor: not-allowed; }
+.lv-lock-tip { font-size: .8em; color: var(--ink-soft); }
+@media (prefers-reduced-motion: reduce) { .lv-node.next .lv-icon, .lv-node.next .lv-num, .lv-node.next .lv-badge::after { animation: none; } }
+@media (max-width: 700px) {
+  .lv-path { display: none; }
+  .level-map { gap: 14px; }
+  .lv-node { width: 46%; } .lv-node.low { margin-top: 0; }
+  .lv-badge { width: 110px; height: 110px; } .lv-node.mix .lv-badge { width: 120px; height: 120px; }
+}
+.level-map { background: radial-gradient(circle at 12% 20%, #FFE9F1 0 60px, transparent 61px), radial-gradient(circle at 88% 75%, #E3F4FF 0 80px, transparent 81px),
+  radial-gradient(circle at 55% 95%, #E8F8E4 0 70px, transparent 71px), linear-gradient(180deg, #FFFBF3, #FDF0DE); border-radius: 32px; border: 3px solid #F3E2C8; }
+.lv-name { white-space: nowrap; }
+.lv-node.mix { width: 190px; }
+.lv-num { font-weight: 900; font-size: 2.1em; }
+.level-map { box-sizing: border-box; width: 100%; }
+
+/* 組合字說明頁 */
+.combo-row { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; margin: 10px 0 16px; }
+.combo-ex { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.combo-stack { display: inline-flex; gap: 4px; }
+.combo-stack.tb { flex-direction: column; }
+.combo-tag { flex-basis: 100%; text-align: center; font-weight: 700; color: #8A5A2B; }
+.combo-intro .parts-chip { font-size: 1.6em; }
+.prompt.build-prompt h2 { font-size: 1.5em; letter-spacing: 0.05em; line-height: 1.6; }

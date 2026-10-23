@@ -64,14 +64,17 @@
         h2: { text: '提示：要找的語詞，意思是「' + c.meaning + '」' },
         teach: { text: '答案是「' + c.word + '」。「' + c.word + '」的意思是：' + c.meaning } } };
   }
-  /* 部件組字：「墨 ＝ 黑 ＋ ？」選出缺的部件。部首念名稱（阝念「耳朵旁」） */
+  /* 組合字：「墨，上下組合：上面是黑，下面是？」選出缺的那一塊。部首念名稱（阝念「耳朵旁」） */
   var PART_NAME = { '阝': '耳朵旁', '艹': '草字頭', '刂': '立刀旁', '氵': '三點水', '扌': '提手旁', '辶': '辵字旁', '亻': '單人旁' };
   function partSay(x) { return x === '？' ? '什麼' : PART_NAME[x] || x; }
   function buildQuestion(hz, r) {
     var b = hz.build;
     var order = quizgen.shuffle(b.options, r);
-    var say = b.show.map(partSay).join('，加上') + '，會變成「' + hz.char + '」？';
-    return { id: 'b-' + hz.char, prompt: hz.char + ' ＝ ' + b.show.join(' ＋ '), say: say, quiet: true, promptClass: 'build-prompt', optionsClass: 'parts-opts',
+    /* 不說「部件」：說上下組合／左右組合，「上面是黑，下面是什麼？」 */
+    var pos = b.layout === 'tb' ? ['上面', '下面'] : ['左邊', '右邊'], kind = b.layout === 'tb' ? '上下組合' : '左右組合';
+    var line = b.show.map(function (x, i) { return pos[i] + '是「' + x + '」'; }).join('，');
+    var say = hz.char + '，' + kind + '。' + b.show.map(function (x, i) { return pos[i] + '是' + partSay(x); }).join('，') + '？';
+    return { id: 'b-' + hz.char, prompt: hz.char + '　' + kind + '\n' + line, say: say, quiet: true, promptClass: 'build-prompt', optionsClass: 'parts-opts',
       options: order.map(function (x) { return { text: x, say: PART_NAME[x] || x, big: true }; }), answer: order.indexOf(b.answer),
       hints: { h1: { text: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？', say: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？' },
         h2: { text: '提示：' + (b.clue || hz.clue) }, teach: { text: hz.story } } };

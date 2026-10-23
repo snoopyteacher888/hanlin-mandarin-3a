@@ -9,27 +9,35 @@
   }
   function go(ctx, key) { ctx.go('#/' + ctx.lessonId + '/rhetoric' + (key ? '?p=' + key : '')); }
 
+  /* 關卡地圖：每一關一顆彩色圓章（圖案＋大數字），下面三顆星；下一關會跳動，綜合挑戰是金色獎盃 */
+  var LOOK = { personify: ['🧸', 'c-pink'], simile: ['🌙', 'c-sky'], redup: ['✨', 'c-green'], question: ['❓', 'c-purple'], repeat: ['🎵', 'c-orange'] };
+  function starRow(n) {
+    return h('span', { class: 'lv-stars', 'aria-label': n + ' 顆星' }, [0, 1, 2].map(function (k) { return h('span', { class: 'lv-star' + (k < n ? ' on' : '') }, '★'); }));
+  }
   function menu(main, ctx, rh) {
     var say = '修辭闖關：選一關開始';
     main.appendChild(h('div', { class: 'prompt' }, h('h2', {}, say), H3A.ui.speaker(say, null)));
     var allDone = rh.cards.every(function (c) { return starsOf(ctx, c.key) > 0; });
-    var grid = h('div', { class: 'activity-grid level-grid' }, rh.cards.map(function (c, i) {
-      var n = starsOf(ctx, c.key);
-      return h('div', { class: 'activity-card' + (n ? ' done' : '') },
-        h('button', { type: 'button', class: 'activity-main', 'data-level': c.key, onclick: function () { go(ctx, c.key); } },
-          h('span', { class: 'level-no' }, '第 ' + (i + 1) + ' 關'),
-          h('span', { class: 'activity-name' }, c.name),
-          h('span', { class: 'activity-extra' }, n ? '⭐'.repeat(n) : '')),
-        H3A.ui.speaker('第' + (i + 1) + '關，' + c.name, null));
-    }));
+    var nextIdx = -1;
+    rh.cards.some(function (c, i) { if (!starsOf(ctx, c.key)) { nextIdx = i; return true; } return false; });
+    var map = h('div', { class: 'level-map' }, h('span', { class: 'lv-path', 'aria-hidden': 'true' }));
+    rh.cards.forEach(function (c, i) {
+      var n = starsOf(ctx, c.key), look = LOOK[c.key] || ['⭐', 'c-orange'];
+      map.appendChild(h('div', { class: 'lv-node ' + look[1] + (i % 2 ? ' low' : ' high') + (n ? ' done' : '') + (i === nextIdx ? ' next' : '') },
+        h('button', { type: 'button', class: 'lv-badge', 'data-level': c.key, 'aria-label': '第' + (i + 1) + '關，' + c.name, onclick: function () { go(ctx, c.key); } },
+          h('span', { class: 'lv-icon', 'aria-hidden': 'true' }, look[0]),
+          h('span', { class: 'lv-num' }, String(i + 1)),
+          n ? h('span', { class: 'lv-done', 'aria-hidden': 'true' }, '✔') : null),
+        h('span', { class: 'lv-name' }, c.name, H3A.ui.speaker('第' + (i + 1) + '關，' + c.name, null)),
+        starRow(n)));
+    });
     var mixStars = starsOf(ctx, 'mix');
-    grid.appendChild(h('div', { class: 'activity-card mix' + (allDone ? '' : ' locked') },
-      h('button', { type: 'button', class: 'activity-main', 'data-level': 'mix', disabled: !allDone, onclick: function () { go(ctx, 'mix'); } },
-        h('span', { class: 'level-no' }, allDone ? '🏆' : '🔒'),
-        h('span', { class: 'activity-name' }, '綜合挑戰'),
-        h('span', { class: 'activity-extra' }, allDone ? (mixStars ? '⭐'.repeat(mixStars) : '') : '每一關都過了才能玩')),
-      H3A.ui.speaker(allDone ? '綜合挑戰' : '綜合挑戰，每一關都過了才能玩', null)));
-    main.appendChild(grid);
+    map.appendChild(h('div', { class: 'lv-node mix' + (rh.cards.length % 2 ? ' low' : ' high') + (allDone ? (mixStars ? ' done' : ' next') : ' locked') },
+      h('button', { type: 'button', class: 'lv-badge', 'data-level': 'mix', disabled: !allDone, 'aria-label': '綜合挑戰', onclick: function () { go(ctx, 'mix'); } },
+        h('span', { class: 'lv-icon big', 'aria-hidden': 'true' }, allDone ? '🏆' : '🔒')),
+      h('span', { class: 'lv-name' }, '綜合挑戰', H3A.ui.speaker(allDone ? '綜合挑戰' : '綜合挑戰，每一關都過了才能玩', null)),
+      allDone ? starRow(mixStars) : h('span', { class: 'lv-lock-tip' }, '每一關都過了才能玩')));
+    main.appendChild(map);
     if (ctx.auto) H3A.tts.speak(say);
   }
 

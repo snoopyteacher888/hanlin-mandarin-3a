@@ -30,9 +30,10 @@
       if (nonEmpty(h.cloze) && h.cloze.indexOf('＿') < 0) errs.push(h.id + ' 的挖空要有＿');
       if (h.build) {
         if (!Array.isArray(h.build.show) || h.build.show.indexOf('？') < 0) errs.push(h.id + ' 的組字要有一個「？」');
+        if (h.build.layout !== 'tb' && h.build.layout !== 'lr') errs.push(h.id + ' 的組字要寫上下（tb）或左右（lr）組合');
         opts(h.id + ' 的組字', h.build.options, 4);
         if (Array.isArray(h.build.options) && h.build.options[0] !== h.build.answer) errs.push(h.id + ' 的組字第一個選項要是答案');
-        /* 組字的提示用 build.clue（沒有就用生字的 clue），不能直接說出要選的部件 */
+        /* 組字的提示用 build.clue（沒有就用生字的 clue），不能直接說出要選的那一塊 */
         if (((h.build.clue || h.clue) || '').indexOf(h.build.answer) >= 0) errs.push(h.id + ' 的組字提示說出了答案');
       }
       /* 生字卡的拆一拆、例句（可以沒有；有的話要完整） */

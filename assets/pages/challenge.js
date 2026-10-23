@@ -1,4 +1,4 @@
-/* 語詞挑戰：🧩 部件組字（選出缺的部件）、🃏 翻牌配對（圖片和語詞配成一對）。都不計時 */
+/* 語詞挑戰：🧩 組合字（上下組合、左右組合，選出缺的那一塊）、🃏 翻牌配對（圖片和語詞配成一對）。都不計時 */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow;
   var PAIRS = 4;
@@ -11,7 +11,7 @@
     main.appendChild(h('div', { class: 'prompt' }, h('h2', {}, say), H3A.ui.speaker(say, null)));
     var p = H3A.session.progress(ctx.student)[ctx.lessonId] || {};
     var stars = p.stars || {};
-    main.appendChild(h('div', { class: 'activity-grid' }, [['build', '🧩', '部件組字'], ['memory', '🃏', '翻牌配對']].map(function (g) {
+    main.appendChild(h('div', { class: 'activity-grid' }, [['build', '🧩', '組合字'], ['memory', '🃏', '翻牌配對']].map(function (g) {
       var n = stars['challenge-' + g[0]] || 0;
       return h('div', { class: 'activity-card' + (n ? ' done' : '') },
         h('button', { type: 'button', class: 'activity-main', 'data-game': g[0], onclick: function () { go(ctx, g[0]); } },
@@ -25,12 +25,15 @@
   function build(main, ctx, w) {
     var r = H3A.quizgen.rng(Date.now() & 0xffffffff);
     var list = w.hanzi.filter(function (x) { return x.build; });
-    var intro = F.learn('部件組字', function () {
-      return h('div', { class: 'learn-box' },
-        h('div', { class: 'parts-row center' }, h('span', { class: 'parts-chip' }, '黑'), h('span', { class: 'parts-op' }, '＋'),
-          h('span', { class: 'parts-chip' }, '土'), h('span', { class: 'parts-op' }, '→'), h('span', { class: 'parts-chip parts-result' }, '墨')),
-        F.sayLine('一個字可以拆成好幾個部件。看看缺了哪一個部件，把字組起來！'));
-    }, '一個字可以拆成好幾個部件。例如：黑，加上土，就變成墨。看看缺了哪一個部件，把字組起來！');
+    var intro = F.learn('組合字', function () {
+      return h('div', { class: 'learn-box combo-intro' },
+        h('div', { class: 'combo-row' },
+          h('div', { class: 'combo-ex' }, h('span', { class: 'combo-stack tb' }, h('span', { class: 'parts-chip' }, '黑'), h('span', { class: 'parts-chip' }, '土')),
+            h('span', { class: 'parts-op' }, '→'), h('span', { class: 'parts-chip parts-result' }, '墨'), h('span', { class: 'combo-tag' }, '上下組合')),
+          h('div', { class: 'combo-ex' }, h('span', { class: 'combo-stack lr' }, h('span', { class: 'parts-chip' }, '木'), h('span', { class: 'parts-chip' }, '幾')),
+            h('span', { class: 'parts-op' }, '→'), h('span', { class: 'parts-chip parts-result' }, '機'), h('span', { class: 'combo-tag' }, '左右組合'))),
+        F.sayLine('有的字是上下組合，有的字是左右組合。看看少了哪一塊，把字組起來！'));
+    }, '有的字是上下組合，像墨，上面是黑，下面是土。有的字是左右組合，像機，左邊是木，右邊是幾。看看少了哪一塊，把字組起來！');
     var qs = [intro].concat(H3A.quizgen.shuffle(list, r).map(function (x) { return H3A.wordq.buildQuestion(x, r); }));
     var ex = back(ctx); ex.starKey = 'challenge-build';
     F.run(main, ctx, 'challenge', qs, function () { go(ctx, 'build'); }, ex);

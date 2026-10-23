@@ -174,8 +174,8 @@ test('rhetoric level: learn, look and listen, yes/no, 2-3-4 choices, then star o
   assert.deepEqual(counts, [2, 2, 3, 3, 4, 4]);
   await p.waitForSelector('.result');
   await p.click('text=回到闖關地圖');
-  await p.waitForSelector('[data-level="simile"] .activity-extra');
-  assert.match(await p.textContent('[data-level="simile"] .activity-extra'), /⭐/);
+  await p.waitForSelector('[data-level="simile"]');
+  assert.ok(await p.$eval('[data-level="simile"]', b => b.parentElement.querySelectorAll('.lv-star.on').length) > 0);
   assert.deepEqual(p.errors, []);
 });
 
