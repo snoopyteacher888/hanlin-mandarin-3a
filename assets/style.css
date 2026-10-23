@@ -423,3 +423,8 @@ html.zhuyin .zhuyin { display: none; }
 .circle-mark { border: 3px solid #D9432F; border-radius: 999px; padding: 0 6px; margin: 0 2px; display: inline-block; }
 .prompt h2 { white-space: pre-line; }
 .options.frame-opts .option-text { font-size: 1.6em; }
+/* 提示裡的課文段落：上下排，一段一段 */
+.hint-para { flex-direction: column; align-items: stretch; flex-wrap: nowrap; }
+.hint-para p { flex: none; width: 100%; }
+.hint-para p + p { border-top: 1px dashed var(--line); padding-top: 6px; }
+.hint-para > .speaker { align-self: flex-end; }
