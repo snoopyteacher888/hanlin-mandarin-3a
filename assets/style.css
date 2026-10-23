@@ -7,7 +7,7 @@
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); }
-body { font-size: clamp(20px, 2.2vw, 30px); line-height: 1.6; -webkit-text-size-adjust: 100%; }
+body { font-size: clamp(18px, 1.9vw, 26px); line-height: 1.6; -webkit-text-size-adjust: 100%; }
 button { font: inherit; color: inherit; cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 button:disabled { cursor: default; }
 [hidden] { display: none !important; }
