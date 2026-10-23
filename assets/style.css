@@ -542,3 +542,4 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 @media (max-width: 600px) { .vd-row { flex-direction: column; } .vd-pic { width: 160px; } .vd-text { width: 100%; } }
 .vocab-box.wide > .btn-secondary { display: block; margin: 14px auto 0; }
 .fish-head-box .head-line { display: block; white-space: nowrap; }
+.options .option.has-check, .options.list .option.has-check { padding-left: 80px !important; }
