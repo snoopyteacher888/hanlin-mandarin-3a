@@ -179,3 +179,20 @@
 | 3 | `pt-skip-breakfast.png` | 如果你不吃早餐 |
 | 4 | `pt-tidy-room.png` | 如果你把房間收拾乾淨 |
 | 5 | `pt-not-focus.png` | 如果你上課不專心 |
+
+## 成語情境題（待生成）
+
+指令在 `docs/chatgpt-image-prompts-idiom.txt`。
+
+| # | 檔名 | 用在 |
+|---|---|---|
+| 1 | `id-crafts.png` | L06 按部就班 |
+| 2 | `id-rain-games.png` | L06 隨機應變 |
+| 3 | `id-first-place.png` | L06 另眼相看 |
+| 4 | `id-dumplings.png` | L06 出神入化 |
+| 5 | `id-late-boss.png` | L06 大器晚成 |
+| 6 | `id-old-way.png` | L06 墨守成規 |
+| 7 | `id-spring.png` | L07 欣欣向榮 |
+| 8 | `id-flowers.png` | L07 賞心悅目 |
+| 9 | `id-swim-race.png` | L07 乘風破浪 |
+| 10 | `id-think-earth.png` | L07 發人深省 |

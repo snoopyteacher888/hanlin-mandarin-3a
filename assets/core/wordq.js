@@ -103,7 +103,7 @@
     var others = quizgen.shuffle(all.filter(function (x) { return x.id !== it.id; }), r).slice(0, 2).map(function (x) { return x.idiom; });
     var s = shuffled([it.idiom].concat(others), it.idiom, r, {});
     return { id: 'is-' + it.idiom, prompt: it.situation + '\n這可以用哪一個成語來說？', say: it.situation + '這可以用哪一個成語來說？',
-      options: s.options, answer: s.answer, list: true,
+      img: it.situationImg, options: s.options, answer: s.answer, list: true,
       hints: { h1: { text: '再讀一次，想想這個人做了什麼。', say: it.situation },
         h2: { text: '提示：要找的成語，意思是「' + it.meaning + '」' },
         teach: { text: '答案是「' + it.idiom + '」。意思是：' + it.meaning } } };
