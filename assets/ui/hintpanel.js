@@ -41,6 +41,27 @@
     H3A.tts.speak('再想想看').then(function (ok) { if (ok) H3A.tts.speak(hint.say || hint.text); });
   };
 
+  /* 答對：不顯示文字，大大的打勾＋煙火，說「答對啦！」（after：接著要念的話，例如成語） */
+  var SPARK_COLORS = ['#F2994A', '#F2C94C', '#6FCF97', '#56CCF2', '#EB5757', '#BB6BD9'];
+  H3A.ui.celebrate = function (feedback, after, afterSay) {
+    H3A.ui.clear(feedback);
+    feedback.className = 'feedback ok celebrate';
+    var burst = h('span', { class: 'burst', 'aria-hidden': 'true' });
+    for (var i = 0; i < 20; i++) {
+      var a = (i / 20) * Math.PI * 2, d = 90 + (i % 3) * 35;
+      var s = h('span', { class: 'spark' });
+      s.style.setProperty('--dx', Math.round(Math.cos(a) * d) + 'px');
+      s.style.setProperty('--dy', Math.round(Math.sin(a) * d) + 'px');
+      s.style.background = SPARK_COLORS[i % SPARK_COLORS.length];
+      burst.appendChild(s);
+    }
+    feedback.appendChild(h('span', { class: 'check-wrap' }, burst, h('span', { class: 'big-check', 'aria-hidden': 'true' }, '✔')));
+    feedback.appendChild(h('span', { class: 'sr-only' }, '答對啦！'));
+    H3A.sfx.correct();
+    var p = H3A.tts.speak('答對啦！');
+    if (after) p.then(function (ok) { if (ok) H3A.tts.speak(after, afterSay); });
+  };
+
   H3A.ui.showTeach = function (feedback, teach, onUnderstood) {
     H3A.ui.clear(feedback);
     feedback.className = 'feedback teach';

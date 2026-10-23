@@ -503,3 +503,17 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .hint-para .poem .para-no { display: block; }
 .feedback.teach p { white-space: pre-line; }
 .activity-icon img { width: 2em; height: 2em; object-fit: contain; display: block; }
+
+/* 答對：大打勾＋煙火 */
+.feedback.celebrate { justify-content: center; min-height: 96px; overflow: visible; }
+.check-wrap { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 84px; height: 84px; }
+.big-check { width: 84px; height: 84px; border-radius: 50%; background: var(--ok); color: #fff; font-size: 52px; line-height: 84px; text-align: center;
+  box-shadow: 0 4px 0 #1E6B3E; animation: check-pop .45s cubic-bezier(.2, 1.6, .4, 1) both; }
+.burst { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
+.spark { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; opacity: 0;
+  animation: spark-fly .9s ease-out .1s both; }
+.spark:nth-child(3n) { width: 9px; height: 9px; border-radius: 2px; }
+@keyframes check-pop { from { transform: scale(0); } to { transform: scale(1); } }
+@keyframes spark-fly { 0% { transform: translate(0, 0) scale(.4); opacity: 1; } 70% { opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) scale(1); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .big-check, .spark { animation: none; } .spark { display: none; } }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

@@ -128,8 +128,7 @@
         activity: ctx.activity, qid: q.id, prompt: String(q.prompt).slice(0, 200), said: full, status: st
       });
       if (st === 'auto') {
-        feedback.className = 'feedback ok'; feedback.textContent = '答對了！';
-        H3A.sfx.correct(); H3A.tts.speak('答對了！');
+        H3A.ui.celebrate(feedback);
         done(taught ? 'taught' : ['first', 'hint1', 'hint2'][Math.min(badCount, 2)], { said: full, status: st });
       } else {
         feedback.className = 'feedback ok'; feedback.textContent = '👩‍🏫 已送出，等老師批改';

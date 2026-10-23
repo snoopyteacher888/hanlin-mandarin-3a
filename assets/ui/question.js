@@ -101,9 +101,7 @@
         if (locked || hs.disabled.indexOf(i) >= 0) return;
         if (i === q.answer) {
           buttons[i].classList.add('is-correct');
-          feedback.textContent = '答對了！';
-          feedback.className = 'feedback ok';
-          H3A.sfx.correct(); H3A.tts.speak('答對了！');
+          H3A.ui.celebrate(feedback);
           revealMarks();
           done(practice ? H3A.hints.result(hs) : (hs.wrongCount ? 'wrong' : 'first'), wrongTexts());
           return;

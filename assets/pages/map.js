@@ -45,8 +45,7 @@
     }
     function dropBulb() { if (bulb) { bulb.remove(); bulb = null; } }
     function ok(text, say) {
-      feedback.className = 'feedback ok'; feedback.textContent = '答對了！';
-      H3A.sfx.correct(); H3A.tts.speak(text, say);
+      H3A.ui.celebrate(feedback, text, say);
     }
     function cardButton(c, onPick) {
       var b = h('button', { type: 'button', class: 'option map-card', 'data-card': c.id, onclick: function () { onPick(c.id); } },

@@ -53,8 +53,7 @@
         slots.forEach(function (s) { s.classList.add('right'); });
         tiles.forEach(function (t) { t.disabled = true; });
         bulb.remove();
-        feedback.className = 'feedback ok'; feedback.textContent = '答對了！' + q.answer;
-        H3A.sfx.correct(); H3A.tts.speak('答對了！' + q.answer);
+        H3A.ui.celebrate(feedback, q.answer);
         done(taught ? 'taught' : ['first', 'hint1', 'hint2'][Math.min(bad, 2)]);
         return;
       }

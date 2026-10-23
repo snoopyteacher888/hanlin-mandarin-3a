@@ -80,7 +80,7 @@ test('phrase speak exact answer is correct', async () => {
   for (let i = 0; i < 8; i++) await answerChoice(p);
   await p.waitForSelector('.mic-btn');
   await say(p, '閃亮亮的鉛筆。');
-  await p.waitForSelector('.feedback.ok >> text=答對了');
+  await p.waitForSelector('.feedback.ok.celebrate .big-check');
   await next(p);
   await say(p, '圓滾滾的小狗');
   await p.waitForSelector('.feedback.ok >> text=等老師批改');
