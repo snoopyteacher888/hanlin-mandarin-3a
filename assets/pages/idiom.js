@@ -1,4 +1,4 @@
-/* 生字變成語：分步驟——學成語（兩個一組：成語卡→排字→放進句子）、看情境選成語、配對遊戲 */
+/* 生字變成語：分步驟——學成語（兩個一組：成語卡→排字→放進句子）、看情境選成語、連連看 */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow, Q = H3A.wordq;
   var GROUP = 2;
@@ -43,8 +43,8 @@
       { key: 'situation', name: '看情境選成語', say: '看圖和句子，選出正確的成語。', make: function (r) {
         return H3A.quizgen.shuffle(list, r).map(function (x) { return Q.idiomSituationQuestion(x, list, r); });
       } },
-      { key: 'match', name: '配對遊戲', say: '把成語拖到它的意思上。', make: function (r) {
-        return F.matchRounds('im', '配對遊戲：把成語拖到它的意思上', H3A.quizgen.shuffle(list, r), 3, function (x) {
+      { key: 'match', name: '連連看', say: '從成語拉一條線，連到它的意思。', make: function (r) {
+        return F.matchRounds('im', '連連看：從成語拉一條線，連到它的意思', H3A.quizgen.shuffle(list, r), 3, function (x) {
           return { id: 'is-' + x.idiom, left: { text: x.idiom }, right: { text: x.meaning }, say: x.idiom };
         });
       } }

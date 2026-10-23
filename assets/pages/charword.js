@@ -1,4 +1,4 @@
-/* 生字語詞：每個生字再學一個語詞。分步驟——翻翻卡、拖詞填空、意思配對 */
+/* 生字語詞：每個生字再學一個語詞。分步驟——翻翻卡、拖詞填空、意思連連看 */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow;
   var HALF = 7;
@@ -45,8 +45,8 @@
       { key: 'choose', name: '拖詞填空', say: '把正確的語詞拖到句子的空格裡。', make: function (r) {
         return H3A.quizgen.shuffle(list, r).map(function (c) { return F.dragify(H3A.wordq.charWordQuestion(c, r, chars)); });
       } },
-      { key: 'meaning', name: '意思配對', say: '把語詞拖到它的意思上。', make: function (r) {
-        return F.matchRounds('cm', '意思配對：把語詞拖到它的意思上', H3A.quizgen.shuffle(list, r), 4, function (c) {
+      { key: 'meaning', name: '意思連連看', say: '從語詞拉一條線，連到它的意思。', make: function (r) {
+        return F.matchRounds('cm', '連連看：從語詞拉一條線，連到它的意思', H3A.quizgen.shuffle(list, r), 4, function (c) {
           return { id: c.id, left: { text: c.word }, right: { text: c.meaning }, say: c.word };
         });
       } }

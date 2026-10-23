@@ -1,4 +1,5 @@
-/* 配對遊戲：左邊（圖或語詞）配右邊（語詞或意思）。一定要把左邊的卡拖到右邊才算；點卡片只會念。
+/* 連連看：左邊（圖或語詞）連到右邊（語詞或意思）。從左邊的卡拉一條線到右邊才算；點卡片只會念。
+   連對了，兩張卡和中間的線都變成同一個顏色。
    q = { type:'match', id, prompt, pairs:[{ id, left:{ text, img }, right:{ text }, say }] }
    每一對各自記結果（id 是原本的題目 id，錯題複習時出原本那一題）。同一對錯 3 次，老師幫忙配好。 */
 (function (root) {
@@ -19,7 +20,8 @@
       el.style.setProperty('--pair', color[p.id]);
       L[p.id] = el;
       /* 一定要拖過去才算；點一下只會念 */
-      H3A.ui.dragTo(el, openRights, function (t) { pick(p.id); drop(t.getAttribute('data-id')); }, function () { H3A.tts.speak(p.say || p.left.text); });
+      H3A.ui.dragTo(el, openRights, function (t) { pick(p.id); drop(t.getAttribute('data-id')); }, function () { H3A.tts.speak(p.say || p.left.text); },
+        { line: true, onMove: function (x, y) { live(p.id, x, y); }, onEnd: function () { live(null); } });
       lcol.appendChild(el);
     });
     rights.forEach(function (p) {
@@ -28,7 +30,30 @@
       R[p.id] = el; rcol.appendChild(el);
     });
     var bulb = h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: hint }, '💡');
-    box.appendChild(h('div', { class: 'match-board' }, lcol, rcol));
+    /* 線畫在 svg 上，蓋在兩排卡片上面 */
+    var NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg'), liveLine = null, lines = {};
+    svg.setAttribute('class', 'match-lines'); svg.setAttribute('aria-hidden', 'true');
+    var board = h('div', { class: 'match-board' }, lcol, rcol);
+    board.appendChild(svg);
+    box.appendChild(board);
+    function anchor(el, side) {
+      var b = board.getBoundingClientRect(), r = el.getBoundingClientRect();
+      return { x: (side === 'r' ? r.right : r.left) - b.left, y: r.top + r.height / 2 - b.top };
+    }
+    function mkLine(cls, color) {
+      var ln = document.createElementNS(NS, 'line');
+      ln.setAttribute('class', cls); if (color) ln.setAttribute('stroke', color);
+      svg.appendChild(ln); return ln;
+    }
+    function setLine(ln, a, b) { ln.setAttribute('x1', a.x); ln.setAttribute('y1', a.y); ln.setAttribute('x2', b.x); ln.setAttribute('y2', b.y); }
+    function live(id, x, y) {
+      if (!id) { if (liveLine) { liveLine.remove(); liveLine = null; } return; }
+      if (!liveLine) liveLine = mkLine('live', color[id]);
+      var bb = board.getBoundingClientRect();
+      setLine(liveLine, anchor(L[id], 'r'), { x: x - bb.left, y: y - bb.top });
+    }
+    function redraw() { Object.keys(lines).forEach(function (id) { setLine(lines[id], anchor(L[id], 'r'), anchor(R[id], 'l')); }); }
+    root.addEventListener('resize', redraw);
     box.appendChild(bulb);
 
     function openRights() { return Object.keys(R).filter(function (k) { return !R[k].disabled; }).map(function (k) { return R[k]; }); }
@@ -53,6 +78,7 @@
       var c = color[id];
       [L[id], R[id]].forEach(function (el) { el.disabled = true; el.classList.remove('picked'); el.classList.add('matched'); el.style.setProperty('--pair', c); });
       picked = null;
+      lines[id] = mkLine('done', c); redraw();
       var p = q.pairs.filter(function (x) { return x.id === id; })[0];
       if (byTeacher) H3A.ui.showHint(feedback, { text: '老師幫你配好了：' + p.left.text + '，' + p.right.text + '。' }, ctx, true);
       else { H3A.ui.clear(feedback); feedback.className = 'feedback'; H3A.sfx.correct(); H3A.tts.speak(p.right.text); }

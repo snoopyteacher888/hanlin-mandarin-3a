@@ -61,8 +61,8 @@
       { key: 'cards', name: '看語詞卡', say: '點一張語詞卡，看看圖片，聽聽意思。', make: function () {
         return [F.learn('語詞卡：點一張看看', function () { return H3A.ui.vocabCards(ctx.lessonId, w.vocab); }, '點一張語詞卡，看看圖片，聽聽意思。')];
       } },
-      pics.length ? { key: 'picmatch', name: '圖片配對', say: '把圖片拖到對的語詞上。', make: function (r) {
-        return F.matchRounds('vm', '圖片配對：把圖片拖到對的語詞上', shuffle(pics, r), 4, function (v) {
+      pics.length ? { key: 'picmatch', name: '圖片連連看', say: '從圖片拉一條線，連到對的語詞。', make: function (r) {
+        return F.matchRounds('vm', '連連看：從圖片拉一條線，連到對的語詞', shuffle(pics, r), 4, function (v) {
           return { id: v.id, left: { text: v.word, img: v.img }, right: { text: v.word }, say: v.word };
         });
       } } : {},

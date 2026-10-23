@@ -11,8 +11,10 @@
     }
     return null;
   }
-  function dragTo(el, targets, onDrop, onTap) {
-    var start = null, ghost = null, over = null;
+  /* opts.line：不拖分身，改成畫線（連連看）；opts.onMove(x, y)／opts.onEnd() 讓呼叫的地方畫線 */
+  function dragTo(el, targets, onDrop, onTap, opts) {
+    opts = opts || {};
+    var start = null, ghost = null, over = null, moving = false;
     el.style.touchAction = 'none';
     el.addEventListener('pointerdown', function (e) {
       if (el.disabled || e.button > 0) return;
@@ -21,24 +23,30 @@
     });
     el.addEventListener('pointermove', function (e) {
       if (!start || e.pointerId !== start.id) return;
-      if (!ghost) {
+      if (!moving) {
         if (Math.abs(e.clientX - start.x) + Math.abs(e.clientY - start.y) < MOVE) return;
+        moving = true;
+        el.classList.add('dragging');
+      }
+      if (opts.line) { if (opts.onMove) opts.onMove(e.clientX, e.clientY); }
+      else if (!ghost) {
         var r = el.getBoundingClientRect();
         ghost = el.cloneNode(true);
         ghost.classList.add('drag-ghost');
         ghost.style.width = r.width + 'px'; ghost.style.height = r.height + 'px';
         ghost.dx = start.x - r.left; ghost.dy = start.y - r.top;
         document.body.appendChild(ghost);
-        el.classList.add('dragging');
       }
-      ghost.style.left = (e.clientX - ghost.dx) + 'px'; ghost.style.top = (e.clientY - ghost.dy) + 'px';
+      if (ghost) { ghost.style.left = (e.clientX - ghost.dx) + 'px'; ghost.style.top = (e.clientY - ghost.dy) + 'px'; }
       var t = hit(targets, e.clientX, e.clientY);
       if (t !== over) { if (over) over.classList.remove('drop-over'); over = t; if (t) t.classList.add('drop-over'); }
     });
     function end(e, cancel) {
       if (!start || e.pointerId !== start.id) return;
-      var moved = !!ghost;
+      var moved = moving;
+      moving = false;
       if (ghost) { ghost.remove(); ghost = null; }
+      if (opts.onEnd) opts.onEnd();
       el.classList.remove('dragging');
       if (over) over.classList.remove('drop-over');
       over = null; start = null;

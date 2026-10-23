@@ -6,15 +6,15 @@
   var SECTIONS = [
     { title: '🎯 本課先完成', cards: [
       { a: 'hanzi', icon: '✍️', c: '#3069B0', desc: '認識生字怎麼組成，拖字填空、組合字、改錯字' },
-      { a: 'vocab', icon: '📚', c: '#2E8B6A', desc: '看語詞卡，圖片配對、選語詞、翻牌配對' },
-      { a: 'charword', icon: '🔤', c: '#3E8A99', desc: '每個生字再學一個語詞，翻卡、填空、配意思' },
+      { a: 'vocab', icon: '📚', c: '#2E8B6A', desc: '看語詞卡，圖片連連看、選語詞、翻牌配對' },
+      { a: 'charword', icon: '🔤', c: '#3E8A99', desc: '每個生字再學一個語詞，翻卡、填空、連連看' },
       { a: 'phrase', icon: '📒', c: '#7A6BB5', desc: '把短語說完整：形容樣子＋的＋東西' },
       { a: 'pattern', icon: '🧩', c: '#C47A2C', desc: '學會句型，把兩件事用連接詞接起來' },
       { a: 'map', icon: '🗺️', c: '#AD4A6A', desc: '整理課文重點，放進課文地圖' },
       { a: 'quiz', icon: '❓', c: '#B0563A', desc: '讀完課文，回答理解問題' }] },
     { title: '⭐ 加練挑戰', cards: [
       { a: 'similar', icon: '🔍', c: '#6A5AAE', desc: '長得很像的字，看句子選對的那一個' },
-      { a: 'idiom', icon: '📜', c: '#A0573F', desc: '從生字學成語：成語卡、排字、放進句子、配對' },
+      { a: 'idiom', icon: '📜', c: '#A0573F', desc: '從生字學成語：成語卡、排字、放進句子、連連看' },
       { a: 'rhetoric', icon: '🎨', c: '#7A6235', desc: '認識修辭，一關一關找出句子用了什麼修辭' },
       { a: 'listen', icon: '👂', c: '#427C88', desc: '仔細聽一句話，選出正確的答案' }] },
     { title: '🔁 複習與小考', cards: [

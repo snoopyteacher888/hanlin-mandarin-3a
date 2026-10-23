@@ -862,3 +862,24 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 @media (max-width: 600px) { .fill-sentence { font-size: 1.1em; } .fill-tile { font-size: 1.05em; padding: 8px 12px; } }
 @media (max-width: 600px) { .fill-line { flex-direction: column; } }
 .blank-box.filled { width: auto; height: auto; padding: 0 10px; border-style: solid; border-color: var(--ok); background: #fff; color: #1F6B42; font-weight: 700; }
+
+/* ===== 連連看：中間留空間畫線；左邊卡片右側、右邊卡片左側有小圓點 ===== */
+.match-board { position: relative; column-gap: clamp(48px, 10vw, 120px) !important; }
+.match-lines { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; z-index: 2; }
+.match-lines line { stroke-width: 5; stroke-linecap: round; }
+.match-lines line.live { stroke-dasharray: 2 10; opacity: .85; }
+.match-col .match-card { position: relative; }
+.match-col.left .match-card::after, .match-col.right .match-card::before { content: ''; position: absolute; top: 50%; width: 14px; height: 14px; margin-top: -7px; border-radius: 50%; background: var(--pair, #C9B8A4); border: 3px solid #fff; box-shadow: 0 0 0 2px var(--pair, #C9B8A4); }
+.match-col.left .match-card::after { right: -10px; }
+.match-col.right .match-card::before { left: -10px; }
+.match-col.right .match-card:not(.matched) { --pair: #C9B8A4; }
+.match-col.left .match-card.dragging { opacity: 1; }
+@media (max-width: 600px) { .match-board { column-gap: 40px !important; } }
+
+/* ===== 答對的勾：單純的紅色勾，不要外面的圓圈 ===== */
+.big-check, .check-wrap.at-option .big-check, .match-board .check-wrap.at-option .big-check, .mem-grid .check-wrap.at-option .big-check {
+  background: none !important; box-shadow: none !important; border-radius: 0; color: #E0322E; font-weight: 900;
+  text-shadow: 0 2px 0 rgba(255,255,255,.9), 0 3px 6px rgba(160,30,30,.25); }
+.big-check { font-size: 76px; }
+.check-wrap.at-option .big-check { font-size: 46px; }
+.match-board .check-wrap.at-option .big-check, .mem-grid .check-wrap.at-option .big-check { font-size: 96px; }
