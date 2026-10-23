@@ -494,3 +494,5 @@ html.zhuyin .zhuyin { display: none; }
 .order-tile.used { opacity: 0.25; }
 @media (max-width: 600px) { .order-slot, .order-tile { font-size: 1.3em; } .idiom-word { font-size: 1.4em; } }
 .order-slot.filled { font-weight: 700; }
+/* 部件組字的選項是部件，不要注音（用一般楷體） */
+html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .option-text { font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", "Noto Serif TC", "Noto Sans TC", serif; }

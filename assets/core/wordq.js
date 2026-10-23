@@ -56,7 +56,7 @@
     var b = hz.build;
     var order = quizgen.shuffle(b.options, r);
     var say = b.show.map(partSay).join('，加上') + '，會變成「' + hz.char + '」？';
-    return { id: 'b-' + hz.char, prompt: hz.char + ' ＝ ' + b.show.join(' ＋ '), say: say, autoSay: say, promptClass: 'build-prompt',
+    return { id: 'b-' + hz.char, prompt: hz.char + ' ＝ ' + b.show.join(' ＋ '), say: say, autoSay: say, promptClass: 'build-prompt', optionsClass: 'parts-opts',
       options: order.map(function (x) { return { text: x, say: PART_NAME[x] || x, big: true }; }), answer: order.indexOf(b.answer),
       hints: { h1: { text: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？', say: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？' },
         h2: { text: '提示：' + hz.clue }, teach: { text: hz.story } } };
