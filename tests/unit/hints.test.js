@@ -8,19 +8,15 @@ test('wrong 1 disables picked only', () => {
   const s = pickWrong(create(4, 2), 0);
   assert.deepEqual(s.disabled, [0]); assert.equal(result(s), 'hint1'); assert.equal(mustTeach(s), false);
 });
-test('never narrows to only the correct answer (4 options)', () => {
+test('every wrong pick is disabled (老師要求：答錯的都變淡)', () => {
   let s = pickWrong(create(4, 2), 0); s = pickWrong(s, 1);
-  assert.equal(enabled(s).length, 2); assert.equal(result(s), 'hint2');
+  assert.deepEqual(s.disabled, [0, 1]); assert.equal(result(s), 'hint2');
   s = pickWrong(s, 3);
-  assert.ok(enabled(s).length >= 2); assert.equal(mustTeach(s), true); assert.equal(result(s), 'taught');
+  assert.deepEqual(s.disabled, [0, 1, 3]); assert.equal(mustTeach(s), true); assert.equal(result(s), 'taught');
 });
-test('two options: wrong pick stays enabled so the answer is not revealed', () => {
-  const s = pickWrong(create(2, 0), 1);
-  assert.deepEqual(enabled(s), [0, 1]); assert.equal(result(s), 'hint1');
-});
-test('three options: after two wrongs two remain', () => {
+test('three options: second wrong pick is disabled too', () => {
   let s = pickWrong(create(3, 0), 1); s = pickWrong(s, 2);
-  assert.equal(enabled(s).length, 2);
+  assert.deepEqual(enabled(s), [0]);
 });
 test('picking correct index throws', () => { assert.throws(() => pickWrong(create(4, 2), 2)); });
 test('re-picking a disabled option changes nothing', () => {

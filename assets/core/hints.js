@@ -1,4 +1,4 @@
-/* 答錯提示：只停用選錯的選項，而且永遠至少留 2 個選項（不會只剩正確答案）。
+/* 答錯提示：選錯的選項一律停用（變淡；老師要求）。
    提示是一層一層的（level）：答錯一次或自己按 💡 一次，都往上一層。
    第 3 層 → mustTeach：由畫面顯示答案並說明原因（「老師教你」）。 */
 (function (root, factory) {
@@ -13,10 +13,9 @@
   function pickWrong(state, index) {
     if (index === state.correctIndex) throw new Error('pickWrong called with the correct index');
     if (state.disabled.indexOf(index) >= 0) return state;
-    var enabledAfter = state.optionCount - state.disabled.length - 1;
     return {
       optionCount: state.optionCount, correctIndex: state.correctIndex,
-      disabled: enabledAfter >= 2 ? state.disabled.concat([index]) : state.disabled.slice(),
+      disabled: state.disabled.concat([index]),
       wrongCount: state.wrongCount + 1, wrongPicked: state.wrongPicked.concat([index]), level: (state.level || 0) + 1
     };
   }

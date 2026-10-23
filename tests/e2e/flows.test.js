@@ -199,8 +199,9 @@ test('similar wrong shows hint', async () => {
   await p.click(`.option[data-index="${wrongIdx}"]`);
   assert.match(await p.textContent('.feedback'), /再讀一次句子/);
   assert.ok(!(await p.textContent('.feedback')).includes(item.answer));
-  const second = await p.$$eval('.option:not(:disabled) .option-text', (x, a) => x.find(e => e.textContent !== a).closest('.option').dataset.index, item.answer);
-  await p.click(`.option[data-index="${second}"]`);
+  /* 答錯的選項一律變淡 */
+  assert.equal(await p.$eval(`.option[data-index="${wrongIdx}"]`, b => b.disabled && b.classList.contains('is-off')), true);
+  await p.click('.hint-btn');
   assert.equal(await p.textContent('.feedback .hint-text'), item.clue);
 });
 
