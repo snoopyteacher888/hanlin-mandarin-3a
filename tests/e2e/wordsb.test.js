@@ -316,3 +316,10 @@ test('answer reveal circles the rhetoric in the sentence', async () => {
   assert.ok(circled.includes('晶晶'), circled.join(','));
   assert.deepEqual(p.errors, []);
 });
+
+test('lesson menu reading section has only the fishbone map and questions', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06?s=bear');
+  await p.waitForSelector('[data-activity="map"]');
+  assert.equal(await p.$('[data-activity="read"]'), null);
+  assert.ok(await p.$('[data-activity="quiz"]'));
+});
