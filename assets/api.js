@@ -24,27 +24,35 @@
     }
     function outbox() { return o.store.get('outbox', []); }
     function pending() { return outbox().length; }
-    function flushOnce() {
-      if (!o.url || !o.fetch) return Promise.resolve(0);
+    /* 一個佇列一個佇列送：作答紀錄（outbox → submit）、說說看的句子（speechbox → speech） */
+    function drain(key, action, field) {
       var sent = 0;
+      function box() { return o.store.get(key, []); }
+      function drop(id) { o.store.set(key, box().filter(function (r) { return r.id !== id; })); }
       function next() {
-        var box = outbox();
-        if (!box.length) return Promise.resolve(sent);
-        var rec = box[0];
-        return call('submit', { record: rec }).then(function (res) {
+        var b = box();
+        if (!b.length) return Promise.resolve(sent);
+        var rec = b[0], body = {}; body[field] = rec;
+        return call(action, body).then(function (res) {
           if (res && res.error === 'BAD_RECORD') {
             /* 後台不收的紀錄移到 rejected，不擋住後面的紀錄 */
             o.store.set('rejected', o.store.get('rejected', []).concat([rec]).slice(-50));
-            o.store.set('outbox', outbox().filter(function (r) { return r.id !== rec.id; }));
+            drop(rec.id);
             return next();
           }
           if (!res || !res.ok) return sent;
-          o.store.set('outbox', outbox().filter(function (r) { return r.id !== rec.id; }));
+          drop(rec.id);
           sent++;
           return next();
         }, function () { return sent; });
       }
       return next();
+    }
+    function flushOnce() {
+      if (!o.url || !o.fetch) return Promise.resolve(0);
+      return drain('outbox', 'submit', 'record').then(function (a) {
+        return drain('speechbox', 'speech', 'speech').then(function (b) { return a + b; });
+      });
     }
     function flush() {
       if (flushing) return flushing.then(function () { return flushOnce(); });
@@ -55,7 +63,11 @@
       o.store.set('outbox', outbox().concat([record]));
       return flush().then(function () {});
     }
-    return { call: call, submit: submit, flush: flush, pending: pending };
+    function submitSpeech(row) {
+      o.store.set('speechbox', o.store.get('speechbox', []).concat([row]));
+      return flush().then(function () {});
+    }
+    return { call: call, submit: submit, submitSpeech: submitSpeech, flush: flush, pending: pending };
   }
   return { make: make };
 });

@@ -39,3 +39,26 @@ test('server rejection of one record does not block others', async () => {
   assert.equal(api.pending(), 0);
   assert.deepEqual(st.get('rejected', []).map(r => r.id), ['bad']);
 });
+test('speech queue independent of record outbox', async () => {
+  const st = store.make(null); const actions = [];
+  const api = make({ fetch: async (u, i) => { const b = JSON.parse(i.body); actions.push(b.action); return okResp(b.action === 'speech' ? { ok: true } : { error: 'BUSY' }); }, store: st, url: 'u' });
+  await api.submit({ id: 'r1' });
+  await api.submitSpeech({ id: 's1', said: '只要我練習就會進步' });
+  assert.equal(st.get('speechbox', []).length, 0);
+  assert.deepEqual(st.get('outbox', []).map(r => r.id), ['r1']);
+  assert.ok(actions.includes('speech'));
+});
+test('speech bad record moved to rejected', async () => {
+  const st = store.make(null);
+  const api = make({ fetch: async (u, i) => { const b = JSON.parse(i.body); return okResp(b.action === 'speech' && b.speech.id === 'bad' ? { error: 'BAD_RECORD' } : { ok: true }); }, store: st, url: 'u' });
+  st.set('speechbox', [{ id: 'bad' }, { id: 'good' }]);
+  await api.flush();
+  assert.equal(st.get('speechbox', []).length, 0);
+  assert.deepEqual(st.get('rejected', []).map(r => r.id), ['bad']);
+});
+test('speech kept when offline', async () => {
+  const st = store.make(null);
+  const api = make({ fetch: async () => { throw new Error('net'); }, store: st, url: 'u' });
+  await api.submitSpeech({ id: 's1' });
+  assert.equal(st.get('speechbox', []).length, 1);
+});
