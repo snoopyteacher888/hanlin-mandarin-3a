@@ -58,7 +58,7 @@
     /* ---------- B 批：短語短句、句型、修辭（句子都是 Claude 自己寫的） ---------- */
     phrase: {
       intro: { example: '閃亮亮的鉛筆', img: 'finished.png',
-        parts: [{ text: '閃亮亮', role: '怎麼樣' }, { text: '的' }, { text: '鉛筆', role: '東西' }] },
+        parts: [{ text: '閃亮亮', role: '形容東西的樣子' }, { text: '的' }, { text: '鉛筆', role: '是什麼東西' }] },
       pick: [
         { id: 'ph1', img: 'apple-red.png', noun: '蘋果', options: ['紅通通', '黑漆漆', '灰濛濛', '毛茸茸'], clue: '提示：看看蘋果是什麼顏色？', explain: '答案是「紅通通」，蘋果紅紅的，所以說「紅通通的蘋果」。' },
         { id: 'ph2', img: 'cave-dark.png', noun: '山洞', options: ['黑漆漆', '紅通通', '綠油油', '香噴噴'], clue: '提示：山洞裡面有沒有光？看起來是什麼顏色？', explain: '答案是「黑漆漆」，山洞裡沒有光，黑黑的，所以說「黑漆漆的山洞」。' },

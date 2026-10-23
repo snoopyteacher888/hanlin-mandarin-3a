@@ -63,3 +63,7 @@ test('和 as "and" shows ㄏㄢˋ, but not inside 和平、柔和', () => {
   assert.equal(mark('和平'), '和平');
   assert.equal(mark('很柔和'), '很柔和');
 });
+test('樣子 and 說得 use light tone', () => {
+  assert.equal(mark('樣子'), '樣子' + V(1));
+  assert.equal(mark('說得更清楚'), '說得' + V(1) + '更清楚');
+});

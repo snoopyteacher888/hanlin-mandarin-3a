@@ -7,7 +7,8 @@
 
   function introSlide(ctx, p) {
     var it = p.intro;
-    var say = it.example + '。' + it.parts.map(function (x) { return x.role ? x.text + '，是' + x.role : x.text; }).join('，');
+    var say = it.example + '。' + it.parts.map(function (x) { return x.role ? x.text + '，' + x.role : x.text; }).join('，') +
+      '。「' + it.parts[0].text + '」是用來形容東西的樣子，加上「的」，再說出是什麼東西，就能把東西說得更清楚。';
     return F.learn('認識短語：' + it.example, function () {
       return h('div', { class: 'learn-box' },
         h('div', { class: 'prompt-img' }, H3A.ui.picture(ctx.lessonId, it.img, it.example)),
@@ -15,7 +16,7 @@
           return h('button', { type: 'button', class: 'phrase-part part-' + i, onclick: function () { H3A.tts.speak(x.text); } },
             h('span', { class: 'part-text' }, x.text), x.role ? h('span', { class: 'part-role' }, x.role) : null);
         })),
-        F.sayLine('用「怎麼樣」的字，加上「的」，再加上東西，就能把東西說得更清楚。'));
+        F.sayLine('「' + it.parts[0].text + '」是用來形容東西的樣子，加上「的」，再說出是什麼東西，就能把東西說得更清楚。'));
     }, say);
   }
   function wordsSlide(ctx, p) {
