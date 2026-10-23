@@ -34,7 +34,7 @@
         F.sayLine(pt.meaning),
         h('p', { class: 'learn-label' }, '📝 例句'),
         pt.examples.map(function (e) { return clauseBlocks(e, pt.key); }));
-    }, pt.title.replace(/…+/g, '，') + '。' + pt.meaning + '例如：' + pt.examples.join(''));
+    }, pt.title.replace(/…+/g, '，') + '。' + pt.meaning + '例如：' + pt.examples.join(''), pt.title);
   }
 
   function choose(main, ctx, list) {

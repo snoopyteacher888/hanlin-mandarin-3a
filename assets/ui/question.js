@@ -178,7 +178,10 @@
     function showLearn(q) {
       H3A.ui.clear(main);
       main.appendChild(dots(questions.length, idx));
-      main.appendChild(h('div', { class: 'prompt' }, h('h2', {}, q.prompt), H3A.ui.speaker(q.prompt, q.say)));
+      var title = q.topic && q.prompt.indexOf(q.topic) >= 0
+        ? [q.prompt.slice(0, q.prompt.indexOf(q.topic)), h('span', { class: 'topic-word' }, q.topic), q.prompt.slice(q.prompt.indexOf(q.topic) + q.topic.length)]
+        : q.prompt;
+      main.appendChild(h('div', { class: 'prompt' }, h('h2', {}, title), H3A.ui.speaker(q.prompt, q.say)));
       main.appendChild(q.render());
       var next = h('button', { type: 'button', class: 'btn-next', onclick: function () {
         if (next.disabled) return;

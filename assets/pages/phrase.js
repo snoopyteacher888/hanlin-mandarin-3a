@@ -17,7 +17,7 @@
             h('span', { class: 'part-text' }, x.text), x.role ? h('span', { class: 'part-role' }, x.role) : null);
         })),
         F.sayLine('「' + it.parts[0].text + '」是用來形容東西的樣子，加上「的」，再說出是什麼東西，就能把東西說得更清楚。'));
-    }, say);
+    }, say, it.example);
   }
   function wordsSlide(ctx, p) {
     return F.learn('認識語詞', function () {

@@ -2,7 +2,8 @@
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h;
 
-  function learn(prompt, render, autoSay) { return { type: 'learn', prompt: prompt, render: render, autoSay: autoSay }; }
+  /* topic：題目裡要突顯的主題詞（例如「擬人」），用不同顏色 */
+  function learn(prompt, render, autoSay, topic) { return { type: 'learn', prompt: prompt, render: render, autoSay: autoSay, topic: topic }; }
 
   /* 可以點來聽的一句話 */
   function sayLine(text, cls) { return h('p', { class: 'learn-line' + (cls ? ' ' + cls : '') }, h('span', {}, text), H3A.ui.speaker(text, null)); }

@@ -435,3 +435,4 @@ html.zhuyin .zhuyin { display: none; }
 .keyword-row { align-items: center; }
 .learn-label-inline { font-weight: 700; color: var(--ink-soft); margin-right: 4px; }
 .line-mark { text-decoration: underline; text-decoration-color: #D9432F; text-decoration-thickness: 3px; text-underline-offset: 6px; }
+.topic-word { color: #C2410C; font-size: 1.3em; margin-left: 4px; }
