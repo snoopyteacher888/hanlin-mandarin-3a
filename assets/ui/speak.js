@@ -37,7 +37,7 @@
       h('span', { class: 'mic-icon', 'aria-hidden': 'true' }, '🎤'), h('span', { class: 'mic-label' }, '按我說話'));
     var actions = h('div', { class: 'speak-actions', hidden: true });
     var typing = null, lastText = '';
-    if (q.front) box.appendChild(h('div', { class: 'speak-front' }, h('span', {}, q.front), h('span', { class: 'speak-blank' }, '……'), H3A.ui.speaker(q.front, null)));
+    if (q.front) box.appendChild(h('div', { class: 'speak-front' }, h('span', { class: 'pt-block cond' }, q.front), h('span', { class: 'pt-block res1 speak-blank' }, '🎤 換你說'), H3A.ui.speaker(q.front, null)));
     box.appendChild(mic); box.appendChild(status); box.appendChild(said); box.appendChild(actions);
     if (!Recognition()) useTyping();
 

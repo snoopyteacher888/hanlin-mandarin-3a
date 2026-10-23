@@ -2,10 +2,11 @@
    每題有三層提示 hints：h1 給方法、h2 給線索（都不說答案）、teach 第 3 次錯才說答案和原因。 */
 (function (root, factory) {
   var m = factory(root.H3A && root.H3A.quizgen || (typeof require === 'function' ? require('./quizgen.js') : null),
-    root.H3A && root.H3A.locate || (typeof require === 'function' ? require('./locate.js') : null));
+    root.H3A && root.H3A.locate || (typeof require === 'function' ? require('./locate.js') : null),
+    root.H3A && root.H3A.speechcheck || (typeof require === 'function' ? require('./speechcheck.js') : null));
   if (typeof module === 'object' && module.exports) module.exports = m;
   else { root.H3A = root.H3A || {}; root.H3A.wordq = m; }
-})(this, function (quizgen, locator) {
+})(this, function (quizgen, locator, speechcheck) {
   function shuffled(texts, correct, r, extra) {
     var order = quizgen.shuffle(texts, r);
     return { options: order.map(function (t) { var o = { text: t }; for (var k in extra) o[k] = extra[k]; return o; }), answer: order.indexOf(correct) };
@@ -76,6 +77,7 @@
     q.say = m.front;
     q.hints = { h1: { text: '想一想，做了前面的事以後，會有什麼結果？' }, h2: { text: m.clue }, teach: { text: m.explain } };
     q.list = true;
+    q.promptClass = 'pt-cond'; q.optionsClass = 'pt-res';
     return q;
   }
   function conjQuestion(c, r) {
@@ -83,7 +85,29 @@
     q.say = c.sentence.replace(/＿+/g, '什麼');
     q.hints = { h1: { text: '把句子念一次，想想前後兩句是什麼關係。' }, h2: { text: c.clue }, teach: { text: c.explain } };
     q.list = true;
+    q.optionsClass = 'pt-conj';
     return q;
+  }
+  /* 把句型例句切成「條件（cond）／結果（res1、res2）」，關聯詞標 conj，給畫面上色用 */
+  function patternClauses(text, key) {
+    var words = speechcheck.PATTERNS[key], clauses = [], cur = '';
+    for (var i = 0; i < text.length; i++) {
+      cur += text[i];
+      if (text[i] === '，' && i < text.length - 1) { clauses.push(cur); cur = ''; }
+    }
+    if (cur) clauses.push(cur);
+    return clauses.map(function (c, n) {
+      var parts = [], rest = c;
+      while (rest) {
+        var best = -1, w = null;
+        words.forEach(function (k) { var at = rest.indexOf(k); if (at >= 0 && (best < 0 || at < best)) { best = at; w = k; } });
+        if (best < 0) { parts.push({ text: rest, conj: false }); break; }
+        if (best > 0) parts.push({ text: rest.slice(0, best), conj: false });
+        parts.push({ text: w, conj: true });
+        rest = rest.slice(best + w.length);
+      }
+      return { kind: n === 0 ? 'cond' : n === 1 ? 'res1' : 'res2', parts: parts };
+    });
   }
   function rhetoricQuestion(x, cards, r) {
     var order = quizgen.shuffle(cards, r);
@@ -124,5 +148,5 @@
   return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, similarQuestion: similarQuestion,
     listenQuestion: listenQuestion,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
-    rhetoricQuestion: rhetoricQuestion, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
+    rhetoricQuestion: rhetoricQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
 });

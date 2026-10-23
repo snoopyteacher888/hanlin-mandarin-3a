@@ -91,7 +91,7 @@
         H3A.ui.showHint(feedback, hint, ctx);
       }
 
-      var grid = h('div', { class: speak ? 'speak-area' : 'options' + (q.list ? ' list' : '') });
+      var grid = h('div', { class: speak ? 'speak-area' : 'options' + (q.list ? ' list' : '') + (q.optionsClass ? ' ' + q.optionsClass : '') });
       if (speak) H3A.ui.speakQuestion(grid, ctx, q, function (result, extra) { done(result, [], extra); }, feedback);
       else q.options.forEach(function (o, i) {
         var b = o.big
@@ -106,7 +106,7 @@
       main.appendChild(dots(questions.length, idx));
       var promptText = h('h2', { hidden: !!q.hideText }, q.prompt);
       var showBtn = q.hideText ? h('button', { type: 'button', class: 'btn-secondary small-btn', onclick: function () { promptText.hidden = false; showBtn.remove(); } }, '👀 看文字') : null;
-      main.appendChild(h('div', { class: 'prompt' + (q.img ? ' with-img' : '') },
+      main.appendChild(h('div', { class: 'prompt' + (q.img ? ' with-img' : '') + (q.promptClass ? ' ' + q.promptClass : '') },
         q.img ? h('div', { class: 'prompt-img' }, H3A.ui.picture(ctx.lessonId, q.img, '')) : null,
         q.hideText ? h('span', { class: 'listen-icon', 'aria-hidden': 'true' }, '👂') : null,
         promptText, showBtn, H3A.ui.speaker(q.prompt, q.say)));

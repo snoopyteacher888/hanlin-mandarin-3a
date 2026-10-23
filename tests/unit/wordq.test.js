@@ -86,3 +86,19 @@ test('sentence options are shown as a one-column list', () => {
   assert.equal(Q.conjQuestion(W.pattern[0].conj[0], rng(1)).list, true);
   assert.ok(!Q.phrasePickQuestion(W.phrase.pick[0], rng(1)).list);
 });
+test('patternClauses splits condition and results and marks conjunctions', () => {
+  const c = Q.patternClauses('只要多喝水，身體就會更健康。', 'zhiyao');
+  assert.deepEqual(c.map(x => x.kind), ['cond', 'res1']);
+  assert.deepEqual(c[0].parts, [{ text: '只要', conj: true }, { text: '多喝水，', conj: false }]);
+  assert.deepEqual(c[1].parts, [{ text: '身體', conj: false }, { text: '就', conj: true }, { text: '會更健康。', conj: false }]);
+  const r = Q.patternClauses('如果你不吃早餐，不但肚子會餓，上課還會沒精神。', 'ruguo');
+  assert.deepEqual(r.map(x => x.kind), ['cond', 'res1', 'res2']);
+  assert.equal(r.map(x => x.parts.map(p => p.text).join('')).join(''), '如果你不吃早餐，不但肚子會餓，上課還會沒精神。');
+  const s = Q.patternClauses('妹妹只要聽到音樂，就會開心的跳舞。', 'zhiyao');
+  assert.deepEqual(s[0].parts[0], { text: '妹妹', conj: false });
+});
+test('match and conj questions carry pattern colors', () => {
+  const m = Q.matchQuestion(W.pattern[0].match[0], rng(1));
+  assert.equal(m.promptClass, 'pt-cond'); assert.equal(m.optionsClass, 'pt-res');
+  assert.equal(Q.conjQuestion(W.pattern[0].conj[0], rng(1)).optionsClass, 'pt-conj');
+});

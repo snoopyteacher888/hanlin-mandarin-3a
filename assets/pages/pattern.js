@@ -5,28 +5,35 @@
   function halfQ(pt, x) { return Q.speakQuestion(x, { kind: 'pattern', key: pt.key, front: x.front }, '說說看：把句子說完'); }
   function wholeQ(pt, x) { return Q.speakQuestion(x, { kind: 'pattern', key: pt.key }, '用「' + pt.title + '」說一句話'); }
 
-  /* 把關聯詞標上顏色 */
-  function colored(text, key) {
-    var words = H3A.speechcheck.PATTERNS[key], out = [], rest = text;
-    while (rest) {
-      var best = -1, w = null;
-      words.forEach(function (k) { var i = rest.indexOf(k); if (i >= 0 && (best < 0 || i < best)) { best = i; w = k; } });
-      if (best < 0) { out.push(rest); break; }
-      if (best > 0) out.push(rest.slice(0, best));
-      out.push(h('span', { class: 'conj-word' }, w));
-      rest = rest.slice(best + w.length);
-    }
-    return out;
+  /* 句型公式：🟧關聯詞、🟦條件（假設）、🟩結果 */
+  var FORMULA = {
+    zhiyao: [['只要', 'conj'], ['要做到的事', 'cond'], ['就', 'conj'], ['會有的結果', 'res1']],
+    ruguo: [['如果', 'conj'], ['假設做了什麼事', 'cond'], ['不但', 'conj'], ['第一個結果', 'res1'], ['還', 'conj'], ['第二個結果', 'res2']]
+  };
+  var LABEL = { zhiyao: { cond: '條件', res1: '結果' }, ruguo: { cond: '假設', res1: '結果一', res2: '結果二' } };
+
+  function formulaRow(key) {
+    return h('div', { class: 'pt-formula' }, FORMULA[key].map(function (f) {
+      return h('span', { class: 'pt-chip ' + f[1] }, f[0]);
+    }));
+  }
+  /* 例句切成色塊，每塊下面標「條件／結果」 */
+  function clauseBlocks(text, key) {
+    return h('div', { class: 'pt-sentence' }, Q.patternClauses(text, key).map(function (c) {
+      return h('span', { class: 'pt-block ' + c.kind },
+        h('span', { class: 'pt-text' }, c.parts.map(function (p) { return p.conj ? h('span', { class: 'conj-word' }, p.text) : p.text; })),
+        h('span', { class: 'pt-label' }, LABEL[key][c.kind] || ''));
+    }), H3A.ui.speaker(text, null));
   }
 
   function introSlide(ctx, pt) {
     return F.learn('認識句型：' + pt.title, function () {
       return h('div', { class: 'learn-box' },
+        formulaRow(pt.key),
         h('div', { class: 'prompt-img' }, H3A.ui.picture(ctx.lessonId, pt.img, pt.title)),
         F.sayLine(pt.meaning),
-        h('div', { class: 'examples' }, pt.examples.map(function (e) {
-          return h('p', { class: 'learn-line example' }, h('span', {}, colored(e, pt.key)), H3A.ui.speaker(e, null));
-        })));
+        h('p', { class: 'learn-label' }, '📝 例句'),
+        pt.examples.map(function (e) { return clauseBlocks(e, pt.key); }));
     }, pt.title.replace(/…+/g, '，') + '。' + pt.meaning + '例如：' + pt.examples.join(''));
   }
 
