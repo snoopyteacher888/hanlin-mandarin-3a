@@ -109,7 +109,7 @@
   function similarQuestion(s, r) {
     var x = s.frame ? framed(s, r) : shuffled(s.options, s.answer, r, { big: true });
     return { id: s.id, prompt: s.sentence, say: blankSay(s.sentence), options: x.options, answer: x.answer, optionsClass: s.frame ? 'frame-opts' : undefined,
-      hints: { h1: { text: '再讀一次句子，想想這個詞是什麼意思。', say: blankSay(s.sentence) }, h2: { text: s.clue }, teach: { text: s.explain } } };
+      hints: { h1: s.meaning ? { text: '提示：' + s.meaning, say: '提示：' + s.meaning.replace(/＿/g, '什麼') } : { text: '再讀一次句子，想想這個詞是什麼意思。', say: blankSay(s.sentence) }, h2: { text: s.clue }, teach: { text: s.explain } } };
   }
   function listenQuestion(l, r) {
     var order = quizgen.shuffle(l.options.map(function (_, i) { return i; }), r);

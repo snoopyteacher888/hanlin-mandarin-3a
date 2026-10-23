@@ -57,6 +57,7 @@
       opts(s.id, s.options, 2);
       if (Array.isArray(s.options) && s.options.indexOf(s.answer) < 0) errs.push(s.id + ' 的答案不在選項裡');
       if (!nonEmpty(s.clue) || !nonEmpty(s.explain)) errs.push(s.id + ' 缺少線索或說明');
+      if (s.meaning !== undefined && (!nonEmpty(s.meaning) || s.meaning.indexOf(s.answer) >= 0)) errs.push(s.id + ' 的意思要有內容、不能說出答案');
     });
     w.listen.forEach(function (l) {
       useId(l.id);
