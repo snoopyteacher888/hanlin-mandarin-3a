@@ -35,15 +35,21 @@
     popup(box);
     H3A.tts.speak(item.say);
   }
+  /* 一行：標籤＋內容＋🔊 */
+  function infoLine(label, content, say, aria) {
+    return h('p', { class: 'info-line' }, h('span', {}, h('span', { class: 'info-label', 'aria-label': aria || null }, label), content), H3A.ui.speaker(say, null));
+  }
+  H3A.ui.infoLine = infoLine;
   function vocabDetail(lessonId, item) {
     var sentence = item.example ? item.example.replace(/＿+/, item.word) : '';
-    var box = h('div', { class: 'vocab-box' },
-      H3A.ui.picture(lessonId, item.img, item.word),
-      h('h3', {}, item.word, H3A.ui.speaker(item.word, null)),
-      h('div', { class: 'card-sec' }, h('p', { class: 'card-label' }, '意思'),
-        h('p', { class: 'card-line' }, h('span', {}, item.meaning), H3A.ui.speaker(item.meaning, null))),
-      sentence ? h('div', { class: 'card-sec' }, h('p', { class: 'card-label', 'aria-label': '例句' }, '💬'),
-        h('p', { class: 'card-line' }, h('span', {}, hl(sentence, item.word)), H3A.ui.speaker(sentence, null))) : null);
+    /* 寬的字卡：左邊圖，右邊語詞、意思、例句（「意思：」和解釋同一行） */
+    var box = h('div', { class: 'vocab-box wide' },
+      h('div', { class: 'vd-row' },
+        h('div', { class: 'vd-pic' }, H3A.ui.picture(lessonId, item.img, item.word)),
+        h('div', { class: 'vd-text' },
+          h('h3', {}, item.word, H3A.ui.speaker(item.word, null)),
+          infoLine('意思：', item.meaning, item.meaning),
+          sentence ? infoLine('💬 ', hl(sentence, item.word), sentence, '例句') : null)));
     popup(box);
     H3A.tts.speak(item.word);
   }

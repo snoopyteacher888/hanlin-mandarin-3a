@@ -525,3 +525,18 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .check-wrap.at-option .big-check { width: 56px; height: 56px; font-size: 34px; line-height: 56px; box-shadow: 0 3px 0 #1E6B3E; }
 .order-slots .check-wrap.at-option { position: relative; left: auto; top: auto; margin: 0 8px 0 0; }
 .prompt-img:has(.pic-missing) { display: none; }
+
+/* 寬字卡：左圖右文，字小一點；「意思：」和解釋同一行 */
+.vocab-box.wide { max-width: 880px; text-align: left; }
+.vd-row { display: flex; gap: 22px; align-items: center; }
+.vd-pic { width: 240px; flex: none; }
+.vd-pic .pic { max-width: none; }
+.vd-text { flex: 1; min-width: 0; font-size: 0.85em; }
+.vd-text h3 { justify-content: flex-start; font-size: 1.6em; margin: 0 0 8px; }
+.info-line { display: flex !important; align-items: center; gap: 8px; justify-content: space-between !important; margin: 6px 0; padding: 6px 12px;
+  background: #FFF9F1; border: 2px solid var(--line); border-radius: 12px; text-align: left; }
+.info-line > span { flex: 1; min-width: 0; }
+.info-label { font-weight: 700; color: #8A5A2B; }
+.idiom-card .info-line { font-size: 0.9em; }
+@media (max-width: 600px) { .vd-row { flex-direction: column; } .vd-pic { width: 160px; } .vd-text { width: 100%; } }
+.vocab-box.wide > .btn-secondary { display: block; margin: 14px auto 0; }
