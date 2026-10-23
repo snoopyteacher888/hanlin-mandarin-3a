@@ -411,3 +411,4 @@ html.zhuyin .zhuyin { display: none; }
 .rhetoric-show { align-items: center; }
 .show-img .pic { width: min(320px, 38vh); height: min(320px, 38vh); }
 .level-grid .activity-main { padding-top: 58px; }
+.mark-word { color: #1B5A8C; background: #E3F0FF; border-radius: 6px; padding: 0 4px; }

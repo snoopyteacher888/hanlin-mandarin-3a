@@ -39,7 +39,10 @@
       .concat(H3A.quizgen.shuffle(p.pick, r).map(function (x) { return Q.phrasePickQuestion(x, r); }))
       .concat(p.say.map(sayQ))
       .concat([wordsSlide(ctx, p)])
-      .concat(H3A.quizgen.shuffle(p.choose, r).map(function (x) { return Q.chooseQuestion(x, r); }))
+      .concat(H3A.quizgen.shuffle(p.choose, r).map(function (x) {
+        var w = p.words.filter(function (y) { return y.word === x.word; })[0];
+        return Q.chooseQuestion(x, r, w && w.meaning);
+      }))
       .concat(p.make.map(makeQ));
     F.run(main, ctx, 'phrase', qs, function () { run(main, ctx); });
   };

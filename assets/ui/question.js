@@ -8,6 +8,16 @@
     return d;
   }
 
+  /* 選項裡要標顏色的語詞（例如「混合」） */
+  function marked(o) {
+    if (!o.mark || o.text.indexOf(o.mark) < 0) return o.text;
+    return o.text.split(o.mark).reduce(function (acc, part, i) {
+      if (i) acc.push(h('span', { class: 'mark-word' }, o.mark));
+      if (part) acc.push(part);
+      return acc;
+    }, []);
+  }
+
   function runQuestions(main, ctx, opts) {
     var questions = opts.questions, practice = opts.mode !== 'test';
     var idx = 0, items = [], startedAt = Date.now();
@@ -98,7 +108,7 @@
           ? h('button', { type: 'button', class: 'option big', 'data-index': i, onclick: function () { pick(i); } }, h('span', { class: 'option-text' }, o.text))
           : h('button', { type: 'button', class: 'option' + (o.img ? '' : ' text-only'), 'data-index': i, onclick: function () { pick(i); } },
             o.img ? H3A.ui.picture(ctx.lessonId, o.img, o.text) : null,
-            o.icon ? h('span', { class: 'option-icon', 'aria-hidden': 'true' }, o.icon) : null, h('span', { class: 'option-text' }, o.text));
+            o.icon ? h('span', { class: 'option-icon', 'aria-hidden': 'true' }, o.icon) : null, h('span', { class: 'option-text' }, marked(o)));
         buttons.push(b);
         grid.appendChild(h('div', { class: 'option-wrap' }, b, H3A.ui.speaker(o.text, o.say)));
       });

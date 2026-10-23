@@ -21,6 +21,27 @@
     }
     return a;
   }
+  /* 讓同一組題目的正確答案平均分到每個位置（例如二選一：一半在上、一半在下），不會一直是第一個。
+     fixedOrder（例如 ⭕／❌）和沒有選項的頁面不動 */
+  function balance(questions, r) {
+    var slots = {};
+    function nextSlot(n) {
+      if (!slots[n] || !slots[n].length) {
+        var s = []; for (var i = 0; i < n; i++) s.push(i);
+        slots[n] = shuffle(s, r);
+      }
+      return slots[n].pop();
+    }
+    return questions.map(function (q) {
+      if (!q || !q.options || q.fixedOrder || q.type) return q;
+      var n = q.options.length, target = nextSlot(n);
+      if (target === q.answer) return q;
+      var out = {}; for (var k in q) if (Object.prototype.hasOwnProperty.call(q, k)) out[k] = q[k];
+      var opts = q.options.slice(); var t = opts[target]; opts[target] = opts[q.answer]; opts[q.answer] = t;
+      out.options = opts; out.answer = target;
+      return out;
+    });
+  }
   function prepare(q, r) {
     var order = shuffle(q.options.map(function (_, i) { return i; }), r);
     var out = {};
@@ -30,5 +51,5 @@
     return out;
   }
   function pickN(pool, n, r) { return shuffle(pool, r).slice(0, Math.min(n, pool.length)); }
-  return { rng: rng, shuffle: shuffle, prepare: prepare, pickN: pickN };
+  return { balance: balance, rng: rng, shuffle: shuffle, prepare: prepare, pickN: pickN };
 });

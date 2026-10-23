@@ -8,6 +8,8 @@
   function sayLine(text, cls) { return h('p', { class: 'learn-line' + (cls ? ' ' + cls : '') }, h('span', {}, text), H3A.ui.speaker(text, null)); }
 
   function runFlow(main, ctx, activity, questions, again, extra) {
+    /* 正確答案平均分到各個位置，不會老是第一個 */
+    questions = H3A.quizgen.balance(questions, H3A.quizgen.rng(Date.now() & 0xffffffff));
     H3A.ui.runQuestions(main, ctx, { questions: questions, mode: 'practice', onDone: function (summary) {
       H3A.ui.finishActivity(main, ctx, activity, summary, again, true, extra);
     } });

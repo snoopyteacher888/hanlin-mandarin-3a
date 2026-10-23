@@ -120,3 +120,8 @@ test('findWordQuestion finds rhetoric level items', () => {
   assert.equal(Q.findWordQuestion(W, 'rh-pe-y1', rng(1)).id, 'rh-pe-y1');
   assert.equal(Q.findWordQuestion(W, 'rh-pe-p1', rng(1)).id, 'rh-pe-p1');
 });
+test('choose question: first hint explains the word, options mark the word', () => {
+  const q = Q.chooseQuestion(W.phrase.choose[0], rng(1), '放到滿出來。');
+  assert.equal(q.hints.h1.text, '提示：「裝滿」的意思是：放到滿出來。');
+  assert.ok(q.options.every(o => o.mark === '裝滿'));
+});

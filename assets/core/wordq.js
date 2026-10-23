@@ -66,9 +66,11 @@
     q.hints = { h1: { text: '再看看圖片，它是什麼顏色、什麼樣子？' }, h2: { text: p.clue }, teach: { text: p.explain } };
     return q;
   }
-  function chooseQuestion(c, r) {
-    var q = first(c, '哪一句的「' + c.word + '」用得對？', null, r);
-    q.hints = { h1: { text: '兩個句子都聽一次，想想「' + c.word + '」是什麼意思。' }, h2: { text: c.clue }, teach: { text: c.explain } };
+  /* meaning：語詞的意思（第一層提示用）；選項裡的語詞用顏色標出來（mark） */
+  function chooseQuestion(c, r, meaning) {
+    var q = first(c, '哪一句的「' + c.word + '」用得對？', { mark: c.word }, r);
+    q.hints = { h1: { text: meaning ? '提示：「' + c.word + '」的意思是：' + meaning : '兩個句子都聽一次，想想「' + c.word + '」是什麼意思。' },
+      h2: { text: c.clue }, teach: { text: c.explain } };
     q.list = true;
     return q;
   }
@@ -120,7 +122,7 @@
   /* 修辭闖關：是不是？（⭕ 在前、❌ 在後，不打亂） */
   function rhYesNoQuestion(y, card) {
     return { id: y.id, prompt: '「' + y.sentence + '」是不是' + card.name + '？', say: y.sentence + '。這句話是不是' + card.name + '？', autoSay: y.sentence,
-      options: [{ text: '⭕ 是' + card.name, say: '是' + card.name }, { text: '❌ 不是', say: '不是' }], answer: y.answer ? 0 : 1,
+      options: [{ text: '⭕ 是' + card.name, say: '是' + card.name }, { text: '❌ 不是', say: '不是' }], answer: y.answer ? 0 : 1, fixedOrder: true,
       hints: { h1: { text: '想一想：' + card.name + '是' + card.meaning }, h2: { text: y.clue }, teach: { text: y.explain } } };
   }
   /* 修辭闖關：哪一句是？（第一個選項是對的） */
@@ -151,7 +153,10 @@
     if ((x = pick(w.similar))) return similarQuestion(x, r);
     if ((x = pick(w.listen))) return listenQuestion(x, r);
     if (w.phrase && (x = pick(w.phrase.pick))) return phrasePickQuestion(x, r);
-    if (w.phrase && (x = pick(w.phrase.choose))) return chooseQuestion(x, r);
+    if (w.phrase && (x = pick(w.phrase.choose))) {
+      var pw = (w.phrase.words || []).filter(function (y) { return y.word === x.word; })[0];
+      return chooseQuestion(x, r, pw && pw.meaning);
+    }
     for (var i = 0; i < (w.pattern || []).length; i++) {
       if ((x = pick(w.pattern[i].match))) return matchQuestion(x, r);
       if ((x = pick(w.pattern[i].conj))) return conjQuestion(x, r);
