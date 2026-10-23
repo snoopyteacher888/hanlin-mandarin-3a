@@ -34,20 +34,20 @@
     ],
     /* 生字語詞：每個生字再學一個課本以外的語詞（options 第一個是正確答案，其他也都是本課生字組成的語詞） */
     charwords: [
-      { id: 'cw-墨', char: '墨', word: '墨汁', meaning: '寫毛筆字用的黑色的水。', example: '寫書法的時候，要用毛筆沾＿＿。', options: ['墨汁', '水槽', '樂器', '入口'] },
-      { id: 'cw-製', char: '製', word: '製造', meaning: '把東西做出來。', example: '這家工廠專門＿＿玩具。', options: ['製造', '打斷', '削皮', '治病'] },
-      { id: 'cw-部', char: '部', word: '全部', meaning: '所有的，一個都不少。', example: '我把碗裡的飯＿＿吃光了。', options: ['全部', '另外', '凹下去', '原子筆芯'] },
-      { id: 'cw-芯', char: '芯', word: '原子筆芯', meaning: '原子筆裡面裝著墨水、用來寫字的那一條。', example: '這枝筆寫不出字了，要換一條新的＿＿＿＿。', options: ['原子筆芯', '墨汁', '飛機', '電線桿'] },
-      { id: 'cw-斷', char: '斷', word: '打斷', meaning: '讓別人的話說不下去。', example: '別人說話的時候，不要隨便＿＿。', options: ['打斷', '製造', '削皮', '入口'] },
-      { id: 'cw-機', char: '機', word: '飛機', meaning: '人坐在裡面，可以飛到天上去。', example: '暑假我們坐＿＿去澎湖玩。', options: ['飛機', '水槽', '原子筆芯', '樂器'] },
-      { id: 'cw-器', char: '器', word: '樂器', meaning: '可以彈、可以吹，發出音樂的東西。', example: '小提琴是我最喜歡的＿＿。', options: ['樂器', '墨汁', '全部', '電線桿'] },
-      { id: 'cw-凹', char: '凹', word: '凹下去', meaning: '中間往下陷進去，不再是平平的。', example: '皮球被弟弟坐扁了，中間＿＿＿了。', options: ['凹下去', '另外', '治病', '打斷'] },
-      { id: 'cw-槽', char: '槽', word: '水槽', meaning: '廚房裡洗碗、洗菜的地方。', example: '吃完飯，把碗放進＿＿裡洗乾淨。', options: ['水槽', '飛機', '全部', '製造'] },
-      { id: 'cw-入', char: '入', word: '入口', meaning: '走進去的地方。', example: '請從公園的＿＿走進去。', options: ['入口', '樂器', '削皮', '凹下去'] },
-      { id: 'cw-另', char: '另', word: '另外', meaning: '除了前面說的，還有別的。', example: '我有一枝紅筆，＿＿還有一枝藍筆。', options: ['另外', '全部', '打斷', '原子筆芯'] },
-      { id: 'cw-治', char: '治', word: '治病', meaning: '把病醫好。', example: '醫生的工作是幫人＿＿。', options: ['治病', '製造', '水槽', '墨汁'] },
-      { id: 'cw-桿', char: '桿', word: '電線桿', meaning: '路邊撐著電線的長柱子。', example: '路邊有一根高高的＿＿＿。', options: ['電線桿', '飛機', '入口', '樂器'] },
-      { id: 'cw-削', char: '削', word: '削皮', meaning: '用刀子把外面的皮刮掉。', example: '媽媽用刀子幫我把蘋果＿＿。', options: ['削皮', '治病', '另外', '凹下去'] }
+      { id: 'cw-墨', char: '墨', img: 'cw-ink.png', word: '墨汁', meaning: '寫毛筆字用的黑色的水。', example: '寫書法的時候，要用毛筆沾＿＿。', options: ['墨汁', '水槽', '樂器', '入口'] },
+      { id: 'cw-製', char: '製', img: 'cw-factory.png', word: '製造', meaning: '把東西做出來。', example: '這家工廠專門＿＿玩具。', options: ['製造', '打斷', '削皮', '治病'] },
+      { id: 'cw-部', char: '部', img: 'cw-all-eaten.png', word: '全部', meaning: '所有的，一個都不少。', example: '我把碗裡的飯＿＿吃光了。', options: ['全部', '另外', '凹下去', '原子筆芯'] },
+      { id: 'cw-芯', char: '芯', img: 'cw-pen-refill.png', word: '原子筆芯', meaning: '原子筆裡面裝著墨水、用來寫字的那一條。', example: '這枝筆寫不出字了，要換一條新的＿＿＿＿。', options: ['原子筆芯', '墨汁', '飛機', '電線桿'] },
+      { id: 'cw-斷', char: '斷', img: 'cw-interrupt.png', word: '打斷', meaning: '讓別人的話說不下去。', example: '別人說話的時候，不要隨便＿＿。', options: ['打斷', '製造', '削皮', '入口'] },
+      { id: 'cw-機', char: '機', img: 'cw-airplane.png', word: '飛機', meaning: '人坐在裡面，可以飛到天上去。', example: '暑假我們坐＿＿去澎湖玩。', options: ['飛機', '水槽', '原子筆芯', '樂器'] },
+      { id: 'cw-器', char: '器', img: 'cw-violin.png', word: '樂器', meaning: '可以彈、可以吹，發出音樂的東西。', example: '小提琴是我最喜歡的＿＿。', options: ['樂器', '墨汁', '全部', '電線桿'] },
+      { id: 'cw-凹', char: '凹', img: 'cw-dented-ball.png', word: '凹下去', meaning: '中間往下陷進去，不再是平平的。', example: '皮球被弟弟坐扁了，中間＿＿＿了。', options: ['凹下去', '另外', '治病', '打斷'] },
+      { id: 'cw-槽', char: '槽', img: 'cw-sink.png', word: '水槽', meaning: '廚房裡洗碗、洗菜的地方。', example: '吃完飯，把碗放進＿＿裡洗乾淨。', options: ['水槽', '飛機', '全部', '製造'] },
+      { id: 'cw-入', char: '入', img: 'cw-entrance.png', word: '入口', meaning: '走進去的地方。', example: '請從公園的＿＿走進去。', options: ['入口', '樂器', '削皮', '凹下去'] },
+      { id: 'cw-另', char: '另', img: 'cw-two-pens.png', word: '另外', meaning: '除了前面說的，還有別的。', example: '我有一枝紅筆，＿＿還有一枝藍筆。', options: ['另外', '全部', '打斷', '原子筆芯'] },
+      { id: 'cw-治', char: '治', img: 'cw-doctor.png', word: '治病', meaning: '把病醫好。', example: '醫生的工作是幫人＿＿。', options: ['治病', '製造', '水槽', '墨汁'] },
+      { id: 'cw-桿', char: '桿', img: 'cw-pole.png', word: '電線桿', meaning: '路邊撐著電線的長柱子。', example: '路邊有一根高高的＿＿＿。', options: ['電線桿', '飛機', '入口', '樂器'] },
+      { id: 'cw-削', char: '削', img: 'cw-peel.png', word: '削皮', meaning: '用刀子把外面的皮刮掉。', example: '媽媽用刀子幫我把蘋果＿＿。', options: ['削皮', '治病', '另外', '凹下去'] }
     ],
     /* 生字變成語：課本延伸成語，解釋和例句改成孩子聽得懂的話（不是課本原文） */
     idioms: [

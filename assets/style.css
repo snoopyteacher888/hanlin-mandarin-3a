@@ -442,34 +442,18 @@ html.zhuyin .zhuyin { display: none; }
 /* 生字語詞 */
 .char-mark { color: #B4541A; font-weight: 700; }
 .charword-list { display: flex; flex-direction: column; gap: 10px; max-width: 900px; margin: 0 auto; }
-.charword-row { display: grid; grid-template-columns: auto auto 1fr; align-items: center; gap: 14px; background: var(--surface); border: 2px solid var(--line); border-radius: 14px; padding: 6px 14px; }
-.charword-char { font-size: 1.6em; color: #B4541A; font-weight: 700; }
-.charword-word { font-size: 1.2em; min-width: 4.5em; }
-.charword-row .learn-line { margin: 0; font-size: 1em; justify-content: flex-start; text-align: left; }
-@media (max-width: 600px) { .charword-row { grid-template-columns: auto 1fr; } .charword-row .learn-line { grid-column: 1 / -1; } }
-
-/* 生字卡、語詞卡的細節 */
-.hanzi-head { display: flex; align-items: center; justify-content: center; gap: 18px; }
-.hanzi-head .small { margin: 0; }
-.card-sec { text-align: left; background: #FFF9F1; border: 2px solid var(--line); border-radius: 14px; padding: 6px 14px; margin: 8px 0; }
-.card-label { margin: 0; font-size: 0.8em; font-weight: 700; color: #8A5A2B; }
-.card-line { display: flex; align-items: center; gap: 8px; margin: 2px 0; }
-.card-line > span { flex: 1; min-width: 0; }
-.card-sec .hanzi-words { justify-content: flex-start; margin: 4px 0; }
-.parts-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 6px 0; }
-.parts-chip { min-width: 2em; text-align: center; font-size: 1.4em; background: var(--surface); border: 2px solid #E8CFAE; border-radius: 10px; padding: 0 8px; }
-.parts-chip.long { font-size: 1em; padding: 6px 10px; }
-.parts-chip.parts-result { color: #B4541A; font-weight: 700; border-color: #B4541A; }
-.parts-op { color: var(--ink-soft); font-size: 1.2em; }
-.card-sec .card-label { justify-content: flex-start; }
-.vocab-box.hanzi-detail, .vocab-box { max-width: 560px; max-height: 92vh; overflow-y: auto; }
+.charword-row { display: grid; grid-template-columns: 84px auto auto 1fr auto; align-items: center; gap: 12px; background: var(--surface); border: 2px solid var(--line); border-radius: 14px; padding: 6px 12px; }
+.charword-pic .pic { width: 84px; }
+.charword-char, .charword-word { border: 0; background: none; padding: 4px; border-radius: 10px; font-weight: 700; }
+.charword-char { font-size: 1.6em; color: #B4541A; }
+.charword-word { font-size: 1.2em; min-width: 4.5em; text-align: left; }
+.charword-char:active, .charword-word:active { background: var(--muted); }
+.charword-meaning { min-width: 0; }
 @media (max-width: 600px) {
-  .vocab-box { padding: 12px; }
-  .card-sec { padding: 6px 10px; }
-  .card-line .speaker, .card-sec .hanzi-words .speaker { min-width: 44px; min-height: 44px; }
-  .parts-chip { font-size: 1.1em; padding: 0 6px; }
-  .parts-row { gap: 4px; }
-  .card-sec .hanzi-words { flex-direction: row; }
+  .charword-row { grid-template-columns: 64px auto 1fr auto; gap: 6px; }
+  .charword-pic .pic { width: 64px; }
+  .charword-meaning { grid-column: 1 / -1; }
+  .charword-row > .speaker { grid-row: 1; grid-column: 4; }
 }
 
 /* 語詞挑戰 */

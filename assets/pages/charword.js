@@ -3,15 +3,18 @@
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow;
   var HALF = 7;
 
-  function learnSlide(list, n) {
+  function rowSay(c) { return c.char + '，' + c.word + '。' + c.meaning; }
+  function learnSlide(ctx, list, n) {
     return F.learn('認識生字語詞（' + n + '）', function () {
       return h('div', { class: 'charword-list' }, list.map(function (c) {
         return h('div', { class: 'charword-row' },
-          h('span', { class: 'charword-char' }, c.char),
-          h('strong', { class: 'charword-word' }, c.word),
-          F.sayLine(c.meaning));
+          h('div', { class: 'charword-pic' }, H3A.ui.picture(ctx.lessonId, c.img, c.word)),
+          h('button', { type: 'button', class: 'charword-char', onclick: function () { H3A.tts.speak(c.char); } }, c.char),
+          h('button', { type: 'button', class: 'charword-word', onclick: function () { H3A.tts.speak(c.word); } }, c.word),
+          h('span', { class: 'charword-meaning' }, c.meaning),
+          H3A.ui.speaker(rowSay(c), null));
       }));
-    }, list.map(function (c) { return c.char + '，' + c.word + '。' + c.meaning; }).join(''));
+    }, list.map(rowSay).join(''));
   }
 
   H3A.pages.charword = function run(main, ctx) {
@@ -21,7 +24,7 @@
     var qs = [];
     for (var i = 0; i < list.length; i += HALF) {
       var part = list.slice(i, i + HALF);
-      qs.push(learnSlide(part, i / HALF + 1));
+      qs.push(learnSlide(ctx, part, i / HALF + 1));
       qs = qs.concat(H3A.quizgen.shuffle(part, r).map(function (c) { return H3A.wordq.charWordQuestion(c, r, chars); }));
     }
     F.run(main, ctx, 'charword', qs, function () { run(main, ctx); });

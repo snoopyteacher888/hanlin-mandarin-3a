@@ -80,3 +80,24 @@
 | 2 | `moon-boat.png` | 譬喻：月亮像一艘小船，掛在天上 |
 | 3 | `dog-wag.png` | 疊字：小狗搖搖尾巴，跑過來找我 |
 | 4 | `chick-egg.png` | 設問：小雞是從哪裡來的？從蛋裡孵出來的 |
+
+## 生字語詞（待生成）
+
+指令在 `docs/chatgpt-image-prompts-charword.txt`。
+
+| # | 檔名 | 要畫什麼 |
+|---|---|---|
+| 1 | `cw-ink.png` | 墨汁 |
+| 2 | `cw-factory.png` | 製造 |
+| 3 | `cw-all-eaten.png` | 全部 |
+| 4 | `cw-pen-refill.png` | 原子筆芯 |
+| 5 | `cw-interrupt.png` | 打斷 |
+| 6 | `cw-airplane.png` | 飛機 |
+| 7 | `cw-violin.png` | 樂器 |
+| 8 | `cw-dented-ball.png` | 凹下去 |
+| 9 | `cw-sink.png` | 水槽 |
+| 10 | `cw-entrance.png` | 入口 |
+| 11 | `cw-two-pens.png` | 另外 |
+| 12 | `cw-doctor.png` | 治病 |
+| 13 | `cw-pole.png` | 電線桿 |
+| 14 | `cw-peel.png` | 削皮 |
