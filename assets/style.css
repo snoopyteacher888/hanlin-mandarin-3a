@@ -428,3 +428,7 @@ html.zhuyin .zhuyin { display: none; }
 .hint-para p { flex: none; width: 100%; }
 .hint-para p + p { border-top: 1px dashed var(--line); padding-top: 6px; }
 .hint-para > .speaker { align-self: flex-end; }
+.teacher-face { display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; font-size: 2.2em; flex: none; vertical-align: middle; }
+.teacher-face img { width: 100%; height: 100%; object-fit: contain; border-radius: 50%; background: #fff; }
+.fb-banner .teacher-face { width: 48px; height: 48px; margin-right: 6px; }
+.feedback.teach .hint-row { align-items: center; gap: 10px; }

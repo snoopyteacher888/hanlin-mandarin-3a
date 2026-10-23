@@ -67,3 +67,10 @@ test('樣子 and 說得 use light tone', () => {
   assert.equal(mark('樣子'), '樣子' + V(1));
   assert.equal(mark('說得更清楚'), '說得' + V(1) + '更清楚');
 });
+test('得 is light tone by default, even when the next character is in another text node', () => {
+  assert.equal(mark('西瓜圓得'), '西瓜圓得' + V(1));
+  assert.equal(mark('記得要說'), '記得' + V(1) + '要說');
+  assert.equal(mark('比賽得了第一名'), '比賽得了第一名');
+  assert.equal(mark('得到'), '得到');
+  assert.equal(mark('值得'), '值得');
+});

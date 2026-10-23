@@ -51,6 +51,15 @@
         from = at + 1;
       }
     });
+    /* 「得」大多是輕聲（寫得、圓得、記得）；得到、得獎、得了、值得、獲得這類才念 ㄉㄜˊ。
+       只看「得」前後一個字，所以句子被圈字切開時也能標對 */
+    for (var d = 0; d < text.length; d++) {
+      if (text.charAt(d) !== '得' || picks[d] !== undefined) continue;
+      var nx = text.charAt(d + 1), pv = d > 0 ? text.charAt(d - 1) : '';
+      if ('到獎分意了病救失'.indexOf(nx) >= 0 && nx) continue;
+      if ('獲取值贏難懂'.indexOf(pv) >= 0 && pv) continue;
+      picks[d] = 1;
+    }
     /* 連接詞「和」標 ㄏㄢˋ（第 2 個讀音）；和平、柔和這類固定的詞不改 */
     for (var a = 0; a < text.length; a++) {
       if (text.charAt(a) !== '和' || picks[a] !== undefined) continue;

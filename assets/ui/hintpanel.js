@@ -44,7 +44,7 @@
   H3A.ui.showTeach = function (feedback, teach, onUnderstood) {
     H3A.ui.clear(feedback);
     feedback.className = 'feedback teach';
-    feedback.appendChild(h('div', { class: 'hint-row' }, h('strong', {}, '👩‍🏫 老師教你'), H3A.ui.speaker(teach.say || teach.text, null)));
+    feedback.appendChild(h('div', { class: 'hint-row' }, H3A.ui.teacherFace(), h('strong', {}, '老師教你'), H3A.ui.speaker(teach.say || teach.text, null)));
     feedback.appendChild(h('p', {}, teach.text));
     var btn = h('button', { type: 'button', class: 'btn-primary', onclick: function () { btn.disabled = true; onUnderstood(); } }, '我懂了 ▶');
     feedback.appendChild(btn);

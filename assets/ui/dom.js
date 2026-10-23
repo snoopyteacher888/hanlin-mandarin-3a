@@ -31,5 +31,13 @@
     box.appendChild(img);
     return box;
   }
-  H3A.ui.h = h; H3A.ui.clear = clear; H3A.ui.picture = picture;
+  /* 老師頭像（Q 版老師，images/teacher.png）；圖還沒上傳就顯示 👩‍🏫 */
+  function teacherFace() {
+    var box = h('span', { class: 'teacher-face', 'aria-hidden': 'true' });
+    var img = h('img', { src: 'images/teacher.png', alt: '', draggable: 'false' });
+    img.onerror = function () { clear(box); box.appendChild(document.createTextNode('👩‍🏫')); };
+    box.appendChild(img);
+    return box;
+  }
+  H3A.ui.h = h; H3A.ui.clear = clear; H3A.ui.picture = picture; H3A.ui.teacherFace = teacherFace;
 })(this);

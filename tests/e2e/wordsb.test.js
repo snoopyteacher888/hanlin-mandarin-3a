@@ -323,3 +323,16 @@ test('lesson menu reading section has only the fishbone map and questions', asyn
   assert.equal(await p.$('[data-activity="read"]'), null);
   assert.ok(await p.$('[data-activity="quiz"]'));
 });
+
+test('teacher face shows in 老師教你, falling back to 👩‍🏫 when the picture is missing', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/rhetoric?s=bear&p=mix');
+  await p.waitForSelector('.hint-btn');
+  for (let i = 0; i < 3; i++) await p.click('.hint-btn');
+  await p.waitForSelector('.feedback.teach .teacher-face');
+  await p.waitForFunction(() => {
+    const f = document.querySelector('.feedback.teach .teacher-face');
+    const img = f.querySelector('img');
+    return (img && img.complete && img.naturalWidth > 0) || f.textContent.includes('👩‍🏫');
+  });
+  assert.deepEqual(p.errors, []);
+});

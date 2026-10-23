@@ -17,10 +17,10 @@
     main.appendChild(fbSlot);
     H3A.feedback.unseenCount(ctx).then(function (n) {
       if (!n.total) return;
-      var text = n.unseen ? '👩‍🏫 老師批改了 ' + n.unseen + ' 題' : '👩‍🏫 老師的批改';
+      var text = n.unseen ? '老師批改了 ' + n.unseen + ' 題' : '老師的批改';
       fbSlot.appendChild(h('div', { class: 'fb-banner' + (n.unseen ? ' new' : '') },
-        h('button', { type: 'button', class: 'btn-primary', onclick: function () { ctx.go('#/' + ctx.lessonId + '/feedback'); } }, text),
-        H3A.ui.speaker(text.replace('👩‍🏫 ', ''), null)));
+        h('button', { type: 'button', class: 'btn-primary', onclick: function () { ctx.go('#/' + ctx.lessonId + '/feedback'); } }, H3A.ui.teacherFace(), text),
+        H3A.ui.speaker(text, null)));
     });
     SECTIONS.forEach(function (sec) {
       if (sec.words && !ctx.words) return;
