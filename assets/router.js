@@ -2,9 +2,9 @@
 (function (root) {
   var H3A = root.H3A;
   var h = H3A.ui.h;
-  var ACTIVITIES = ['read', 'map', 'quiz', 'review', 'test', 'hanzi', 'vocab', 'charword', 'similar', 'listen', 'phrase', 'pattern', 'rhetoric', 'challenge', 'feedback'];
+  var ACTIVITIES = ['read', 'map', 'quiz', 'review', 'test', 'hanzi', 'vocab', 'charword', 'similar', 'listen', 'phrase', 'pattern', 'rhetoric', 'challenge', 'idiom', 'feedback'];
   /* 不需要教室密碼的頁面（課次選單、字詞練習、錯題複習） */
-  var NO_KEY = [null, 'hanzi', 'vocab', 'charword', 'similar', 'listen', 'phrase', 'pattern', 'rhetoric', 'challenge', 'feedback', 'review'];
+  var NO_KEY = [null, 'hanzi', 'vocab', 'charword', 'similar', 'listen', 'phrase', 'pattern', 'rhetoric', 'challenge', 'idiom', 'feedback', 'review'];
   var renderToken = 0;
 
   function lessonMeta(id) { return (root.H3A_LESSONS || []).filter(function (l) { return l.id === id; })[0]; }

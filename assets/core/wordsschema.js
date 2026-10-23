@@ -61,6 +61,13 @@
       if (!(l.answer >= 0 && l.answer < (l.options || []).length)) errs.push(l.id + ' 的答案編號不對');
     });
     if (w.charwords) charwords(w.charwords);
+    if (w.idioms) w.idioms.forEach(function (x) {
+      useId(x.id);
+      ['idiom', 'char', 'meaning', 'example', 'situation'].forEach(function (k) { if (!nonEmpty(x[k])) errs.push(x.id + ' 缺少 ' + k); });
+      if (nonEmpty(x.idiom) && x.idiom.indexOf(x.char) < 0) errs.push(x.id + ' 的成語裡沒有生字「' + x.char + '」');
+      if (nonEmpty(x.idiom) && ((x.meaning || '') + (x.situation || '')).indexOf(x.idiom) >= 0) errs.push(x.id + ' 的意思或情境說出了答案');
+      if (nonEmpty(x.idiom) && (x.example || '').indexOf(x.idiom) < 0) errs.push(x.id + ' 的例句要用到成語');
+    });
     if (w.phrase) phrase(w.phrase);
     if (w.pattern) pattern(w.pattern);
     if (w.rhetoric) rhetoric(w.rhetoric);

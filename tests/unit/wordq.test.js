@@ -180,3 +180,17 @@ test('buildQuestion：缺一個部件，部首念名稱，提示不說答案', (
   assert.ok(!q.hints.h1.text.includes('阝') && !q.hints.h2.text.includes('阝'));
   assert.equal(Q.findWordQuestion(W4, 'b-部', rng(1)).id, 'b-部');
 });
+
+test('成語：排字和情境題', () => {
+  const W5 = require('../../data/lesson06.words.js');
+  const it = W5.idioms[0];
+  const o = Q.idiomOrderQuestion(it, rng(2));
+  assert.equal(o.type, 'order'); assert.notEqual(o.tiles.join(''), it.idiom);
+  assert.deepEqual([...o.tiles].sort(), it.idiom.split('').sort());
+  assert.ok(!o.hints.h1.text.includes(it.idiom) && !o.hints.h2.text.includes(it.idiom));
+  const s = Q.idiomSituationQuestion(it, W5.idioms, rng(3));
+  assert.equal(s.options.length, 3); assert.equal(s.options[s.answer].text, it.idiom);
+  assert.ok(!s.hints.h2.text.includes(it.idiom));
+  assert.equal(Q.findWordQuestion(W5, 'io-' + it.idiom, rng(1)).type, 'order');
+  assert.equal(Q.findWordQuestion(W5, 'is-' + it.idiom, rng(1)).id, 'is-' + it.idiom);
+});

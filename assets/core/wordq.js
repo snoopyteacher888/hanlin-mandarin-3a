@@ -61,6 +61,26 @@
       hints: { h1: { text: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？', say: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？' },
         h2: { text: '提示：' + hz.clue }, teach: { text: hz.story } } };
   }
+  /* 生字變成語：排字（把打亂的字排成成語）、情境題（這是哪一個成語？） */
+  function idiomOrderQuestion(it, r) {
+    var chars = it.idiom.split(''), tiles = chars;
+    for (var k = 0; k < 10 && tiles.join('') === it.idiom; k++) tiles = quizgen.shuffle(chars, r);
+    var say = '把字排一排，變成成語。意思是：' + it.meaning;
+    return { type: 'order', id: 'io-' + it.idiom, prompt: '「' + it.meaning + '」\n把字排成成語', say: say, autoSay: say,
+      tiles: tiles, answer: it.idiom, mark: it.char,
+      hints: { h1: { text: '本課的生字「' + it.char + '」也在這個成語裡，想想看它排在第幾個。' },
+        h2: { text: '提示：第一個字是「' + chars[0] + '」。' },
+        teach: { text: '答案是「' + it.idiom + '」。意思是：' + it.meaning } } };
+  }
+  function idiomSituationQuestion(it, all, r) {
+    var others = quizgen.shuffle(all.filter(function (x) { return x.id !== it.id; }), r).slice(0, 2).map(function (x) { return x.idiom; });
+    var s = shuffled([it.idiom].concat(others), it.idiom, r, {});
+    return { id: 'is-' + it.idiom, prompt: it.situation + '\n這可以用哪一個成語來說？', say: it.situation + '這可以用哪一個成語來說？',
+      options: s.options, answer: s.answer, list: true,
+      hints: { h1: { text: '再讀一次，想想這個人做了什麼。', say: it.situation },
+        h2: { text: '提示：要找的成語，意思是「' + it.meaning + '」' },
+        teach: { text: '答案是「' + it.idiom + '」。意思是：' + it.meaning } } };
+  }
   /* 有 frame（例如「真＿糕」）時，選項是整個詞（真糟糕／真槽糕／真遭糕），不一樣的那個字標顏色 */
   function similarQuestion(s, r) {
     var x = s.frame ? framed(s, r) : shuffled(s.options, s.answer, r, { big: true });
@@ -210,6 +230,8 @@
     if ((x = pick(w.hanzi))) return hanziQuestion(x, r);
     if ((x = pick(w.vocab))) return vocabQuestion(x, x.noPic || r() < 0.5 ? 'meaning' : 'pic', r);
     if ((x = pick(w.similar))) return similarQuestion(x, r);
+    var idm = (w.idioms || []).filter(function (y) { return 'io-' + y.idiom === id || 'is-' + y.idiom === id; })[0];
+    if (idm) return id.indexOf('io-') === 0 ? idiomOrderQuestion(idm, r) : idiomSituationQuestion(idm, w.idioms, r);
     var bz = (w.hanzi || []).filter(function (y) { return y.build && 'b-' + y.char === id; })[0];
     if (bz) return buildQuestion(bz, r);
     if ((x = pick(w.charwords))) return charWordQuestion(x, r, (w.hanzi || []).map(function (y) { return y.char; }));
@@ -231,7 +253,7 @@
     }
     return null;
   }
-  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, similarQuestion: similarQuestion,
+  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, similarQuestion: similarQuestion,
     listenQuestion: listenQuestion,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
     rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };

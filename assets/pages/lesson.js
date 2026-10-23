@@ -4,7 +4,7 @@
   var SECTIONS = [
     { title: '📖 閱讀理解', cards: [{ a: 'map', icon: '🐟' }, { a: 'quiz', icon: '❓' }] },
     { title: '✏️ 字詞練習', words: true, cards: [{ a: 'hanzi', icon: '✍️' }, { a: 'vocab', icon: '📚' }, { a: 'charword', icon: '🔤' }, { a: 'similar', icon: '🔍' }, { a: 'listen', icon: '👂' },
-      { a: 'phrase', icon: '📒' }, { a: 'pattern', icon: '🧩' }, { a: 'rhetoric', icon: '🎨' }, { a: 'challenge', icon: '🎮' }] },
+      { a: 'phrase', icon: '📒' }, { a: 'pattern', icon: '🧩' }, { a: 'rhetoric', icon: '🎨' }, { a: 'challenge', icon: '🎮' }, { a: 'idiom', icon: '📜' }] },
     { title: '🌟 複習與測驗', cards: [{ a: 'review', icon: '🔁' }, { a: 'test', icon: '📝' }] }
   ];
   function starsText(n) { return n ? '⭐'.repeat(n) : ''; }

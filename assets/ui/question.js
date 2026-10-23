@@ -55,7 +55,7 @@
     function show() {
       var q = questions[idx];
       if (q.type === 'learn') return showLearn(q);
-      var speak = q.type === 'speak';
+      var speak = q.type === 'speak' || q.type === 'order';
       var hs = speak ? null : H3A.hints.create(q.options.length, q.answer);
       var hints = speak ? q.hints : q.hints || (ctx.lesson && q.evidence ? H3A.wordq.readingHints(ctx.lesson, q) : null) ||
         { h1: { text: '再想想看。' }, h2: { text: '再仔細看一次題目。' }, teach: { text: '答案是「' + q.options[q.answer].text + '」。' } };
@@ -149,8 +149,9 @@
       }
 
       var bulb = practice && !speak ? h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: askHint }, '💡') : null;
-      var grid = h('div', { class: speak ? 'speak-area' : 'options' + (q.list ? ' list' : '') + (q.optionsClass ? ' ' + q.optionsClass : '') });
-      if (speak) H3A.ui.speakQuestion(grid, ctx, q, function (result, extra) { done(result, [], extra); }, feedback);
+      var grid = h('div', { class: q.type === 'order' ? 'order-area' : speak ? 'speak-area' : 'options' + (q.list ? ' list' : '') + (q.optionsClass ? ' ' + q.optionsClass : '') });
+      if (q.type === 'order') H3A.ui.orderQuestion(grid, ctx, q, function (result) { done(result, []); }, feedback);
+      else if (speak) H3A.ui.speakQuestion(grid, ctx, q, function (result, extra) { done(result, [], extra); }, feedback);
       else q.options.forEach(function (o, i) {
         var b = o.big
           ? h('button', { type: 'button', class: 'option big', 'data-index': i, onclick: function () { pick(i); } }, h('span', { class: 'option-text' }, o.text))

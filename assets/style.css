@@ -487,3 +487,22 @@ html.zhuyin .zhuyin { display: none; }
 .mem-card.open .mem-face, .mem-card.matched .mem-face { display: flex; }
 .mem-card.matched { border-color: var(--ok); background: var(--ok-soft); }
 @media (max-width: 600px) { .mem-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; } .mem-word { font-size: 1.1em; } }
+
+/* 生字變成語 */
+.idiom-list { display: flex; flex-direction: column; gap: 14px; max-width: 900px; margin: 0 auto; }
+.idiom-card { background: var(--surface); border: 2px solid var(--line); border-radius: 16px; padding: 10px 16px; }
+.idiom-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.idiom-word { font-size: 1.8em; font-weight: 700; letter-spacing: 0.08em; }
+.idiom-from { font-size: 0.8em; color: var(--ink-soft); background: var(--muted); border-radius: 999px; padding: 2px 12px; }
+.order-area { display: flex; flex-direction: column; align-items: center; gap: 18px; margin: 12px 0; }
+.order-slots, .order-tiles { display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap; }
+.order-slot, .order-tile { width: 2.6em; height: 2.6em; font-size: 1.8em; border-radius: 14px; display: inline-flex; align-items: center; justify-content: center; }
+.order-slot { border: 3px dashed #C9A97E; background: #FFF9F1; }
+.order-slot.filled { border-style: solid; background: var(--surface); }
+.order-slot.right { border-color: var(--ok); background: var(--ok-soft); }
+.order-slot.wrong { border-color: #D9534F; background: #FDECEA; }
+.order-tile { border: 3px solid #E8CFAE; background: var(--surface); font-weight: 700; }
+.order-tile.is-mark { color: #B4541A; }
+.order-tile.used { opacity: 0.25; }
+@media (max-width: 600px) { .order-slot, .order-tile { font-size: 1.3em; } .idiom-word { font-size: 1.4em; } }
+.order-slot.filled { font-weight: 700; }
