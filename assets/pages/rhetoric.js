@@ -5,8 +5,9 @@
   function cardSlide(c) {
     return F.learn('認識修辭：' + c.name, function () {
       return h('div', { class: 'learn-box rhetoric-card' },
-        h('div', { class: 'rhetoric-icon', 'aria-hidden': 'true' }, c.icon),
-        h('h3', {}, c.name, H3A.ui.speaker(c.name, null)),
+        h('div', { class: 'rhetoric-head' },
+          h('span', { class: 'rhetoric-icon', 'aria-hidden': 'true' }, c.icon),
+          h('h3', {}, c.name, H3A.ui.speaker(c.name, null))),
         F.sayLine(c.meaning),
         F.sayLine(c.example, 'example'));
     }, c.name + '。' + c.meaning + c.example);
