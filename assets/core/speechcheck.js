@@ -1,0 +1,44 @@
+/* 說說看：檢查學生說的話。系統只判斷句型；合不合理交給老師（pending） */
+(function (root, factory) {
+  var m = factory();
+  if (typeof module === 'object' && module.exports) module.exports = m;
+  else { root.H3A = root.H3A || {}; root.H3A.speechcheck = m; }
+})(this, function () {
+  var PATTERNS = { zhiyao: ['只要', '就'], ruguo: ['如果', '不但', '還'] };
+  var MIN_PART = 2;
+
+  function normalize(s) {
+    return String(s || '').replace(/[\s，,。.！!？?、；;：:「」『』“”"'（）()…～~—-]/g, '');
+  }
+  function bad(reason) { return { status: 'bad', reason: reason }; }
+
+  /* 關鍵詞要依序出現，每兩個關鍵詞之間、最後一個之後都要有內容 */
+  function pattern(words, t) {
+    var pos = 0, ends = [];
+    for (var i = 0; i < words.length; i++) {
+      var at = t.indexOf(words[i], pos);
+      if (at < 0) return bad(t.indexOf(words[i]) < 0 ? 'missing:' + words[i] : 'order');
+      if (i > 0 && at - ends[i - 1] < MIN_PART) return bad('short');
+      ends.push(at + words[i].length);
+      pos = at + words[i].length;
+    }
+    if (t.length - pos < MIN_PART) return bad('short');
+    return { status: 'pending', reason: null };
+  }
+
+  function check(rule, said) {
+    var t = normalize(said);
+    if (rule.kind === 'phrase') {
+      if (rule.accept.map(normalize).indexOf(t) >= 0) return { status: 'correct', reason: null };
+      return /^.{3,}的.+$/.test(t) ? { status: 'pending', reason: null } : bad('phrase');
+    }
+    if (rule.kind === 'word') {
+      if (t.indexOf(rule.word) < 0) return bad('word');
+      return t.length >= (rule.min || 6) ? { status: 'pending', reason: null } : bad('short');
+    }
+    if (rule.kind === 'pattern') return pattern(PATTERNS[rule.key], normalize(rule.front) + t);
+    return bad('rule');
+  }
+
+  return { normalize: normalize, check: check, PATTERNS: PATTERNS };
+});
