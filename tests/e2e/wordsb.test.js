@@ -48,7 +48,7 @@ W.phrase.choose.forEach(x => add('哪一句的「' + x.word + '」用得對？',
 W.pattern.forEach(pt => { pt.match.forEach(x => add(x.front + '……', x.options[0])); pt.conj.forEach(x => add(x.sentence, x.options[0])); });
 W.rhetoric.quiz.forEach(x => add('「' + x.sentence + '」用了什麼修辭？', x.answer));
 W.rhetoric.cards.forEach(c => {
-  c.yesno.forEach(y => add('「' + y.sentence + '」是不是' + c.name + '？', y.answer ? '⭕ 是' + c.name : '❌ 不是'));
+  c.yesno.forEach(y => add('「' + y.sentence + '」是不是' + c.name + '？', y.answer ? '⭕' : '❌'));
   c.pick.forEach(x => add('哪一句是' + c.name + '？', x.options[0]));
 });
 

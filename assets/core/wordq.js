@@ -122,7 +122,7 @@
   /* 修辭闖關：是不是？（⭕ 在前、❌ 在後，不打亂） */
   function rhYesNoQuestion(y, card) {
     return { id: y.id, prompt: '「' + y.sentence + '」是不是' + card.name + '？', say: y.sentence + '。這句話是不是' + card.name + '？', autoSay: y.sentence,
-      options: [{ text: '⭕ 是' + card.name, say: '是' + card.name }, { text: '❌ 不是', say: '不是' }], answer: y.answer ? 0 : 1, fixedOrder: true,
+      options: [{ text: '⭕', say: '是' + card.name, big: true }, { text: '❌', say: '不是' + card.name, big: true }], answer: y.answer ? 0 : 1, fixedOrder: true,
       hints: { h1: { text: '想一想：' + card.name + '是' + card.meaning }, h2: { text: y.clue }, teach: { text: y.explain } } };
   }
   /* 修辭闖關：哪一句是？（第一個選項是對的） */

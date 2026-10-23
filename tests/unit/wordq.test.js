@@ -106,7 +106,8 @@ test('match and conj questions carry pattern colors', () => {
 test('rhetoric yes/no keeps 是 first and asks about this rhetoric', () => {
   const c = W.rhetoric.cards[0];
   const y = Q.rhYesNoQuestion(c.yesno[0], c), n = Q.rhYesNoQuestion(c.yesno[1], c);
-  assert.equal(y.options[0].text, '⭕ 是' + c.name); assert.equal(y.options[1].text, '❌ 不是');
+  assert.equal(y.options[0].text, '⭕'); assert.equal(y.options[1].text, '❌');
+  assert.equal(y.options[0].say, '是' + c.name); assert.equal(y.options[1].say, '不是' + c.name);
   assert.equal(y.answer, 0); assert.equal(n.answer, 1); assert.equal(y.autoSay, c.yesno[0].sentence);
   assert.match(y.prompt, new RegExp('是不是' + c.name));
 });
