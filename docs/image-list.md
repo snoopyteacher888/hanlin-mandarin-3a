@@ -81,7 +81,7 @@
 | 3 | `dog-wag.png` | 疊字：小狗搖搖尾巴，跑過來找我 |
 | 4 | `chick-egg.png` | 設問：小雞是從哪裡來的？從蛋裡孵出來的 |
 
-## 生字語詞（待生成）
+## 生字語詞（已上傳）
 
 指令在 `docs/chatgpt-image-prompts-charword.txt`。
 
