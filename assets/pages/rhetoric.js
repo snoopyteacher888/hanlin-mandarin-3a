@@ -38,6 +38,8 @@
       return h('div', { class: 'learn-box rhetoric-card' },
         h('h3', {}, c.name, H3A.ui.speaker(c.name, null)),
         F.sayLine(c.meaning),
+        c.keywords ? h('div', { class: 'pt-formula keyword-row' }, h('span', { class: 'learn-label-inline' }, '🔑 關鍵詞'),
+          c.keywords.map(function (k) { return h('span', { class: 'pt-chip conj' }, k); })) : null,
         F.sayLine(c.example, 'example'));
     }, c.name + '。' + c.meaning + c.example);
   }

@@ -129,13 +129,15 @@ test('choose question: first hint explains the word, options mark the word', () 
 test('rhetoricMarks finds the part to circle', () => {
   assert.deepEqual(Q.rhetoricMarks('redup', '天上的星星亮晶晶。'), ['晶晶']);
   assert.deepEqual(Q.rhetoricMarks('redup', '媽媽的手軟軟的。'), ['軟軟']);
-  assert.deepEqual(Q.rhetoricMarks('simile', '月亮像一艘小船，掛在天上。'), ['像一艘小船']);
+  assert.deepEqual(Q.rhetoricMarks('simile', '月亮像一艘小船，掛在天上。'), ['像', { text: '一艘小船', kind: 'line' }]);
+  assert.deepEqual(Q.rhetoricMarks('simile', '嬰兒的手像棉花一樣軟。'), ['像', { text: '棉花', kind: 'line' }]);
+  assert.deepEqual(Q.rhetoricMarks('simile', '他跑得好像一陣風。'), ['好像', { text: '一陣風', kind: 'line' }]);
   assert.deepEqual(Q.rhetoricMarks('question', '為什麼要刷牙呢？因為刷牙可以保護牙齒。'), ['為什麼要刷牙呢？']);
   assert.deepEqual(Q.rhetoricMarks('personify', '花兒向我點頭微笑。', ['點頭微笑']), ['點頭微笑']);
 });
 test('yes/no reveal circles the prompt only when the answer is yes', () => {
   const c = W.rhetoric.cards.find(x => x.key === 'simile');
-  assert.deepEqual(Q.rhYesNoQuestion(c.yesno[0], c).reveal, { target: 'prompt', text: c.yesno[0].sentence, marks: ['像月亮'] });
+  assert.deepEqual(Q.rhYesNoQuestion(c.yesno[0], c).reveal, { target: 'prompt', text: c.yesno[0].sentence, marks: ['像', { text: '月亮', kind: 'line' }] });
   assert.equal(Q.rhYesNoQuestion(c.yesno[1], c).reveal, undefined);
 });
 

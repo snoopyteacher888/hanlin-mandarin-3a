@@ -137,7 +137,9 @@
       var re = /([\u4e00-\u9fff])\1/g;
       while ((m = re.exec(text))) if (out.indexOf(m[0]) < 0 && NOUN_AA.indexOf(m[0]) < 0) out.push(m[0]);
     } else if (key === 'simile') {
-      m = /像[^，。！？、]*/.exec(text); if (m) out.push(m[0]);
+      /* 譬喻：關鍵詞（像、好像、如同、彷彿）圈起來，後面被比成的東西畫底線 */
+      m = /(好像|如同|彷彿|像)(.*?)(一樣|一般|，|。|！|？|、|$)/.exec(text);
+      if (m) { out.push(m[1]); if (m[2]) out.push({ text: m[2], kind: 'line' }); }
     } else if (key === 'question') {
       var q = text.indexOf('？'); if (q > 0) out.push(text.slice(0, q + 1));
     }

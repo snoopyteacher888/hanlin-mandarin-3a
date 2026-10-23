@@ -19,15 +19,20 @@
   }
 
   /* 把 text 裡的 marks 用紅圈圈起來（公布答案時用） */
+  /* marks：字串＝紅圈；{ text, kind: 'line' }＝畫底線 */
   function circled(text, marks) {
     var out = [], rest = text;
     while (rest) {
       var best = -1, w = null;
-      marks.forEach(function (m) { var i = rest.indexOf(m); if (m && i >= 0 && (best < 0 || i < best)) { best = i; w = m; } });
+      marks.forEach(function (m) {
+        var t = typeof m === 'string' ? m : m.text, i = t ? rest.indexOf(t) : -1;
+        if (i >= 0 && (best < 0 || i < best)) { best = i; w = m; }
+      });
       if (best < 0) { out.push(rest); break; }
+      var wt = typeof w === 'string' ? w : w.text;
       if (best > 0) out.push(rest.slice(0, best));
-      out.push(h('span', { class: 'circle-mark' }, w));
-      rest = rest.slice(best + w.length);
+      out.push(h('span', { class: typeof w === 'string' ? 'circle-mark' : 'line-mark' }, wt));
+      rest = rest.slice(best + wt.length);
     }
     return out;
   }

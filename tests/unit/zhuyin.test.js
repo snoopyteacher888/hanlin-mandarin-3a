@@ -74,3 +74,4 @@ test('得 is light tone by default, even when the next character is in another t
   assert.equal(mark('得到'), '得到');
   assert.equal(mark('值得'), '值得');
 });
+test('彷彿 reads ㄈㄤˇ ㄈㄨˊ', () => { assert.equal(mark('彷彿'), '彷' + V(1) + '彿'); });
