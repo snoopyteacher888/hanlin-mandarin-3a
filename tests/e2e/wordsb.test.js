@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
 const { start } = require('./server.js');
 const W = require('../../data/lesson06.words.js');
+const Q = require('../../assets/core/wordq.js');
 
 const PORT = 8182, BASE = `http://localhost:${PORT}/`;
 let srv, browser;
@@ -48,8 +49,8 @@ W.phrase.choose.forEach(x => add('哪一句的「' + x.word + '」用得對？',
 W.pattern.forEach(pt => { pt.match.forEach(x => add(x.front + '……', x.options[0])); pt.conj.forEach(x => add(x.sentence, x.options[0])); });
 W.rhetoric.quiz.forEach(x => add('「' + x.sentence + '」用了什麼修辭？', x.answer));
 W.rhetoric.cards.forEach(c => {
-  c.yesno.forEach(y => add('「' + y.sentence + '」是不是' + c.name + '？', y.answer ? '⭕' : '❌'));
-  c.pick.forEach(x => add('哪一句是' + c.name + '？', x.options[0]));
+  c.yesno.forEach(y => add(Q.rhYesNoQuestion(y, c).prompt, y.answer ? '⭕' : '❌'));
+  c.pick.forEach(x => add(Q.rhPickQuestion(x, c, Math.random).prompt, x.options[0]));
 });
 
 async function answerChoice(p) {
@@ -293,5 +294,23 @@ test('bulb gives the next hint without a wrong answer, and counts as a hint', as
   await p.waitForSelector('.result');
   const rec = srv.posts.filter(x => x.action === 'submit').slice(before).map(x => x.record).find(r => r.activity === 'rhetoric');
   assert.equal(rec.items[0].result, 'taught');
+  assert.deepEqual(p.errors, []);
+});
+
+test('answer reveal circles the rhetoric in the sentence', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/rhetoric?s=bear&p=redup');
+  await nextLearn(p); await nextLearn(p);
+  const circled = [];
+  for (let i = 0; i < 3; i++) {
+    await p.waitForSelector('.option:not(:disabled)');
+    const idx = await p.evaluate(c => {
+      const t = document.querySelector('.prompt h2').textContent;
+      return [...document.querySelectorAll('.option')].findIndex(o => (c[t] || []).includes(o.querySelector('.option-text').textContent));
+    }, CORRECT);
+    await p.click(`.option[data-index="${idx}"]`);
+    circled.push(...await p.$$eval('.circle-mark', x => x.map(e => e.textContent)));
+    await p.click('.btn-next:not([hidden])');
+  }
+  assert.ok(circled.includes('晶晶'), circled.join(','));
   assert.deepEqual(p.errors, []);
 });

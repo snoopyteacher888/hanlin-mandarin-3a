@@ -117,18 +117,38 @@
     var order = quizgen.shuffle([x.answer, others[0].name], r);
     return { id: x.id, prompt: '「' + x.sentence + '」用了什麼修辭？', say: x.sentence + '。這句話用了什麼修辭？', autoSay: x.sentence,
       options: order.map(function (n) { return { text: n }; }), answer: order.indexOf(x.answer),
+      reveal: { target: 'prompt', text: x.sentence, marks: rhetoricMarks((cards.filter(function (c) { return c.name === x.answer; })[0] || {}).key, x.sentence, x.mark) },
       hints: { h1: { text: '想一想：這句話是把東西寫得像人、把東西比成別的東西、有重複的字，還是用問句？' }, h2: { text: x.clue }, teach: { text: x.explain } } };
   }
+  /* 公布答案時要圈起來的地方：疊字圈重複的字、譬喻圈「像……」、設問圈問句；擬人用資料裡的 mark */
+  function rhetoricMarks(key, text, manual) {
+    if (manual && manual.length) return manual.filter(function (m) { return text.indexOf(m) >= 0; });
+    var out = [], m;
+    if (key === 'redup') {
+      var re = /([\u4e00-\u9fff])\1/g;
+      while ((m = re.exec(text))) if (out.indexOf(m[0]) < 0) out.push(m[0]);
+    } else if (key === 'simile') {
+      m = /像[^，。！？、]*/.exec(text); if (m) out.push(m[0]);
+    } else if (key === 'question') {
+      var q = text.indexOf('？'); if (q > 0) out.push(text.slice(0, q + 1));
+    }
+    return out;
+  }
   /* 修辭闖關：是不是？（⭕ 在前、❌ 在後，不打亂） */
+  /* 疊字說「有沒有疊字」「哪一句有疊字」；其他修辭說「是不是」「哪一句用了」 */
+  function isRedup(card) { return card.key === 'redup'; }
   function rhYesNoQuestion(y, card) {
-    return { id: y.id, prompt: '「' + y.sentence + '」是不是' + card.name + '？', say: y.sentence + '。這句話是不是' + card.name + '？', autoSay: y.sentence,
-      options: [{ text: '⭕', say: '是' + card.name, big: true }, { text: '❌', say: '不是' + card.name, big: true }], answer: y.answer ? 0 : 1, fixedOrder: true,
+    var ask = isRedup(card) ? '有沒有' : '是不是', yes = isRedup(card) ? '有' : '是', no = isRedup(card) ? '沒有' : '不是';
+    return { id: y.id, prompt: '「' + y.sentence + '」' + ask + card.name + '？', say: y.sentence + '。這句話' + ask + card.name + '？', autoSay: y.sentence,
+      options: [{ text: '⭕', say: yes + card.name, big: true }, { text: '❌', say: no + card.name, big: true }], answer: y.answer ? 0 : 1, fixedOrder: true,
+      reveal: y.answer ? { target: 'prompt', text: y.sentence, marks: rhetoricMarks(card.key, y.sentence, y.mark) } : undefined,
       hints: { h1: { text: '想一想：' + card.name + '是' + card.meaning }, h2: { text: y.clue }, teach: { text: y.explain } } };
   }
   /* 修辭闖關：哪一句是？（第一個選項是對的） */
   function rhPickQuestion(p, card, r) {
-    var q = first(p, '哪一句是' + card.name + '？', null, r);
+    var q = first(p, '哪一句' + (isRedup(card) ? '有' : '用了') + card.name + '？', null, r);
     q.list = true;
+    q.reveal = { target: 'answer', text: p.options[0], marks: rhetoricMarks(card.key, p.options[0], p.mark) };
     q.hints = { h1: { text: '想一想：' + card.name + '是' + card.meaning }, h2: { text: p.clue }, teach: { text: p.explain } };
     return q;
   }
@@ -172,5 +192,5 @@
   return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, similarQuestion: similarQuestion,
     listenQuestion: listenQuestion,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
-    rhetoricQuestion: rhetoricQuestion, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
+    rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
 });

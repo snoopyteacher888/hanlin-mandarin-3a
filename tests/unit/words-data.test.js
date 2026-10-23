@@ -70,3 +70,17 @@ test('rhetoric level answers are unambiguous', () => {
     if (k === 'simile') { assert.ok(p.options[0].includes('像'), p.id); p.options.slice(1).forEach(o => assert.ok(!o.includes('像'), p.id + ' ' + o)); }
   }
 });
+
+test('every revealed rhetoric answer has something to circle', () => {
+  const Q = require('../../assets/core/wordq.js');
+  for (const c of W.rhetoric.cards) {
+    c.yesno.filter(y => y.answer).forEach(y => assert.ok(Q.rhetoricMarks(c.key, y.sentence, y.mark).length, y.id));
+    c.pick.forEach(p => assert.ok(Q.rhetoricMarks(c.key, p.options[0], p.mark).length, p.id));
+  }
+  for (const x of W.rhetoric.quiz) {
+    const c = W.rhetoric.cards.find(k => k.name === x.answer);
+    assert.ok(Q.rhetoricMarks(c.key, x.sentence, x.mark).length, x.id);
+  }
+  const all = [].concat(...W.rhetoric.cards.map(c => c.yesno.concat(c.pick)), W.rhetoric.quiz);
+  all.filter(x => x.mark).forEach(x => x.mark.forEach(m => assert.ok((x.sentence || x.options[0]).includes(m), x.id + ' ' + m)));
+});

@@ -114,7 +114,7 @@ test('rhetoric yes/no keeps 是 first and asks about this rhetoric', () => {
 test('rhetoric pick: sentence list, answer is first option', () => {
   const c = W.rhetoric.cards[0];
   const q = Q.rhPickQuestion(c.pick[0], c, rng(3));
-  assert.equal(q.list, true); assert.equal(q.prompt, '哪一句是' + c.name + '？');
+  assert.equal(q.list, true); assert.equal(q.prompt, '哪一句用了' + c.name + '？');
   assert.equal(q.options[q.answer].text, c.pick[0].options[0]); assert.ok(!leaks(q));
 });
 test('findWordQuestion finds rhetoric level items', () => {
@@ -125,4 +125,24 @@ test('choose question: first hint explains the word, options mark the word', () 
   const q = Q.chooseQuestion(W.phrase.choose[0], rng(1), '放到滿出來。');
   assert.equal(q.hints.h1.text, '提示：「裝滿」的意思是：放到滿出來。');
   assert.ok(q.options.every(o => o.mark === '裝滿'));
+});
+test('rhetoricMarks finds the part to circle', () => {
+  assert.deepEqual(Q.rhetoricMarks('redup', '天上的星星亮晶晶。'), ['星星', '晶晶']);
+  assert.deepEqual(Q.rhetoricMarks('simile', '月亮像一艘小船，掛在天上。'), ['像一艘小船']);
+  assert.deepEqual(Q.rhetoricMarks('question', '為什麼要刷牙呢？因為刷牙可以保護牙齒。'), ['為什麼要刷牙呢？']);
+  assert.deepEqual(Q.rhetoricMarks('personify', '花兒向我點頭微笑。', ['點頭微笑']), ['點頭微笑']);
+});
+test('yes/no reveal circles the prompt only when the answer is yes', () => {
+  const c = W.rhetoric.cards.find(x => x.key === 'simile');
+  assert.deepEqual(Q.rhYesNoQuestion(c.yesno[0], c).reveal, { target: 'prompt', text: c.yesno[0].sentence, marks: ['像月亮'] });
+  assert.equal(Q.rhYesNoQuestion(c.yesno[1], c).reveal, undefined);
+});
+
+test('疊字 asks 哪一句有疊字 and 有沒有疊字', () => {
+  const W2 = require('../../data/lesson06.words.js');
+  const c = W2.rhetoric.cards.find(x => x.key === 'redup');
+  assert.equal(Q.rhPickQuestion(c.pick[0], c, rng(1)).prompt, '哪一句有疊字？');
+  const y = Q.rhYesNoQuestion(c.yesno[0], c);
+  assert.equal(y.prompt, '「' + c.yesno[0].sentence + '」有沒有疊字？');
+  assert.equal(y.options[0].say, '有疊字'); assert.equal(y.options[1].say, '沒有疊字');
 });

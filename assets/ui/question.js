@@ -18,6 +18,20 @@
     }, []);
   }
 
+  /* 把 text 裡的 marks 用紅圈圈起來（公布答案時用） */
+  function circled(text, marks) {
+    var out = [], rest = text;
+    while (rest) {
+      var best = -1, w = null;
+      marks.forEach(function (m) { var i = rest.indexOf(m); if (m && i >= 0 && (best < 0 || i < best)) { best = i; w = m; } });
+      if (best < 0) { out.push(rest); break; }
+      if (best > 0) out.push(rest.slice(0, best));
+      out.push(h('span', { class: 'circle-mark' }, w));
+      rest = rest.slice(best + w.length);
+    }
+    return out;
+  }
+
   function runQuestions(main, ctx, opts) {
     var questions = opts.questions, practice = opts.mode !== 'test';
     var idx = 0, items = [], startedAt = Date.now();
@@ -63,6 +77,19 @@
         nextBtn.hidden = false;
         nextBtn.focus();
       }
+      /* 公布答案：把句子裡用到修辭的地方圈起來 */
+      function revealMarks() {
+        var rv = q.reveal;
+        if (!rv || !rv.marks || !rv.marks.length) return;
+        if (rv.target === 'prompt') {
+          promptText.hidden = false; H3A.ui.clear(promptText);
+          circled(q.prompt, rv.marks).forEach(function (n) { promptText.appendChild(typeof n === 'string' ? document.createTextNode(n) : n); });
+        } else {
+          var t = buttons[q.answer].querySelector('.option-text');
+          H3A.ui.clear(t);
+          circled(q.options[q.answer].text, rv.marks).forEach(function (n) { t.appendChild(typeof n === 'string' ? document.createTextNode(n) : n); });
+        }
+      }
       function wrongTexts() { return hs.wrongPicked.map(function (i) { return q.options[i].text; }); }
 
       function pick(i) {
@@ -72,6 +99,7 @@
           feedback.textContent = '答對了！';
           feedback.className = 'feedback ok';
           H3A.sfx.correct(); H3A.tts.speak('答對了！');
+          revealMarks();
           done(practice ? H3A.hints.result(hs) : (hs.wrongCount ? 'wrong' : 'first'), wrongTexts());
           return;
         }
@@ -99,6 +127,7 @@
           if (bulb) bulb.remove();
           buttons.forEach(function (b) { b.disabled = true; });
           buttons[q.answer].classList.add('is-correct');
+          revealMarks();
           H3A.ui.showTeach(feedback, hints.teach, function () { done('taught', wrongTexts()); nextBtn.click(); });
           return;
         }
