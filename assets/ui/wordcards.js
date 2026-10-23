@@ -49,6 +49,7 @@
         h('div', { class: 'vd-text' },
           h('h3', {}, item.word, H3A.ui.speaker(item.word, null)),
           infoLine('意思：', item.meaning, item.meaning),
+          item.also ? infoLine('也可以說：', item.also, '也可以說' + item.also) : null,
           sentence ? infoLine('💬 ', hl(sentence, item.word), sentence, '例句') : null)));
     popup(box);
     H3A.tts.speak(item.word);
