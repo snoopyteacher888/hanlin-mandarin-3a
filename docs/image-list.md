@@ -52,3 +52,20 @@
 | 42 | `clay.png` | 一團灰褐色、軟軟的黏土，表面有一點手指壓過的痕跡 | 見 Google 雲端「第6課魚骨圖：補3張圖片給ChatGPT的指令」 |
 | 43 | `lead.png` | 一塊灰色、有點暗沉的金屬塊（鉛塊），上面不能有字或符號 | 見 Google 雲端「第6課魚骨圖：補3張圖片給ChatGPT的指令」 |
 | 44 | `write-life.png` | 一本打開的日記本，小朋友的手拿著黃色鉛筆寫東西，旁邊有小花和小星星 | 見 Google 雲端「第6課魚骨圖：補3張圖片給ChatGPT的指令」 |
+
+## B 批（待生成）
+
+短語短句、句型用的新圖，指令在 `docs/chatgpt-image-prompts-b.txt`。上傳後網站會自動顯示。
+
+| # | 檔名 | 要畫什麼 |
+|---|---|---|
+| 1 | `apple-red.png` | 一顆紅通通的大蘋果 |
+| 2 | `cave-dark.png` | 黑漆漆的山洞 |
+| 3 | `grass-green.png` | 綠油油的草地 |
+| 4 | `sky-gray.png` | 灰濛濛的天空 |
+| 5 | `star-shiny.png` | 亮晶晶的星星 |
+| 6 | `puppy-fluffy.png` | 毛茸茸的小狗 |
+| 7 | `snow-white.png` | 白茫茫的雪地 |
+| 8 | `bread-yummy.png` | 香噴噴的麵包 |
+| 9 | `zhiyao.png` | 只要按一下開關，電燈就會亮 |
+| 10 | `ruguo.png` | 如果淋雨回家，不但衣服溼透，還會感冒 |

@@ -21,3 +21,33 @@ test('clues never contain the answer character', () => {
   for (const h of W.hanzi) assert.ok(!h.clue.includes(h.char), h.id + ': ' + h.clue);
   for (const v of W.vocab) assert.ok(!v.example.includes(v.word), v.id + ': ' + v.example);
 });
+
+/* B 批新圖片：還沒上傳前，列在 docs/image-list.md 的「B 批（待生成）」就先放行 */
+const pendingImgs = (() => {
+  const md = fs.readFileSync(path.join(__dirname, '../../docs/image-list.md'), 'utf8');
+  const i = md.indexOf('## B 批（待生成）'); if (i < 0) return [];
+  return [...md.slice(i).matchAll(/`([a-z0-9-]+\.png)`/g)].map(m => m[1]);
+})();
+const imgOk = f => fs.existsSync(path.join(__dirname, '../../images/L06', f)) || pendingImgs.includes(f);
+
+test('batch B counts', () => {
+  const p = W.phrase;
+  assert.equal(p.pick.length, 8); assert.equal(p.say.length, 2); assert.equal(p.choose.length, 4); assert.equal(p.make.length, 2);
+  assert.deepEqual(p.words.map(x => x.word), ['混合', '斷裂']);
+  assert.deepEqual(W.pattern.map(x => x.key), ['zhiyao', 'ruguo']);
+  for (const pt of W.pattern) {
+    assert.equal(pt.match.length, 3); assert.equal(pt.conj.length, 3); assert.equal(pt.half.length, 2); assert.equal(pt.whole.length, 1);
+  }
+  assert.deepEqual(W.rhetoric.cards.map(c => c.name), ['擬人', '譬喻', '疊字', '設問']);
+  assert.equal(W.rhetoric.quiz.length, 8);
+  for (const c of W.rhetoric.cards) assert.equal(W.rhetoric.quiz.filter(q => q.answer === c.name).length, 2, c.name);
+});
+test('batch B images exist or are pending', () => {
+  const p = W.phrase;
+  const imgs = [p.intro.img, ...p.pick.map(x => x.img), ...p.say.map(x => x.img), ...p.words.map(x => x.img), ...W.pattern.map(x => x.img)];
+  for (const f of imgs) assert.ok(imgOk(f), f);
+});
+test('batch B text has no textbook sentence', () => {
+  const all = JSON.stringify([W.phrase, W.pattern, W.rhetoric.quiz]);
+  ['直接拿筆芯來書寫', '輕輕的按一按', '一道道的凹槽', '幫忙解決問題了'].forEach(t => assert.ok(!all.includes(t), t));
+});

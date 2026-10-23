@@ -74,7 +74,7 @@
       said.appendChild(H3A.ui.speaker((q.front || '') + t, null));
       H3A.ui.clear(actions); actions.hidden = false;
       actions.appendChild(h('button', { type: 'button', class: 'btn-primary', onclick: function () { submit(lastText); } }, '✅ 送出'));
-      actions.appendChild(h('button', { type: 'button', class: 'btn-secondary', onclick: toggle }, '🔁 重說'));
+      actions.appendChild(h('button', { type: 'button', class: 'btn-secondary', onclick: toggle }, '🔁 再說一次'));
       H3A.tts.speak((q.front || '') + t);
     }
     function submit(text) {
