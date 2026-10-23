@@ -68,18 +68,21 @@
   function chooseQuestion(c, r) {
     var q = first(c, '哪一句的「' + c.word + '」用得對？', null, r);
     q.hints = { h1: { text: '兩個句子都聽一次，想想「' + c.word + '」是什麼意思。' }, h2: { text: c.clue }, teach: { text: c.explain } };
+    q.list = true;
     return q;
   }
   function matchQuestion(m, r) {
     var q = first(m, m.front + '……', null, r);
     q.say = m.front;
     q.hints = { h1: { text: '想一想，做了前面的事以後，會有什麼結果？' }, h2: { text: m.clue }, teach: { text: m.explain } };
+    q.list = true;
     return q;
   }
   function conjQuestion(c, r) {
     var q = first(c, c.sentence, null, r);
     q.say = c.sentence.replace(/＿+/g, '什麼');
     q.hints = { h1: { text: '把句子念一次，想想前後兩句是什麼關係。' }, h2: { text: c.clue }, teach: { text: c.explain } };
+    q.list = true;
     return q;
   }
   function rhetoricQuestion(x, cards, r) {

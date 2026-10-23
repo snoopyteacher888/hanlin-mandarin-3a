@@ -91,7 +91,7 @@
         H3A.ui.showHint(feedback, hint, ctx);
       }
 
-      var grid = h('div', { class: speak ? 'speak-area' : 'options' });
+      var grid = h('div', { class: speak ? 'speak-area' : 'options' + (q.list ? ' list' : '') });
       if (speak) H3A.ui.speakQuestion(grid, ctx, q, function (result, extra) { done(result, [], extra); }, feedback);
       else q.options.forEach(function (o, i) {
         var b = o.big

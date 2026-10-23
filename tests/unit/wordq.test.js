@@ -80,3 +80,9 @@ test('findWordQuestion finds rh and pt match', () => {
 test('findWordQuestion skips speak ids', () => {
   ['ps1', 'pm1', 'pt-zy-h1', 'pt-zy-w1'].forEach(id => assert.equal(Q.findWordQuestion(W, id, rng(1)), null));
 });
+test('sentence options are shown as a one-column list', () => {
+  assert.equal(Q.chooseQuestion(W.phrase.choose[0], rng(1)).list, true);
+  assert.equal(Q.matchQuestion(W.pattern[0].match[0], rng(1)).list, true);
+  assert.equal(Q.conjQuestion(W.pattern[0].conj[0], rng(1)).list, true);
+  assert.ok(!Q.phrasePickQuestion(W.phrase.pick[0], rng(1)).list);
+});
