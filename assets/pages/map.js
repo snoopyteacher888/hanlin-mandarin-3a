@@ -33,7 +33,7 @@
     });
     var pool = h('div', { class: 'map-cards' });
     var nextBar = h('div', { class: 'next-bar' });
-    main.appendChild(h('div', { class: 'prompt' }, h('h2', {}, '用魚骨圖整理課文重點'), H3A.ui.speaker('用魚骨圖整理課文重點', null)));
+    main.appendChild(h('div', { class: 'prompt' }, H3A.ui.sayable(h('h2', {}, '用魚骨圖整理課文重點'), '用魚骨圖整理課文重點')));
     main.appendChild(fish);
     main.appendChild(promptEl);
     main.appendChild(feedback);
@@ -43,8 +43,7 @@
     var bulb = null;
     function setPrompt(text, say, onHint) {
       H3A.ui.clear(promptEl);
-      promptEl.appendChild(h('h2', { class: 'step-q' }, '👉 ' + text));
-      promptEl.appendChild(H3A.ui.speaker(text, say));
+      promptEl.appendChild(H3A.ui.sayable(h('h2', { class: 'step-q' }, '👉 ' + text), text, say));
       bulb = onHint ? h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: function () { if (!finished) onHint(); } }, '💡') : null;
       if (bulb) promptEl.appendChild(bulb);
       if (ctx.auto) H3A.tts.speak(text, say);

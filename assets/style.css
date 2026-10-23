@@ -721,3 +721,56 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .hl-card .hl-main { flex-wrap: nowrap; gap: 10px; }
 .hl-chip.long { max-width: 7.5em; }
 .hl-chip.long .hl-part { font-size: .95em; line-height: 1.4; }
+
+/* ===== 點標題就念 ===== */
+.sayable { cursor: pointer; border-radius: 12px; transition: background .15s; }
+.sayable:hover { background: rgba(224, 122, 46, .08); }
+.sayable:active { background: rgba(224, 122, 46, .16); }
+.sayable:focus-visible { outline: 3px solid var(--brand); outline-offset: 2px; }
+.prompt h2.sayable { padding: 2px 10px; }
+
+/* ===== 進度圓點：做過的變橘色，現在這一題是橘色圈圈 ===== */
+.dot { width: 14px; height: 14px; background: #E6DDCB; }
+.dot.done { background: var(--brand); }
+.dot.now { background: #fff; box-shadow: inset 0 0 0 4px var(--brand); transform: scale(1.3); }
+
+/* ===== 組合字題目：主要的字放大、框起來 ===== */
+.prompt.build-prompt h2 { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 16px; font-size: 1.25em; letter-spacing: 0; }
+.head-char { display: inline-flex; align-items: center; justify-content: center; font-size: 2.4em; line-height: 1; padding: 10px 18px; border-radius: 18px; border: 4px solid #3E6DB0; background: #EAF1FA; color: #23466F;
+  font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", var(--font); }
+.head-tag { background: #FFF1C9; border: 2px solid #E9C46A; color: #8A5A00; border-radius: 999px; padding: 2px 14px; font-size: .85em; }
+.head-line { flex-basis: 100%; }
+
+/* ===== 拖拉填空：題目字放大，空格和選項一樣大 ===== */
+.prompt.drag-prompt h2 { font-size: 2em; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; }
+.drop-slot { margin: 0; min-width: 0; }
+.drop-slot.filled { font-size: 1.1em; }
+
+/* ===== 選項是單一個字（大字）時排成一列 ===== */
+.options:has(.option.big) { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; max-width: 900px; }
+.options:has(.option.big) .option-wrap { flex: 0 1 160px; }
+.options:has(.option.big) .option.big { min-height: 120px; justify-content: center; }
+.drag-opts .option-wrap { flex: 0 1 140px !important; }
+.drag-opts .drag-tile { min-height: 110px !important; }
+
+/* ===== 組合字說明：每一塊用不同顏色的框 ===== */
+.combo-intro .parts-chip { display: inline-flex; align-items: center; justify-content: center; min-width: 1.9em; min-height: 1.9em; padding: 4px 8px; border-radius: 14px; border: 3px solid; font-weight: 700; }
+.combo-stack .parts-chip:first-child { background: #EAF5EE; border-color: #4C8C6A; color: #2E6B4C; }
+.combo-stack .parts-chip:last-child { background: #EAF1FA; border-color: #3E6DB0; color: #2D5791; }
+.combo-intro .parts-chip.parts-result { background: #FDEBDC; border-color: var(--brand); color: #9A4A12; font-size: 2em; }
+.combo-ex { background: var(--surface); border-radius: 20px; padding: 16px 24px; box-shadow: 0 2px 8px rgba(80,60,30,.06); }
+.combo-stack { gap: 8px; }
+.fix-options { width: 100%; }
+.options:has(.option.big) .option.big .option-text { font-size: 2.6em; }
+.options:has(.option.big) .option-wrap { position: relative; }
+.options:has(.option.big) .option-wrap > .speaker { position: absolute; top: -12px; right: -12px; min-width: 40px; min-height: 40px; width: 40px; height: 40px; font-size: .8em; box-shadow: 0 2px 4px rgba(0,0,0,.08); z-index: 1; }
+.fix-char, .fix-punct { font-size: 2em; }
+@media (max-width: 600px) { .options:has(.option.big) .option-wrap { flex-basis: 30%; } .fix-char, .fix-punct { font-size: 1.5em; } }
+@media (max-width: 600px) {
+  .options:has(.option.big) { gap: 10px; }
+  .options:has(.option.big) .option-wrap, .drag-opts .option-wrap { flex: 0 1 calc(25% - 8px) !important; }
+  .options:has(.option.big) .option.big, .drag-opts .drag-tile { min-height: 84px !important; padding: 6px 2px; }
+  .options:has(.option.big) .option.big .option-text { font-size: 1.9em; }
+  .options:has(.option.big) .option-wrap > .speaker { width: 32px; height: 32px; min-width: 32px; min-height: 32px; top: -10px; right: -6px; }
+}
+.order-slot.given { border-color: #F2A900; background: #FFF4D6; color: #8A5A00; animation: pop .4s; }

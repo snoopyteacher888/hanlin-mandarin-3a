@@ -13,7 +13,7 @@
         btn.disabled = false; msg.textContent = '密碼不對，請問老師'; H3A.tts.speak('密碼不對，請問老師');
       });
     } },
-      h('h2', {}, '🔒 請輸入教室密碼', H3A.ui.speaker('請輸入教室密碼', null)),
+      H3A.ui.sayable(h('h2', {}, '🔒 請輸入教室密碼'), '請輸入教室密碼'),
       input, btn, msg,
       h('p', { class: 'small' }, '課文有著作權，密碼請勿外流'));
     main.appendChild(form);

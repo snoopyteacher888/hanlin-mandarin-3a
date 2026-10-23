@@ -16,7 +16,7 @@
   }
   function menu(main, ctx, rh) {
     var say = '修辭闖關：選一關開始';
-    main.appendChild(h('div', { class: 'prompt' }, h('h2', {}, say), H3A.ui.speaker(say, null)));
+    main.appendChild(h('div', { class: 'prompt' }, H3A.ui.sayable(h('h2', {}, say), say)));
     var allDone = rh.cards.every(function (c) { return starsOf(ctx, c.key) > 0; });
     var nextIdx = -1;
     rh.cards.some(function (c, i) { if (!starsOf(ctx, c.key)) { nextIdx = i; return true; } return false; });

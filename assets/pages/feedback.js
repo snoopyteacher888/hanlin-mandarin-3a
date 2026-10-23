@@ -23,7 +23,7 @@
   }
 
   H3A.pages.feedback = function (main, ctx) {
-    main.appendChild(h('div', { class: 'prompt' }, H3A.ui.teacherFace(), h('h2', {}, '老師的批改'), H3A.ui.speaker('老師的批改', null)));
+    main.appendChild(h('div', { class: 'prompt' }, H3A.ui.teacherFace(), H3A.ui.sayable(h('h2', {}, '老師的批改'), '老師的批改')));
     var box = h('div', { class: 'feedback-list' }, h('p', {}, '載入中…'));
     main.appendChild(box);
     load(ctx).then(function (list) {

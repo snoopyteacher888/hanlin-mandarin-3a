@@ -60,7 +60,7 @@
         grid.appendChild(h('div', { class: 'lc-card' + (isNext ? ' is-next' : ''), style: '--c:' + c.c },
           isNext ? h('span', { class: 'next-badge' }, '下一步') : null,
           h('div', { class: 'lc-head' }, h('span', { class: 'lc-icon' }, H3A.ui.activityIcon(c.a, c.icon)),
-            h('h3', { class: 'lc-name' }, name), H3A.ui.speaker(name + '。' + c.desc, null)),
+            H3A.ui.sayable(h('h3', { class: 'lc-name' }, name), name + '。' + c.desc)),
           h('p', { class: 'lc-desc' }, c.desc),
           h('div', { class: 'lc-status' }, status ? h('span', {}, status) :
             h('span', { class: 'lc-stars', 'aria-label': n + ' 顆星' }, [0, 1, 2].map(function (i) { return h('span', { class: i < n ? 'on' : '' }, '★'); }))),

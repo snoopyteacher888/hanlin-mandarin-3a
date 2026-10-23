@@ -24,7 +24,7 @@
       return h('button', { type: 'button', class: 'fix-char', 'data-i': i, onclick: function () { find(i); } }, p);
     });
     var say = h('span', { class: 'fix-say' }, H3A.ui.speaker(q.right, null));
-    var stepText = h('p', { class: 'fix-step' }, '👆 先找出寫錯的字');
+    var stepTextSay = '先找出寫錯的字', stepText = H3A.ui.sayable(h('p', { class: 'fix-step' }, '👆 先找出寫錯的字'), function () { return stepTextSay; });
     var bulb = h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: function () {
       if (finished) return;
       bad[step]++; climb(true);
@@ -52,7 +52,7 @@
       chars[q.at].classList.add('found');
       H3A.ui.clear(feedback); feedback.className = 'feedback';
       var t = '「' + q.wrong + '」寫錯了，要改成哪一個字？';
-      H3A.ui.clear(stepText); stepText.appendChild(document.createTextNode(t)); stepText.appendChild(H3A.ui.speaker(t, null));
+      stepText.textContent = t; stepTextSay = t;
       opts.hidden = false;
       H3A.sfx.correct();
       H3A.tts.speak(t);

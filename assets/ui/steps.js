@@ -13,8 +13,10 @@
     H3A.ui.clear(main);
     var tabs = h('div', { class: 'step-tabs', role: 'tablist' });
     var bar = h('div', { class: 'step-bar' }, h('span', { class: 'step-bar-fill' }));
-    var boxNo = h('span', { class: 'step-no' }), boxText = h('span', { class: 'step-text' }), boxSay = h('span', { class: 'step-say' });
-    var box = h('div', { class: 'step-box' }, h('div', { class: 'step-main' }, h('div', { class: 'step-label' }, '☑ 現在要做什麼　', boxNo), boxText), boxSay);
+    var boxNo = h('span', { class: 'step-no' }), boxText = h('span', { class: 'step-text' });
+    var box = h('div', { class: 'step-box' }, h('div', { class: 'step-main' }, h('div', { class: 'step-label' }, '☑ 現在要做什麼　', boxNo), boxText));
+    var boxSayText = '';
+    H3A.ui.sayable(box, function () { return boxSayText; });
     var stage = h('div', { class: 'step-stage' });
     main.appendChild(tabs); main.appendChild(bar); main.appendChild(box); main.appendChild(stage);
 
@@ -34,7 +36,7 @@
       drawTabs();
       boxNo.textContent = '第 ' + (i + 1) + '／' + steps.length + ' 步';
       boxText.textContent = s.name + '：' + s.say;
-      H3A.ui.clear(boxSay); boxSay.appendChild(H3A.ui.speaker(s.name + '。' + s.say, null));
+      boxSayText = s.name + '。' + s.say;
       H3A.ui.clear(stage);
       if (s.custom) return s.custom(stage, ctx, function (list) { finish(i, list); });
       var qs = H3A.quizgen.balance(s.make(r), r);

@@ -75,9 +75,13 @@ test('生字變成語：五個步驟——成語卡、排成語、放進句子�
       await tapTiles(p, it.idiom.split('').reverse().join(''));
       await p.waitForSelector('.feedback.hint');
       assert.ok(!(await p.textContent('.feedback.hint')).includes(it.idiom));
-      await p.waitForFunction(() => document.querySelectorAll('.order-slot.filled').length === 0);
-    }
-    await tapTiles(p, it.idiom);
+      /* 提示：老師幫忙放好第一個字（鎖住，點了也拿不回來） */
+      await p.waitForFunction(() => document.querySelectorAll('.order-slot.given').length === 1);
+      assert.equal(await p.textContent('.order-slot.given'), it.idiom[0]);
+      await p.click('.order-slot.given');
+      assert.equal(await p.$$eval('.order-slot.filled', x => x.length), 1);
+      await tapTiles(p, it.idiom.slice(1));
+    } else await tapTiles(p, it.idiom);
     await p.waitForSelector('.order-slots .big-check');
     await p.click('.btn-next:not([hidden])');
   }

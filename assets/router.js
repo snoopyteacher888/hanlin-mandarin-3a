@@ -15,7 +15,7 @@
     H3A.ui.clear(app);
     var header = h('header', { class: 'topbar' },
       opts.back ? h('button', { class: 'btn-back', type: 'button', onclick: function () { go(opts.back); } }, '← 返回') : h('span', { class: 'brand' }, '翰林國語三上'),
-      h('div', { class: 'title' }, opts.title || '', opts.titleSay ? H3A.ui.speaker(opts.title, null) : null),
+      opts.titleSay ? H3A.ui.sayable(h('div', { class: 'title' }, opts.title || ''), opts.title) : h('div', { class: 'title' }, opts.title || ''),
       opts.student ? h('div', { class: 'who' }, opts.student.emoji + ' ' + opts.student.name) : h('span'),
       H3A.ui.gear ? H3A.ui.gear() : h('span'));
     app.appendChild(header);

@@ -6,7 +6,7 @@
   /* q = { type:'order', id, prompt, tiles:[字…], answer:'按部就班', mark:'部', hints:{h1,h2,teach} }
      done(result)：first/hint1/hint2/taught */
   function orderQuestion(box, ctx, q, done, feedback) {
-    var bad = 0, taught = false, finished = false, busy = false;
+    var bad = 0, taught = false, finished = false, busy = false, given = 0;
     /* 拆開的單字沒有前後文，破音字要照它在整個詞裡的讀音標注音（例如隨機應變的「應」念ㄧㄥˋ） */
     var show = {}, marked = H3A.zhuyin ? H3A.zhuyin.mark(q.answer) : q.answer, at = 0;
     q.answer.split('').forEach(function (ch) {
@@ -40,12 +40,26 @@
       if (placed.indexOf(null) < 0) check();
     }
     function take(k) {
-      if (finished || busy || placed[k] === null) return;
+      if (finished || busy || placed[k] === null || k < given) return;
       var i = placed[k]; placed[k] = null;
       tiles[i].disabled = false; tiles[i].classList.remove('used');
-      slots[k].textContent = ''; slots[k].classList.remove('filled');
+      slots[k].textContent = ''; slots[k].classList.remove('filled', 'given');
     }
     function reset() { slots.forEach(function (_, k) { take(k); }); slots.forEach(function (s) { s.classList.remove('wrong'); }); }
+    /* 提示：把前 n 個字放進格子並鎖住（亮起來），學生只要排剩下的 */
+    function give(n) {
+      n = Math.min(n, q.answer.length - 1);
+      var keep = given; given = 0;
+      slots.forEach(function (_, k) { take(k); });
+      given = keep;
+      for (var k = 0; k < n; k++) {
+        var ch = q.answer.charAt(k);
+        var i = q.tiles.map(function (t, j) { return t === ch && placed.indexOf(j) < 0 ? j : -1; }).filter(function (j) { return j >= 0; })[0];
+        placed[k] = i; tiles[i].disabled = true; tiles[i].classList.add('used');
+        slots[k].textContent = disp(q.tiles[i]); slots[k].classList.add('filled', 'given');
+      }
+      given = Math.max(given, n);
+    }
     function check() {
       var got = placed.map(function (i) { return q.tiles[i]; }).join('');
       if (got === q.answer) {
@@ -60,7 +74,7 @@
       bad++;
       slots.forEach(function (s) { s.classList.add('wrong'); });
       busy = true;
-      setTimeout(function () { busy = false; reset(); }, 900);
+      setTimeout(function () { busy = false; reset(); if (given) give(given); }, 900);
       climb(false);
     }
     function climb(asked) {
@@ -74,7 +88,9 @@
         });
         return;
       }
-      H3A.ui.showHint(feedback, bad === 1 ? q.hints.h1 : q.hints.h2, ctx, asked);
+      var hint = bad === 1 ? q.hints.h1 : q.hints.h2, n = bad === 1 ? q.hints.h1Give : q.hints.h2Give;
+      if (n) { if (busy) setTimeout(function () { give(n); }, 950); else give(n); }
+      H3A.ui.showHint(feedback, hint, ctx, asked);
     }
   }
   H3A.ui.orderQuestion = orderQuestion;

@@ -3,7 +3,7 @@
   var H3A = root.H3A; var h = H3A.ui.h;
   H3A.pages.picker = function (main, ctx) {
     var roster = H3A.session.roster();
-    main.appendChild(h('h2', {}, '你是誰？請點你的頭像', H3A.ui.speaker('你是誰？請點你的頭像', null)));
+    main.appendChild(H3A.ui.sayable(h('h2', {}, '你是誰？請點你的頭像'), '你是誰？請點你的頭像'));
     var grid = h('div', { class: 'picker-grid' });
     roster.forEach(function (r) {
       grid.appendChild(h('button', { type: 'button', class: 'picker-card', 'data-student': r.id, onclick: function () { ctx.onPick(r.id); } },

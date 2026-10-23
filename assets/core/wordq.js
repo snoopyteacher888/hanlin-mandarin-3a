@@ -74,7 +74,7 @@
     var pos = b.layout === 'tb' ? ['上面', '下面'] : ['左邊', '右邊'], kind = b.layout === 'tb' ? '上下組合' : '左右組合';
     var line = b.show.map(function (x, i) { return pos[i] + '是「' + x + '」'; }).join('，');
     var say = hz.char + '，' + kind + '。' + b.show.map(function (x, i) { return pos[i] + '是' + partSay(x); }).join('，') + '？';
-    return { id: 'b-' + hz.char, prompt: hz.char + '　' + kind + '\n' + line, say: say, quiet: true, promptClass: 'build-prompt', optionsClass: 'parts-opts',
+    return { id: 'b-' + hz.char, headChar: hz.char, prompt: hz.char + '　' + kind + '\n' + line, say: say, quiet: true, promptClass: 'build-prompt', optionsClass: 'parts-opts',
       options: order.map(function (x) { return { text: x, say: PART_NAME[x] || x, big: true }; }), answer: order.indexOf(b.answer),
       hints: { h1: { text: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？', say: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？' },
         h2: { text: '提示：' + (b.clue || hz.clue) }, teach: { text: hz.story } } };
@@ -86,8 +86,9 @@
     var say = '把字排一排，變成成語。意思是：' + it.meaning;
     return { type: 'order', id: 'io-' + it.idiom, prompt: '「' + it.meaning + '」', say: say, autoSay: say,
       tiles: tiles, answer: it.idiom, mark: it.char,
-      hints: { h1: { text: '本課的生字「' + it.char + '」也在這個成語裡，想想看它排在第幾個。' },
-        h2: { text: '提示：第一個字是「' + chars[0] + '」。' },
+      /* 提示直接幫忙：第 1 層放好第一個字，第 2 層放好前兩個字（order.js 的 give），剩下的自己排 */
+      hints: { h1: { text: '老師幫你放好第一個字了，接下來的字排排看。' }, h1Give: 1,
+        h2: { text: '老師再幫你放好第二個字，剩下的你來排。' }, h2Give: 2,
         teach: { text: '答案是「' + it.idiom + '」。意思是：' + it.meaning } } };
   }
   /* 排完字接著出：兩個新的句子，哪一句適合填入這個成語？ */

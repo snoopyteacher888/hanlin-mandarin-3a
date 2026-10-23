@@ -39,7 +39,7 @@
 
   function choose(main, ctx, list) {
     var say = '你想練習哪一個句型？';
-    main.appendChild(h('div', { class: 'prompt' }, h('h2', {}, say), H3A.ui.speaker(say, null)));
+    main.appendChild(h('div', { class: 'prompt' }, H3A.ui.sayable(h('h2', {}, say), say)));
     main.appendChild(h('div', { class: 'activity-grid' }, list.map(function (pt) {
       return h('div', { class: 'activity-card' },
         h('button', { type: 'button', class: 'activity-main', 'data-pattern': pt.key, onclick: function () { ctx.go('#/' + ctx.lessonId + '/pattern?p=' + pt.key); } },
