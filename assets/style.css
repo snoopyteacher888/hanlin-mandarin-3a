@@ -517,3 +517,10 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 @keyframes spark-fly { 0% { transform: translate(0, 0) scale(.4); opacity: 1; } 70% { opacity: 1; } 100% { transform: translate(var(--dx), var(--dy)) scale(1); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .big-check, .spark { animation: none; } .spark { display: none; } }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* 打勾放在正確選項的左邊 */
+.feedback.celebrate-quiet { min-height: 0; padding: 0; }
+.option.has-check { position: relative; padding-left: 76px; overflow: visible; }
+.check-wrap.at-option { position: absolute; left: 10px; top: 50%; width: 56px; height: 56px; margin-top: -28px; }
+.check-wrap.at-option .big-check { width: 56px; height: 56px; font-size: 34px; line-height: 56px; box-shadow: 0 3px 0 #1E6B3E; }
+.order-slots .check-wrap.at-option { position: relative; left: auto; top: auto; margin: 0 8px 0 0; }

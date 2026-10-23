@@ -22,14 +22,10 @@
     }, []);
   }
   function hanziDetail(item) {
-    var parts = item.parts ? h('div', { class: 'parts-row' },
-      item.parts.map(function (x, i) { return [i ? h('span', { class: 'parts-op' }, '＋') : null, h('span', { class: 'parts-chip' + (x.length > 1 ? ' long' : '') }, x)]; }),
-      h('span', { class: 'parts-op' }, '→'), h('span', { class: 'parts-chip parts-result' }, item.char)) : null;
     var box = h('div', { class: 'vocab-box hanzi-detail' },
       h('div', { class: 'hanzi-head' },
         h('div', { class: 'hanzi-big' }, item.char),
         h('div', {}, h('div', { class: 'zhuyin' }, item.zhuyin), h('p', { class: 'small' }, '部首：' + item.radical + '　' + item.strokes + ' 畫'))),
-      item.story ? section('🧩 拆一拆', item.story, parts) : null,
       section('📚 常用語詞', null, h('p', { class: 'hanzi-words' }, item.words.map(function (w) { return h('span', {}, w, H3A.ui.speaker(w, null)); }))),
       item.sentence ? h('div', { class: 'card-sec' }, h('p', { class: 'card-label' }, '💬 例句'),
         h('p', { class: 'card-line' }, h('span', {}, hl(item.sentence, item.char)), H3A.ui.speaker(item.sentence, null))) : null,

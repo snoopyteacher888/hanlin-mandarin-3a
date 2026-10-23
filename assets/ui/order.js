@@ -53,7 +53,7 @@
         slots.forEach(function (s) { s.classList.add('right'); });
         tiles.forEach(function (t) { t.disabled = true; });
         bulb.remove();
-        H3A.ui.celebrate(feedback, q.answer);
+        H3A.ui.celebrate(feedback, q.answer, null, box.querySelector('.order-slots'));
         done(taught ? 'taught' : ['first', 'hint1', 'hint2'][Math.min(bad, 2)]);
         return;
       }

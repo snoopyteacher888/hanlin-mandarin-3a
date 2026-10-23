@@ -43,9 +43,10 @@
 
   /* 答對：不顯示文字，大大的打勾＋煙火，說「答對啦！」（after：接著要念的話，例如成語） */
   var SPARK_COLORS = ['#F2994A', '#F2C94C', '#6FCF97', '#56CCF2', '#EB5757', '#BB6BD9'];
-  H3A.ui.celebrate = function (feedback, after, afterSay) {
+  /* target：打勾放在哪裡（正確選項的左邊）；沒有就放在回饋區中間 */
+  H3A.ui.celebrate = function (feedback, after, afterSay, target) {
     H3A.ui.clear(feedback);
-    feedback.className = 'feedback ok celebrate';
+    feedback.className = 'feedback ok' + (target ? ' celebrate-quiet' : ' celebrate');
     var burst = h('span', { class: 'burst', 'aria-hidden': 'true' });
     for (var i = 0; i < 20; i++) {
       var a = (i / 20) * Math.PI * 2, d = 90 + (i % 3) * 35;
@@ -55,7 +56,9 @@
       s.style.background = SPARK_COLORS[i % SPARK_COLORS.length];
       burst.appendChild(s);
     }
-    feedback.appendChild(h('span', { class: 'check-wrap' }, burst, h('span', { class: 'big-check', 'aria-hidden': 'true' }, '✔')));
+    var check = h('span', { class: 'check-wrap' + (target ? ' at-option' : '') }, burst, h('span', { class: 'big-check', 'aria-hidden': 'true' }, '✔'));
+    if (target) { target.classList.add('has-check'); target.insertBefore(check, target.firstChild); }
+    else feedback.appendChild(check);
     feedback.appendChild(h('span', { class: 'sr-only' }, '答對啦！'));
     H3A.sfx.correct();
     var p = H3A.tts.speak('答對啦！');

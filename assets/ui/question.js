@@ -101,7 +101,7 @@
         if (locked || hs.disabled.indexOf(i) >= 0) return;
         if (i === q.answer) {
           buttons[i].classList.add('is-correct');
-          H3A.ui.celebrate(feedback);
+          H3A.ui.celebrate(feedback, null, null, buttons[i]);
           revealMarks();
           done(practice ? H3A.hints.result(hs) : (hs.wrongCount ? 'wrong' : 'first'), wrongTexts());
           return;

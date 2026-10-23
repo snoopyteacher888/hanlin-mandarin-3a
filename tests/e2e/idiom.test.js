@@ -75,7 +75,7 @@ test('生字變成語：排錯會提示、可以拿回字，排對再做情境�
         await p.waitForFunction(() => document.querySelectorAll('.order-slot.filled').length === 0);
       }
       await tapTiles(p, it.idiom);
-      await p.waitForSelector('.feedback.ok');
+      await p.waitForSelector('.order-slots .big-check');
       await p.click('.btn-next:not([hidden])');
       /* 排完接著：哪一句適合填入這個成語？ */
       await p.waitForSelector('.option:not(:disabled)');
