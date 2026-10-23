@@ -27,7 +27,7 @@
         h('div', { class: 'hanzi-big' }, item.char),
         h('div', {}, h('div', { class: 'zhuyin' }, item.zhuyin), h('p', { class: 'small' }, '部首：' + item.radical + '　' + item.strokes + ' 畫'))),
       section('📚 常用語詞', null, h('p', { class: 'hanzi-words' }, item.words.map(function (w) { return h('span', {}, w, H3A.ui.speaker(w, null)); }))),
-      item.sentence ? h('div', { class: 'card-sec' }, h('p', { class: 'card-label' }, '💬 例句'),
+      item.sentence ? h('div', { class: 'card-sec' }, h('p', { class: 'card-label', 'aria-label': '例句' }, '💬'),
         h('p', { class: 'card-line' }, h('span', {}, hl(item.sentence, item.char)), H3A.ui.speaker(item.sentence, null))) : null,
       h('div', { class: 'result-actions' },
         H3A.ui.speaker(item.say, null, '念出：' + item.say),
@@ -40,9 +40,9 @@
     var box = h('div', { class: 'vocab-box' },
       H3A.ui.picture(lessonId, item.img, item.word),
       h('h3', {}, item.word, H3A.ui.speaker(item.word, null)),
-      h('div', { class: 'card-sec' }, h('p', { class: 'card-label' }, '📖 意思'),
+      h('div', { class: 'card-sec' }, h('p', { class: 'card-label' }, '意思'),
         h('p', { class: 'card-line' }, h('span', {}, item.meaning), H3A.ui.speaker(item.meaning, null))),
-      sentence ? h('div', { class: 'card-sec' }, h('p', { class: 'card-label' }, '💬 例句'),
+      sentence ? h('div', { class: 'card-sec' }, h('p', { class: 'card-label', 'aria-label': '例句' }, '💬'),
         h('p', { class: 'card-line' }, h('span', {}, hl(sentence, item.word)), H3A.ui.speaker(sentence, null))) : null);
     popup(box);
     H3A.tts.speak(item.word);

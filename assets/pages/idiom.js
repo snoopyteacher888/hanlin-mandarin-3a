@@ -12,9 +12,9 @@
         return h('div', { class: 'idiom-card' },
           h('div', { class: 'idiom-head' }, h('span', { class: 'idiom-word' }, hl(x.idiom, x.char)), H3A.ui.speaker(x.idiom, null),
             h('span', { class: 'idiom-from' }, '生字「' + x.char + '」')),
-          h('div', { class: 'card-sec' }, h('p', { class: 'card-label' }, '📖 意思'),
+          h('div', { class: 'card-sec' }, h('p', { class: 'card-label' }, '意思'),
             h('p', { class: 'card-line' }, h('span', {}, x.meaning), H3A.ui.speaker(x.meaning, null))),
-          h('div', { class: 'card-sec' }, h('p', { class: 'card-label' }, '💬 例句'),
+          h('div', { class: 'card-sec' }, h('p', { class: 'card-label', 'aria-label': '例句' }, '💬'),
             h('p', { class: 'card-line' }, h('span', {}, hl(x.example, x.idiom)), H3A.ui.speaker(x.example, null))));
       }));
     }, list.map(function (x) { return x.idiom + '。意思是：' + x.meaning + '例如：' + x.example; }).join(''));
