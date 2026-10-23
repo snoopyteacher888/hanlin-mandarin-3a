@@ -153,12 +153,11 @@
       /* 學生比較沒耐心：說明念完才出現「下一步」。
          保險：瀏覽器沒回報念完時，等大約念完的時間就出現；沒有語音就馬上出現 */
       var say = q.autoSay || q.prompt, my = idx, shown = false;
-      var wait = h('p', { class: 'learn-wait', role: 'status' }, '👂 聽完說明，就會出現「下一步」');
       next.hidden = true;
-      main.appendChild(h('div', { class: 'next-bar' }, wait, next));
+      main.appendChild(h('div', { class: 'next-bar' }, next));
       function reveal() {
         if (shown || my !== idx) return;
-        shown = true; wait.remove(); next.hidden = false; next.classList.add('pop-in');
+        shown = true; next.hidden = false; next.classList.add('pop-in');
       }
       /* 念完（true）或沒有語音（undefined）就出現；被別的喇叭打斷（false）就等時間到 */
       H3A.tts.speak(say).then(function (ok) { if (ok !== false) reveal(); }, reveal);

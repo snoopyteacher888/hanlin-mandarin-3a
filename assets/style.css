@@ -412,7 +412,6 @@ html.zhuyin .zhuyin { display: none; }
 .show-img .pic { width: min(320px, 38vh); height: min(320px, 38vh); }
 .level-grid .activity-main { padding-top: 58px; }
 .mark-word { color: #1B5A8C; background: #E3F0FF; border-radius: 6px; padding: 0 4px; }
-.learn-wait { margin: 0; background: var(--surface); border-radius: 999px; padding: 10px 22px; font-weight: 700; color: var(--ink-soft); pointer-events: auto; }
 .btn-next.pop-in { animation: pop .5s; }
 /* 說明頁加寬：短句一行放得下 */
 .learn-box { max-width: 1200px; }

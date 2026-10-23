@@ -274,9 +274,7 @@ test('learn page shows next only after the explanation has been read aloud', asy
   await p.goto(BASE + '#/L06/pattern?s=bear&p=zhiyao');
   await p.waitForSelector('.learn-box');
   assert.equal(await p.$eval('.next-bar .btn-next', b => b.hidden), true);
-  assert.ok(await p.$('.learn-wait'));
   await p.waitForSelector('.next-bar .btn-next:not([hidden])', { timeout: 3000 });
-  assert.equal(await p.$('.learn-wait'), null);
 });
 
 test('bulb gives the next hint without a wrong answer, and counts as a hint', async () => {
