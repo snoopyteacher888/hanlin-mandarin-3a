@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { create, pickWrong, result, mustTeach } = require('../../assets/core/hints.js');
+const { create, pickWrong, askHint, result, mustTeach } = require('../../assets/core/hints.js');
 const enabled = (s) => Array.from({ length: s.optionCount }, (_, i) => i).filter(i => s.disabled.indexOf(i) < 0);
 
 test('no wrong is first', () => { assert.equal(result(create(4, 1)), 'first'); });
@@ -30,3 +30,12 @@ test('does not mutate input', () => { const s = create(4, 2); pickWrong(s, 0); a
 test('records wrong picks', () => {
   let s = pickWrong(create(4, 2), 3); s = pickWrong(s, 1); assert.deepEqual(s.wrongPicked, [3, 1]);
 });
+test('asking for a hint moves up the same ladder as a wrong answer', () => {
+  let s = askHint(create(4, 2));
+  assert.equal(s.level, 1); assert.equal(s.wrongCount, 0); assert.equal(result(s), 'hint1'); assert.deepEqual(s.disabled, []);
+  s = pickWrong(s, 0);
+  assert.equal(s.level, 2); assert.equal(result(s), 'hint2'); assert.equal(mustTeach(s), false);
+  s = askHint(s);
+  assert.equal(mustTeach(s), true); assert.equal(result(s), 'taught');
+});
+test('askHint does not mutate input', () => { const s = create(4, 2); askHint(s); assert.equal(s.level, 0); });

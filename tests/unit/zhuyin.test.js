@@ -58,3 +58,8 @@ test('一個: 個 is light tone, 一 is 2nd tone', () => {
   assert.equal(mark('一個'), '一' + V(1) + '個' + V(1));
   assert.equal(mark('第一個'), '第一個' + V(1));
 });
+test('和 as "and" shows ㄏㄢˋ, but not inside 和平、柔和', () => {
+  assert.equal(mark('紅色和黃色'), '紅色和' + V(1) + '黃色');
+  assert.equal(mark('和平'), '和平');
+  assert.equal(mark('很柔和'), '很柔和');
+});

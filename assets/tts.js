@@ -18,7 +18,17 @@
     /* 電腦語音會用大陸讀音：削、梢、識、夾、液、企，換成台灣讀音的同音字 */
     [/削/g, '消'], [/梢/g, '燒'], [/識/g, '是'], [/夾/g, '莢'], [/液/g, '亦'], [/企/g, '器']
   ];
-  function fixSay(t) { SAY_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return t; }
+  /* 台灣口語：連接詞「和」念ㄏㄢˋ（換成「漢」）、「還要」的「還」念ㄏㄞˊ（換成「孩」）；固定的詞不換 */
+  var KEEP = { '和': ['柔和', '溫和', '平和', '混和', '和平', '和好', '和氣', '暖和', '附和', '和尚'],
+    '還': ['歸還', '還給', '還錢', '還書', '償還', '還原'] };
+  var SWAP = { '和': '漢', '還': '孩' };
+  function swapChar(t) {
+    return t.replace(/[和還]/g, function (c, at, str) {
+      var keep = KEEP[c].some(function (w) { var i = w.indexOf(c); return str.substr(at - i, w.length) === w; });
+      return keep ? c : SWAP[c];
+    });
+  }
+  function fixSay(t) { SAY_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return swapChar(t); }
   function norm(lang) { return String(lang || '').replace('_', '-').toLowerCase(); }
   function isTaiwan(v) {
     var l = norm(v.lang);

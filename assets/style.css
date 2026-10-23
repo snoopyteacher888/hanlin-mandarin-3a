@@ -418,3 +418,6 @@ html.zhuyin .zhuyin { display: none; }
 .learn-box { max-width: 1200px; }
 .learn-line { font-size: 1.15em; }
 .rhetoric-card .learn-line.example, .pt-sentence { max-width: 1200px; }
+.hint-btn { flex: none; width: 60px; height: 60px; border-radius: 50%; border: 3px solid #F2A900; background: #FFF4D6; font-size: 1.5em; line-height: 1; cursor: pointer; }
+.hint-btn:active { transform: scale(.95); }
+.speak-tools { display: flex; align-items: center; gap: 16px; }

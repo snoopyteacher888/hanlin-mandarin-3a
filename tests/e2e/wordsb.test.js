@@ -278,3 +278,22 @@ test('learn page shows next only after the explanation has been read aloud', asy
   await p.waitForSelector('.next-bar .btn-next:not([hidden])', { timeout: 3000 });
   assert.equal(await p.$('.learn-wait'), null);
 });
+
+test('bulb gives the next hint without a wrong answer, and counts as a hint', async () => {
+  const before = srv.posts.filter(x => x.action === 'submit').length;
+  const p = await page(); await p.goto(BASE + '#/L06/rhetoric?s=bear&p=mix');
+  await p.waitForSelector('.hint-btn');
+  await p.click('.hint-btn');
+  await p.waitForSelector('.feedback.hint');
+  assert.equal(await p.$$eval('.option.is-off', x => x.length), 0);
+  await p.click('.hint-btn');
+  await p.click('.hint-btn');
+  await p.waitForSelector('.feedback.teach');
+  assert.equal(await p.$('.hint-btn'), null);
+  await p.click('text=我懂了 ▶');
+  for (let i = 0; i < 7; i++) await answerChoice(p);
+  await p.waitForSelector('.result');
+  const rec = srv.posts.filter(x => x.action === 'submit').slice(before).map(x => x.record).find(r => r.activity === 'rhetoric');
+  assert.equal(rec.items[0].result, 'taught');
+  assert.deepEqual(p.errors, []);
+});

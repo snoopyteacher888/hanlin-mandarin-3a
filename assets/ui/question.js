@@ -59,6 +59,7 @@
         if (extra) { item.said = extra.said; item.status = extra.status; }
         items.push(item);
         buttons.forEach(function (b) { b.disabled = true; });
+        if (bulb) bulb.remove();
         nextBtn.hidden = false;
         nextBtn.focus();
       }
@@ -88,19 +89,30 @@
         hs = H3A.hints.pickWrong(hs, i);
         hs.disabled.forEach(function (d) { buttons[d].classList.add('is-off'); buttons[d].disabled = true; });
         buttons[i].classList.remove('shake'); void buttons[i].offsetWidth; buttons[i].classList.add('shake');
+        nextHint(false);
+      }
+      /* 下一層提示：答錯（asked=false）或自己按 💡（asked=true）都往上一層；第 3 層是「老師教你」 */
+      function nextHint(asked) {
         if (H3A.hints.mustTeach(hs)) {
           /* 老師教你：標出答案並說明，按「我懂了」才算完成這題 */
           locked = true;
+          if (bulb) bulb.remove();
           buttons.forEach(function (b) { b.disabled = true; });
           buttons[q.answer].classList.add('is-correct');
           H3A.ui.showTeach(feedback, hints.teach, function () { done('taught', wrongTexts()); nextBtn.click(); });
           return;
         }
-        var hint = hs.wrongCount === 1 ? hints.h1 : hints.h2;
+        var hint = hs.level === 1 ? hints.h1 : hints.h2;
         if (hint.showText) { promptText.hidden = false; if (showBtn) showBtn.remove(); }
-        H3A.ui.showHint(feedback, hint, ctx);
+        H3A.ui.showHint(feedback, hint, ctx, asked);
+      }
+      function askHint() {
+        if (locked) return;
+        hs = H3A.hints.askHint(hs);
+        nextHint(true);
       }
 
+      var bulb = practice && !speak ? h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: askHint }, '💡') : null;
       var grid = h('div', { class: speak ? 'speak-area' : 'options' + (q.list ? ' list' : '') + (q.optionsClass ? ' ' + q.optionsClass : '') });
       if (speak) H3A.ui.speakQuestion(grid, ctx, q, function (result, extra) { done(result, [], extra); }, feedback);
       else q.options.forEach(function (o, i) {
@@ -119,7 +131,7 @@
       main.appendChild(h('div', { class: 'prompt' + (q.img ? ' with-img' : '') + (q.promptClass ? ' ' + q.promptClass : '') },
         q.img ? h('div', { class: 'prompt-img' }, H3A.ui.picture(ctx.lessonId, q.img, '')) : null,
         q.hideText ? h('span', { class: 'listen-icon', 'aria-hidden': 'true' }, '👂') : null,
-        promptText, showBtn, H3A.ui.speaker(q.prompt, q.say)));
+        promptText, showBtn, H3A.ui.speaker(q.prompt, q.say), bulb));
       main.appendChild(feedback);
       main.appendChild(grid);
       main.appendChild(h('div', { class: 'next-bar' }, nextBtn));

@@ -38,7 +38,12 @@
     var actions = h('div', { class: 'speak-actions', hidden: true });
     var typing = null, lastText = '';
     if (q.front) box.appendChild(h('div', { class: 'speak-front' }, h('span', { class: 'pt-block cond' }, q.front), h('span', { class: 'pt-block res1 speak-blank' }, '🎤 換你說'), H3A.ui.speaker(q.front, null)));
-    box.appendChild(mic); box.appendChild(status); box.appendChild(said); box.appendChild(actions);
+    var bulb = h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: function () {
+      if (finished || taught) return;
+      badCount++;
+      climb(true);
+    } }, '💡');
+    box.appendChild(h('div', { class: 'speak-tools' }, mic, bulb)); box.appendChild(status); box.appendChild(said); box.appendChild(actions);
     if (!Recognition()) useTyping();
 
     function setListening(on) {
@@ -84,29 +89,36 @@
         h('button', { type: 'button', class: 'btn-primary', onclick: function () { submit(text, true); } }, '📨 送給老師看'),
         typing ? null : h('button', { type: 'button', class: 'btn-secondary', onclick: function (e) { e.currentTarget.remove(); useTyping(); } }, '⌨️ 請大人幫忙打字')));
     }
+    /* 提示往上一層：說錯（asked=false）或自己按 💡（asked=true）。第 3 層「老師教你」；回傳 true 表示進入老師教你 */
+    function climb(asked) {
+      if (badCount >= 3 && !taught) {
+        taught = true;
+        mic.disabled = true;
+        if (bulb) bulb.remove();
+        H3A.ui.showTeach(feedback, q.hints.teach, function () {
+          feedback.className = 'feedback'; H3A.ui.clear(feedback);
+          mic.disabled = false; said.hidden = true;
+          status.textContent = '換你說說看！';
+        });
+        return true;
+      }
+      H3A.ui.showHint(feedback, badCount === 1 ? q.hints.h1 : q.hints.h2, ctx, asked);
+      return false;
+    }
     function submit(text, toTeacher) {
       if (finished) return;
       var r = toTeacher ? { status: 'pending' } : H3A.speechcheck.check(q.rule, text);
       if (r.status === 'bad') {
         badCount++;
         actions.hidden = true;
-        if (badCount >= 3 && !taught) {
-          taught = true;
-          mic.disabled = true;
-          H3A.ui.showTeach(feedback, q.hints.teach, function () {
-            feedback.className = 'feedback'; H3A.ui.clear(feedback);
-            mic.disabled = false; said.hidden = true;
-            status.textContent = '換你說說看！';
-          });
-          return;
-        }
-        H3A.ui.showHint(feedback, badCount === 1 ? q.hints.h1 : q.hints.h2, ctx);
+        if (climb(false)) return;
         /* 老師示範後還是不行（例如電腦一直聽錯），讓學生能把句子交給老師，或請大人打字 */
         if (taught) showEscape(text);
         return;
       }
       finished = true;
       mic.disabled = true; actions.hidden = true;
+      if (bulb) bulb.remove();
       var esc = box.querySelector('.speak-escape'); if (esc) esc.remove();
       if (typing) typing.querySelectorAll('button, textarea').forEach(function (el) { el.disabled = true; });
       var full = ((q.front || '') + text).slice(0, 200);

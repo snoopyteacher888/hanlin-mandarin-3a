@@ -56,3 +56,11 @@ test('3+3 words: first syllable spoken as 2nd tone', async () => {
     ['小雨點', '小魚點'], ['洗手', '習手'], ['哪裡來', '拿裡來'], ['帶雨傘', '帶魚傘'], ['眨眼睛', '札眼睛'], ['舔舔嘴巴', '甜甜嘴巴']];
   for (const [i, [from, to]] of cases.entries()) { await t.speak(from); assert.equal(s.spoken[i].text, to, from); }
 });
+test('和 spoken as 漢 and 還 as 孩, except fixed words', async () => {
+  const { fixSay } = require('../../assets/tts.js');
+  assert.equal(fixSay('紅色和黃色'), '紅色漢黃色');
+  assert.equal(fixSay('世界和平'), '世界和平');
+  assert.equal(fixSay('上課還會不專心'), '上課孩會不專心');
+  assert.equal(fixSay('把書還給老師'), '把書還給老師');
+  assert.equal(fixSay('歸還'), '歸還');
+});

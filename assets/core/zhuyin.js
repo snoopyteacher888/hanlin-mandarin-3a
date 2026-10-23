@@ -35,6 +35,7 @@
      「第一」「十一」是序數、數字，不變。下面是網站上出現在「一」後面的四聲字，加上常用的。 */
   /* 後面接一、二、三聲字時念四聲 ㄧˋ（一天、一直、一起），字型第 3 個讀音 */
   var ONE_DOWN = '天直起隻條種小削枝點般閃攪想朵排艘顆口棵盞早根組檢題整關聽張些年頭家心本群邊生時同齊篇首支包杯碗盒雙百千間層把匹臺台斤公尺分秒週桌湯瓶籃堆';
+  var HE_KEEP = ['柔和', '溫和', '平和', '混和', '和平', '和好', '和氣', '暖和', '附和', '和尚'];
   var ONE_UP = '樣個片塊道段下按大定件句陣面律半次課串步份路位套座趟遍輛旦切共向度粒概夜類戶';
   var VS = /[\uDB40][\uDDE0-\uDDEF]/g;          // U+E01E0–U+E01EF（UTF-16 代理對）
   function vs(n) { return String.fromCharCode(0xDB40, 0xDDE0 + n); }
@@ -50,6 +51,12 @@
         from = at + 1;
       }
     });
+    /* 連接詞「和」標 ㄏㄢˋ（第 2 個讀音）；和平、柔和這類固定的詞不改 */
+    for (var a = 0; a < text.length; a++) {
+      if (text.charAt(a) !== '和' || picks[a] !== undefined) continue;
+      var fixed = HE_KEEP.some(function (w) { var i = w.indexOf('和'); return text.substr(a - i, w.length) === w; });
+      if (!fixed) picks[a] = 1;
+    }
     for (var j = 0; j < text.length - 1; j++) {
       if (text.charAt(j) !== '一' || picks[j] !== undefined) continue;
       if (j > 0 && '第十'.indexOf(text.charAt(j - 1)) >= 0) continue;

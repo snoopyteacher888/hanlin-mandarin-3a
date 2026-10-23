@@ -20,7 +20,8 @@
   }
 
   /* level: 1 或 2 */
-  H3A.ui.showHint = function (feedback, hint, ctx) {
+  /* asked：學生自己按 💡 要的提示，不播答錯音效、不說「再想想看」 */
+  H3A.ui.showHint = function (feedback, hint, ctx, asked) {
     H3A.ui.clear(feedback);
     feedback.className = 'feedback hint';
     var row = h('div', { class: 'hint-row' }, h('span', { class: 'hint-icon', 'aria-hidden': 'true' }, '💡'), h('span', { class: 'hint-text' }, hint.text), H3A.ui.speaker(hint.say || hint.text, null));
@@ -35,6 +36,7 @@
         feedback.appendChild(block);
       }
     }
+    if (asked) { H3A.tts.speak(hint.say || hint.text); return; }
     H3A.sfx.wrong();
     H3A.tts.speak('再想想看').then(function (ok) { if (ok) H3A.tts.speak(hint.say || hint.text); });
   };
