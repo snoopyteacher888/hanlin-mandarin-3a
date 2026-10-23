@@ -168,7 +168,7 @@
 | 15 | `build.png` | 部件組字 |
 | 16 | `memory.png` | 翻牌配對 |
 
-## 句型配對（待生成）
+## 句型配對（已上傳）
 
 放在 `images/L06/`。指令在 `docs/chatgpt-image-prompts-pattern.txt`。
 
