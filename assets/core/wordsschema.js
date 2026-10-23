@@ -68,6 +68,12 @@
       if (nonEmpty(x.idiom) && x.idiom.indexOf(x.char) < 0) errs.push(x.id + ' 的成語裡沒有生字「' + x.char + '」');
       if (nonEmpty(x.idiom) && ((x.meaning || '') + (x.situation || '')).indexOf(x.idiom) >= 0) errs.push(x.id + ' 的意思或情境說出了答案');
       if (nonEmpty(x.idiom) && (x.example || '').indexOf(x.idiom) < 0) errs.push(x.id + ' 的例句要用到成語');
+      if (x.fill) {
+        var blank = new Array((x.idiom || '').length + 1).join('＿');
+        if (!Array.isArray(x.fill.options) || x.fill.options.length !== 2 || !unique(x.fill.options)) errs.push(x.id + ' 的填空要有 2 個不同的句子');
+        else x.fill.options.forEach(function (o) { if (o.indexOf(blank) < 0 || o.indexOf(x.idiom) >= 0) errs.push(x.id + ' 的填空句子要有「' + blank + '」、不能出現答案'); });
+        if (!nonEmpty(x.fill.clue) || !nonEmpty(x.fill.explain) || x.fill.clue.indexOf(x.idiom) >= 0) errs.push(x.id + ' 的填空缺少提示或說明，或提示說出了答案');
+      }
     });
     if (w.phrase) phrase(w.phrase);
     if (w.pattern) pattern(w.pattern);

@@ -195,3 +195,13 @@ test('成語：排字和情境題', () => {
   assert.equal(Q.findWordQuestion(W5, 'io-' + it.idiom, rng(1)).type, 'order');
   assert.equal(Q.findWordQuestion(W5, 'is-' + it.idiom, rng(1)).id, 'is-' + it.idiom);
 });
+
+test('成語填空：兩個句子選一個，提示不說答案', () => {
+  const W6 = require('../../data/lesson06.words.js');
+  const it = W6.idioms.find(x => x.idiom === '另眼相看');
+  const q = Q.idiomFillQuestion(it, rng(4));
+  assert.equal(q.options.length, 2); assert.equal(q.options[q.answer].text, it.fill.options[0]);
+  assert.ok(q.options.every(o => o.say.includes(it.idiom)));
+  assert.ok(!q.hints.h2.text.includes(it.idiom));
+  assert.equal(Q.findWordQuestion(W6, 'if-另眼相看', rng(1)).id, 'if-另眼相看');
+});

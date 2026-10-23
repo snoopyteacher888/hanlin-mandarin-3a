@@ -77,6 +77,13 @@ test('生字變成語：排錯會提示、可以拿回字，排對再做情境�
       await tapTiles(p, it.idiom);
       await p.waitForSelector('.feedback.ok');
       await p.click('.btn-next:not([hidden])');
+      /* 排完接著：哪一句適合填入這個成語？ */
+      await p.waitForSelector('.option:not(:disabled)');
+      assert.equal(await p.textContent('.prompt h2'), '哪一句適合填入「' + it.idiom + '」？');
+      const right = it.fill.options[0];
+      const fi = await p.$$eval('.option', (os, a) => os.findIndex(o => o.querySelector('.option-text').textContent === a), right);
+      await p.click(`.option[data-index="${fi}"]`);
+      await p.click('.btn-next:not([hidden])');
     }
   }
   for (let k = 0; k < 6; k++) {

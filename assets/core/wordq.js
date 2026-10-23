@@ -72,6 +72,15 @@
         h2: { text: '提示：第一個字是「' + chars[0] + '」。' },
         teach: { text: '答案是「' + it.idiom + '」。意思是：' + it.meaning } } };
   }
+  /* 排完字接著出：兩個新的句子，哪一句適合填入這個成語？ */
+  function idiomFillQuestion(it, r) {
+    var q = first({ id: 'if-' + it.idiom, options: it.fill.options }, '哪一句適合填入「' + it.idiom + '」？', null, r);
+    q.say = '哪一句適合填入' + it.idiom + '？';
+    q.options.forEach(function (o) { o.say = o.text.replace(/＿+/, it.idiom); });
+    q.list = true;
+    q.hints = { h1: { text: '提示：「' + it.idiom + '」的意思是：' + it.meaning }, h2: { text: it.fill.clue }, teach: { text: it.fill.explain } };
+    return q;
+  }
   function idiomSituationQuestion(it, all, r) {
     var others = quizgen.shuffle(all.filter(function (x) { return x.id !== it.id; }), r).slice(0, 2).map(function (x) { return x.idiom; });
     var s = shuffled([it.idiom].concat(others), it.idiom, r, {});
@@ -230,8 +239,8 @@
     if ((x = pick(w.hanzi))) return hanziQuestion(x, r);
     if ((x = pick(w.vocab))) return vocabQuestion(x, x.noPic || r() < 0.5 ? 'meaning' : 'pic', r);
     if ((x = pick(w.similar))) return similarQuestion(x, r);
-    var idm = (w.idioms || []).filter(function (y) { return 'io-' + y.idiom === id || 'is-' + y.idiom === id; })[0];
-    if (idm) return id.indexOf('io-') === 0 ? idiomOrderQuestion(idm, r) : idiomSituationQuestion(idm, w.idioms, r);
+    var idm = (w.idioms || []).filter(function (y) { return ['io-', 'is-', 'if-'].some(function (p) { return p + y.idiom === id; }); })[0];
+    if (idm) return id.indexOf('io-') === 0 ? idiomOrderQuestion(idm, r) : id.indexOf('if-') === 0 ? idiomFillQuestion(idm, r) : idiomSituationQuestion(idm, w.idioms, r);
     var bz = (w.hanzi || []).filter(function (y) { return y.build && 'b-' + y.char === id; })[0];
     if (bz) return buildQuestion(bz, r);
     if ((x = pick(w.charwords))) return charWordQuestion(x, r, (w.hanzi || []).map(function (y) { return y.char; }));
@@ -253,7 +262,7 @@
     }
     return null;
   }
-  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, similarQuestion: similarQuestion,
+  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion,
     listenQuestion: listenQuestion,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
     rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };

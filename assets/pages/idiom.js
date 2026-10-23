@@ -27,7 +27,7 @@
     for (var i = 0; i < list.length; i += GROUP) {
       var part = list.slice(i, i + GROUP);
       qs.push(learnSlide(part));
-      qs = qs.concat(part.map(function (x) { return Q.idiomOrderQuestion(x, r); }));
+      part.forEach(function (x) { qs.push(Q.idiomOrderQuestion(x, r)); if (x.fill) qs.push(Q.idiomFillQuestion(x, r)); });
     }
     qs = qs.concat(H3A.quizgen.shuffle(list, r).map(function (x) { return Q.idiomSituationQuestion(x, list, r); }));
     F.run(main, ctx, 'idiom', qs, function () { run(main, ctx); });
