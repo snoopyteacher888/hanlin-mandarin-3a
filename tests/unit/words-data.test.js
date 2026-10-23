@@ -89,3 +89,9 @@ test('疊字 explanations never call a noun like 星星 a 疊字', () => {
   const txt = JSON.stringify(W.rhetoric);
   ['「星星」', '「媽媽」', '「爸爸」'].forEach(n => assert.ok(!txt.includes(n), n));
 });
+test('every 形近字 item has a word frame that fits its sentence', () => {
+  for (const s of W.similar) {
+    assert.ok(s.frame && s.frame.includes('＿'), s.id);
+    assert.ok(s.sentence.replace('＿', s.answer).includes(s.frame.replace('＿', s.answer)), s.id);
+  }
+});

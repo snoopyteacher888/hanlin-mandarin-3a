@@ -11,6 +11,10 @@
     var order = quizgen.shuffle(texts, r);
     return { options: order.map(function (t) { var o = { text: t }; for (var k in extra) o[k] = extra[k]; return o; }), answer: order.indexOf(correct) };
   }
+  function framed(s, r) {
+    var order = quizgen.shuffle(s.options, r);
+    return { options: order.map(function (c) { return { text: s.frame.replace('＿', c), mark: c }; }), answer: order.indexOf(s.answer) };
+  }
   function blankSay(s) { return s.replace('＿', '什麼'); }
 
   function hanziQuestion(h, r) {
@@ -32,9 +36,10 @@
     }
     return q;
   }
+  /* 有 frame（例如「真＿糕」）時，選項是整個詞（真糟糕／真槽糕／真遭糕），不一樣的那個字標顏色 */
   function similarQuestion(s, r) {
-    var x = shuffled(s.options, s.answer, r, { big: true });
-    return { id: s.id, prompt: s.sentence, say: blankSay(s.sentence), options: x.options, answer: x.answer,
+    var x = s.frame ? framed(s, r) : shuffled(s.options, s.answer, r, { big: true });
+    return { id: s.id, prompt: s.sentence, say: blankSay(s.sentence), options: x.options, answer: x.answer, optionsClass: s.frame ? 'frame-opts' : undefined,
       hints: { h1: { text: '再讀一次句子，想想這個詞是什麼意思。', say: blankSay(s.sentence) }, h2: { text: s.clue }, teach: { text: s.explain } } };
   }
   function listenQuestion(l, r) {

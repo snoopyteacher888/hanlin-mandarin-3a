@@ -192,17 +192,17 @@ test('listen hides text and repeats on wrong', async () => {
 });
 
 test('similar wrong shows hint', async () => {
-  const p = await page(); await p.goto(BASE + '#/L06/similar?s=bear'); await p.waitForSelector('.option.big');
+  const p = await page(); await p.goto(BASE + '#/L06/similar?s=bear'); await p.waitForSelector('.option');
   const sentence = await p.textContent('.prompt h2');
   const item = WORDS.similar.find(s => s.sentence === sentence);
-  const wrongIdx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent !== a), item.answer);
+  const wrongIdx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent !== a), item.frame.replace('＿', item.answer));
   await p.click(`.option[data-index="${wrongIdx}"]`);
-  assert.match(await p.textContent('.feedback'), /再讀一次句子/);
-  assert.ok(!(await p.textContent('.feedback')).includes(item.answer));
+  /* 二選一答錯一次就直接給線索（老師要求）；三選一先給方法 */
+  if (item.options.length === 2) assert.equal(await p.textContent('.feedback .hint-text'), item.clue);
+  else assert.match(await p.textContent('.feedback'), /再讀一次句子/);
+  assert.ok(!(await p.textContent('.feedback')).includes(item.frame.replace('＿', item.answer)));
   /* 答錯的選項一律變淡 */
   assert.equal(await p.$eval(`.option[data-index="${wrongIdx}"]`, b => b.disabled && b.classList.contains('is-off')), true);
-  await p.click('.hint-btn');
-  assert.equal(await p.textContent('.feedback .hint-text'), item.clue);
 });
 
 test('review without unlock shows word items only', async () => {
@@ -216,9 +216,9 @@ test('word record posted with activity similar', async () => {
   const before = submits().length;
   const p = await page(); await p.goto(BASE + '#/L06/similar?s=cat');
   for (let k = 0; k < WORDS.similar.length; k++) {
-    await p.waitForSelector('.option.big:not(:disabled)');
+    await p.waitForSelector('.option:not(:disabled)');
     const sentence = await p.textContent('.prompt h2');
-    const ans = WORDS.similar.find(s => s.sentence === sentence).answer;
+    const it = WORDS.similar.find(s => s.sentence === sentence); const ans = it.frame.replace('＿', it.answer);
     const idx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent === a), ans);
     await p.click(`.option[data-index="${idx}"]`); await p.click('.btn-next');
   }

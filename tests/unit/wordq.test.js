@@ -147,3 +147,9 @@ test('疊字 asks 哪一句有疊字 and 有沒有疊字', () => {
   assert.equal(y.prompt, '「' + c.yesno[0].sentence + '」\n有沒有疊字？');
   assert.equal(y.options[0].say, '有疊字'); assert.equal(y.options[1].say, '沒有疊字');
 });
+test('similar with frame: options are whole words, the changing character marked', () => {
+  const q = Q.similarQuestion({ id: 's7', sentence: '牛奶打翻了，真＿糕！', frame: '真＿糕', options: ['槽', '遭', '糟'], answer: '糟', clue: '提示', explain: '說明' }, rng(2));
+  assert.deepEqual(q.options.map(o => o.text).sort(), ['真槽糕', '真糟糕', '真遭糕'].sort());
+  assert.equal(q.options[q.answer].text, '真糟糕');
+  assert.ok(q.options.every(o => !o.big && o.mark && o.text.includes(o.mark)));
+});

@@ -164,7 +164,9 @@ test('rhetoric level: learn, look and listen, yes/no, 2-3-4 choices, then star o
   }, CORRECT);
   await p.click(`.option[data-index="${wrong}"]`);
   await p.waitForSelector('.feedback.hint');
-  assert.match(await p.textContent('.feedback.hint'), /譬喻是把一樣東西比成另一樣東西/);
+  /* 是不是題只有兩個選項：答錯一次就直接給線索 */
+  const clues = W.rhetoric.cards.find(c => c.key === 'simile').yesno.map(y => y.clue);
+  assert.ok(clues.includes(await p.textContent('.feedback.hint .hint-text')));
   await answerChoice(p);
   await answerChoice(p);
   const counts = [];

@@ -131,7 +131,9 @@
           H3A.ui.showTeach(feedback, hints.teach, function () { done('taught', wrongTexts()); nextBtn.click(); });
           return;
         }
-        var hint = hs.level === 1 ? hints.h1 : hints.h2;
+        /* 二選一答錯一次就只剩答案，方法提示沒有意義，直接給線索（老師要求） */
+        var twoWrong = !asked && q.options.length === 2;
+        var hint = hs.level === 1 && !twoWrong ? hints.h1 : hints.h2;
         if (hint.showText) { promptText.hidden = false; if (showBtn) showBtn.remove(); }
         H3A.ui.showHint(feedback, hint, ctx, asked);
       }
