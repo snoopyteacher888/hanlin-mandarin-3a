@@ -8,6 +8,22 @@
     return d;
   }
 
+  /* 句型的關聯詞（只要、就、如果……）在題目和選項裡都標橘色 */
+  function hlWords(text, words) {
+    if (!words || !words.length) return text;
+    var out = [], rest = text;
+    while (rest) {
+      var best = -1, w = null;
+      words.forEach(function (k) { var at = rest.indexOf(k); if (at >= 0 && (best < 0 || at < best || (at === best && k.length > w.length))) { best = at; w = k; } });
+      if (best < 0) { out.push(rest); break; }
+      if (best > 0) out.push(rest.slice(0, best));
+      out.push(h('span', { class: 'conj-word' }, w));
+      rest = rest.slice(best + w.length);
+    }
+    return out;
+  }
+  H3A.ui.hlWords = hlWords;
+
   /* 選項裡要標顏色的語詞（例如「混合」） */
   function marked(o) {
     if (!o.mark || o.text.indexOf(o.mark) < 0) return o.text;
@@ -155,13 +171,13 @@
           ? h('button', { type: 'button', class: 'option big', 'data-index': i, onclick: function () { pick(i); } }, h('span', { class: 'option-text' }, o.text))
           : h('button', { type: 'button', class: 'option' + (o.img ? '' : ' text-only'), 'data-index': i, onclick: function () { pick(i); } },
             o.img ? H3A.ui.picture(ctx.lessonId, o.img, o.text) : null,
-            o.icon ? h('span', { class: 'option-icon', 'aria-hidden': 'true' }, o.icon) : null, h('span', { class: 'option-text' }, marked(o)));
+            o.icon ? h('span', { class: 'option-icon', 'aria-hidden': 'true' }, o.icon) : null, h('span', { class: 'option-text' }, q.hl && !o.mark ? hlWords(o.text, q.hl) : marked(o)));
         buttons.push(b);
         grid.appendChild(h('div', { class: 'option-wrap' }, b, H3A.ui.speaker(o.text, o.say)));
       });
 
       main.appendChild(dots(questions.length, idx));
-      var promptText = h('h2', { hidden: !!q.hideText }, q.prompt);
+      var promptText = h('h2', { hidden: !!q.hideText }, q.hl ? hlWords(q.prompt, q.hl) : q.prompt);
       var showBtn = q.hideText ? h('button', { type: 'button', class: 'btn-secondary small-btn', onclick: function () { promptText.hidden = false; showBtn.remove(); } }, '👀 看文字') : null;
       main.appendChild(h('div', { class: 'prompt' + (q.img ? ' with-img' : '') + (q.promptClass ? ' ' + q.promptClass : '') },
         q.img ? h('div', { class: 'prompt-img' }, H3A.ui.picture(ctx.lessonId, q.img, '')) : null,

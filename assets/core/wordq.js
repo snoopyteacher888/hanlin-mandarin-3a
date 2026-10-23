@@ -133,12 +133,15 @@
     q.list = true;
     return q;
   }
+  /* 句型的關聯詞，畫面上標橘色 */
+  var CONJ_WORDS = ['只要', '就', '如果', '不但', '還', '因為', '所以'];
   function matchQuestion(m, r) {
     var q = first(m, m.front + '……', null, r);
     q.say = m.front;
     q.hints = { h1: { text: '想一想，做了前面的事以後，會有什麼結果？' }, h2: { text: m.clue }, teach: { text: m.explain } };
     q.list = true;
     q.promptClass = 'pt-cond'; q.optionsClass = 'pt-res';
+    q.hl = CONJ_WORDS;
     return q;
   }
   function conjQuestion(c, r) {
@@ -147,6 +150,7 @@
     q.hints = { h1: { text: '把句子念一次，想想前後兩句是什麼關係。' }, h2: { text: c.clue }, teach: { text: c.explain } };
     q.list = true;
     q.optionsClass = 'pt-conj';
+    q.hl = CONJ_WORDS;
     return q;
   }
   /* 把句型例句切成「條件（cond）／結果（res1、res2）」，關聯詞標 conj，給畫面上色用 */

@@ -37,7 +37,7 @@
       h('span', { class: 'mic-icon', 'aria-hidden': 'true' }, '🎤'), h('span', { class: 'mic-label' }, '按我說話'));
     var actions = h('div', { class: 'speak-actions', hidden: true });
     var typing = null, lastText = '';
-    if (q.front) box.appendChild(h('div', { class: 'speak-front' }, h('span', { class: 'pt-block cond' }, q.front), h('span', { class: 'pt-block res1 speak-blank' }, '🎤 換你說'), H3A.ui.speaker(q.front, null)));
+    if (q.front) box.appendChild(h('div', { class: 'speak-front' }, h('span', { class: 'pt-block cond' }, H3A.ui.hlWords ? H3A.ui.hlWords(q.front, (H3A.speechcheck.PATTERNS[q.rule && q.rule.key] || [])) : q.front), h('span', { class: 'pt-block res1 speak-blank' }, '🎤 換你說'), H3A.ui.speaker(q.front, null)));
     var bulb = h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: function () {
       if (finished || taught) return;
       badCount++;
