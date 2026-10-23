@@ -11,12 +11,18 @@
     var r = H3A.quizgen.rng(Date.now() & 0xffffffff);
 
     H3A.ui.clear(main);
+    /* 魚頭的題目太長就分兩行：有「的」斷在「的」後面，不然從中間斷（小鉛筆／大學問） */
+    function headLines(t) {
+      if (t.length <= 4) return t;
+      var at = t.indexOf('的') > 0 && t.indexOf('的') < t.length - 1 ? t.indexOf('的') + 1 : Math.ceil(t.length / 2);
+      return [h('span', { class: 'head-line' }, t.slice(0, at)), h('span', { class: 'head-line' }, t.slice(at))];
+    }
     var promptEl = h('div', { class: 'prompt' });
     var feedback = h('div', { class: 'feedback', role: 'status' });
     var fish = h('div', { class: 'fish' }, h('div', { class: 'fish-spine', 'aria-hidden': 'true' }));
     var tailBox = h('div', { class: 'fish-tail-box' }, h('span', { class: 'fish-label' }, '結論'), h('span', { class: 'fish-q' }, '？'));
     var headBox = h('div', { class: 'fish-head-box' },
-      h('span', { class: 'fish-label' }, '主題'), h('strong', {}, map.head.text), H3A.ui.speaker(map.head.text, map.head.say));
+      h('span', { class: 'fish-label' }, '主題'), h('strong', {}, headLines(map.head.text)), H3A.ui.speaker(map.head.text, map.head.say));
     fish.appendChild(tailBox); fish.appendChild(headBox);
     map.bones.forEach(function (b, i) {
       var slots = h('div', { class: 'bone-slots' });
