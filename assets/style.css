@@ -891,7 +891,7 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .eq-part.p0 { background: #EAF5EE; border-color: #4C8C6A; color: #2E6B4C; }
 .eq-part.p1 { background: #EAF1FA; border-color: #3E6DB0; color: #2D5791; }
 .eq-op { font-size: 1.4em; color: var(--ink-soft); font-weight: 700; }
-.eq-slot.filled { font-size: 1.4em; font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", var(--font); }
+.eq-slot.filled { font-size: 1.6em; font-weight: 700; color: var(--ink); }
 .eq-tag { flex-basis: 100%; max-width: max-content; margin: 0 auto; font-size: .55em; }
 .eq-row { display: flex; align-items: center; gap: 10px; }
 .eq-part.res { background: #FDEBDC; border-color: var(--brand); color: #9A4A12; }
