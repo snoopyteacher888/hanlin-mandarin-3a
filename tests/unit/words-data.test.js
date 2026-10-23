@@ -84,3 +84,8 @@ test('every revealed rhetoric answer has something to circle', () => {
   const all = [].concat(...W.rhetoric.cards.map(c => c.yesno.concat(c.pick)), W.rhetoric.quiz);
   all.filter(x => x.mark).forEach(x => x.mark.forEach(m => assert.ok((x.sentence || x.options[0]).includes(m), x.id + ' ' + m)));
 });
+
+test('疊字 explanations never call a noun like 星星 a 疊字', () => {
+  const txt = JSON.stringify(W.rhetoric);
+  ['「星星」', '「媽媽」', '「爸爸」'].forEach(n => assert.ok(!txt.includes(n), n));
+});

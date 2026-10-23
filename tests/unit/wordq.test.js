@@ -63,7 +63,7 @@ test('conj question: blanks spoken as 什麼', () => {
 test('mixed challenge rhetoric question has two plain options', () => {
   const q = Q.rhetoricQuestion(W.rhetoric.quiz[0], W.rhetoric.cards, rng(6));
   assert.equal(q.options.length, 2); assert.ok(q.options.every(o => !o.icon && !o.img));
-  assert.equal(q.options[q.answer].text, '擬人'); assert.equal(q.autoSay, W.rhetoric.quiz[0].sentence); assert.ok(!leaks(q));
+  assert.equal(q.options[q.answer].text, '擬人'); assert.equal(q.autoSay, W.rhetoric.quiz[0].sentence + '。這句話用了什麼修辭？'); assert.ok(q.prompt.includes('\n')); assert.ok(!leaks(q));
 });
 test('speak question has rule and hints', () => {
   const q = Q.speakQuestion(W.pattern[0].half[0], { kind: 'pattern', key: 'zhiyao', front: '只要我每天練習，' }, '把句子說完');
@@ -108,7 +108,7 @@ test('rhetoric yes/no keeps 是 first and asks about this rhetoric', () => {
   const y = Q.rhYesNoQuestion(c.yesno[0], c), n = Q.rhYesNoQuestion(c.yesno[1], c);
   assert.equal(y.options[0].text, '⭕'); assert.equal(y.options[1].text, '❌');
   assert.equal(y.options[0].say, '是' + c.name); assert.equal(y.options[1].say, '不是' + c.name);
-  assert.equal(y.answer, 0); assert.equal(n.answer, 1); assert.equal(y.autoSay, c.yesno[0].sentence);
+  assert.equal(y.answer, 0); assert.equal(n.answer, 1); assert.equal(y.autoSay, c.yesno[0].sentence + '。這句話是不是' + c.name + '？'); assert.equal(y.prompt, '「' + c.yesno[0].sentence + '」\n是不是' + c.name + '？');
   assert.match(y.prompt, new RegExp('是不是' + c.name));
 });
 test('rhetoric pick: sentence list, answer is first option', () => {
@@ -127,7 +127,8 @@ test('choose question: first hint explains the word, options mark the word', () 
   assert.ok(q.options.every(o => o.mark === '裝滿'));
 });
 test('rhetoricMarks finds the part to circle', () => {
-  assert.deepEqual(Q.rhetoricMarks('redup', '天上的星星亮晶晶。'), ['星星', '晶晶']);
+  assert.deepEqual(Q.rhetoricMarks('redup', '天上的星星亮晶晶。'), ['晶晶']);
+  assert.deepEqual(Q.rhetoricMarks('redup', '媽媽的手軟軟的。'), ['軟軟']);
   assert.deepEqual(Q.rhetoricMarks('simile', '月亮像一艘小船，掛在天上。'), ['像一艘小船']);
   assert.deepEqual(Q.rhetoricMarks('question', '為什麼要刷牙呢？因為刷牙可以保護牙齒。'), ['為什麼要刷牙呢？']);
   assert.deepEqual(Q.rhetoricMarks('personify', '花兒向我點頭微笑。', ['點頭微笑']), ['點頭微笑']);
@@ -143,6 +144,6 @@ test('疊字 asks 哪一句有疊字 and 有沒有疊字', () => {
   const c = W2.rhetoric.cards.find(x => x.key === 'redup');
   assert.equal(Q.rhPickQuestion(c.pick[0], c, rng(1)).prompt, '哪一句有疊字？');
   const y = Q.rhYesNoQuestion(c.yesno[0], c);
-  assert.equal(y.prompt, '「' + c.yesno[0].sentence + '」有沒有疊字？');
+  assert.equal(y.prompt, '「' + c.yesno[0].sentence + '」\n有沒有疊字？');
   assert.equal(y.options[0].say, '有疊字'); assert.equal(y.options[1].say, '沒有疊字');
 });

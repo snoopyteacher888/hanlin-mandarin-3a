@@ -47,7 +47,7 @@ const add = (prompt, text) => { (CORRECT[prompt] = CORRECT[prompt] || []).push(t
 W.phrase.pick.forEach(x => add('＿＿＿的' + x.noun, x.options[0]));
 W.phrase.choose.forEach(x => add('哪一句的「' + x.word + '」用得對？', x.options[0]));
 W.pattern.forEach(pt => { pt.match.forEach(x => add(x.front + '……', x.options[0])); pt.conj.forEach(x => add(x.sentence, x.options[0])); });
-W.rhetoric.quiz.forEach(x => add('「' + x.sentence + '」用了什麼修辭？', x.answer));
+W.rhetoric.quiz.forEach(x => add(Q.rhetoricQuestion(x, W.rhetoric.cards, Math.random).prompt, x.answer));
 W.rhetoric.cards.forEach(c => {
   c.yesno.forEach(y => add(Q.rhYesNoQuestion(y, c).prompt, y.answer ? '⭕' : '❌'));
   c.pick.forEach(x => add(Q.rhPickQuestion(x, c, Math.random).prompt, x.options[0]));

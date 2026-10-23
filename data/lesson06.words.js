@@ -163,7 +163,7 @@
         { key: 'redup', name: '疊字', meaning: '同一個字重複用，讀起來更好聽。', example: '課文裡的「閃亮亮」、「一道道」。',
           show: { sentence: '小狗搖搖尾巴，跑過來找我。', img: 'dog-wag.png' },
           yesno: [
-            { id: 'rh-re-y1', sentence: '天上的星星亮晶晶。', answer: true, clue: '提示：仔細聽，有沒有同一個字連著說兩次？', explain: '是疊字：「星星」、「晶晶」都是同一個字重複用。' },
+            { id: 'rh-re-y1', sentence: '天上的星星亮晶晶。', answer: true, clue: '提示：星星看起來怎麼樣？形容它的字裡，有沒有重複的字？', explain: '是疊字：「亮晶晶」的「晶」重複了，讀起來更好聽。' },
             { id: 'rh-re-y2', sentence: '我喜歡吃蘋果。', answer: false, clue: '提示：仔細聽，有沒有同一個字連在一起？', explain: '不是疊字：這句話沒有重複的字。' }
           ],
           pick: [

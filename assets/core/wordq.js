@@ -115,18 +115,22 @@
   function rhetoricQuestion(x, cards, r) {
     var others = quizgen.shuffle(cards.filter(function (c) { return c.name !== x.answer; }), r);
     var order = quizgen.shuffle([x.answer, others[0].name], r);
-    return { id: x.id, prompt: '「' + x.sentence + '」用了什麼修辭？', say: x.sentence + '。這句話用了什麼修辭？', autoSay: x.sentence,
+    var say = x.sentence + '。這句話用了什麼修辭？';
+    return { id: x.id, prompt: '「' + x.sentence + '」\n用了什麼修辭？', say: say, autoSay: say,
       options: order.map(function (n) { return { text: n }; }), answer: order.indexOf(x.answer),
       reveal: { target: 'prompt', text: x.sentence, marks: rhetoricMarks((cards.filter(function (c) { return c.name === x.answer; })[0] || {}).key, x.sentence, x.mark) },
       hints: { h1: { text: '想一想：這句話是把東西寫得像人、把東西比成別的東西、有重複的字，還是用問句？' }, h2: { text: x.clue }, teach: { text: x.explain } } };
   }
+  /* 本身就是名詞的疊字（星星、媽媽），不算修辭的疊字 */
+  var NOUN_AA = ['星星', '猩猩', '媽媽', '爸爸', '哥哥', '姊姊', '姐姐', '弟弟', '妹妹', '爺爺', '奶奶', '公公', '婆婆',
+    '寶寶', '娃娃', '叔叔', '伯伯', '姑姑', '舅舅', '太太', '蛐蛐', '狒狒'];
   /* 公布答案時要圈起來的地方：疊字圈重複的字、譬喻圈「像……」、設問圈問句；擬人用資料裡的 mark */
   function rhetoricMarks(key, text, manual) {
     if (manual && manual.length) return manual.filter(function (m) { return text.indexOf(m) >= 0; });
     var out = [], m;
     if (key === 'redup') {
       var re = /([\u4e00-\u9fff])\1/g;
-      while ((m = re.exec(text))) if (out.indexOf(m[0]) < 0) out.push(m[0]);
+      while ((m = re.exec(text))) if (out.indexOf(m[0]) < 0 && NOUN_AA.indexOf(m[0]) < 0) out.push(m[0]);
     } else if (key === 'simile') {
       m = /像[^，。！？、]*/.exec(text); if (m) out.push(m[0]);
     } else if (key === 'question') {
@@ -139,7 +143,9 @@
   function isRedup(card) { return card.key === 'redup'; }
   function rhYesNoQuestion(y, card) {
     var ask = isRedup(card) ? '有沒有' : '是不是', yes = isRedup(card) ? '有' : '是', no = isRedup(card) ? '沒有' : '不是';
-    return { id: y.id, prompt: '「' + y.sentence + '」' + ask + card.name + '？', say: y.sentence + '。這句話' + ask + card.name + '？', autoSay: y.sentence,
+    /* 問句換到第二行；自動念時連問句一起念 */
+    var say = y.sentence + '。這句話' + ask + card.name + '？';
+    return { id: y.id, prompt: '「' + y.sentence + '」\n' + ask + card.name + '？', say: say, autoSay: say,
       options: [{ text: '⭕', say: yes + card.name, big: true }, { text: '❌', say: no + card.name, big: true }], answer: y.answer ? 0 : 1, fixedOrder: true,
       reveal: y.answer ? { target: 'prompt', text: y.sentence, marks: rhetoricMarks(card.key, y.sentence, y.mark) } : undefined,
       hints: { h1: { text: '想一想：' + card.name + '是' + card.meaning }, h2: { text: y.clue }, teach: { text: y.explain } } };
