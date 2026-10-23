@@ -60,9 +60,9 @@ test('conj question: blanks spoken as 什麼', () => {
   const q = Q.conjQuestion(W.pattern[0].conj[0], rng(5));
   assert.equal(q.options[q.answer].text, '只要……就……'); assert.ok(!q.say.includes('＿')); assert.ok(!leaks(q));
 });
-test('rhetoric options are plain text', () => {
+test('mixed challenge rhetoric question has two plain options', () => {
   const q = Q.rhetoricQuestion(W.rhetoric.quiz[0], W.rhetoric.cards, rng(6));
-  assert.equal(q.options.length, 4); assert.ok(q.options.every(o => !o.icon && !o.img));
+  assert.equal(q.options.length, 2); assert.ok(q.options.every(o => !o.icon && !o.img));
   assert.equal(q.options[q.answer].text, '擬人'); assert.equal(q.autoSay, W.rhetoric.quiz[0].sentence); assert.ok(!leaks(q));
 });
 test('speak question has rule and hints', () => {
@@ -71,7 +71,7 @@ test('speak question has rule and hints', () => {
   assert.match(q.hints.h1.text, /只要/); assert.equal(q.hints.h2.text, W.pattern[0].half[0].clue); assert.match(q.hints.teach.text, /就會越來越厲害/);
 });
 test('findWordQuestion finds rh and pt match', () => {
-  assert.equal(Q.findWordQuestion(W, 'rh1', rng(1)).options.length, 4);
+  assert.equal(Q.findWordQuestion(W, 'rh1', rng(1)).options.length, 2);
   assert.equal(Q.findWordQuestion(W, 'pt-zy-m1', rng(1)).id, 'pt-zy-m1');
   assert.equal(Q.findWordQuestion(W, 'pt-zy-c1', rng(1)).id, 'pt-zy-c1');
   assert.equal(Q.findWordQuestion(W, 'ph1', rng(1)).id, 'ph1');
@@ -101,4 +101,22 @@ test('match and conj questions carry pattern colors', () => {
   const m = Q.matchQuestion(W.pattern[0].match[0], rng(1));
   assert.equal(m.promptClass, 'pt-cond'); assert.equal(m.optionsClass, 'pt-res');
   assert.equal(Q.conjQuestion(W.pattern[0].conj[0], rng(1)).optionsClass, 'pt-conj');
+});
+
+test('rhetoric yes/no keeps 是 first and asks about this rhetoric', () => {
+  const c = W.rhetoric.cards[0];
+  const y = Q.rhYesNoQuestion(c.yesno[0], c), n = Q.rhYesNoQuestion(c.yesno[1], c);
+  assert.equal(y.options[0].text, '⭕ 是' + c.name); assert.equal(y.options[1].text, '❌ 不是');
+  assert.equal(y.answer, 0); assert.equal(n.answer, 1); assert.equal(y.autoSay, c.yesno[0].sentence);
+  assert.match(y.prompt, new RegExp('是不是' + c.name));
+});
+test('rhetoric pick: sentence list, answer is first option', () => {
+  const c = W.rhetoric.cards[0];
+  const q = Q.rhPickQuestion(c.pick[0], c, rng(3));
+  assert.equal(q.list, true); assert.equal(q.prompt, '哪一句是' + c.name + '？');
+  assert.equal(q.options[q.answer].text, c.pick[0].options[0]); assert.ok(!leaks(q));
+});
+test('findWordQuestion finds rhetoric level items', () => {
+  assert.equal(Q.findWordQuestion(W, 'rh-pe-y1', rng(1)).id, 'rh-pe-y1');
+  assert.equal(Q.findWordQuestion(W, 'rh-pe-p1', rng(1)).id, 'rh-pe-p1');
 });

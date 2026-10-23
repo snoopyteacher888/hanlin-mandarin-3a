@@ -32,3 +32,10 @@ test('吵得 理得 use neutral 得', () => {
   assert.equal(mark('吵得像'), '吵得' + V(1) + '像');
   assert.equal(mark('整理得乾乾淨淨'), '整理得' + V(1) + '乾乾淨淨');
 });
+test('rhetoric level readings', () => {
+  assert.equal(mark('短得像小手指'), '短得' + V(1) + '像小手指');
+  assert.equal(mark('小明跑得快快的'), '小明跑得' + V(1) + '快快的');
+  assert.equal(mark('睡得很好'), '睡得' + V(1) + '很好');
+  assert.equal(mark('小草長在公園'), '小草長' + V(1) + '在公園');
+  assert.equal(mark('嘩啦嘩啦'), '嘩' + V(1) + '啦嘩' + V(1) + '啦');
+});

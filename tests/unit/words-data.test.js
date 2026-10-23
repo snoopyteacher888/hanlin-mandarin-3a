@@ -25,8 +25,8 @@ test('clues never contain the answer character', () => {
 /* B 批新圖片：還沒上傳前，列在 docs/image-list.md 的「B 批（待生成）」就先放行 */
 const pendingImgs = (() => {
   const md = fs.readFileSync(path.join(__dirname, '../../docs/image-list.md'), 'utf8');
-  const i = md.indexOf('## B 批（待生成）'); if (i < 0) return [];
-  return [...md.slice(i).matchAll(/`([a-z0-9-]+\.png)`/g)].map(m => m[1]);
+  return md.split(/\n## /).filter(sec => sec.split('\n')[0].includes('待生成'))
+    .flatMap(sec => [...sec.matchAll(/`([a-z0-9-]+\.png)`/g)].map(m => m[1]));
 })();
 const imgOk = f => fs.existsSync(path.join(__dirname, '../../images/L06', f)) || pendingImgs.includes(f);
 
@@ -52,10 +52,21 @@ test('batch B text has no textbook sentence', () => {
   ['直接拿筆芯來書寫', '輕輕的按一按', '一道道的凹槽', '幫忙解決問題了'].forEach(t => assert.ok(!all.includes(t), t));
 });
 
-test('rhetoric cards have no icon and three life examples each', () => {
-  const quiz = W.rhetoric.quiz.map(q => q.sentence);
+test('rhetoric levels: show, 2 yes/no, picks with 2,2,3,3,4,4 options', () => {
+  assert.deepEqual(W.rhetoric.cards.map(c => c.key), ['personify', 'simile', 'redup', 'question']);
   for (const c of W.rhetoric.cards) {
-    assert.ok(!c.icon, c.name); assert.equal(c.life.length, 3, c.name);
-    c.life.forEach(e => assert.ok(!quiz.includes(e), e));
+    assert.ok(c.show && c.show.sentence && imgOk(c.show.img), c.key);
+    assert.deepEqual(c.yesno.map(y => y.answer), [true, false], c.key);
+    assert.deepEqual(c.pick.map(p => p.options.length), [2, 2, 3, 3, 4, 4], c.key);
+  }
+});
+test('rhetoric level answers are unambiguous', () => {
+  const AA = /([\u4e00-\u9fff])\1/;
+  const card = k => W.rhetoric.cards.find(c => c.key === k);
+  for (const p of card('redup').pick) { assert.ok(AA.test(p.options[0]), p.id); p.options.slice(1).forEach(o => assert.ok(!AA.test(o), p.id + ' ' + o)); }
+  for (const p of card('question').pick) { assert.match(p.options[0], /？./, p.id); p.options.slice(1).forEach(o => assert.ok(!o.includes('？'), p.id + ' ' + o)); }
+  for (const k of ['personify', 'simile']) for (const p of card(k).pick) {
+    assert.ok(!AA.test(p.options[0]) && !p.options[0].includes('？'), p.id);
+    if (k === 'simile') { assert.ok(p.options[0].includes('像'), p.id); p.options.slice(1).forEach(o => assert.ok(!o.includes('像'), p.id + ' ' + o)); }
   }
 });

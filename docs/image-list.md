@@ -69,3 +69,14 @@
 | 8 | `bread-yummy.png` | 香噴噴的麵包 |
 | 9 | `zhiyao.png` | 只要按一下開關，電燈就會亮 |
 | 10 | `ruguo.png` | 如果淋雨回家，不但衣服溼透，還會感冒 |
+
+## 修辭闖關（待生成）
+
+指令在 `docs/chatgpt-image-prompts-rhetoric.txt`。
+
+| # | 檔名 | 要畫什麼 |
+|---|---|---|
+| 1 | `alarm-wake.png` | 擬人：小鬧鐘每天早上叫我起床 |
+| 2 | `moon-boat.png` | 譬喻：月亮像一艘小船，掛在天上 |
+| 3 | `dog-wag.png` | 疊字：小狗搖搖尾巴，跑過來找我 |
+| 4 | `chick-egg.png` | 設問：小雞是從哪裡來的？從蛋裡孵出來的 |

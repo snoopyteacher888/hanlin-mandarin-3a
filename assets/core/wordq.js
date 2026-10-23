@@ -109,12 +109,26 @@
       return { kind: n === 0 ? 'cond' : n === 1 ? 'res1' : 'res2', parts: parts };
     });
   }
+  /* 綜合挑戰：二選一（正確的修辭＋隨機一個別的） */
   function rhetoricQuestion(x, cards, r) {
-    var order = quizgen.shuffle(cards, r);
+    var others = quizgen.shuffle(cards.filter(function (c) { return c.name !== x.answer; }), r);
+    var order = quizgen.shuffle([x.answer, others[0].name], r);
     return { id: x.id, prompt: '「' + x.sentence + '」用了什麼修辭？', say: x.sentence + '。這句話用了什麼修辭？', autoSay: x.sentence,
-      options: order.map(function (c) { return { text: c.name }; }),
-      answer: order.map(function (c) { return c.name; }).indexOf(x.answer),
+      options: order.map(function (n) { return { text: n }; }), answer: order.indexOf(x.answer),
       hints: { h1: { text: '想一想：這句話是把東西寫得像人、把東西比成別的東西、有重複的字，還是用問句？' }, h2: { text: x.clue }, teach: { text: x.explain } } };
+  }
+  /* 修辭闖關：是不是？（⭕ 在前、❌ 在後，不打亂） */
+  function rhYesNoQuestion(y, card) {
+    return { id: y.id, prompt: '「' + y.sentence + '」是不是' + card.name + '？', say: y.sentence + '。這句話是不是' + card.name + '？', autoSay: y.sentence,
+      options: [{ text: '⭕ 是' + card.name, say: '是' + card.name }, { text: '❌ 不是', say: '不是' }], answer: y.answer ? 0 : 1,
+      hints: { h1: { text: '想一想：' + card.name + '是' + card.meaning }, h2: { text: y.clue }, teach: { text: y.explain } } };
+  }
+  /* 修辭闖關：哪一句是？（第一個選項是對的） */
+  function rhPickQuestion(p, card, r) {
+    var q = first(p, '哪一句是' + card.name + '？', null, r);
+    q.list = true;
+    q.hints = { h1: { text: '想一想：' + card.name + '是' + card.meaning }, h2: { text: p.clue }, teach: { text: p.explain } };
+    return q;
   }
   var PATTERN_WORDS = { zhiyao: '「只要」和「就」', ruguo: '「如果」、「不但」、「還」' };
   function speakMethod(rule) {
@@ -143,10 +157,15 @@
       if ((x = pick(w.pattern[i].conj))) return conjQuestion(x, r);
     }
     if (w.rhetoric && (x = pick(w.rhetoric.quiz))) return rhetoricQuestion(x, w.rhetoric.cards, r);
+    for (var j = 0; w.rhetoric && j < w.rhetoric.cards.length; j++) {
+      var card = w.rhetoric.cards[j];
+      if ((x = pick(card.yesno))) return rhYesNoQuestion(x, card);
+      if ((x = pick(card.pick))) return rhPickQuestion(x, card, r);
+    }
     return null;
   }
   return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, similarQuestion: similarQuestion,
     listenQuestion: listenQuestion,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
-    rhetoricQuestion: rhetoricQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
+    rhetoricQuestion: rhetoricQuestion, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
 });

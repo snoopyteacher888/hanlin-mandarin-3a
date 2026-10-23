@@ -26,3 +26,9 @@ test('clue must not reveal answer', () => {
 test('rhetoric answer must be a card', () => { const w = fresh(); w.rhetoric.quiz[0].answer = '排比'; assert.ok(validateWords(w).length); });
 test('pattern key must be known', () => { const w = fresh(); w.pattern[0].key = 'yinwei'; assert.ok(validateWords(w).length); });
 test('new ids unique too', () => { const w = fresh(); w.rhetoric.quiz[0].id = 'ph1'; assert.ok(validateWords(w).some(e => e.includes('重複'))); });
+test('rhetoric yes/no clue must not give the answer away', () => {
+  const w = fresh(); w.rhetoric.cards[0].yesno[0].clue = '提示：這句是擬人。'; assert.ok(validateWords(w).some(e => e.includes('rh-pe-y1')));
+});
+test('rhetoric pick answer sentence must not be in clue', () => {
+  const w = fresh(); w.rhetoric.cards[0].pick[0].clue = '杯子張開嘴巴喝水。'; assert.ok(validateWords(w).some(e => e.includes('rh-pe-p1')));
+});

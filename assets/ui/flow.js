@@ -7,9 +7,9 @@
   /* 可以點來聽的一句話 */
   function sayLine(text, cls) { return h('p', { class: 'learn-line' + (cls ? ' ' + cls : '') }, h('span', {}, text), H3A.ui.speaker(text, null)); }
 
-  function runFlow(main, ctx, activity, questions, again) {
+  function runFlow(main, ctx, activity, questions, again, extra) {
     H3A.ui.runQuestions(main, ctx, { questions: questions, mode: 'practice', onDone: function (summary) {
-      H3A.ui.finishActivity(main, ctx, activity, summary, again, true);
+      H3A.ui.finishActivity(main, ctx, activity, summary, again, true, extra);
     } });
   }
 

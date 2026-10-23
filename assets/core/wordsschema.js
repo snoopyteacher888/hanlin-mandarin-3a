@@ -96,6 +96,15 @@
     function rhetoric(rh) {
       var names = (rh.cards || []).map(function (c) { return c.name; });
       if (names.length !== 4 || !unique(names)) errs.push('修辭卡要剛好 4 張、不重複');
+      (rh.cards || []).forEach(function (c) {
+        if (!nonEmpty(c.key) || !nonEmpty(c.meaning) || !c.show || !nonEmpty(c.show.sentence)) errs.push((c.name || '?') + ' 缺少 key、意思或例句');
+        (c.yesno || []).forEach(function (y) {
+          useId(y.id);
+          if (typeof y.answer !== 'boolean' || !nonEmpty(y.sentence) || !nonEmpty(y.clue) || !nonEmpty(y.explain)) errs.push(y.id + ' 缺少句子、答案、線索或說明');
+          else if (/是/.test(y.clue) && y.clue.indexOf(c.name) >= 0) errs.push(y.id + ' 的提示說出了答案');
+        });
+        (c.pick || []).forEach(function (x) { choice(x, 2, x.options && x.options[0]); });
+      });
       (rh.quiz || []).forEach(function (x) {
         useId(x.id);
         if (names.indexOf(x.answer) < 0) errs.push(x.id + ' 的答案不是修辭卡');

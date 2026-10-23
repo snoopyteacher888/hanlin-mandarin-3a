@@ -402,3 +402,12 @@ html.zhuyin .zhuyin { display: none; }
 .feedback.hint .hint-text, .feedback.teach p { text-align: left; }
 .options.list .option { align-items: flex-start; }
 .options.list .option-text { width: 100%; text-align: left; }
+
+/* 修辭闖關 */
+.level-grid .activity-card.done .activity-main { border-color: var(--ok); }
+.level-grid .activity-card.locked { opacity: .55; }
+.level-no { font-size: .8em; color: var(--ink-soft); font-weight: 700; }
+.level-grid .mix .level-no { font-size: 1.6em; }
+.rhetoric-show { align-items: center; }
+.show-img .pic { width: min(320px, 38vh); height: min(320px, 38vh); }
+.level-grid .activity-main { padding-top: 58px; }

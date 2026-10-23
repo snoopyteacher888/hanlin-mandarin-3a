@@ -47,6 +47,10 @@ W.phrase.pick.forEach(x => add('＿＿＿的' + x.noun, x.options[0]));
 W.phrase.choose.forEach(x => add('哪一句的「' + x.word + '」用得對？', x.options[0]));
 W.pattern.forEach(pt => { pt.match.forEach(x => add(x.front + '……', x.options[0])); pt.conj.forEach(x => add(x.sentence, x.options[0])); });
 W.rhetoric.quiz.forEach(x => add('「' + x.sentence + '」用了什麼修辭？', x.answer));
+W.rhetoric.cards.forEach(c => {
+  c.yesno.forEach(y => add('「' + y.sentence + '」是不是' + c.name + '？', y.answer ? '⭕ 是' + c.name : '❌ 不是'));
+  c.pick.forEach(x => add('哪一句是' + c.name + '？', x.options[0]));
+});
 
 async function answerChoice(p) {
   await p.waitForSelector('.option:not(:disabled)');
@@ -141,17 +145,51 @@ test('pattern five steps finish', async () => {
   assert.deepEqual(p.errors, []);
 });
 
-test('rhetoric wrong shows hint', async () => {
+test('rhetoric level: learn, look and listen, yes/no, 2-3-4 choices, then star on the map', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/rhetoric?s=bear');
-  for (let i = 0; i < 4; i++) await nextLearn(p);
-  await p.waitForSelector('.option'); assert.equal(await p.$('.option-icon'), null);
+  await p.waitForSelector('[data-level="mix"]');
+  assert.equal(await p.$eval('[data-level="mix"]', b => b.disabled), true);
+  await p.click('[data-level="simile"]');
+  await nextLearn(p);
+  await p.waitForSelector('.rhetoric-show');
+  const card = W.rhetoric.cards.find(c => c.key === 'simile');
+  await p.waitForFunction(t => window.__spoken.includes(t), card.show.sentence);
+  await nextLearn(p);
+  /* 答錯一次 → 提示，不說答案 */
+  await p.waitForSelector('.option:not(:disabled)');
   const wrong = await p.evaluate(c => {
     const t = document.querySelector('.prompt h2').textContent;
     return [...document.querySelectorAll('.option')].findIndex(o => !(c[t] || []).includes(o.querySelector('.option-text').textContent));
   }, CORRECT);
   await p.click(`.option[data-index="${wrong}"]`);
   await p.waitForSelector('.feedback.hint');
-  assert.match(await p.textContent('.feedback.hint'), /擬人|比成|重複|問句/);
+  assert.match(await p.textContent('.feedback.hint'), /譬喻是把一樣東西比成另一樣東西/);
+  await answerChoice(p);
+  await answerChoice(p);
+  const counts = [];
+  for (let i = 0; i < 6; i++) { await p.waitForSelector('.option:not(:disabled)'); counts.push((await p.$$('.option')).length); await answerChoice(p); }
+  assert.deepEqual(counts, [2, 2, 3, 3, 4, 4]);
+  await p.waitForSelector('.result');
+  await p.click('text=回到闖關地圖');
+  await p.waitForSelector('[data-level="simile"] .activity-extra');
+  assert.match(await p.textContent('[data-level="simile"] .activity-extra'), /⭐/);
+  assert.deepEqual(p.errors, []);
+});
+
+test('mixed challenge opens after all four levels and has two options', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/rhetoric?s=cat');
+  await p.evaluate(() => {
+    const k = Object.keys(localStorage).find(x => x.includes('progress.cat')) || 'h3a.progress.cat';
+    const v = JSON.parse(localStorage.getItem(k) || '{}'); v.L06 = v.L06 || {}; v.L06.stars = Object.assign(v.L06.stars || {},
+      { 'rhetoric-personify': 3, 'rhetoric-simile': 2, 'rhetoric-redup': 1, 'rhetoric-question': 3 });
+    localStorage.setItem(k, JSON.stringify(v));
+  });
+  await p.reload();
+  await p.waitForSelector('[data-level="mix"]:not(:disabled)');
+  await p.click('[data-level="mix"]');
+  await p.waitForSelector('.option:not(:disabled)');
+  assert.equal((await p.$$('.option')).length, 2);
+  await answerChoice(p);
   assert.deepEqual(p.errors, []);
 });
 
