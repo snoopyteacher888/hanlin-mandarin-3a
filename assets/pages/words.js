@@ -27,7 +27,7 @@
     intro(main, '語詞卡：點一張看看', H3A.ui.vocabCards(ctx.lessonId, w.vocab), function () {
       var r = rng();
       var qs = H3A.quizgen.shuffle(w.vocab, r).map(function (x, i) {
-        return H3A.wordq.vocabQuestion(x, x.noPic || i % 2 ? 'meaning' : 'pic', r);
+        return H3A.wordq.vocabQuestion(x, H3A.wordq.vocabKind(x, i % 2), r);
       });
       practice(main, ctx, 'vocab', qs, function () { run(main, ctx); });
     });

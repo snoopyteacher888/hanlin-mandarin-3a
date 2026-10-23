@@ -205,3 +205,22 @@ test('成語填空：兩個句子選一個，提示不說答案', () => {
   assert.ok(!q.hints.h2.text.includes(it.idiom));
   assert.equal(Q.findWordQuestion(W6, 'if-另眼相看', rng(1)).id, 'if-另眼相看');
 });
+
+test('抽象的語詞用例句挖空，提示給意思', () => {
+  const W6 = require('../../data/lesson06.words.js');
+  const v = W6.vocab.find(x => x.word === '部分');
+  assert.equal(Q.vocabKind(v, 0), 'cloze');
+  const q = Q.vocabQuestion(v, 'cloze', rng(2));
+  assert.equal(q.prompt, v.example); assert.equal(q.options[q.answer].text, '部分');
+  assert.ok(q.hints.h1.text.includes(v.meaning)); assert.ok(!q.hints.h1.text.includes('部分'));
+  assert.equal(Q.vocabKind(W6.vocab.find(x => x.word === '石墨'), 0), 'pic');
+});
+test('意思裡有語詞的字，就不出看意思選語詞', () => {
+  for (const f of ['06', '07']) {
+    const W = require('../../data/lesson' + f + '.words.js');
+    W.vocab.forEach(v => [0, 1].forEach(alt => {
+      const k = Q.vocabKind(v, alt);
+      if (k === 'meaning') assert.ok(!v.word.split('').some(c => v.meaning.includes(c)), v.word);
+    }));
+  }
+});

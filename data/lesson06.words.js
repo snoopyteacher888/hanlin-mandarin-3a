@@ -20,14 +20,14 @@
     ],
     vocab: [
       { id: 'v-石墨', word: '石墨', meaning: '從地底下挖出來、黑黑亮亮的石頭，可以用來做筆芯。', example: '筆芯是用＿＿和黏土做的。', img: 'graphite.png', options: ['石墨', '筆芯', '凹槽', '筆桿'] },
-      { id: 'v-製成', word: '製成', meaning: '做成。', example: '這件衣服是用棉花＿＿的。', img: 'materials.png', noPic: true, options: ['製成', '斷裂', '放入', '部分'] },
-      { id: 'v-部分', word: '部分', meaning: '整個東西裡面的其中一塊。', example: '我只吃了蛋糕的一小＿＿。', img: 'part.png', options: ['部分', '機器', '三明治', '另'] },
+      { id: 'v-製成', cloze: true, word: '製成', meaning: '用材料做出東西。', example: '這件衣服是用棉花＿＿的。', img: 'materials.png', noPic: true, options: ['製成', '斷裂', '放入', '部分'] },
+      { id: 'v-部分', cloze: true, word: '部分', meaning: '整個東西裡面的其中一塊。', example: '我只吃了蛋糕的一小＿＿。', img: 'part.png', options: ['部分', '機器', '三明治', '另'] },
       { id: 'v-筆芯', word: '筆芯', meaning: '筆裡面用來寫字的那一條。', example: '我的鉛筆＿＿斷掉了，要再削一削。', img: 'core.png', options: ['筆芯', '筆桿', '石墨', '削鉛筆機'] },
       { id: 'v-斷裂', word: '斷裂', meaning: '斷掉、裂開。', example: '地震讓橋＿＿了。', img: 'broken.png', options: ['斷裂', '製成', '凹槽', '放入'] },
       { id: 'v-機器', word: '機器', meaning: '會自己動，可以幫人做事情的東西。', example: '工廠裡的＿＿會自動做出很多鉛筆。', img: 'machine.png', options: ['機器', '三明治', '筆芯', '部分'] },
       { id: 'v-凹槽', word: '凹槽', meaning: '東西上面往下凹、長長的一條溝。', example: '木板上有一道一道的＿＿，可以放進筆芯。', img: 'groove.png', options: ['凹槽', '筆桿', '石墨', '機器'] },
-      { id: 'v-放入', word: '放入', meaning: '放進去。', example: '請把課本＿＿書包裡。', img: 'put-core.png', options: ['放入', '斷裂', '製成', '另'] },
-      { id: 'v-另', word: '另', meaning: '別的、另外的。', example: '這枝筆不好寫，我換＿一枝。', img: 'pencil-sandwich.png', noPic: true, options: ['另', '部分', '放入', '製成'] },
+      { id: 'v-放入', cloze: true, word: '放入', meaning: '把東西擺進裡面。', example: '請把課本＿＿書包裡。', img: 'put-core.png', options: ['放入', '斷裂', '製成', '另'] },
+      { id: 'v-另', cloze: true, word: '另', meaning: '別的、不是這一個。', example: '這枝筆不好寫，我換＿一枝。', img: 'pencil-sandwich.png', noPic: true, options: ['另', '部分', '放入', '製成'] },
       { id: 'v-三明治', word: '三明治', meaning: '兩片麵包中間夾著菜或肉的食物。', example: '早餐我吃了一個火腿＿＿＿。', img: 'food-sandwich.png', options: ['三明治', '機器', '石墨', '凹槽'] },
       { id: 'v-筆桿', word: '筆桿', meaning: '筆拿在手上的那一段。', example: '寫字的時候，手要握住鉛筆的＿＿。', img: 'barrel.png', options: ['筆桿', '筆芯', '削鉛筆機', '三明治'] },
       { id: 'v-削鉛筆機', word: '削鉛筆機', meaning: '把鉛筆削尖的機器。', example: '鉛筆鈍了，用＿＿＿＿把它削尖。', img: 'sharpener.png', options: ['削鉛筆機', '凹槽', '筆桿', '石墨'] }

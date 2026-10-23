@@ -20,15 +20,15 @@
     vocab: [
       { id: 'v-鹹味', word: '鹹味', meaning: '像鹽巴一樣的味道。', example: '海邊的風，有一股淡淡的＿＿。', img: 'salty.png', options: ['鹹味', '蔚藍', '山坡', '原野'] },
       { id: 'v-蔚藍', word: '蔚藍', meaning: '很漂亮的深藍色，像晴天的天空和大海。', example: '今天天氣很好，天空是＿＿色的。', img: 'blue-sea.png', options: ['蔚藍', '鹹味', '雪橇', '閉上'] },
-      { id: 'v-回航', word: '回航', meaning: '船或飛機開回原來出發的地方。', example: '天快黑了，漁船都＿＿了。', img: 'ship-return.png', options: ['回航', '欣賞', '深呼吸', '原野'] },
-      { id: 'v-乘', word: '乘', meaning: '坐、搭。', example: '我們＿公車去外婆家。', img: 'ride-bus.png', options: ['乘', '瞞', '閉上', '回航'] },
+      { id: 'v-回航', cloze: true, word: '回航', meaning: '船或飛機開到當初出發的地方。', example: '天快黑了，漁船都＿＿了。', img: 'ship-return.png', options: ['回航', '欣賞', '深呼吸', '原野'] },
+      { id: 'v-乘', cloze: true, word: '乘', meaning: '坐、搭。', example: '我們＿公車去外婆家。', img: 'ride-bus.png', options: ['乘', '瞞', '閉上', '回航'] },
       { id: 'v-雪橇', word: '雪橇', meaning: '在雪地上滑的車子，下面沒有輪子。', example: '小狗拉著＿＿，在雪地上跑。', img: 'sled.png', options: ['雪橇', '山坡', '原野', '鹹味'] },
       { id: 'v-山坡', word: '山坡', meaning: '山上斜斜的地方。', example: '我們爬上＿＿，看山下的風景。', img: 'slope.png', options: ['山坡', '雪橇', '蔚藍', '回航'] },
       { id: 'v-原野', word: '原野', meaning: '很大很大、平平的草地和田地。', example: '綠色的＿＿上，有很多牛羊在吃草。', img: 'field.png', options: ['原野', '山坡', '鹹味', '欣賞'] },
       { id: 'v-閉上', word: '閉上', meaning: '合起來、關起來。', example: '睡覺的時候要＿＿眼睛。', img: 'eyes-closed.png', options: ['閉上', '欣賞', '乘', '瞞'] },
       { id: 'v-深呼吸', word: '深呼吸', meaning: '用力吸一大口氣，再慢慢吐出來。', example: '上臺前很緊張，我先＿＿＿。', img: 'deep-breath.png', options: ['深呼吸', '回航', '閉上', '欣賞'] },
-      { id: 'v-欣賞', word: '欣賞', meaning: '很喜歡的看或聽。', example: '我們坐在海邊，＿＿美麗的夕陽。', img: 'enjoy-view.png', options: ['欣賞', '瞞', '深呼吸', '乘'] },
-      { id: 'v-瞞', word: '瞞', meaning: '把事情藏起來，不讓別人知道。', example: '做錯事要說實話，不要＿著爸爸媽媽。', img: 'keep-secret.png', options: ['瞞', '乘', '閉上', '回航'] }
+      { id: 'v-欣賞', cloze: true, word: '欣賞', meaning: '很喜歡的看或聽。', example: '我們坐在海邊，＿＿美麗的夕陽。', img: 'enjoy-view.png', options: ['欣賞', '瞞', '深呼吸', '乘'] },
+      { id: 'v-瞞', cloze: true, word: '瞞', meaning: '把事情藏起來，不讓別人知道。', example: '做錯事要說實話，不要＿著爸爸媽媽。', img: 'keep-secret.png', options: ['瞞', '乘', '閉上', '回航'] }
     ],
     /* 生字語詞：每個生字再學一個課本以外、孩子聽得懂的語詞 */
     charwords: [

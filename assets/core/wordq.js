@@ -22,12 +22,26 @@
     return { id: h.id, prompt: h.cloze, say: h.say, img: h.img, autoSay: h.say, options: s.options, answer: s.answer,
       hints: { h1: { text: '再聽一次，想想看是哪一個字。', say: h.say }, h2: { text: '提示：' + h.clue }, teach: { text: h.explain } } };
   }
+  /* 語詞題型：抽象的詞用例句挖空；其他看圖或看意思輪流 */
+  function vocabKind(v, alt) {
+    if (v.cloze) return 'cloze';
+    /* 意思裡有語詞的字（例如「斷裂」：斷掉、裂開）就不出「看意思選語詞」，免得一看就猜到 */
+    var leaks = v.word.split('').some(function (c) { return v.meaning.indexOf(c) >= 0; });
+    if (leaks) return v.noPic ? 'cloze' : 'pic';
+    return v.noPic || alt ? 'meaning' : 'pic';
+  }
   function vocabQuestion(v, kind, r) {
     var s = shuffled(v.options, v.word, r, {});
     var q = { id: v.id, options: s.options, answer: s.answer };
     var teach = { text: '答案是「' + v.word + '」，意思是：' + v.meaning };
     var h2 = { text: '提示：' + v.example, say: '提示：' + v.example.replace(/＿+/, '什麼') };
-    if (kind === 'pic') {
+    if (kind === 'cloze') {
+      /* 抽象的語詞：例句挖空選填，提示給這個詞的意思 */
+      var say = v.example.replace(/＿+/, '什麼');
+      q.prompt = v.example; q.say = say; q.autoSay = say;
+      q.hints = { h1: { text: '提示：要填的語詞，意思是「' + v.meaning + '」' },
+        h2: { text: '把每個選項放進句子裡念念看，哪一個最通順？' }, teach: teach };
+    } else if (kind === 'pic') {
       q.prompt = '圖片上是哪一個語詞？'; q.img = v.img;
       q.hints = { h1: { text: '再仔細看看圖片，想想看它是什麼？' }, h2: h2, teach: teach };
     } else {
@@ -242,7 +256,7 @@
     var pick = function (list) { return (list || []).filter(function (x) { return x.id === id; })[0]; };
     var x;
     if ((x = pick(w.hanzi))) return hanziQuestion(x, r);
-    if ((x = pick(w.vocab))) return vocabQuestion(x, x.noPic || r() < 0.5 ? 'meaning' : 'pic', r);
+    if ((x = pick(w.vocab))) return vocabQuestion(x, vocabKind(x, r() < 0.5), r);
     if ((x = pick(w.similar))) return similarQuestion(x, r);
     var idm = (w.idioms || []).filter(function (y) { return ['io-', 'is-', 'if-'].some(function (p) { return p + y.idiom === id; }); })[0];
     if (idm) return id.indexOf('io-') === 0 ? idiomOrderQuestion(idm, r) : id.indexOf('if-') === 0 ? idiomFillQuestion(idm, r) : idiomSituationQuestion(idm, w.idioms, r);
@@ -267,7 +281,7 @@
     }
     return null;
   }
-  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion,
+  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, vocabKind: vocabKind, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion,
     listenQuestion: listenQuestion,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
     rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
