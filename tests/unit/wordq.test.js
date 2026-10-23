@@ -225,3 +225,15 @@ test('意思裡有語詞的字，就不出看意思選語詞', () => {
     }));
   }
 });
+
+test('fixQuestion swaps in the wrong char and keeps hints answer-free', () => {
+  const W = require('../../data/lesson06.words.js');
+  for (const it of W.fix) {
+    const q = Q.fixQuestion(it, () => 0.3);
+    assert.equal(q.sentence.charAt(q.at), it.wrong);
+    assert.equal(q.right.charAt(q.at), it.char);
+    assert.equal(q.options[q.answer].text, it.char);
+    assert.ok(q.zone[0] <= q.at && q.at <= q.zone[1]);
+    for (const k of ['h1', 'h2']) { assert.ok(!q.hints.find[k].text.includes(it.char)); assert.ok(!q.hints.pick[k].text.includes(it.char)); }
+  }
+});

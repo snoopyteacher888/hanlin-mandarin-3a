@@ -3,12 +3,12 @@
   var H3A = root.H3A; var h = H3A.ui.h;
   var SECTIONS = [
     { title: '📖 閱讀理解', cards: [{ a: 'map', icon: '🗺️' }, { a: 'quiz', icon: '❓' }] },
-    { title: '✏️ 字詞練習', words: true, cards: [{ a: 'hanzi', icon: '✍️' }, { a: 'vocab', icon: '📚' }, { a: 'charword', icon: '🔤' }, { a: 'similar', icon: '🔍' }, { a: 'listen', icon: '👂' },
+    { title: '✏️ 字詞練習', words: true, cards: [{ a: 'hanzi', icon: '✍️' }, { a: 'vocab', icon: '📚' }, { a: 'charword', icon: '🔤' }, { a: 'similar', icon: '🔍' }, { a: 'fix', icon: '🩹' }, { a: 'listen', icon: '👂' },
       { a: 'phrase', icon: '📒' }, { a: 'pattern', icon: '🧩' }, { a: 'rhetoric', icon: '🎨' }, { a: 'challenge', icon: '🎮' }, { a: 'idiom', icon: '📜' }] },
     { title: '🌟 複習與測驗', cards: [{ a: 'review', icon: '🔁' }, { a: 'test', icon: '📝' }] }
   ];
   /* 字詞活動要用到的資料；這一課沒有就不顯示（例如第 7 課沒有句型） */
-  var NEEDS = { hanzi: 'hanzi', vocab: 'vocab', charword: 'charwords', similar: 'similar', listen: 'listen', phrase: 'phrase',
+  var NEEDS = { hanzi: 'hanzi', vocab: 'vocab', charword: 'charwords', similar: 'similar', fix: 'fix', listen: 'listen', phrase: 'phrase',
     pattern: 'pattern', rhetoric: 'rhetoric', challenge: 'hanzi', idiom: 'idioms' };
   function hasData(words, a) {
     var k = NEEDS[a]; if (!k) return true;

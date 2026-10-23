@@ -256,12 +256,32 @@
       hints: { h1: { text: speakMethod(rule) }, h2: { text: item.clue }, teach: { text: '老師示範：「' + model + '」。換你說說看！' } } };
   }
 
+  /* 改錯字：句子裡的生字被換成錯字。先點出錯的字，再選正確的字。
+     at：錯字在句子裡的位置；zone：第二層提示框起來的範圍（錯字和前後各一個字） */
+  function fixQuestion(item, r) {
+    var at = item.sentence.indexOf(item.char);
+    var shown = item.sentence.slice(0, at) + item.wrong + item.sentence.slice(at + 1);
+    var order = quizgen.shuffle(item.options, r);
+    var zone = [Math.max(0, at - 1), Math.min(shown.length - 1, at + 1)];
+    if (/[，。、！？：；「」]/.test(shown.charAt(zone[0]))) zone[0] = at;
+    if (/[，。、！？：；「」]/.test(shown.charAt(zone[1]))) zone[1] = at;
+    return { type: 'fix', id: item.id, prompt: '改錯字：句子裡有一個字寫錯了，點一點，把它找出來。',
+      sentence: shown, right: item.sentence, at: at, zone: zone, wrong: item.wrong, char: item.char,
+      options: order.map(function (c) { return { text: c, big: true }; }), answer: order.indexOf(item.char),
+      hints: {
+        find: { h1: { text: '按喇叭聽一聽句子，想一想，哪一個字的意思怪怪的？' }, h2: { text: '錯的字就在框起來的這幾個字裡面。' },
+          teach: { text: '寫錯的是「' + item.wrong + '」，老師幫你圈起來了。接著要把它改成正確的字。' } },
+        pick: { h1: { text: item.clue }, h2: { text: '有一個字一定不對，已經拿掉了。再想一想。' },
+          teach: { text: item.explain } }
+      } };
+  }
   function findWordQuestion(w, id, r) {
     var pick = function (list) { return (list || []).filter(function (x) { return x.id === id; })[0]; };
     var x;
     if ((x = pick(w.hanzi))) return hanziQuestion(x, r);
     if ((x = pick(w.vocab))) return vocabQuestion(x, vocabKind(x, r() < 0.5), r);
     if ((x = pick(w.similar))) return similarQuestion(x, r);
+    if ((x = pick(w.fix))) return fixQuestion(x, r);
     var idm = (w.idioms || []).filter(function (y) { return ['io-', 'is-', 'if-'].some(function (p) { return p + y.idiom === id; }); })[0];
     if (idm) return id.indexOf('io-') === 0 ? idiomOrderQuestion(idm, r) : id.indexOf('if-') === 0 ? idiomFillQuestion(idm, r) : idiomSituationQuestion(idm, w.idioms, r);
     var bz = (w.hanzi || []).filter(function (y) { return y.build && 'b-' + y.char === id; })[0];
@@ -285,7 +305,7 @@
     }
     return null;
   }
-  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, vocabKind: vocabKind, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion,
+  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, vocabKind: vocabKind, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion, fixQuestion: fixQuestion,
     listenQuestion: listenQuestion,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
     rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };

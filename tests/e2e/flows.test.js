@@ -160,22 +160,46 @@ const WORDS = require('../../data/lesson06.words.js');
 
 test('word practice works without unlock', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/hanzi?s=bear');
-  await p.waitForSelector('.hanzi-card');
-  assert.equal(await p.$$eval('.hanzi-card', x => x.length), 14);
+  await p.waitForSelector('.hl-card');
+  assert.equal(await p.$$eval('.hl-card', x => x.length), 5);
   assert.equal(await p.$('input[type=password]'), null);
-  await p.click('text=開始練習'); await p.waitForSelector('.option.big');
+  const cards = await p.$$('.hl-card');
+  for (const c of cards) { assert.ok(await p.isHidden('.btn-next')); await c.click(); }
+  await p.click('.btn-next:not([hidden])'); await p.waitForSelector('.option.big');
   assert.equal(await p.$$eval('.option.big', x => x.length), 4);
   assert.equal(await p.$$eval('.option.big .pic', x => x.length), 0);
 });
 
-test('hanzi card shows zhuyin and radical', async () => {
-  const p = await page(); await p.goto(BASE + '#/L06/hanzi?s=bear'); await p.waitForSelector('.hanzi-card');
-  await p.click('.hanzi-card[data-id="h-芯"]');
-  const t = await p.textContent('.hanzi-detail');
-  assert.match(t, /ㄒㄧㄣ/); assert.match(t, /部首：艸/); assert.match(t, /8 畫/);
-  assert.equal(await p.getAttribute('.stroke-link', 'href'), 'https://stroke-order.learningweb.moe.edu.tw/dictView.jsp?ID=33455&la=0');
-  await p.evaluate(() => { location.hash = '#/L06'; }); await p.waitForSelector('.activity-main');
-  assert.equal(await p.$('.vocab-pop'), null);
+test('hanzi learn card shows radical and speaks', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/hanzi?s=bear'); await p.waitForSelector('.hl-card');
+  const id = await p.getAttribute('.hl-card', 'data-id');
+  const it = WORDS.hanzi.find(x => x.id === id);
+  await p.click('.hl-card');
+  assert.ok(await p.$eval('.hl-card', e => e.classList.contains('heard')));
+  const t = await p.textContent('.hl-card');
+  assert.match(t, new RegExp('部首 ' + it.radical)); assert.match(t, new RegExp('筆畫 ' + it.strokes));
+  assert.ok((await p.evaluate(() => window.__spoken.join('|'))).includes(it.char));
+});
+
+test('fix wrong char: find it, then pick the right one', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/fix?s=bear'); await p.waitForSelector('.fix-char');
+  assert.ok(await p.isHidden('.fix-options'));
+  const sent = (await p.$$eval('.fix-sentence > *', xs => xs.map(x => x.textContent))).join('').replace(/\uDB40[\uDC00-\uDFFF]/g, '');
+  const it = WORDS.fix.find(x => x.sentence.replace(x.char, x.wrong) === sent);
+  assert.ok(it, sent);
+  const at = it.sentence.indexOf(it.char);
+  const other = at === 0 ? 1 : 0;
+  await p.click(`.fix-char[data-i="${other}"]`);
+  await p.waitForSelector('.feedback.hint');
+  await p.click(`.fix-char[data-i="${at}"]`);
+  await p.waitForSelector('.fix-char.found');
+  assert.match(await p.textContent('.fix-step'), new RegExp('「' + it.wrong + '」寫錯了'));
+  const idx = await p.$$eval('.fix-options .option', (os, c) => os.findIndex(o => o.textContent.charAt(0) === c), it.char);
+  await p.click(`.fix-options .option[data-index="${idx}"]`);
+  await p.waitForSelector('.fix-char.fixed');
+  assert.equal((await p.textContent('.fix-char.fixed')).charAt(0), it.char);
+  await p.waitForSelector('.btn-next:not([hidden])');
+  assert.deepEqual(p.errors, []);
 });
 
 test('listen hides text and repeats on wrong', async () => {

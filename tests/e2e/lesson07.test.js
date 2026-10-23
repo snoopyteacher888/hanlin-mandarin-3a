@@ -67,10 +67,30 @@ test('第 7 課每個字詞活動的第一個畫面都正常', async () => {
   assert.deepEqual(p.errors, []);
 });
 
+test('第 7 課改錯字：全部改完', async () => {
+  const p = await page(); await p.goto(BASE + '#/L07/fix?s=bear');
+  for (let i = 0; i < W.fix.length; i++) {
+    await p.waitForSelector('.fix-char:not(:disabled)');
+    const sent = (await p.$$eval('.fix-sentence > *', xs => xs.map(x => x.textContent))).join('').replace(/\uDB40[\uDC00-\uDFFF]/g, '');
+    const it = W.fix.find(x => x.sentence.replace(x.char, x.wrong) === sent);
+    assert.ok(it, sent);
+    await p.click(`.fix-char[data-i="${it.sentence.indexOf(it.char)}"]`);
+    const idx = await p.$$eval('.fix-options .option', (os, c) => os.findIndex(o => o.textContent.charAt(0) === c), it.char);
+    await p.click(`.fix-options .option[data-index="${idx}"]`);
+    await p.click('.btn-next:not([hidden])');
+  }
+  await p.waitForSelector('.result');
+  assert.deepEqual(p.errors, []);
+});
+
 test('第 7 課生字：選對字', async () => {
   const p = await page(); await p.goto(BASE + '#/L07/hanzi?s=bear');
-  await p.click('.btn-next');
   for (let i = 0; i < W.hanzi.length; i++) {
+    if (i % 5 === 0) {
+      await p.waitForSelector('.hl-card');
+      for (const c of await p.$$('.hl-card')) await c.click();
+      await p.click('.btn-next:not([hidden])');
+    }
     await p.waitForSelector('.option:not(:disabled)');
     const t = await p.textContent('.prompt h2');
     const hz = W.hanzi.find(x => x.cloze === t);

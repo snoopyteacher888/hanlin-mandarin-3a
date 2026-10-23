@@ -196,3 +196,14 @@
 | 8 | `id-flowers.png` | L07 賞心悅目 |
 | 9 | `id-swim-race.png` | L07 乘風破浪 |
 | 10 | `id-think-earth.png` | L07 發人深省 |
+
+## 生字卡圖（待生成）
+
+指令在 `docs/chatgpt-image-prompts-hanzi.txt`。
+
+| # | 檔名 | 用在 |
+|---|---|---|
+| 1 | `hz-ao.png` | L06 凹（象形字） |
+| 2 | `hz-ru.png` | L06 入（象形字） |
+| 3 | `hz-cheng.png` | L07 乘（會意字） |
+| 4 | `fix.png` | 改錯字的圖示（放 `images/icons/`） |

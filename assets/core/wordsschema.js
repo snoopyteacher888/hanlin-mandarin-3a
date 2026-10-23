@@ -60,6 +60,16 @@
       if (!nonEmpty(s.clue) || !nonEmpty(s.explain)) errs.push(s.id + ' 缺少線索或說明');
       if (s.meaning !== undefined && (!nonEmpty(s.meaning) || s.meaning.indexOf(s.answer) >= 0)) errs.push(s.id + ' 的意思要有內容、不能說出答案');
     });
+    /* 改錯字：正確的字在句子裡剛好一次、錯字不在句子裡；提示不能出現正確的字 */
+    (w.fix || []).forEach(function (f) {
+      useId(f.id);
+      ['char', 'wrong', 'sentence', 'clue', 'explain'].forEach(function (k) { if (!nonEmpty(f[k])) errs.push(f.id + ' 缺少 ' + k); });
+      if (nonEmpty(f.sentence) && f.sentence.split(f.char).length !== 2) errs.push(f.id + ' 的句子要剛好有一個「' + f.char + '」');
+      if (nonEmpty(f.sentence) && f.sentence.indexOf(f.wrong) >= 0) errs.push(f.id + ' 的句子裡不能本來就有錯字');
+      opts(f.id, f.options, 3);
+      if (Array.isArray(f.options) && (f.options[0] !== f.char || f.options.indexOf(f.wrong) < 0)) errs.push(f.id + ' 的選項第一個要是正確的字，也要有錯字');
+      if (nonEmpty(f.clue) && f.clue.indexOf(f.char) >= 0) errs.push(f.id + ' 的提示說出了答案');
+    });
     w.listen.forEach(function (l) {
       useId(l.id);
       if (!nonEmpty(l.text)) errs.push(l.id + ' 缺少句子');

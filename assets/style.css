@@ -599,3 +599,48 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .combo-tag { flex-basis: 100%; text-align: center; font-weight: 700; color: #8A5A2B; }
 .combo-intro .parts-chip { font-size: 1.6em; }
 .prompt.build-prompt h2 { font-size: 1.5em; letter-spacing: 0.05em; line-height: 1.6; }
+
+/* 生字學習卡 */
+.hl-list { display: flex; flex-direction: column; gap: 16px; max-width: 980px; margin: 0 auto; }
+.hl-card { position: relative; width: 100%; background: var(--surface); border: 3px solid var(--line); border-radius: 22px; padding: 14px 18px 12px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; transition: border-color .2s, box-shadow .2s; }
+.hl-card:active { transform: scale(.99); }
+.hl-card.heard { border-color: var(--ok); box-shadow: 0 0 0 3px var(--ok-soft); }
+.hl-tag { position: absolute; left: 14px; top: 12px; background: var(--muted); border-radius: 999px; padding: 2px 12px; font-size: .75em; color: var(--ink-soft); }
+.hl-check { position: absolute; right: 18px; top: 10px; color: var(--ok); font-size: 1.8em; font-weight: 900; visibility: hidden; }
+.hl-card.heard .hl-check { visibility: visible; }
+.hl-main { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+.hl-parts { display: flex; align-items: center; gap: 10px; }
+.hl-chip { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; min-width: 96px; min-height: 104px; border-radius: 16px; border: 3px solid; padding: 6px 10px; }
+.hl-chip.m { background: #EAF5EE; border-color: #4C8C6A; color: #2E6B4C; }
+.hl-chip.s { background: #EAF1FA; border-color: #3E6DB0; color: #2D5791; }
+.hl-chip.p { background: #F4F1EA; border-color: #CFC6B5; color: var(--ink-soft); }
+.hl-part { font-size: 2.4em; line-height: 1.1; font-weight: 700; }
+.hl-chip.long .hl-part { font-size: 1.1em; }
+.hl-note { font-size: .8em; margin-top: 4px; }
+.hl-op { font-size: 1.8em; color: var(--ink-soft); }
+.hl-char { font-size: 4.2em; line-height: 1.1; font-weight: 700; color: var(--ink); }
+.hl-pict { font-size: 1.1em; max-width: 440px; margin: 0; color: #8A5A2B; }
+.hl-info { color: var(--ink-soft); font-size: .95em; }
+.hl-info strong { color: var(--ink); font-size: 1.15em; }
+.hl-words { font-size: 1.2em; font-weight: 700; }
+@media (max-width: 600px) {
+  .hl-chip { min-width: 72px; min-height: 84px; } .hl-part { font-size: 1.8em; } .hl-char { font-size: 3.2em; } .hl-main { gap: 8px; }
+}
+.hl-pictbox { display: flex; align-items: center; gap: 14px; }
+.hl-pic { width: 130px; flex: none; } .hl-pic:has(.pic-missing) { display: none; }
+
+/* 改錯字：句子一個字一格，可以點；找到的錯字圈紅框，改好變綠色 */
+.fix-area { display: flex; flex-direction: column; gap: 14px; }
+.fix-step { font-size: 1.25em; font-weight: 700; margin: 0; display: flex; align-items: center; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.fix-line { display: flex; align-items: center; gap: 10px; justify-content: center; background: var(--surface); border-radius: 18px; padding: 16px 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.fix-sentence { display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; }
+.fix-char { font-size: 2em; min-width: 1.9em; min-height: 1.9em; padding: 2px 4px; border: 3px solid transparent; border-radius: 12px; background: transparent; color: inherit; cursor: pointer; font-family: inherit; }
+.fix-char:hover:not(:disabled) { background: #FFF4E0; }
+.fix-char:disabled { cursor: default; color: inherit; opacity: 1; }
+.fix-char.zone { border: 3px dashed #E0A040; background: #FFF8E8; }
+.fix-char.found { border-color: #D9534F; background: #FDECEA; color: #B0302C; }
+.fix-char.fixed { border-color: var(--ok); background: var(--ok-soft); font-weight: 700; }
+.fix-punct { font-size: 2em; align-self: center; padding: 0 2px; }
+.fix-options .option-text { font-size: 2.2em; }
+@media (max-width: 600px) { .fix-char, .fix-punct { font-size: 1.45em; } .fix-line { flex-wrap: wrap; } .fix-sentence { flex-basis: 100%; } }

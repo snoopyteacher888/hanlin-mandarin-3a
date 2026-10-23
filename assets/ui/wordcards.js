@@ -54,6 +54,46 @@
     popup(box);
     H3A.tts.speak(item.word);
   }
+  /* 生字學習卡：左邊是組成（綠：表示意思、藍：念法像），右邊是大字；點卡片任何地方就念，念過打勾 */
+  var PART_SAY = { '艹': '草字頭', '氵': '三點水', '阝': '耳朵旁', '刂': '立刀旁', '扌': '提手旁' };
+  function cardSay(item) {
+    var c = item.combo || {}, out = [item.say];
+    if (c.pict) out.push(c.pict);
+    (c.parts || []).forEach(function (x) {
+      var name = PART_SAY[x[0]] || x[0];
+      if (x[1] === 'm') out.push(name + '，表示' + x[2]);
+      else if (x[1] === 's') out.push(name + '，念法像' + x[0]);
+    });
+    out.push('部首是' + item.radical + '，' + item.strokes + '畫');
+    out.push('語詞有：' + item.words.join('、'));
+    return out.join('。') + '。';
+  }
+  function hanziLearnCard(lessonId, item, onHeard) {
+    var c = item.combo || {};
+    var hasSound = (c.parts || []).some(function (x) { return x[1] === 's'; });
+    var parts = c.parts ? h('div', { class: 'hl-parts ' + (c.layout || 'lr') }, c.parts.map(function (x, i) {
+      return [i ? h('span', { class: 'hl-op' }, '＋') : null,
+        h('span', { class: 'hl-chip ' + x[1] + (x[0].length > 1 ? ' long' : '') },
+          h('span', { class: 'hl-part' }, x[0]),
+          x[1] === 'm' ? h('span', { class: 'hl-note' }, x[2]) : x[1] === 's' ? h('span', { class: 'hl-note' }, '念法像「' + x[0] + '」') : null)];
+    })) : h('div', { class: 'hl-pictbox' },
+      c.img ? h('div', { class: 'hl-pic' }, H3A.ui.picture(lessonId, c.img, item.char)) : null,
+      h('p', { class: 'hl-pict' }, c.pict || ''));
+    var card = h('button', { type: 'button', class: 'hl-card', 'data-id': item.id },
+      c.type || hasSound ? h('span', { class: 'hl-tag' }, c.type || '形聲字') : null,
+      h('span', { class: 'hl-check', 'aria-hidden': 'true' }, '✔'),
+      h('div', { class: 'hl-main' }, parts, h('span', { class: 'hl-op arrow' }, '→'), h('span', { class: 'hl-char' }, item.char)),
+      h('div', { class: 'hl-info' }, '部首 ', h('strong', {}, item.radical), '　筆畫 ', h('strong', {}, String(item.strokes))),
+      h('div', { class: 'hl-words' }, item.words.join('、')));
+    card.onclick = function () {
+      H3A.tts.speak(cardSay(item));
+      if (!card.classList.contains('heard')) { card.classList.add('heard'); if (onHeard) onHeard(item); }
+    };
+    return card;
+  }
+  H3A.ui.hanziLearnCard = hanziLearnCard;
+  H3A.ui.hanziCardSay = cardSay;
+
   H3A.ui.hanziCards = function (items) {
     return h('div', { class: 'word-grid' }, items.map(function (it) {
       return h('button', { type: 'button', class: 'word-card hanzi-card', 'data-id': it.id, onclick: function () { hanziDetail(it); } },
