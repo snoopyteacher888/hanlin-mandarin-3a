@@ -883,3 +883,22 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .big-check { font-size: 76px; }
 .check-wrap.at-option .big-check { font-size: 46px; }
 .match-board .check-wrap.at-option .big-check, .mem-grid .check-wrap.at-option .big-check { font-size: 96px; }
+
+/* 組合字：黑＋土＝□ */
+.prompt.build-prompt h2 { font-size: 1.6em; gap: 10px 14px; }
+.eq-part { display: inline-flex; align-items: center; justify-content: center; min-width: 2em; min-height: 2em; padding: 4px 12px; border-radius: 16px; border: 4px solid; font-size: 1.4em; font-weight: 700;
+  font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", var(--font); }
+.eq-part.p0 { background: #EAF5EE; border-color: #4C8C6A; color: #2E6B4C; }
+.eq-part.p1 { background: #EAF1FA; border-color: #3E6DB0; color: #2D5791; }
+.eq-op { font-size: 1.4em; color: var(--ink-soft); font-weight: 700; }
+.eq-slot.filled { font-size: 1.4em; font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", var(--font); }
+.eq-tag { flex-basis: 100%; max-width: max-content; margin: 0 auto; font-size: .55em; }
+.eq-row { display: flex; align-items: center; gap: 10px; }
+.eq-part.res { background: #FDEBDC; border-color: var(--brand); color: #9A4A12; }
+.combo-intro .eq-part { font-size: 1.8em; }
+@media (max-width: 600px) {
+  .prompt.build-prompt h2 { font-size: 1.1em; gap: 6px 8px; }
+  .eq-part { padding: 2px 8px; border-width: 3px; }
+  .eq-tag { flex-basis: 100%; max-width: none; text-align: center; }
+}
+@media (max-width: 600px) { .eq-tagrow { flex-basis: 100%; text-align: center; } .eq-tag { flex-basis: auto; display: inline-block; } }

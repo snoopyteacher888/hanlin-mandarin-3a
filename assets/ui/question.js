@@ -208,7 +208,7 @@
 
       main.appendChild(dots(questions.length, idx));
       var slot = null;
-      var promptText = h('h2', { hidden: !!q.hideText }, q.headChar ? headLine() : q.drag ? withSlot(q.prompt) : q.hl ? hlWords(q.prompt, q.hl) : blanks(q.prompt));
+      var promptText = h('h2', { hidden: !!q.hideText }, q.equation ? eqLine() : q.headChar ? headLine() : q.drag ? withSlot(q.prompt) : q.hl ? hlWords(q.prompt, q.hl) : blanks(q.prompt));
       if (!q.hideText) H3A.ui.sayable(promptText, q.prompt, q.say);
       function withSlot(text) {
         var m = /＿+/.exec(text);
@@ -217,6 +217,17 @@
         return [text.slice(0, m.index), slot, text.slice(m.index + m[0].length)];
       }
       /* 組合字：主要的字放大、用框框起來，後面是組合方式和提示 */
+      /* 組合字：黑＋土＝□（每一塊用不同顏色的框，空格拖進組成的字） */
+      function eqLine() {
+        var out = [];
+        q.equation.parts.forEach(function (p, i) {
+          if (i) out.push(h('span', { class: 'eq-op' }, '＋'));
+          out.push(h('span', { class: 'eq-part p' + i }, p));
+        });
+        slot = h('span', { class: 'drop-slot eq-slot' });
+        out.push(h('span', { class: 'eq-op' }, '＝'), slot, h('span', { class: 'eq-tagrow' }, h('span', { class: 'head-tag eq-tag' }, q.equation.kind)));
+        return out;
+      }
       function headLine() {
         var lines = q.prompt.split('\n'), rest = lines[0].slice(q.headChar.length).trim();
         return [h('span', { class: 'head-char' }, q.headChar), h('span', { class: 'head-tag' }, rest), h('span', { class: 'head-line' }, lines.slice(1).join(''))];

@@ -10,17 +10,19 @@
   function missing(main) { main.appendChild(h('p', { class: 'notice' }, '這一課的字詞練習還沒準備好。')); }
   function shuffle(list, r) { return H3A.quizgen.shuffle(list, r); }
 
-  /* 組合字的說明頁 */
+  /* 組合字的說明頁：黑＋土＝墨、木＋幾＝機 */
   function buildIntro() {
+    function ex(a, b, c, tag) {
+      return h('div', { class: 'combo-ex' },
+        h('div', { class: 'eq-row' }, h('span', { class: 'eq-part p0' }, a), h('span', { class: 'eq-op' }, '＋'), h('span', { class: 'eq-part p1' }, b),
+          h('span', { class: 'eq-op' }, '＝'), h('span', { class: 'eq-part res' }, c)),
+        h('span', { class: 'combo-tag' }, tag));
+    }
     return F.learn('組合字', function () {
       return h('div', { class: 'learn-box combo-intro' },
-        h('div', { class: 'combo-row' },
-          h('div', { class: 'combo-ex' }, h('span', { class: 'combo-stack tb' }, h('span', { class: 'parts-chip' }, '黑'), h('span', { class: 'parts-chip' }, '土')),
-            h('span', { class: 'parts-op' }, '→'), h('span', { class: 'parts-chip parts-result' }, '墨'), h('span', { class: 'combo-tag' }, '上下組合')),
-          h('div', { class: 'combo-ex' }, h('span', { class: 'combo-stack lr' }, h('span', { class: 'parts-chip' }, '木'), h('span', { class: 'parts-chip' }, '幾')),
-            h('span', { class: 'parts-op' }, '→'), h('span', { class: 'parts-chip parts-result' }, '機'), h('span', { class: 'combo-tag' }, '左右組合'))),
-        F.sayLine('有的字是上下組合，有的字是左右組合。看看少了哪一塊，把字組起來！'));
-    }, '有的字是上下組合，像墨，上面是黑，下面是土。有的字是左右組合，像機，左邊是木，右邊是幾。看看少了哪一塊，把字組起來！');
+        h('div', { class: 'combo-row' }, ex('黑', '土', '墨', '上下組合'), ex('木', '幾', '機', '左右組合')),
+        F.sayLine('兩塊組在一起，就變成一個新的字。看一看，哪一個字是它們組成的？'));
+    }, '黑加土，變成墨，這是上下組合。木加幾，變成機，這是左右組合。看一看，哪一個字是它們組成的？');
   }
 
   H3A.pages.hanzi = function run(main, ctx) {
@@ -45,7 +47,7 @@
       { key: 'pick', name: '拖字填空', say: '把正確的字拖到空格裡。', make: function (r) {
         return shuffle(w.hanzi, r).map(function (x) { return F.dragify(H3A.wordq.hanziQuestion(x, r)); });
       } },
-      builds.length ? { key: 'build', name: '組合字', say: '看看少了哪一塊，把字組起來。', make: function (r) {
+      builds.length ? { key: 'build', name: '組合字', say: '看看兩塊組在一起變成哪一個字，把它拖進空格。', make: function (r) {
         return [buildIntro()].concat(shuffle(builds, r).map(function (x) { return H3A.wordq.buildQuestion(x, r); }));
       } } : {},
       w.fix ? { key: 'fix', name: '改錯字', say: '句子裡有一個字寫錯了，找出來，改成正確的字。', make: function (r) {

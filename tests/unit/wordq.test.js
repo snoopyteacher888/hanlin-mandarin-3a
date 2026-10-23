@@ -169,16 +169,17 @@ test('charWordQuestion：句子選語詞，生字標顏色，提示不說答案'
   assert.equal(Q.findWordQuestion(W3, c.id, rng(1)).id, c.id);
 });
 
-test('buildQuestion：缺一個部件，部首念名稱，提示不說答案', () => {
+test('buildQuestion：黑＋土＝？，選項是整個字，提示不說答案', () => {
   const W4 = require('../../data/lesson06.words.js');
   const hz = W4.hanzi.find(x => x.char === '部');
   const q = Q.buildQuestion(hz, rng(5));
-  assert.equal(q.prompt, '部　左右組合\n左邊是「咅」，右邊是「？」');
-  assert.equal(q.options[q.answer].text, '阝');
-  assert.equal(q.options[q.answer].say, '耳朵旁');
-  assert.equal(q.say, '部，左右組合。左邊是咅，右邊是什麼？');
-  assert.equal(q.quiet, true); assert.equal(q.autoSay, undefined);
-  assert.ok(!q.hints.h1.text.includes('阝') && !q.hints.h2.text.includes('阝'));
+  assert.equal(q.prompt, '咅＋阝＝＿');
+  assert.deepEqual(q.equation.parts, ['咅', '阝']);
+  assert.equal(q.options[q.answer].text, '部');
+  assert.deepEqual(q.options.map(o => o.text).sort(), hz.options.slice().sort());
+  assert.equal(q.say, '咅加耳朵旁，左右組合，會變成哪一個字？');
+  assert.equal(q.quiet, true); assert.equal(q.drag, true);
+  assert.ok(!q.hints.h1.text.includes('部') && !q.hints.h2.text.includes('「部」'));
   assert.equal(Q.findWordQuestion(W4, 'b-部', rng(1)).id, 'b-部');
 });
 

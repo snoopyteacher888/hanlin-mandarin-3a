@@ -67,17 +67,19 @@
   /* 組合字：「墨，上下組合：上面是黑，下面是？」選出缺的那一塊。部首念名稱（阝念「耳朵旁」） */
   var PART_NAME = { '阝': '耳朵旁', '艹': '草字頭', '刂': '立刀旁', '氵': '三點水', '扌': '提手旁', '辶': '辵字旁', '亻': '單人旁' };
   function partSay(x) { return x === '？' ? '什麼' : PART_NAME[x] || x; }
+  /* 組合字：「黑＋土＝？」，選出組成的那個字（選項是整個字，例如 墨／黑／默／磨）。不說「部件」 */
   function buildQuestion(hz, r) {
     var b = hz.build;
-    var order = quizgen.shuffle(b.options, r);
-    /* 不說「部件」：說上下組合／左右組合，「上面是黑，下面是什麼？」 */
-    var pos = b.layout === 'tb' ? ['上面', '下面'] : ['左邊', '右邊'], kind = b.layout === 'tb' ? '上下組合' : '左右組合';
-    var line = b.show.map(function (x, i) { return pos[i] + '是「' + x + '」'; }).join('，');
-    var say = hz.char + '，' + kind + '。' + b.show.map(function (x, i) { return pos[i] + '是' + partSay(x); }).join('，') + '？';
-    return { id: 'b-' + hz.char, headChar: hz.char, prompt: hz.char + '　' + kind + '\n' + line, say: say, quiet: true, promptClass: 'build-prompt', optionsClass: 'parts-opts',
-      options: order.map(function (x) { return { text: x, say: PART_NAME[x] || x, big: true }; }), answer: order.indexOf(b.answer),
-      hints: { h1: { text: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？', say: '聽聽看：' + hz.say + '。想一想，這個字的意思跟什麼有關？' },
-        h2: { text: '提示：' + (b.clue || hz.clue) }, teach: { text: hz.story } } };
+    var parts = b.show.map(function (x) { return x === '？' ? b.answer : x; });
+    var order = quizgen.shuffle(hz.options, r);
+    var kind = b.layout === 'tb' ? '上下組合' : '左右組合';
+    var say = parts.map(partSay).join('加') + '，' + kind + '，會變成哪一個字？';
+    return { id: 'b-' + hz.char, prompt: parts.join('＋') + '＝＿', say: say, quiet: true, promptClass: 'build-prompt', drag: true,
+      equation: { parts: parts, kind: kind },
+      options: order.map(function (x) { return { text: x, big: true }; }), answer: order.indexOf(hz.char),
+      hints: { h1: { text: '仔細看，哪一個字是把這兩塊組在一起變成的？' },
+        h2: { text: '提示：找一找，哪一個字裡面有「' + parts[0] + '」，也有「' + parts[1] + '」？' },
+        teach: { text: '答案是「' + hz.char + '」。' + hz.story } } };
   }
   /* 生字變成語：排字（把打亂的字排成成語）、情境題（這是哪一個成語？） */
   function idiomOrderQuestion(it, r) {

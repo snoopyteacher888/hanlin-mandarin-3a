@@ -49,20 +49,21 @@ test('組合字（生字第 3 步）：選出缺的那一塊，做完接改錯�
   await p.waitForSelector('.btn-next:not([hidden])'); await p.click('.btn-next:not([hidden])');
   const list = W.hanzi.filter(x => x.build);
   for (let i = 0; i < list.length; i++) {
-    await p.waitForSelector('.option:not(:disabled)');
-    const t = await p.textContent('.prompt h2');
-    const hz = list.find(x => t.startsWith(x.char));
-    assert.ok(hz, t);
-    if (i === 0) { await p.waitForTimeout(200); assert.ok(!(await p.evaluate(() => window.__spoken.join('|'))).includes('會變成'), '組合字不自動念題目'); }
+    await p.waitForSelector('.drag-tile:not(:disabled)');
+    const parts = await p.$$eval('.eq-part', x => x.map(e => e.textContent));
+    const hz = list.find(x => x.build.show.map(y => y === '？' ? x.build.answer : y).join() === parts.join());
+    assert.ok(hz, parts.join());
+    if (i === 0) { await p.waitForTimeout(200); assert.ok(!(await p.evaluate(() => window.__spoken.join('|'))).includes('會變成哪一個字'), '組合字不自動念題目'); }
     if (i === 0) {
-      /* 錯一次：提示不說答案，而且馬上記進錯題複習 */
-      const wrong = await p.$$eval('.option', (os, a) => os.findIndex(o => o.querySelector('.option-text').textContent !== a), hz.build.answer);
-      await p.click(`.option[data-index="${wrong}"]`);
+      /* 拖錯一次：提示不說答案，而且馬上記進錯題複習 */
+      const wrong = await p.$$eval('.option', (os, a) => os.findIndex(o => o.querySelector('.option-text').textContent !== a), hz.char);
+      await dragTo(p, `.option[data-index="${wrong}"]`, '.drop-slot');
       await p.waitForSelector('.feedback.hint');
-      assert.ok(!(await p.textContent('.feedback.hint')).includes('「' + hz.build.answer + '」'));
+      assert.ok(!(await p.textContent('.feedback.hint')).includes('「' + hz.char + '」'));
     }
-    const idx = await p.$$eval('.option', (os, a) => os.findIndex(o => o.querySelector('.option-text').textContent === a), hz.build.answer);
-    await p.click(`.option[data-index="${idx}"]`);
+    const idx = await p.$$eval('.option', (os, a) => os.findIndex(o => o.querySelector('.option-text').textContent === a), hz.char);
+    await dragTo(p, `.option[data-index="${idx}"]`, '.drop-slot');
+    assert.equal(await p.textContent('.eq-slot.filled'), hz.char);
     if (i === 0) {
       const q = await p.evaluate(() => JSON.parse(localStorage.getItem('h3a.review.bear') || '{}'));
       assert.ok(q['L06|b-' + hz.char], JSON.stringify(q));
