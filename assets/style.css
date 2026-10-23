@@ -441,19 +441,23 @@ html.zhuyin .zhuyin { display: none; }
 
 /* 生字語詞 */
 .char-mark { color: #B4541A; font-weight: 700; }
-.charword-list { display: flex; flex-direction: column; gap: 10px; max-width: 900px; margin: 0 auto; }
-.charword-row { display: grid; grid-template-columns: 84px auto auto 1fr auto; align-items: center; gap: 12px; background: var(--surface); border: 2px solid var(--line); border-radius: 14px; padding: 6px 12px; }
-.charword-pic .pic { width: 84px; }
-.charword-char, .charword-word { border: 0; background: none; padding: 4px; border-radius: 10px; font-weight: 700; }
-.charword-char { font-size: 1.6em; color: #B4541A; }
-.charword-word { font-size: 1.2em; min-width: 4.5em; text-align: left; }
-.charword-char:active, .charword-word:active { background: var(--muted); }
-.charword-meaning { min-width: 0; }
+.flip-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 16px; max-width: 1000px; margin: 0 auto; }
+.flip-wrap { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.flip-card { width: 100%; aspect-ratio: 2 / 3; border: 0; padding: 0; background: none; perspective: 900px; }
+.flip-inner { position: relative; display: block; width: 100%; height: 100%; transition: transform 0.5s; transform-style: preserve-3d; }
+.flip-card.flipped .flip-inner { transform: rotateY(180deg); }
+.flip-front, .flip-back { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 16px; border: 3px solid #E8CFAE;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; padding: 10px; }
+.flip-front { background: var(--surface); }
+.flip-back { background: #FFF6EA; transform: rotateY(180deg); text-align: left; justify-content: flex-start; padding-top: 14px; overflow-y: auto; }
+.flip-pic { width: 70%; }
+.flip-char { font-size: 2.2em; font-weight: 700; color: #B4541A; line-height: 1.1; }
+.flip-word { font-size: 1.3em; font-weight: 700; }
+.flip-mean { font-size: 0.95em; }
+.flip-charmean { font-size: 0.9em; border-top: 2px dashed #E8CFAE; padding-top: 6px; width: 100%; }
 @media (max-width: 600px) {
-  .charword-row { grid-template-columns: 64px auto 1fr auto; gap: 6px; }
-  .charword-pic .pic { width: 64px; }
-  .charword-meaning { grid-column: 1 / -1; }
-  .charword-row > .speaker { grid-row: 1; grid-column: 4; }
+  .flip-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .flip-char { font-size: 1.7em; } .flip-word { font-size: 1.1em; } .flip-mean { font-size: 0.85em; } .flip-charmean { font-size: 0.8em; }
 }
 
 /* 語詞挑戰 */

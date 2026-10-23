@@ -183,7 +183,8 @@
         ? [q.prompt.slice(0, q.prompt.indexOf(q.topic)), h('span', { class: 'topic-word' }, q.topic), q.prompt.slice(q.prompt.indexOf(q.topic) + q.topic.length)]
         : q.prompt;
       main.appendChild(h('div', { class: 'prompt' }, h('h2', {}, title), H3A.ui.speaker(q.prompt, q.say)));
-      main.appendChild(q.render());
+      /* gate：要學生自己做完（例如每張卡都翻過）才出現「下一步」，由 render 呼叫 ready() */
+      main.appendChild(q.render(function () { if (q.gate) reveal(true); }));
       var next = h('button', { type: 'button', class: 'btn-next', onclick: function () {
         if (next.disabled) return;
         next.disabled = true; H3A.tts.stop();
@@ -195,8 +196,8 @@
       var say = q.autoSay || q.prompt, my = idx, shown = false;
       next.hidden = true;
       main.appendChild(h('div', { class: 'next-bar' }, next));
-      function reveal() {
-        if (shown || my !== idx) return;
+      function reveal(fromGate) {
+        if (shown || my !== idx || (q.gate && fromGate !== true)) return;
         shown = true; next.hidden = false; next.classList.add('pop-in');
       }
       /* 念完（true）或沒有語音（undefined）就出現；被別的喇叭打斷（false）就等時間到 */

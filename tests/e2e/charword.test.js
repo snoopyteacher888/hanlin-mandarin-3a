@@ -73,9 +73,16 @@ test('生字語詞：先認識，再看句子選語詞，十四個生字都練�
   const p = await page(); await p.goto(BASE + '#/L06/charword?s=bear');
   const seen = [];
   for (let half = 0; half < 2; half++) {
-    await p.waitForSelector('.charword-row');
-    seen.push(...await p.$$eval('.charword-char', x => x.map(e => e.textContent)));
-    await p.click('text=下一步 ▶');
+    await p.waitForSelector('.flip-card');
+    seen.push(...await p.$$eval('.flip-front .flip-char', x => x.map(e => e.textContent)));
+    /* 還沒全部翻過，不會出現「下一步」 */
+    const cards = await p.$$('.flip-card');
+    for (let i = 0; i < cards.length; i++) {
+      assert.equal(await p.$('.btn-next:not([hidden])'), null);
+      await cards[i].click();
+    }
+    assert.equal(await p.$$eval('.flip-card.flipped', x => x.length), cards.length);
+    await p.click('.btn-next:not([hidden])');
     for (let i = 0; i < 7; i++) {
       await p.waitForSelector('.option:not(:disabled)');
       const t = await p.textContent('.prompt h2');
