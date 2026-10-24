@@ -123,8 +123,9 @@ test('學會語詞沒有造句步驟', async () => {
 test('pattern five steps finish', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/pattern?s=cat');
   await p.click('[data-pattern="zhiyao"]');
-  await p.waitForSelector('.conj-word');
-  assert.deepEqual([...new Set(await p.$$eval('.conj-word', x => x.map(e => e.textContent)))].sort(), ['只要', '就'].sort());
+  /* 例句裡的關聯詞是獨立的橘色框 */
+  await p.waitForSelector('.pt-conj-chip');
+  assert.deepEqual([...new Set(await p.$$eval('.pt-conj-chip', x => x.map(e => e.textContent)))].sort(), ['只要', '就'].sort());
   await nextLearn(p);
   for (let i = 0; i < 3; i++) await answerChoice(p);
   /* 句型填空：關聯詞印好，其他每一塊拖進空格；點一下只會念 */
