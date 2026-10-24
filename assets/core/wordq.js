@@ -120,8 +120,8 @@
   function listenQuestion(l, r) {
     var order = quizgen.shuffle(l.options.map(function (_, i) { return i; }), r);
     var right = l.options[l.answer].text;
-    /* 句子描述的那張圖放在題目上方，選項只放文字 */
-    return { id: l.id, prompt: l.text, say: l.text, hideText: true, autoSay: l.text, img: l.options[l.answer].img,
+    /* 只用聽的：題目和選項都不放圖（老師要求） */
+    return { id: l.id, prompt: l.text, say: l.text, hideText: true, autoSay: l.text,
       options: order.map(function (i) { return { text: l.options[i].text, say: l.options[i].say }; }), answer: order.indexOf(l.answer),
       hints: { h1: { text: '再仔細聽一次。', say: l.text }, h2: { text: '看著文字，再聽一次。', say: l.text, showText: true, slow: true },
         teach: { text: '答案是「' + right + '」，因為句子說：「' + l.text + '」' } } };

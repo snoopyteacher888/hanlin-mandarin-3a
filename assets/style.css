@@ -932,3 +932,16 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 .pt-conj-chip { white-space: nowrap; flex-shrink: 0; font-size: 1.05em; padding: 6px 12px; }
 .learn-box .pt-sentence .pt-block { flex-shrink: 0; }
 @media (min-width: 700px) { .learn-box .pt-sentence { flex-wrap: wrap; } }
+
+/* 句型例句：一行（pt-flat）或對齊的表格（pt-grid） */
+.learn-box .pt-sentence { flex-wrap: nowrap !important; max-width: 100%; }
+.pt-flat { display: flex; flex-wrap: nowrap; align-items: center; gap: 8px; min-width: 0; overflow: hidden; }
+.pt-grid { display: none; grid-template-columns: max-content max-content max-content; gap: 8px; align-items: stretch; }
+.pt-sentence.stacked .pt-flat { display: none; }
+.pt-sentence.stacked .pt-grid { display: grid; }
+.pt-grid .pt-conj-chip { justify-content: center; }
+.pt-grid .pt-block { justify-content: center; }
+.pt-sentence.stacked { flex-direction: column; align-items: center; }
+.pt-sentence.stacked .pt-grid { grid-template-columns: max-content max-content minmax(0, max-content); max-width: 100%; }
+.pt-sentence.stacked .pt-block { white-space: normal; }
+@media (max-width: 600px) { .pt-grid .pt-block, .pt-grid .pt-conj-chip { font-size: .95em; padding: 4px 8px; } }
