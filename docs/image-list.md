@@ -444,6 +444,79 @@
 | 74 | `blessing-wave.png` | 互相祝福新年快樂、一路平安 | 魚骨圖 |
 | 75 | `walk-home.png` | 全家走路回南部（陷阱卡） | 魚骨圖（陷阱卡） |
 
+## 第 12 課（待生成）
+
+放在 `images/L12/`。指令在 `docs/chatgpt-image-prompts-L12.txt`。
+
+| # | 檔名 | 要畫什麼 | 用在 |
+|---|---|---|---|
+| 1 | `leftover.png` | 剩下 | 語詞、生字 |
+| 2 | `quiet-window.png` | 默默 | 語詞、生字、短語 |
+| 3 | `hurry.png` | 匆匆忙忙 | 語詞、短語 |
+| 4 | `upstairs.png` | 樓 | 語詞、生字 |
+| 5 | `video-call.png` | 視訊 | 語詞、生字、魚骨圖 |
+| 6 | `uncle.png` | 叔叔 | 語詞、生字 |
+| 7 | `reunion-table.png` | 團圓 | 語詞、生字 |
+| 8 | `camera-lens.png` | 鏡頭 | 語詞、生字 |
+| 9 | `make-laugh.png` | 逗 | 語詞、生字 |
+| 10 | `baby.png` | 娃娃 | 語詞、生字、魚骨圖 |
+| 11 | `red-envelope.png` | 壓歲錢 | 語詞、生字、魚骨圖 |
+| 12 | `telescope.png` | 透過 | 語詞、生字 |
+| 13 | `hold-hands.png` | 握 | 語詞、生字 |
+| 14 | `cw-rice-bowl.png` | 剩飯 | 生字語詞 |
+| 15 | `cw-dictation.png` | 默寫 | 生字語詞 |
+| 16 | `cw-building.png` | 大樓 | 生字語詞 |
+| 17 | `cw-phone-msg.png` | 訊息 | 生字語詞 |
+| 18 | `cw-tv.png` | 電視 | 生字語詞 |
+| 19 | `cw-granduncle.png` | 叔公 | 生字語詞 |
+| 20 | `cw-club.png` | 社團 | 生字語詞 |
+| 21 | `cw-mirror.png` | 鏡子 | 生字語詞 |
+| 22 | `cw-clown.png` | 逗趣 | 生字語詞 |
+| 23 | `cw-doll.png` | 洋娃娃 | 生字語詞 |
+| 24 | `cw-crush-bottle.png` | 壓扁 | 生字語詞 |
+| 25 | `cw-wallet.png` | 錢包 | 生字語詞 |
+| 26 | `cw-clear-cup.png` | 透明 | 生字語詞 |
+| 27 | `cw-handshake.png` | 握手 | 生字語詞 |
+| 28 | `id-team-happy.png` | 一團和氣 | 成語情境題 |
+| 29 | `id-read-together.png` | 潛移默化 | 成語情境題 |
+| 30 | `id-empty-house.png` | 人去樓空 | 成語情境題 |
+| 31 | `id-fair-share.png` | 一視同仁 | 成語情境題 |
+| 32 | `id-make-up.png` | 破鏡重圓 | 成語情境題 |
+| 33 | `pr-pet-cat.png` | 輕輕摸著小貓的頭 | 短語 |
+| 34 | `pr-hold-dad.png` | 緊緊牽著爸爸的手 | 短語 |
+| 35 | `pr-push-grandma.png` | 慢慢推著奶奶的輪椅 | 短語 |
+| 36 | `pr-listen-story.png` | 靜靜聽著老師的故事 | 短語 |
+| 37 | `pr-hide-gift.png` | 偷偷藏著媽媽的生日禮物 | 短語 |
+| 38 | `pr-raise-award.png` | 高高舉著自己的獎狀 | 短語 |
+| 39 | `pr-pick-pencil.png` | 默默撿起同學的鉛筆盒 | 短語 |
+| 40 | `pr-keep-envelope.png` | 好好收著奶奶的紅包 | 短語 |
+| 41 | `pr-hug-mom.png` | 緊緊抱著媽媽的脖子 | 短語 |
+| 42 | `pz-ladybug.png` | 小小的瓢蟲停在葉子上 | 短語 |
+| 43 | `pz-frog.png` | 綠綠的青蛙坐在荷葉上 | 短語 |
+| 44 | `pz-clouds.png` | 白白的雲朵飄在天空中 | 短語 |
+| 45 | `pz-cat-sofa.png` | 胖胖的小貓睡在沙發上 | 短語 |
+| 46 | `pz-apple-tree.png` | 紅紅的蘋果掛在樹上 | 短語 |
+| 47 | `pz-footprints.png` | 小小的腳印留在沙灘上 | 短語 |
+| 48 | `meixiangdao.png` | ……，沒想到…… | 句型 |
+| 49 | `pt-picnic-rain.png` | 本來要野餐，沒想到下大雨 | 句型配對 |
+| 50 | `pt-test-easy.png` | 以為考試很難，沒想到都會寫 | 句型配對 |
+| 51 | `pt-small-seed.png` | 小種子，沒想到長成大樹 | 句型配對 |
+| 52 | `pt-surprise-cake.png` | 以為大家忘了生日，沒想到有蛋糕 | 句型填空 |
+| 53 | `pt-puppy-play.png` | 以為小狗會咬人，沒想到想玩 | 句型填空 |
+| 54 | `pt-clear-road.png` | 以為會塞車，沒想到一路很順 | 句型填空 |
+| 55 | `jiu.png` | ……，就…… | 句型 |
+| 56 | `pt-street-light.png` | 天一黑，路燈就亮了 | 句型配對 |
+| 57 | `pt-rain-umbrella.png` | 一下雨，大家就打開雨傘 | 句型配對 |
+| 58 | `pt-doorbell-dog.png` | 門鈴一響，小狗就跑到門口 | 句型配對 |
+| 59 | `pt-wash-hands.png` | 一回到家，就先去洗手 | 句型填空 |
+| 60 | `pt-dinner-call.png` | 媽媽一喊吃飯，就跑到餐桌旁 | 句型填空 |
+| 61 | `pt-spring-flowers.png` | 春天一到，花就開了 | 句型填空 |
+| 62 | `family-reunion.png` | 不一樣的團圓（魚頭） | 魚骨圖 |
+| 63 | `rainy-drive.png` | 除夕夜下著雨，趕著去爺爺家 | 魚骨圖 |
+| 64 | `full-living-room.png` | 客廳裡擠滿了親人 | 魚骨圖 |
+| 65 | `happy-family.png` | 全家人露出幸福的笑容 | 魚骨圖 |
+| 66 | `visit-center.png` | 全家開車去月子中心看嬸嬸（陷阱卡） | 魚骨圖（陷阱卡） |
+
 ## 活動圖示（待生成）
 
 放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。

@@ -157,7 +157,7 @@
     return q;
   }
   /* 句型的關聯詞，畫面上標橘色 */
-  var CONJ_WORDS = ['只要', '就', '如果', '不但', '還', '因為', '所以', '只能', '竟然', '才', '一邊', '先', '再', '除了', '有人', '才能'];
+  var CONJ_WORDS = ['只要', '就', '如果', '不但', '還', '因為', '所以', '只能', '竟然', '才', '一邊', '先', '再', '除了', '有人', '才能', '沒想到'];
   function matchQuestion(m, r) {
     var q = first(m, m.front + '……', null, r);
     q.say = m.front;
@@ -282,7 +282,7 @@
     q.hints = { h1: { text: '想一想：' + card.name + '是' + card.meaning }, h2: { text: p.clue }, teach: { text: p.explain } };
     return q;
   }
-  var PATTERN_WORDS = { zhiyao: '「只要」和「就」', ruguo: '「如果」、「不但」、「還」', yinwei: '「因為」和「只能」', jingran: '「竟然」', cai: '「才」', yibian: '兩次「一邊」', xianzai: '「先」和「再」', chule: '「除了」和「還」', youren: '兩次「有人」', caineng: '「才能」' };
+  var PATTERN_WORDS = { zhiyao: '「只要」和「就」', ruguo: '「如果」、「不但」、「還」', yinwei: '「因為」和「只能」', jingran: '「竟然」', cai: '「才」', yibian: '兩次「一邊」', xianzai: '「先」和「再」', chule: '「除了」和「還」', youren: '兩次「有人」', caineng: '「才能」', meixiangdao: '「沒想到」', jiu: '「就」' };
   function speakMethod(rule) {
     if (rule.kind === 'phrase') return '先說它是什麼樣子，再說「的」，最後說它是什麼。';
     if (rule.kind === 'word') return '記得句子裡要說到「' + rule.word + '」，而且要說完整的一句話喔。';

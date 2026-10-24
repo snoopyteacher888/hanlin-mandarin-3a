@@ -14,7 +14,7 @@ const pendingImgs = (() => {
 const imgOk = f => fs.existsSync(path.join(__dirname, '../../images/L11', f)) || pendingImgs.includes(f);
 
 test('第 11 課字詞資料格式正確', () => { assert.deepEqual(validateWords(W), []); });
-test('第 11 課 13 個生字都在課本語詞和生字語詞裡', () => {
+test('第 11 課 15 個生字都在課本語詞和生字語詞裡', () => {
   assert.equal(W.hanzi.map(h => h.char).join(''), '除嬸煙陣附店休息修廠檢查拖幸零');
   const words = W.vocab.map(v => v.word).join('');
   W.hanzi.forEach(h => assert.ok(words.includes(h.char), h.char));
