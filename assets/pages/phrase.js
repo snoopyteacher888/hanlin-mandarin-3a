@@ -31,16 +31,13 @@
 
   /* 課本「短句」的部分（用課本語詞造句）放在「學會語詞」裡，這裡提供給 words.js 用 */
   H3A.pages.sentenceSteps = function (ctx, p) {
-    if (!p || !p.words || !p.words.length) return [{}, {}];
+    if (!p || !p.words || !p.words.length) return [{}];
     var names = p.words.map(function (w) { return w.word; });
+    /* 「語詞用得對」老師要求拿掉；造句前先看語詞卡 */
     return [
-      { key: 'use', name: '語詞用得對', say: '認識「' + names.join('」「') + '」，再選出用得對的句子。', make: function (r) {
-        return [wordsSlide(ctx, p)].concat(H3A.quizgen.shuffle(p.choose || [], r).map(function (x) {
-          var w = p.words.filter(function (y) { return y.word === x.word; })[0];
-          return Q.chooseQuestion(x, r, w && w.meaning);
-        }));
-      } },
-      (p.make || []).length ? { key: 'make', name: '用語詞造句', say: '用「' + names.join('」或「') + '」說一句話。', make: function () { return p.make.map(makeQ); } } : {}
+      (p.make || []).length ? { key: 'make', name: '用語詞造句', say: '先認識「' + names.join('」「') + '」，再用它說一句話。', make: function () {
+        return [wordsSlide(ctx, p)].concat(p.make.map(makeQ));
+      } } : {}
     ];
   };
   H3A.pages.sentenceRetry = function (main, ctx, p, id) {

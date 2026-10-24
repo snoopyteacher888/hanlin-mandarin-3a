@@ -113,12 +113,12 @@ test('phrase speak exact answer is correct', async () => {
   assert.deepEqual(p.errors, []);
 });
 
-test('課本短句（混合、斷裂）在學會語詞：選用得對的句子、用語詞造句', async () => {
+test('課本短句（混合、斷裂）在學會語詞：先看語詞卡，再用語詞造句', async () => {
   const before = srv.posts.filter(x => x.action === 'submit').length;
-  const p = await page(); await p.goto(BASE + '#/L06/vocab?step=use&s=bear');
-  assert.ok((await p.$$eval('.step-tab', x => x.map(e => e.dataset.step))).includes('make'));
+  const p = await page(); await p.goto(BASE + '#/L06/vocab?step=make&s=bear');
+  const steps = await p.$$eval('.step-tab', x => x.map(e => e.dataset.step));
+  assert.ok(steps.includes('make') && !steps.includes('use'));
   await nextLearn(p);
-  for (let i = 0; i < W.phrase.choose.length; i++) await answerChoice(p);
   /* 沒說到語詞 → 提示 */
   await say(p, '我把紅色和白色放在一起');
   await p.waitForSelector('.feedback.hint');
