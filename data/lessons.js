@@ -8,7 +8,7 @@ window.H3A_LESSONS = [
   { id: 'L06', title: '小鉛筆大學問', open: true },
   { id: 'L07', title: '風的味道', open: true },
   { id: 'L08', title: '寄居蟹找新家', open: true },
-  { id: 'L09', title: '阿塱壹古道', open: false },
+  { id: 'L09', title: '阿塱壹古道', open: true },
   { id: 'L10', title: '秋千上的婚禮', open: false },
   { id: 'L11', title: '一路平安', open: false },
   { id: 'L12', title: '不一樣的團圓', open: false }

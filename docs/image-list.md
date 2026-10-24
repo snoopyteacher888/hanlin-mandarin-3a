@@ -218,7 +218,7 @@
 | 60 | `pt-swim-learn.png` | 怕水的弟弟竟然學會游泳 | 句型填空 |
 | 61 | `take-shell.png` | 把貝殼撿回家 | 魚骨圖（陷阱卡） |
 
-## 第 9 課（待生成）
+## 第 9 課（已完成）
 
 放在 `images/L09/`。指令在 `docs/chatgpt-image-prompts-L09.txt`。
 
