@@ -157,7 +157,7 @@
     return q;
   }
   /* 句型的關聯詞，畫面上標橘色 */
-  var CONJ_WORDS = ['只要', '就', '如果', '不但', '還', '因為', '所以', '只能', '竟然', '才', '一邊'];
+  var CONJ_WORDS = ['只要', '就', '如果', '不但', '還', '因為', '所以', '只能', '竟然', '才', '一邊', '先', '再'];
   function matchQuestion(m, r) {
     var q = first(m, m.front + '……', null, r);
     q.say = m.front;
@@ -179,9 +179,9 @@
   }
   /* 句型填空：關聯詞（如果、不但、還）印好，其他每一塊挖空，把句子的每一塊拖進對的空格（老師要求） */
   function patternFillQuestion(c, key, r) {
-    /* c.parts：已經切好的短語（例如 在｜操場上｜開心｜的｜奔跑、從｜房間裡｜走出來），「在」「從」「一」「的」印好，其他依序是在哪裡、怎麼做、做什麼 */
+    /* c.parts：已經切好的短語（例如 在｜操場上｜開心｜的｜奔跑、從｜房間裡｜走出來），「在」「從」「一」「好像為」「的」印好，其他依序是在哪裡、怎麼做、做什麼 */
     if (c.parts) {
-      var ROLES = ['cond', 'res1', 'res2'], FIXED = ['在', '從', '一', '的'], n = 0;
+      var ROLES = ['cond', 'res1', 'res2'], FIXED = ['在', '從', '一', '好像為', '的'], n = 0;
       c = { id: c.id, img: c.img, full: c.parts.join(''), segs: c.parts.map(function (t) {
         return FIXED.indexOf(t) >= 0 ? { text: t, kind: 'conj' } : { text: t, kind: 'blank', role: ROLES[Math.min(n++, 2)] };
       }) };
@@ -282,7 +282,7 @@
     q.hints = { h1: { text: '想一想：' + card.name + '是' + card.meaning }, h2: { text: p.clue }, teach: { text: p.explain } };
     return q;
   }
-  var PATTERN_WORDS = { zhiyao: '「只要」和「就」', ruguo: '「如果」、「不但」、「還」', yinwei: '「因為」和「只能」', jingran: '「竟然」', cai: '「才」', yibian: '兩次「一邊」' };
+  var PATTERN_WORDS = { zhiyao: '「只要」和「就」', ruguo: '「如果」、「不但」、「還」', yinwei: '「因為」和「只能」', jingran: '「竟然」', cai: '「才」', yibian: '兩次「一邊」', xianzai: '「先」和「再」' };
   function speakMethod(rule) {
     if (rule.kind === 'phrase') return '先說它是什麼樣子，再說「的」，最後說它是什麼。';
     if (rule.kind === 'word') return '記得句子裡要說到「' + rule.word + '」，而且要說完整的一句話喔。';

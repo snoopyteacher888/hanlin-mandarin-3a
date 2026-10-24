@@ -293,6 +293,75 @@
 | 67 | `photo-stone.png` | 南田石只能拍照 | 魚骨圖 |
 | 68 | `take-stone.png` | 把漂亮的石頭帶回家 | 魚骨圖（陷阱卡） |
 
+## 第 10 課（待生成）
+
+放在 `images/L10/`。指令在 `docs/chatgpt-image-prompts-L10.txt`。
+
+| # | 檔名 | 要畫什麼 | 用在 |
+|---|---|---|---|
+| 1 | `wedding.png` | 婚禮 | 語詞、生字 |
+| 2 | `costume.png` | 服飾 | 語詞、生字 |
+| 3 | `groom.png` | 新郎 | 語詞、生字、魚骨圖 |
+| 4 | `join-wedding.png` | 參加 | 語詞、生字 |
+| 5 | `bells-ring.png` | 響 | 語詞、生字 |
+| 6 | `swing-brave.png` | 代表 | 語詞、生字、魚骨圖 |
+| 7 | `blessing.png` | 祝福 | 語詞、生字 |
+| 8 | `linked-cups.png` | 連杯酒 | 語詞、生字、魚骨圖 |
+| 9 | `toast.png` | 敬酒 | 語詞、生字、魚骨圖 |
+| 10 | `hide-bride.png` | 藏新娘 | 語詞、生字、魚骨圖 |
+| 11 | `custom.png` | 習俗 | 語詞、生字 |
+| 12 | `treasure.png` | 珍惜 | 語詞、生字 |
+| 13 | `help-each.png` | 互助 | 語詞、生字 |
+| 14 | `spirit.png` | 精神 | 語詞、生字 |
+| 15 | `cw-wedding-cake.png` | 結婚 | 生字語詞 |
+| 16 | `cw-decorate.png` | 裝飾 | 生字語詞 |
+| 17 | `cw-best-man.png` | 伴郎 | 生字語詞 |
+| 18 | `cw-museum.png` | 參觀 | 生字語詞 |
+| 19 | `cw-speaker.png` | 音響 | 生字語詞 |
+| 20 | `cw-substitute.png` | 代替 | 生字語詞 |
+| 21 | `cw-happy-family.png` | 幸福 | 生字語詞 |
+| 22 | `cw-train-cars.png` | 接連 | 生字語詞 |
+| 23 | `cw-rice-wine.png` | 米酒 | 生字語詞 |
+| 24 | `cw-salute.png` | 敬禮 | 生字語詞 |
+| 25 | `cw-hide-seek.png` | 躲藏 | 生字語詞 |
+| 26 | `cw-folk-dance.png` | 民俗 | 生字語詞 |
+| 27 | `cw-pity.png` | 可惜 | 生字語詞 |
+| 28 | `cw-help-each.png` | 互相 | 生字語詞 |
+| 29 | `cw-show.png` | 精彩 | 生字語詞 |
+| 30 | `id-no-idea.png` | 江郎才盡 | 成語情境題 |
+| 31 | `id-great-show.png` | 不同凡響 | 成語情境題 |
+| 32 | `id-share-snack.png` | 有福同享 | 成語情境題 |
+| 33 | `id-treasure.png` | 價值連城 | 成語情境題 |
+| 34 | `id-kind-couple.png` | 相敬如賓 | 成語情境題 |
+| 35 | `id-fake-smile.png` | 笑裡藏刀 | 成語情境題 |
+| 36 | `pr-award.png` | 高高興興的拿回獎狀 | 短語 |
+| 37 | `pr-newyear.png` | 熱熱鬧鬧的吃年夜飯 | 短語 |
+| 38 | `pr-soup.png` | 穩穩當當的端著湯 | 短語 |
+| 39 | `pr-gift.png` | 大大方方的收下禮物 | 短語 |
+| 40 | `pr-sweep.png` | 認認真真的打掃教室 | 短語 |
+| 41 | `pr-finish-line.png` | 順順利利的跑完全程 | 短語 |
+| 42 | `pr-baby-sleep.png` | 安安穩穩的睡著了 | 短語 |
+| 43 | `pr-new-clothes.png` | 漂漂亮亮的穿上新衣服 | 短語 |
+| 44 | `pr-sing.png` | 快快樂樂的唱著歌 | 短語 |
+| 45 | `pz-leaves-clap.png` | 好像為我的進步拍手 | 短語 |
+| 46 | `pz-birds-spring.png` | 好像為春天的到來唱歌 | 短語 |
+| 47 | `pz-waves-clap.png` | 好像為我們的勝利鼓掌 | 短語 |
+| 48 | `pz-balloons-dance.png` | 好像為姐姐的生日跳舞 | 短語 |
+| 49 | `pz-fireworks.png` | 好像為大家的新年歡呼 | 短語 |
+| 50 | `pz-flag-cheer.png` | 好像為弟弟的勇敢加油 | 短語 |
+| 51 | `new-things.png` | 新奇 | 造句 |
+| 52 | `xianzai.png` | 先……再…… | 句型 |
+| 53 | `pt-brush-sleep.png` | 先刷牙，再睡覺 | 句型配對 |
+| 54 | `pt-shoes-door.png` | 先穿鞋子，再出門 | 句型配對 |
+| 55 | `pt-noodles.png` | 先燒開水，再放麵 | 句型配對 |
+| 56 | `pt-warm-up.png` | 先做暖身操，再跑步 | 句型填空 |
+| 57 | `pt-set-table.png` | 先擺碗筷，再叫大家吃飯 | 句型填空 |
+| 58 | `pt-draw-color.png` | 先打草稿，再塗顏色 | 句型填空 |
+| 59 | `swing-wedding.png` | 秋千上的婚禮（魚頭） | 魚骨圖 |
+| 60 | `dance-circle.png` | 手拉手跳舞祝福 | 魚骨圖 |
+| 61 | `find-bride.png` | 新郎帶親友找回新娘 | 魚骨圖 |
+| 62 | `cut-cake.png` | 切結婚蛋糕（陷阱卡） | 魚骨圖（陷阱卡） |
+
 ## 活動圖示（待生成）
 
 放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。
