@@ -362,6 +362,88 @@
 | 61 | `find-bride.png` | 新郎帶親友找回新娘 | 魚骨圖 |
 | 62 | `cut-cake.png` | 切結婚蛋糕（陷阱卡） | 魚骨圖（陷阱卡） |
 
+## 第 11 課（待生成）
+
+放在 `images/L11/`。指令在 `docs/chatgpt-image-prompts-L11.txt`。
+
+| # | 檔名 | 要畫什麼 | 用在 |
+|---|---|---|---|
+| 1 | `new-year-eve.png` | 除夕 | 語詞、生字、魚骨圖 |
+| 2 | `auntie.png` | 嬸嬸 | 語詞、生字 |
+| 3 | `fireworks-sky.png` | 煙火 | 語詞、生字 |
+| 4 | `strange-sound.png` | 陣陣 | 語詞、生字、魚骨圖 |
+| 5 | `nearby.png` | 附近 | 語詞、生字 |
+| 6 | `closed-shops.png` | 店家 | 語詞、生字 |
+| 7 | `rest.png` | 休息 | 語詞、生字 |
+| 8 | `garage.png` | 修車廠 | 語詞、生字、魚骨圖 |
+| 9 | `check-car.png` | 檢查 | 語詞、生字 |
+| 10 | `tow-car.png` | 拖 | 語詞、生字、魚骨圖 |
+| 11 | `lucky.png` | 幸好 | 語詞、生字 |
+| 12 | `small-part.png` | 零件 | 語詞、生字、魚骨圖 |
+| 13 | `close-door.png` | 關 | 語詞 |
+| 14 | `new-year-dishes.png` | 擺 | 語詞 |
+| 15 | `disturb.png` | 打擾 | 語詞、魚骨圖 |
+| 16 | `cw-weeding.png` | 除草 | 生字語詞 |
+| 17 | `cw-auntie-hug.png` | 嬸嬸（擁抱） | 生字語詞 |
+| 18 | `cw-chimney.png` | 煙囪 | 生字語詞 |
+| 19 | `cw-gust.png` | 一陣風 | 生字語詞 |
+| 20 | `cw-map-near.png` | 附近 | 生字語詞 |
+| 21 | `cw-shop.png` | 商店 | 生字語詞 |
+| 22 | `cw-holiday.png` | 休假 | 生字語詞 |
+| 23 | `cw-good-news.png` | 消息 | 生字語詞 |
+| 24 | `cw-fix-bike.png` | 修理 | 生字語詞 |
+| 25 | `cw-factory.png` | 工廠 | 生字語詞 |
+| 26 | `cw-doctor-check.png` | 健康檢查 | 生字語詞 |
+| 27 | `cw-dictionary.png` | 查字典 | 生字語詞 |
+| 28 | `cw-mop.png` | 拖地 | 生字語詞 |
+| 29 | `cw-clover.png` | 幸運 | 生字語詞 |
+| 30 | `cw-coins.png` | 零錢 | 生字語詞 |
+| 31 | `id-pull-weeds.png` | 斬草除根 | 成語情境題 |
+| 32 | `id-messy-room.png` | 烏煙瘴氣 | 成語情境題 |
+| 33 | `id-plant-water.png` | 息息相關 | 成語情境題 |
+| 34 | `id-messy-hair.png` | 不修邊幅 | 成語情境題 |
+| 35 | `id-laugh-fall.png` | 幸災樂禍 | 成語情境題 |
+| 36 | `id-toys-mess.png` | 七零八落 | 成語情境題 |
+| 37 | `pr-rush-home.png` | 急忙跑回家 | 短語 |
+| 38 | `pr-late-bus.png` | 急忙跑向公車 | 短語 |
+| 39 | `pr-turtle.png` | 慢慢爬過馬路 | 短語 |
+| 40 | `pr-baby-door.png` | 輕輕關上門 | 短語 |
+| 41 | `pr-sing-loud.png` | 大聲唱著歌 | 短語 |
+| 42 | `pr-push-door.png` | 用力推開門 | 短語 |
+| 43 | `pr-whisper.png` | 小聲說悄悄話 | 短語 |
+| 44 | `pr-pack-bag.png` | 急忙收書包 | 短語 |
+| 45 | `pr-turn-page.png` | 輕輕翻著書 | 短語 |
+| 46 | `pz-smell.png` | 飄來一陣陣香香的味道 | 短語 |
+| 47 | `pz-bubbles.png` | 冒出一顆顆透明的泡泡 | 短語 |
+| 48 | `pz-applause.png` | 響起一陣陣熱烈的掌聲 | 短語 |
+| 49 | `pz-birds-come.png` | 飛來一隻隻可愛的小鳥 | 短語 |
+| 50 | `pz-leaves-fall.png` | 掉下一片片金黃的葉子 | 短語 |
+| 51 | `pz-night-stars.png` | 亮起一顆顆閃亮的星星 | 短語 |
+| 52 | `chule.png` | 除了……還…… | 句型 |
+| 53 | `pt-read-happy.png` | 看書除了學新知識，還讓心情變好 | 句型配對 |
+| 54 | `pt-bike-view.png` | 騎腳踏車除了運動，還可以看風景 | 句型配對 |
+| 55 | `pt-chores-help.png` | 做家事除了讓媽媽輕鬆，還學會本領 | 句型配對 |
+| 56 | `pt-fruit.png` | 吃水果除了健康，還補充水分 | 句型填空 |
+| 57 | `pt-zoo.png` | 去動物園除了看大象，還看長頸鹿 | 句型填空 |
+| 58 | `pt-swim-safe.png` | 學游泳除了運動，還可以保護自己 | 句型填空 |
+| 59 | `youren.png` | 有人……有人…… | 句型 |
+| 60 | `pt-playground.png` | 有人打球，有人跑步 | 句型配對 |
+| 61 | `pt-night-fair.png` | 有人買雞排，有人撈金魚 | 句型配對 |
+| 62 | `pt-library-people.png` | 有人看書，有人借書 | 句型配對 |
+| 63 | `pt-class-clean.png` | 有人擦黑板，有人掃地 | 句型填空 |
+| 64 | `pt-park-morning.png` | 有人跳舞，有人打太極拳 | 句型填空 |
+| 65 | `pt-pool-fun.png` | 有人游泳，有人玩水 | 句型填空 |
+| 66 | `caineng.png` | ……才能…… | 句型 |
+| 67 | `pt-hw-first.png` | 先寫完作業，才能出去玩 | 句型配對 |
+| 68 | `pt-key-door.png` | 帶鑰匙才能打開家門 | 句型配對 |
+| 69 | `pt-seed-water.png` | 每天澆水，才能長出小花 | 句型配對 |
+| 70 | `pt-eat-veg.png` | 多吃青菜，身體才能健康 | 句型填空 |
+| 71 | `pt-cross-safe.png` | 看紅綠燈，才能平安過馬路 | 句型填空 |
+| 72 | `pt-tidy-toys.png` | 收好玩具，房間才能乾淨 | 句型填空 |
+| 73 | `road-home.png` | 一路平安（魚頭） | 魚骨圖 |
+| 74 | `blessing-wave.png` | 互相祝福新年快樂、一路平安 | 魚骨圖 |
+| 75 | `walk-home.png` | 全家走路回南部（陷阱卡） | 魚骨圖（陷阱卡） |
+
 ## 活動圖示（待生成）
 
 放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。

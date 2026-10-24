@@ -142,8 +142,8 @@
     return { id: item.id, prompt: prompt, options: s.options, answer: s.answer };
   }
   function phrasePickQuestion(p, r) {
-    var q = first(p, (p.before || '') + '＿＿＿的' + p.noun, null, r);
-    /* before：短語前面的動作（例如：堆著＿＿的積木）；ask、look：形容動作的短語（例如：急急忙忙的走進教室）用自己的問法 */
+    var q = first(p, (p.before || '') + '＿＿＿' + (p.join === undefined ? '的' : p.join) + p.noun, null, r);
+    /* before：短語前面的動作（例如：堆著＿＿的積木）；join：空格和後面中間的字，預設「的」（「急忙跑過去」用空字串）；ask、look：形容動作的短語（例如：急急忙忙的走進教室）用自己的問法 */
     q.say = p.ask || '什麼樣的' + p.noun; q.img = p.img;
     q.hints = { h1: { text: p.look || '再看看圖片，它是什麼顏色、什麼樣子？' }, h2: { text: p.clue }, teach: { text: p.explain } };
     return q;
@@ -157,7 +157,7 @@
     return q;
   }
   /* 句型的關聯詞，畫面上標橘色 */
-  var CONJ_WORDS = ['只要', '就', '如果', '不但', '還', '因為', '所以', '只能', '竟然', '才', '一邊', '先', '再'];
+  var CONJ_WORDS = ['只要', '就', '如果', '不但', '還', '因為', '所以', '只能', '竟然', '才', '一邊', '先', '再', '除了', '有人', '才能'];
   function matchQuestion(m, r) {
     var q = first(m, m.front + '……', null, r);
     q.say = m.front;
@@ -282,7 +282,7 @@
     q.hints = { h1: { text: '想一想：' + card.name + '是' + card.meaning }, h2: { text: p.clue }, teach: { text: p.explain } };
     return q;
   }
-  var PATTERN_WORDS = { zhiyao: '「只要」和「就」', ruguo: '「如果」、「不但」、「還」', yinwei: '「因為」和「只能」', jingran: '「竟然」', cai: '「才」', yibian: '兩次「一邊」', xianzai: '「先」和「再」' };
+  var PATTERN_WORDS = { zhiyao: '「只要」和「就」', ruguo: '「如果」、「不但」、「還」', yinwei: '「因為」和「只能」', jingran: '「竟然」', cai: '「才」', yibian: '兩次「一邊」', xianzai: '「先」和「再」', chule: '「除了」和「還」', youren: '兩次「有人」', caineng: '「才能」' };
   function speakMethod(rule) {
     if (rule.kind === 'phrase') return '先說它是什麼樣子，再說「的」，最後說它是什麼。';
     if (rule.kind === 'word') return '記得句子裡要說到「' + rule.word + '」，而且要說完整的一句話喔。';
