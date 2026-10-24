@@ -4,7 +4,7 @@
   if (typeof module === 'object' && module.exports) module.exports = m;
   else { root.H3A = root.H3A || {}; root.H3A.speechcheck = m; }
 })(this, function () {
-  var PATTERNS = { zhiyao: ['只要', '就'], ruguo: ['如果', '不但', '還'], yinwei: ['因為', '只能'], jingran: ['竟然'] };
+  var PATTERNS = { zhiyao: ['只要', '就'], ruguo: ['如果', '不但', '還'], yinwei: ['因為', '只能'], jingran: ['竟然'], cai: ['才'], yibian: ['一邊', '一邊'] };
   var MIN_PART = 2;
 
   function normalize(s) {

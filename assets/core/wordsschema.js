@@ -42,6 +42,9 @@
         if (!nonEmpty(h.sentence) || h.sentence.indexOf(h.char) < 0) errs.push(h.id + ' 的例句要用到「' + h.char + '」');
       }
     });
+    /* 拖字填空的挖空不能重複，不然學生分不出要填哪一個字 */
+    var clozes = w.hanzi.map(function (h) { return h.cloze; });
+    if (!unique(clozes)) errs.push('生字的挖空有重複：' + clozes.filter(function (c, i) { return clozes.indexOf(c) !== i; }).join('、'));
     w.vocab.forEach(function (v) {
       useId(v.id);
       if (!nonEmpty(v.word) || !nonEmpty(v.meaning)) errs.push(v.id + ' 缺少語詞或解釋');

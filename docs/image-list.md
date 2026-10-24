@@ -218,6 +218,81 @@
 | 60 | `pt-swim-learn.png` | 怕水的弟弟竟然學會游泳 | 句型填空 |
 | 61 | `take-shell.png` | 把貝殼撿回家 | 魚骨圖（陷阱卡） |
 
+## 第 9 課（待生成）
+
+放在 `images/L09/`。指令在 `docs/chatgpt-image-prompts-L09.txt`。
+
+| # | 檔名 | 要畫什麼 | 用在 |
+|---|---|---|---|
+| 1 | `challenge.png` | 挑戰 | 語詞、生字 |
+| 2 | `traffic.png` | 交通 | 語詞、生字 |
+| 3 | `follow-guide.png` | 隨 | 語詞、生字、魚骨圖 |
+| 4 | `tour-guide.png` | 導遊 | 語詞、生字 |
+| 5 | `pineapple.png` | 鳳梨 | 語詞、生字 |
+| 6 | `screwpine.png` | 林投樹 | 語詞、生字、魚骨圖 |
+| 7 | `keep-going.png` | 繼續 | 語詞、生字 |
+| 8 | `boardwalk.png` | 木棧道 | 語詞、魚骨圖 |
+| 9 | `shore.png` | 岸邊 | 語詞、生字 |
+| 10 | `sea-colors.png` | 淺 | 語詞、生字、魚骨圖 |
+| 11 | `along-coast.png` | 沿 | 語詞、生字 |
+| 12 | `step-stones.png` | 踩 | 語詞、生字 |
+| 13 | `stack-stones.png` | 疊 | 語詞、生字、魚骨圖 |
+| 14 | `normal-stone.png` | 一般 | 語詞、生字 |
+| 15 | `cw-pick-fruit.png` | 挑選 | 生字語詞 |
+| 16 | `cw-win.png` | 戰勝 | 生字語詞 |
+| 17 | `cw-make-friend.png` | 交朋友 | 生字語詞 |
+| 18 | `cw-ducklings.png` | 跟隨 | 生字語詞 |
+| 19 | `cw-teacher.png` | 導師 | 生字語詞 |
+| 20 | `cw-pineapple-cake.png` | 鳳梨酥 | 生字語詞 |
+| 21 | `cw-pitcher.png` | 投手 | 生字語詞 |
+| 22 | `cw-relay.png` | 繼續努力 | 生字語詞 |
+| 23 | `cw-rain-days.png` | 連續 | 生字語詞 |
+| 24 | `cw-light-blue.png` | 淺色 | 生字語詞 |
+| 25 | `cw-boat-shore.png` | 上岸 | 生字語詞 |
+| 26 | `cw-road-trip.png` | 沿路 | 生字語詞 |
+| 27 | `cw-puddle.png` | 踩到 | 生字語詞 |
+| 28 | `cw-folded-clothes.png` | 疊衣服 | 生字語詞 |
+| 29 | `cw-so-so.png` | 一般般 | 生字語詞 |
+| 30 | `id-whisper.png` | 交頭接耳 | 成語情境題 |
+| 31 | `id-shadow-friends.png` | 如影隨形 | 成語情境題 |
+| 32 | `id-gift-book.png` | 投其所好 | 成語情境題 |
+| 33 | `id-night-work.png` | 夜以繼日 | 成語情境題 |
+| 34 | `id-not-help.png` | 隔岸觀火 | 成語情境題 |
+| 35 | `pr-clothes.png` | 穿著花花綠綠的衣服 | 短語 |
+| 36 | `pr-blocks.png` | 堆著高高低低的積木 | 短語 |
+| 37 | `pr-cars.png` | 看著來來往往的車子 | 短語 |
+| 38 | `pr-ants.png` | 爬著密密麻麻的螞蟻 | 短語 |
+| 39 | `pr-path.png` | 走著彎彎曲曲的小路 | 短語 |
+| 40 | `pr-stones.png` | 看著大大小小的石頭 | 短語 |
+| 41 | `pr-balloons.png` | 拿著花花綠綠的氣球 | 短語 |
+| 42 | `pr-seesaw.png` | 玩著上上下下的翹翹板 | 短語 |
+| 43 | `pr-books.png` | 排著整整齊齊的書 | 短語 |
+| 44 | `pz-stars.png` | 星星一顆顆亮起來 | 短語 |
+| 45 | `pz-flowers.png` | 小花一朵朵開出來 | 短語 |
+| 46 | `pz-lanterns.png` | 燈籠一盞盞掛起來 | 短語 |
+| 47 | `pz-students.png` | 小朋友一個個走進教室 | 短語 |
+| 48 | `pz-raindrops.png` | 雨滴一顆顆落下來 | 短語 |
+| 49 | `pz-ducks.png` | 小鴨一隻隻跳下水 | 短語 |
+| 50 | `famous-place.png` | 著名 | 短語（造句） |
+| 51 | `cai.png` | ……才…… | 句型 |
+| 52 | `pt-green-light.png` | 等綠燈亮了，才過馬路 | 句型配對 |
+| 53 | `pt-wash-hands.png` | 把手洗乾淨，才吃飯 | 句型配對 |
+| 54 | `pt-cake-cool.png` | 等蛋糕放涼，才抹奶油 | 句型配對 |
+| 55 | `pt-rain-stop.png` | 雨停了，才出去玩 | 句型填空 |
+| 56 | `pt-hw-tv.png` | 寫完作業，才看電視 | 句型填空 |
+| 57 | `pt-sea-clouds.png` | 爬到山頂，才看到雲海 | 句型填空 |
+| 58 | `yibian.png` | 一邊……一邊…… | 句型 |
+| 59 | `pt-river-sides.png` | 這條河一邊是稻田，一邊是小村莊 | 句型配對 |
+| 60 | `pt-two-color-pen.png` | 這枝筆一邊是紅色，一邊是藍色 | 句型配對 |
+| 61 | `pt-street-shops.png` | 這條街一邊是麵包店，一邊是書店 | 句型配對 |
+| 62 | `pt-bag-sides.png` | 書包一邊放課本，一邊放水壺 | 句型填空 |
+| 63 | `pt-classroom.png` | 教室一邊是窗戶，一邊是門 | 句型填空 |
+| 64 | `pt-cookie-two.png` | 餅乾一邊是巧克力，一邊是草莓 | 句型填空 |
+| 65 | `old-trail.png` | 阿塱壹古道（魚頭） | 魚骨圖 |
+| 66 | `waves.png` | 朵朵白色的浪花 | 魚骨圖 |
+| 67 | `photo-stone.png` | 南田石只能拍照 | 魚骨圖 |
+| 68 | `take-stone.png` | 把漂亮的石頭帶回家 | 魚骨圖（陷阱卡） |
+
 ## 活動圖示（待生成）
 
 放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。
