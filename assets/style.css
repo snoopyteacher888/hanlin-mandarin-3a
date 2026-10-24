@@ -400,7 +400,7 @@ html.zhuyin .zhuyin { display: none; }
 .pt-sentence > .speaker { align-self: flex-end; }
 .options.list .option { justify-content: flex-start !important; text-align: left; }
 .speak-front .pt-block { text-align: left; }
-.feedback.hint .hint-text, .feedback.teach p { text-align: left; }
+.feedback.hint .hint-text, .feedback.teach p { text-align: center; }
 .options.list .option { align-items: flex-start; }
 .options.list .option-text { width: 100%; text-align: left; }
 
@@ -803,7 +803,7 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .options.drag-opts { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; max-width: 980px; }
 
 /* 長句子分兩行時，兩行一樣長（不會只剩一兩個字掉到下一行） */
-.learn-line > span, .prompt h2, .hint-text, .step-text, .lc-desc, .feedback.teach p, .match-text, .info-line { text-wrap: balance; }
+.learn-line > span, .prompt h2, .step-text, .lc-desc, .feedback.teach p, .match-text, .info-line { text-wrap: balance; }
 .learn-line { max-width: 980px; margin-left: auto; margin-right: auto; }
 .learn-line > span { text-align: center; }
 
@@ -1001,3 +1001,10 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 .map-cards.tail-list .option-wrap .map-card { flex: 1; min-width: 0; height: auto; padding: 12px 16px; }
 .map-cards.tail-list .option-wrap .speaker { position: static; flex: none; }
 .map-cards.tail-list .map-card .option-text { font-size: 1em; min-height: 0; }
+
+/* 提示一行放得下就放一行：喇叭移到黃框外面（老師要求）；老師教你的說明置中 */
+.feedback.hint { position: relative; margin-right: 66px; }
+.feedback.hint > .hint-row > .speaker { position: absolute; right: -64px; top: 10px; }
+.feedback.hint .hint-text { text-align: center; }
+/* 空格和後面的標點黏在一起，逗號不會跑到下一行的開頭（老師要求） */
+.nobreak { white-space: nowrap; display: inline-block; }

@@ -28,7 +28,11 @@
   function blanks(text) {
     if (typeof text !== 'string' || text.indexOf('＿') < 0) return text;
     return text.split(/＿+/).reduce(function (acc, part, i) {
-      if (i) acc.push(h('span', { class: 'blank-box', 'aria-label': '空格' }));
+      if (i) {
+        var p = /^[，。！？、；：」』…]+/.exec(part);
+        acc.push(p ? h('span', { class: 'nobreak' }, h('span', { class: 'blank-box', 'aria-label': '空格' }), p[0]) : h('span', { class: 'blank-box', 'aria-label': '空格' }));
+        if (p) part = part.slice(p[0].length);
+      }
       if (part) acc.push(part);
       return acc;
     }, []);
@@ -214,7 +218,10 @@
         var m = /＿+/.exec(text);
         if (!m) return text;
         slot = h('span', { class: 'drop-slot' }, '　');
-        return [text.slice(0, m.index), slot, text.slice(m.index + m[0].length)];
+        var after = text.slice(m.index + m[0].length), p = /^[，。！？、；：」』…]+/.exec(after);
+        /* 空格後面緊接的標點跟空格黏在一起，不會換到下一行開頭（老師要求） */
+        if (p) return [text.slice(0, m.index), h('span', { class: 'nobreak' }, slot, p[0]), after.slice(p[0].length)];
+        return [text.slice(0, m.index), slot, after];
       }
       /* 組合字：主要的字放大、用框框起來，後面是組合方式和提示 */
       /* 組合字：黑＋土＝□（每一塊用不同顏色的框，空格拖進組成的字） */

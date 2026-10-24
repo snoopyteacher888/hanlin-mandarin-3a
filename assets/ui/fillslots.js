@@ -4,13 +4,20 @@
   var H3A = root.H3A; var h = H3A.ui.h;
   function fillQuestion(box, ctx, q, done, feedback) {
     var bad = 0, finished = false, wrongs = [], slots = [], left = 0;
-    var line = h('div', { class: 'fill-sentence' }, q.segs.map(function (s) {
+    var parts = q.segs.map(function (s) {
       if (s.kind === 'conj') return h('span', { class: 'conj-word fill-conj' }, s.text);
       if (s.kind === 'punct') return h('span', { class: 'fill-punct' }, s.text);
       var slot = h('span', { class: 'drop-slot fill-slot role-' + (s.role || 'cond'), 'data-answer': s.text });
       slots.push(slot); left++;
       return slot;
-    }));
+    });
+    /* 標點跟前面那一塊黏在一起，不會換到下一行開頭（老師要求） */
+    var glued = [];
+    parts.forEach(function (el, i) {
+      if (q.segs[i].kind === 'punct' && glued.length) glued.push(h('span', { class: 'nobreak' }, glued.pop(), el));
+      else glued.push(el);
+    });
+    var line = h('div', { class: 'fill-sentence' }, glued);
     var tiles = q.tiles.map(function (t) {
       var b = h('button', { type: 'button', class: 'fill-tile', 'data-text': t }, t);
       H3A.ui.dragTo(b, function () { return slots.filter(function (s) { return !s.classList.contains('filled'); }); },
