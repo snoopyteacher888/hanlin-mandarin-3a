@@ -8,9 +8,11 @@
   /* 句型公式：🟧關聯詞、🟦條件（假設）、🟩結果 */
   var FORMULA = {
     zhiyao: [['只要', 'conj'], ['要做到的事', 'cond'], ['就', 'conj'], ['會有的結果', 'res1']],
-    ruguo: [['如果', 'conj'], ['假設做了什麼事', 'cond'], ['不但', 'conj'], ['第一個結果', 'res1'], ['還', 'conj'], ['第二個結果', 'res2']]
+    ruguo: [['如果', 'conj'], ['假設做了什麼事', 'cond'], ['不但', 'conj'], ['第一個結果', 'res1'], ['還', 'conj'], ['第二個結果', 'res2']],
+    yinwei: [['因為', 'conj'], ['什麼原因', 'cond'], ['誰', 'res1'], ['只能', 'conj'], ['只好怎麼做', 'res1']],
+    jingran: [['發生了什麼事', 'cond'], ['竟然', 'conj'], ['想不到的結果', 'res1']]
   };
-  var LABEL = { zhiyao: { cond: '條件', res1: '結果' }, ruguo: { cond: '假設', res1: '結果一', res2: '結果二' } };
+  var LABEL = { zhiyao: { cond: '條件', res1: '結果' }, ruguo: { cond: '假設', res1: '結果一', res2: '結果二' }, yinwei: { cond: '原因', res1: '結果' }, jingran: { cond: '發生的事', res1: '想不到的結果' } };
 
   function formulaRow(key) {
     return h('div', { class: 'pt-formula' }, FORMULA[key].map(function (f) {

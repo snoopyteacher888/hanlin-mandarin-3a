@@ -150,6 +150,74 @@
 | 40 | `pz-sleep.png` | 在床上舒服的睡覺 | 短語 |
 | 41 | `pz-show.png` | 在舞臺上認真的表演 | 短語 |
 
+## 第 8 課（待生成）
+
+放在 `images/L08/`。指令在 `docs/chatgpt-image-prompts-L08.txt`。
+
+| # | 檔名 | 要畫什麼 | 用在 |
+|---|---|---|---|
+| 1 | `hermit-crab.png` | 寄居蟹 | 語詞、生字、魚骨圖 |
+| 2 | `stage-curtain.png` | 幕 | 語詞 |
+| 3 | `paper-cup.png` | 紙杯 | 語詞、魚骨圖 |
+| 4 | `shell.png` | 殼 | 語詞、魚骨圖 |
+| 5 | `people.png` | 人類 | 語詞 |
+| 6 | `bottle-cap.png` | 瓶蓋 | 語詞、魚骨圖 |
+| 7 | `beach-clean.png` | 淨灘 | 語詞、魚骨圖 |
+| 8 | `volunteer.png` | 志工 | 語詞、魚骨圖 |
+| 9 | `trash.png` | 垃圾 | 語詞 |
+| 10 | `two-guests.png` | 位 | 語詞 |
+| 11 | `care-nature.png` | 愛護 | 語詞 |
+| 12 | `baby-hungry.png` | 應該 | 語詞 |
+| 13 | `cw-mail.png` | 寄信 | 生字語詞 |
+| 14 | `cw-neighbor.png` | 鄰居 | 生字語詞 |
+| 15 | `cw-screen.png` | 螢幕 | 生字語詞 |
+| 16 | `cw-eggshell.png` | 蛋殼 | 生字語詞 |
+| 17 | `cw-sort.png` | 分類 | 生字語詞 |
+| 18 | `cw-vase.png` | 花瓶 | 生字語詞 |
+| 19 | `cw-build.png` | 蓋房子 | 生字語詞 |
+| 20 | `cw-clean.png` | 乾淨 | 生字語詞 |
+| 21 | `cw-dream.png` | 志向 | 生字語詞 |
+| 22 | `cw-garbage-truck.png` | 垃圾車 | 生字語詞 |
+| 23 | `cw-trash-can.png` | 垃圾桶 | 生字語詞 |
+| 24 | `cw-seat.png` | 座位 | 生字語詞 |
+| 25 | `cw-protect.png` | 保護 | 生字語詞 |
+| 26 | `cw-promise.png` | 答應 | 生字語詞 |
+| 27 | `id-no-home.png` | 寄人籬下 | 成語情境題 |
+| 28 | `id-magic-box.png` | 金蟬脫殼 | 成語情境題 |
+| 29 | `id-play-together.png` | 物以類聚 | 成語情境題 |
+| 30 | `id-secret.png` | 守口如瓶 | 成語情境題 |
+| 31 | `id-flower-friends.png` | 志同道合 | 成語情境題 |
+| 32 | `pr-hurry.png` | 急急忙忙的跑出門 | 短語 |
+| 33 | `pr-late.png` | 急急忙忙的走進教室 | 短語 |
+| 34 | `pr-library.png` | 安安靜靜的看書 | 短語 |
+| 35 | `pr-dance.png` | 開開心心的跳起舞來 | 短語 |
+| 36 | `crab-hide.png` | 寄居蟹嚇得躲起來 | 短語、魚骨圖 |
+| 37 | `pr-stage.png` | 從從容容的走上舞臺 | 短語 |
+| 38 | `pr-shoes.png` | 整整齊齊的排好鞋子 | 短語 |
+| 39 | `pr-bunny.png` | 蹦蹦跳跳的跑過草地 | 短語 |
+| 40 | `pr-homework.png` | 認認真真的寫作業 | 短語 |
+| 41 | `pz-apple-fall.png` | 從樹上掉下來 | 短語 |
+| 42 | `pz-slide.png` | 從溜滑梯上滑下來 | 短語 |
+| 43 | `pz-bag.png` | 從書包裡拿出來 | 短語 |
+| 44 | `pz-fish.png` | 從水裡跳起來 | 短語 |
+| 45 | `pz-door.png` | 從門口走進來 | 短語 |
+| 46 | `pz-crab-hole.png` | 從洞裡爬出來 | 短語 |
+| 47 | `yinwei.png` | 因為……只能…… | 句型 |
+| 48 | `pt-no-bus.png` | 因為公車沒有來，只能走路回家 | 句型配對 |
+| 49 | `pt-rain-inside.png` | 因為下大雨，只能在教室裡玩 | 句型配對 |
+| 50 | `pt-ball-tree.png` | 因為球卡在樹上，只能換一顆球 | 句型配對 |
+| 51 | `pt-dark-home.png` | 因為天黑了，只能先回家 | 句型填空 |
+| 52 | `pt-too-small.png` | 因為弟弟太小，只能在旁邊看 | 句型填空 |
+| 53 | `pt-empty-fridge.png` | 因為冰箱沒有菜，只能去市場買 | 句型填空 |
+| 54 | `jingran.png` | ……竟然…… | 句型 |
+| 55 | `pt-cat-dog.png` | 小貓和小狗竟然變成好朋友 | 句型配對 |
+| 56 | `pt-ant-cookie.png` | 螞蟻竟然搬得動大餅乾 | 句型配對 |
+| 57 | `pt-fast-done.png` | 弟弟竟然第一個寫完作業 | 句型配對 |
+| 58 | `pt-fall-asleep.png` | 閉上眼睛一下，竟然就睡著了 | 句型填空 |
+| 59 | `pt-seed-tree.png` | 小小的種子竟然長成大樹 | 句型填空 |
+| 60 | `pt-swim-learn.png` | 怕水的弟弟竟然學會游泳 | 句型填空 |
+| 61 | `take-shell.png` | 把貝殼撿回家 | 魚骨圖（陷阱卡） |
+
 ## 活動圖示（待生成）
 
 放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。
