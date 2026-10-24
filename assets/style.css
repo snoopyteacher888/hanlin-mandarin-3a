@@ -945,3 +945,14 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 .pt-sentence.stacked .pt-grid { grid-template-columns: max-content max-content minmax(0, max-content); max-width: 100%; }
 .pt-sentence.stacked .pt-block { white-space: normal; }
 @media (max-width: 600px) { .pt-grid .pt-block, .pt-grid .pt-conj-chip { font-size: .95em; padding: 4px 8px; } }
+
+/* 句型：條件藍框、結果一綠框、結果二藍綠框（例句和拖拉造句一樣） */
+.fill-part { display: inline-flex; align-items: center; padding: 4px 12px; border-radius: 12px; border: 3px solid; font-weight: 700; }
+.role-cond.fill-part, .fill-slot.filled.role-cond { background: #E3F0FF; border-color: #2E7FC0; color: #174E7A; }
+.role-res1.fill-part, .fill-slot.filled.role-res1 { background: #E4F5EA; border-color: #2E9E5B; color: #1E6B3E; }
+.role-res2.fill-part, .fill-slot.filled.role-res2 { background: #DFF3F1; border-color: #2A8C83; color: #1B5E58; }
+.fill-slot.filled { border-style: solid; }
+.pt-example { background: var(--surface) !important; border-radius: 18px; padding: 14px 18px !important; box-shadow: 0 2px 8px rgba(80,60,30,.06); }
+.pt-example .pt-flat { gap: 6px; }
+.pt-example .pt-grid { gap: 8px 6px; align-items: center; }
+.pt-cell { display: inline-flex; align-items: center; }

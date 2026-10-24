@@ -17,31 +17,30 @@
       return h('span', { class: 'pt-chip ' + f[1] }, f[0]);
     }));
   }
-  /* 例句切成色塊：關聯詞（如果、不但、還、只要、就）是獨立的橘色框，跟上面的公式一樣；
-     其他的字放在藍／綠色塊裡，下面標「條件／結果」。
-     一行放得下就排一行；放不下就變成一個分句一行，關聯詞那一欄上下對齊（老師要求） */
+  /* 例句：跟「拖拉造句」做完的樣子一樣——關聯詞是淡橘色字，其他每一塊放在框裡，
+     條件（要做到的事）藍框、結果一綠框、結果二藍綠框，標點放在框外（老師要求）。
+     一行放不下就變成一個分句一行，關聯詞那一欄上下對齊 */
   function clauseBlocks(text, key) {
     var clauses = Q.patternClauses(text, key);
-    function block(kind, t, label) {
-      return h('span', { class: 'pt-block ' + kind }, h('span', { class: 'pt-text' }, t), h('span', { class: 'pt-label' }, label));
+    function conj(t) { return h('span', { class: 'conj-word fill-conj' }, t); }
+    function part(kind, t) {
+      var m = /^(.*?)([，。！？、]*)$/.exec(t), out = [];
+      if (m[1]) out.push(h('span', { class: 'fill-part role-' + kind }, m[1]));
+      if (m[2]) out.push(h('span', { class: 'fill-punct' }, m[2]));
+      return out;
     }
-    function chip(t) { return h('span', { class: 'pt-chip conj pt-conj-chip' }, t); }
-    var flat = h('div', { class: 'pt-flat' }), grid = h('div', { class: 'pt-grid' });
+    var flat = h('div', { class: 'pt-flat fill-sentence' }), grid = h('div', { class: 'pt-grid fill-sentence' });
+    function add(el, nodes) { [].concat(nodes).forEach(function (n) { el.appendChild(n); }); }
     clauses.forEach(function (c) {
-      var label = LABEL[key][c.kind] || '', labeled = false, ci = -1;
-      c.parts.forEach(function (p, i) {
-        if (p.conj) { flat.appendChild(chip(p.text)); if (ci < 0) ci = i; return; }
-        flat.appendChild(block(c.kind, p.text, labeled ? '' : label)); labeled = true;
-      });
-      /* 表格的一列：[關聯詞前面的字][關聯詞][後面的字] */
+      var ci = -1;
+      c.parts.forEach(function (p, i) { if (p.conj) { add(flat, conj(p.text)); if (ci < 0) ci = i; } else add(flat, part(c.kind, p.text)); });
       var before = ci > 0 ? c.parts.slice(0, ci).map(function (x) { return x.text; }).join('') : '';
-      var conj = ci >= 0 ? c.parts[ci].text : '';
       var after = c.parts.slice(ci + 1).map(function (x) { return x.text; }).join('');
-      grid.appendChild(before ? block(c.kind, before, label) : h('span', { class: 'pt-cell-empty' }));
-      grid.appendChild(conj ? chip(conj) : h('span', { class: 'pt-cell-empty' }));
-      grid.appendChild(after ? block(c.kind, after, before ? '' : label) : h('span', { class: 'pt-cell-empty' }));
+      grid.appendChild(before ? h('span', { class: 'pt-cell' }, part(c.kind, before)) : h('span', { class: 'pt-cell-empty' }));
+      grid.appendChild(ci >= 0 ? h('span', { class: 'pt-cell' }, conj(c.parts[ci].text)) : h('span', { class: 'pt-cell-empty' }));
+      grid.appendChild(after ? h('span', { class: 'pt-cell' }, part(c.kind, after)) : h('span', { class: 'pt-cell-empty' }));
     });
-    var box = h('div', { class: 'pt-sentence' }, flat, grid, H3A.ui.speaker(text, null));
+    var box = h('div', { class: 'pt-sentence pt-example' }, flat, grid, H3A.ui.speaker(text, null));
     function fit() {
       if (!box.isConnected) return;
       box.classList.remove('stacked');

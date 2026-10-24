@@ -178,14 +178,17 @@
   }
   /* 句型填空：關聯詞（如果、不但、還）印好，其他每一塊挖空，把句子的每一塊拖進對的空格（老師要求） */
   function patternFillQuestion(c, key, r) {
-    var words = speechcheck.PATTERNS[key], text = c.full, segs = [], rest = text;
+    var words = speechcheck.PATTERNS[key], text = c.full, segs = [], rest = text, clause = 0;
+    /* 每一塊標出是哪一部分：第一個分句是條件（cond，藍色），後面是結果一、結果二（res1 綠、res2 藍綠） */
+    var ROLE = ['cond', 'res1', 'res2'];
     while (rest) {
       var best = -1, wd = null;
       words.forEach(function (k) { var at = rest.indexOf(k); if (at >= 0 && (best < 0 || at < best)) { best = at; wd = k; } });
       var head = best < 0 ? rest : rest.slice(0, best);
       head.split(/([，。！？、])/).forEach(function (t) {
         if (!t) return;
-        segs.push(/^[，。！？、]$/.test(t) ? { text: t, kind: 'punct' } : { text: t, kind: 'blank' });
+        if (/^[，。！？、]$/.test(t)) { segs.push({ text: t, kind: 'punct' }); if (t === '，') clause++; return; }
+        segs.push({ text: t, kind: 'blank', role: ROLE[Math.min(clause, 2)] });
       });
       if (best < 0) break;
       segs.push({ text: wd, kind: 'conj' });

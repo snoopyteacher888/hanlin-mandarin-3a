@@ -7,7 +7,7 @@
     var line = h('div', { class: 'fill-sentence' }, q.segs.map(function (s) {
       if (s.kind === 'conj') return h('span', { class: 'conj-word fill-conj' }, s.text);
       if (s.kind === 'punct') return h('span', { class: 'fill-punct' }, s.text);
-      var slot = h('span', { class: 'drop-slot fill-slot', 'data-answer': s.text });
+      var slot = h('span', { class: 'drop-slot fill-slot role-' + (s.role || 'cond'), 'data-answer': s.text });
       slots.push(slot); left++;
       return slot;
     }));
