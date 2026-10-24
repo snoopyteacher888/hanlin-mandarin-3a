@@ -102,7 +102,7 @@
 | 13 | `cw-pole.png` | 電線桿 |
 | 14 | `cw-peel.png` | 削皮 |
 
-## 第 7 課（待生成）
+## 第 7 課（已完成）
 
 放在 `images/L07/`。指令在 `docs/chatgpt-image-prompts-L07.txt`。
 
