@@ -956,3 +956,4 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 .pt-example .pt-flat { gap: 6px; }
 .pt-example .pt-grid { gap: 8px 6px; align-items: center; }
 .pt-cell { display: inline-flex; align-items: center; }
+.pt-flat > * { flex-shrink: 0; white-space: nowrap; }

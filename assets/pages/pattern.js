@@ -44,7 +44,8 @@
     function fit() {
       if (!box.isConnected) return;
       box.classList.remove('stacked');
-      if (flat.scrollWidth > flat.clientWidth + 1) box.classList.add('stacked');
+      /* 差幾個像素是小數點誤差，不算放不下 */
+      if (flat.scrollWidth > flat.clientWidth + 6) box.classList.add('stacked');
     }
     setTimeout(fit, 0);
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
