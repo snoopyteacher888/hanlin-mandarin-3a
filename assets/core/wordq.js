@@ -178,7 +178,14 @@
   }
   /* 句型填空：關聯詞（如果、不但、還）印好，其他每一塊挖空，把句子的每一塊拖進對的空格（老師要求） */
   function patternFillQuestion(c, key, r) {
-    var words = speechcheck.PATTERNS[key], text = c.full, segs = [], rest = text, clause = 0;
+    /* c.parts：已經切好的短語（例如 在｜操場上｜開心｜的｜奔跑），「在」「的」印好，其他依序是在哪裡、怎麼做、做什麼 */
+    if (c.parts) {
+      var ROLES = ['cond', 'res1', 'res2'], n = 0;
+      c = { id: c.id, img: c.img, full: c.parts.join(''), segs: c.parts.map(function (t) {
+        return t === '在' || t === '的' ? { text: t, kind: 'conj' } : { text: t, kind: 'blank', role: ROLES[Math.min(n++, 2)] };
+      }) };
+    }
+    var words = c.segs ? [] : speechcheck.PATTERNS[key], text = c.full, segs = c.segs ? c.segs.slice() : [], rest = c.segs ? '' : text, clause = 0;
     /* 每一塊標出是哪一部分：第一個分句是條件（cond，藍色），後面是結果一、結果二（res1 綠、res2 藍綠） */
     var ROLE = ['cond', 'res1', 'res2'];
     while (rest) {
@@ -197,7 +204,8 @@
     var blanks = segs.filter(function (s) { return s.kind === 'blank'; }).map(function (s) { return s.text; });
     var tiles = blanks.slice();
     for (var k = 0; k < 10 && tiles.join('|') === blanks.join('|'); k++) tiles = quizgen.shuffle(blanks, r);
-    return { type: 'fill', id: c.id, prompt: '把每一塊拖到對的空格裡，變成一句完整的話。', say: '把每一塊拖到對的空格裡，變成一句完整的話。' + text,
+    var ask = c.segs && !/[，。]/.test(c.full) ? '把每一塊拖到對的空格裡，變成一個完整的短語。' : '把每一塊拖到對的空格裡，變成一句完整的話。';
+    return { type: 'fill', id: c.id, prompt: ask, say: ask + text,
       img: c.img, segs: segs, tiles: tiles, full: text,
       hints: { h1: { text: '按喇叭聽一聽整句話，再想想每一塊要放在哪裡。', say: text },
         h2: { text: '這一塊要放在一閃一閃的格子裡。' },
@@ -320,6 +328,7 @@
     if ((x = pick(w.charwords))) return charWordQuestion(x, r, (w.hanzi || []).map(function (y) { return y.char; }));
     if ((x = pick(w.listen))) return listenQuestion(x, r);
     if (w.phrase && (x = pick(w.phrase.pick))) return phrasePickQuestion(x, r);
+    if (w.phrase && w.phrase.phrase2 && (x = pick(w.phrase.phrase2.fill))) return patternFillQuestion(x, null, r);
     if (w.phrase && (x = pick(w.phrase.choose))) {
       var pw = (w.phrase.words || []).filter(function (y) { return y.word === x.word; })[0];
       return chooseQuestion(x, r, pw && pw.meaning);

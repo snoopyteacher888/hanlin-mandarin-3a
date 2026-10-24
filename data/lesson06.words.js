@@ -111,6 +111,7 @@
     ],
     /* ---------- B 批：短語短句、句型、修辭（句子都是 Claude 自己寫的） ---------- */
     phrase: {
+      pickName: '看圖選疊字', pickSay: '看圖，選出最適合的疊字。',
       intro: { example: '閃亮亮的鉛筆', img: 'finished.png',
         parts: [{ text: '閃亮亮', role: '形容東西的樣子' }, { text: '的' }, { text: '鉛筆', role: '是什麼東西' }] },
       pick: [

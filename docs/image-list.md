@@ -121,7 +121,7 @@
 | 11 | `keep-secret.png` | 瞞 | 語詞 |
 | 12 | `wind.png` | 風（魚頭） | 魚骨圖 |
 | 13 | `snowflake.png` | 冰涼的雪花 | 魚骨圖、短語 |
-| 14 | `roll-grass.png` | 快樂的打滾 | 魚骨圖 |
+| 14 | `roll-grass.png` | 快樂的打滾 | 魚骨圖、短語 |
 | 15 | `candy.png` | 甜甜的糖果味 | 魚骨圖 |
 | 16 | `cold-juice.png` | 冰涼的果汁 | 短語 |
 | 17 | `tree-shade.png` | 涼爽的樹蔭 | 短語 |
@@ -144,6 +144,11 @@
 | 34 | `cw-music.png` | 欣賞音樂 | 生字語詞 |
 | 35 | `cw-moon.png` | 賞月 | 生字語詞 |
 | 36 | `cw-hide-paper.png` | 瞞不了 | 生字語詞 |
+| 37 | `pz-run.png` | 在操場上開心的奔跑 | 短語 |
+| 38 | `pz-swim.png` | 在游泳池裡快樂的游泳 | 短語 |
+| 39 | `pz-read.png` | 在大樹下安靜的看書 | 短語 |
+| 40 | `pz-sleep.png` | 在床上舒服的睡覺 | 短語 |
+| 41 | `pz-show.png` | 在舞臺上認真的表演 | 短語 |
 
 ## 活動圖示（待生成）
 

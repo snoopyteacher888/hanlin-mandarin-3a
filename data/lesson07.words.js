@@ -114,10 +114,24 @@
         { id: 'ph7', img: 'clear-river.png', noun: '河水', options: ['清澈', '烏黑', '熱鬧', '柔軟'], clue: '提示：看得到河底的小石頭嗎？', explain: '答案是「清澈」，河水很乾淨，看得到河底，所以說「清澈的河水」。' },
         { id: 'ph8', img: 'tall-tree.png', noun: '大樹', options: ['高大', '柔軟', '冰涼', '熱鬧'], clue: '提示：這棵樹跟旁邊的小朋友比，誰比較高？', explain: '答案是「高大」，這棵樹又高又大，所以說「高大的大樹」。' }
       ],
+      pickName: '看圖選形容詞', pickSay: '看圖，選出最適合的形容詞。',
       say: [
         { id: 'ps1', img: 'snowflake.png', noun: '雪花', accept: ['冰涼的雪花', '冰冰的雪花', '白白的雪花', '雪白的雪花'], clue: '提示：雪花摸起來冰冰的，先說它的樣子，再說「的雪花」。', model: '冰涼的雪花' },
         { id: 'ps2', img: 'night-market.png', noun: '夜市', accept: ['熱鬧的夜市'], clue: '提示：夜市裡人很多、很好玩，先說它的樣子，再說「的夜市」。', model: '熱鬧的夜市' }
       ],
+      /* 第二個短語：在＋地點＋上／下／裡＋怎麼做＋的＋做什麼（課本的例子是課文原句，這裡換成自己寫的） */
+      phrase2: {
+        intro: { example: '在草地上開心的打滾', img: 'roll-grass.png',
+          parts: [{ text: '在' }, { text: '草地上', role: '在哪裡' }, { text: '開心', role: '怎麼做' }, { text: '的' }, { text: '打滾', role: '做什麼' }],
+          explain: '先說「在」哪裡，再說怎麼做，加上「的」，最後說做什麼，就能把動作說得更清楚。' },
+        fill: [
+          { id: 'pz1', img: 'pz-run.png', parts: ['在', '操場上', '開心', '的', '奔跑'] },
+          { id: 'pz2', img: 'pz-swim.png', parts: ['在', '游泳池裡', '快樂', '的', '游泳'] },
+          { id: 'pz3', img: 'pz-read.png', parts: ['在', '大樹下', '安靜', '的', '看書'] },
+          { id: 'pz4', img: 'pz-sleep.png', parts: ['在', '床上', '舒服', '的', '睡覺'] },
+          { id: 'pz5', img: 'pz-show.png', parts: ['在', '舞臺上', '認真', '的', '表演'] }
+        ]
+      },
       words: [
         { word: '欣賞', meaning: '很喜歡的看或聽。', img: 'enjoy-view.png' },
         { word: '瞞', meaning: '把事情藏起來，不讓別人知道。', img: 'keep-secret.png' }

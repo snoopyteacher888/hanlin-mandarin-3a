@@ -8,8 +8,8 @@
 
   function introSlide(ctx, p) {
     var it = p.intro;
-    var say = it.example + '。' + it.parts.map(function (x) { return x.role ? x.text + '，' + x.role : x.text; }).join('，') +
-      '。「' + it.parts[0].text + '」是用來形容東西的樣子，加上「的」，再說出是什麼東西，就能把東西說得更清楚。';
+    var line = it.explain || '「' + it.parts[0].text + '」是用來形容東西的樣子，加上「的」，再說出是什麼東西，就能把東西說得更清楚。';
+    var say = it.example + '。' + it.parts.map(function (x) { return x.role ? x.text + '，' + x.role : x.text; }).join('，') + '。' + line;
     return F.learn('認識短語：' + it.example, function () {
       return h('div', { class: 'learn-box' },
         h('div', { class: 'prompt-img' }, H3A.ui.picture(ctx.lessonId, it.img, it.example)),
@@ -17,7 +17,7 @@
           return h('button', { type: 'button', class: 'phrase-part part-' + i, onclick: function () { H3A.tts.speak(x.text); } },
             h('span', { class: 'part-text' }, x.text), x.role ? h('span', { class: 'part-role' }, x.role) : null);
         })),
-        F.sayLine('「' + it.parts[0].text + '」是用來形容東西的樣子，加上「的」，再說出是什麼東西，就能把東西說得更清楚。'));
+        F.sayLine(line));
     }, say, it.example);
   }
   function wordsSlide(ctx, p) {
@@ -44,10 +44,15 @@
     var S = H3A.quizgen.shuffle;
     H3A.ui.runSteps(main, ctx, 'phrase', [
       { key: 'intro', name: '認識短語', say: '看一看，短語是怎麼組成的。', make: function () { return [introSlide(ctx, p)]; } },
-      { key: 'pick', name: '看圖選疊字', say: '看圖，選出最適合的疊字。', make: function (r) {
+      { key: 'pick', name: p.pickName || '看圖選一選', say: p.pickSay || '看圖，選出最適合的語詞。', make: function (r) {
         return S(p.pick, r).map(function (x) { return Q.phrasePickQuestion(x, r); });
       } },
-      p.say.length ? { key: 'say', name: '看圖說說看', say: '看圖，用短語說說看。', make: function () { return p.say.map(sayQ); } } : {}
+      p.say.length ? { key: 'say', name: '看圖說說看', say: '看圖，用短語說說看。', make: function () { return p.say.map(sayQ); } } : {},
+      /* 第二個短語（例如：在原野上快樂的打滾） */
+      p.phrase2 ? { key: 'intro2', name: '認識短語二', say: '看一看「' + p.phrase2.intro.example + '」是怎麼組成的。', make: function () { return [introSlide(ctx, p.phrase2)]; } } : {},
+      p.phrase2 ? { key: 'fill2', name: '拖拉組短語', say: '看圖，把每一塊拖到對的空格裡。', make: function (r) {
+        return S(p.phrase2.fill, r).map(function (x) { return Q.patternFillQuestion(x, null, r); });
+      } } : {}
     ], function () { run(main, ctx); });
   };
 })(this);
