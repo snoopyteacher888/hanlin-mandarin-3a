@@ -670,6 +670,87 @@
 | 76 | `fridge-note.png` | 用便條提醒家人 | 魚骨圖 |
 | 77 | `late-family.png` | 全家人都遲到了（陷阱卡） | 魚骨圖（陷阱卡） |
 
+## 第 3 課（待生成）
+
+放在 `images/L03/`。指令在 `docs/chatgpt-image-prompts-L03.txt`。
+
+| # | 檔名 | 要畫什麼 | 用在 |
+|---|---|---|---|
+| 1 | `count-votes.png` | 統計 | 語詞、生字 |
+| 2 | `bus-ticket.png` | 公車票 | 語詞、生字 |
+| 3 | `triangle-ruler.png` | 三角板 | 語詞、生字 |
+| 4 | `homework-book.png` | 作業本 | 語詞、生字 |
+| 5 | `time-go-home.png` | 該 | 語詞、生字 |
+| 6 | `shout-name.png` | 喊 | 語詞、生字 |
+| 7 | `stationery.png` | 文具 | 語詞、生字 |
+| 8 | `tidy-bag.png` | 整理 | 語詞、生字 |
+| 9 | `rain-postpone.png` | 因此 | 語詞、生字 |
+| 10 | `leftover-food.png` | 有餘 | 語詞、生字 |
+| 11 | `get-ready.png` | 準備 | 語詞、生字 |
+| 12 | `easy-math.png` | 容易 | 語詞、生字 |
+| 13 | `doctor-ask.png` | 情況 | 語詞 |
+| 14 | `rush-out.png` | 匆忙 | 語詞 |
+| 15 | `cw-tradition.png` | 傳統 | 生字語詞 |
+| 16 | `cw-ticket.png` | 門票 | 生字語詞 |
+| 17 | `cw-ox-horn.png` | 牛角 | 生字語詞 |
+| 18 | `cw-blackboard.png` | 黑板 | 生字語詞 |
+| 19 | `cw-graduate.png` | 畢業 | 生字語詞 |
+| 20 | `cw-change-plan.png` | 本來 | 生字語詞 |
+| 21 | `cw-crosswalk.png` | 應該 | 生字語詞 |
+| 22 | `cw-mountain-shout.png` | 大喊 | 生字語詞 |
+| 23 | `cw-write-name.png` | 中文 | 生字語詞 |
+| 24 | `cw-toys.png` | 玩具 | 生字語詞 |
+| 25 | `cw-teacher-explain.png` | 道理 | 生字語詞 |
+| 26 | `cw-swim-pool.png` | 從此 | 生字語詞 |
+| 27 | `cw-extra-paper.png` | 多餘 | 生字語詞 |
+| 28 | `cw-race-start.png` | 預備 | 生字語詞 |
+| 29 | `cw-easy-lift.png` | 輕易 | 生字語詞 |
+| 30 | `id-far-away.png` | 天涯海角 | 成語情境題 |
+| 31 | `id-happy-town.png` | 安居樂業 | 成語情境題 |
+| 32 | `id-decorate-first.png` | 本末倒置 | 成語情境題 |
+| 33 | `id-wilting-plant.png` | 每況愈下 | 成語情境題 |
+| 34 | `id-polite-boy.png` | 文質彬彬 | 成語情境題 |
+| 35 | `id-return-wallet.png` | 心安理得 | 成語情境題 |
+| 36 | `pr-robot.png` | 機器人是不怕累的 | 短語 |
+| 37 | `pr-eat-veg.png` | 姐姐是不挑食的 | 短語 |
+| 38 | `pr-honest.png` | 小明是不說謊的 | 短語 |
+| 39 | `pr-quiet-dog.png` | 這隻小狗是不亂叫的 | 短語 |
+| 40 | `pr-no-litter.png` | 弟弟是不亂丟垃圾的 | 短語 |
+| 41 | `pr-red-light.png` | 爸爸是不闖紅燈的 | 短語 |
+| 42 | `pr-practice.png` | 哥哥是不偷懶的 | 短語 |
+| 43 | `pr-grandpa-sleep.png` | 爺爺是不熬夜的 | 短語 |
+| 44 | `pr-shoes-tidy.png` | 妹妹是不亂放鞋子的 | 短語 |
+| 45 | `pz-miss-bus.png` | 來不及 | 短語 |
+| 46 | `pz-enough-water.png` | 足夠 | 短語 |
+| 47 | `pz-breakfast.png` | 不吃早餐就不會有力氣 | 短語 |
+| 48 | `pz-practice-piano.png` | 不練習就不會進步 | 短語 |
+| 49 | `pz-dry-flower.png` | 不澆水就不會開花 | 短語 |
+| 50 | `pz-bus-line.png` | 不排隊就不能上車 | 短語 |
+| 51 | `pz-exercise.png` | 不運動就不會健康 | 短語 |
+| 52 | `pz-reading.png` | 不讀書就不會認字 | 短語 |
+| 53 | `rang.png` | ……，讓…… | 句型 |
+| 54 | `pt-warm-sun.png` | 暖暖的太陽，讓人覺得好舒服 | 句型配對 |
+| 55 | `pt-joke.png` | 弟弟說的笑話，讓大家都笑了 | 句型配對 |
+| 56 | `pt-tidy-find.png` | 把房間整理乾淨，讓我很快就找到東西 | 句型配對 |
+| 57 | `pt-walk-school.png` | 早點出門，讓我有時間慢慢走到學校 | 句型填空 |
+| 58 | `pt-applause-girl.png` | 同學的掌聲，讓妹妹更有信心 | 句型填空 |
+| 59 | `pt-cool-breeze.png` | 涼涼的風，讓大家不覺得熱了 | 句型填空 |
+| 60 | `yinsuo.png` | 因為……所以…… | 句型 |
+| 61 | `pt-sneeze.png` | 因為淋了雨，所以感冒了 | 句型配對 |
+| 62 | `pt-shoot-ball.png` | 因為每天練習投籃，所以投得好準 | 句型配對 |
+| 63 | `pt-wet-boy.png` | 因為忘了帶雨傘，所以全身淋濕 | 句型配對 |
+| 64 | `pt-winter-hat.png` | 因為天氣很冷，所以戴上毛帽和手套 | 句型填空 |
+| 65 | `pt-tooth-ache.png` | 因為吃太多糖，所以牙齒蛀掉了 | 句型填空 |
+| 66 | `pt-clean-together.png` | 因為大家一起打掃，所以教室很快就乾淨了 | 句型填空 |
+| 67 | `early-clock.png` | 提早五分鐘（魚頭） | 魚骨圖 |
+| 68 | `lost-things.png` | 三天丟了四樣東西 | 魚骨圖 |
+| 69 | `rush-morning.png` | 早上大叫來不及了 | 魚骨圖 |
+| 70 | `later-bed.png` | 總是說「到時候再說」 | 魚骨圖 |
+| 71 | `no-plan.png` | 做事不計畫 | 魚骨圖 |
+| 72 | `dad-plan.png` | 做事先計畫 | 魚骨圖 |
+| 73 | `five-early.png` | 提早五分鐘開始 | 魚骨圖 |
+| 74 | `new-bag.png` | 爸爸買了新書包（陷阱卡） | 魚骨圖（陷阱卡） |
+
 ## 活動圖示（待生成）
 
 放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。
