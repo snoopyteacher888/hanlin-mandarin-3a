@@ -33,6 +33,8 @@ function start(port, opts = {}) {
       return;
     }
     let file = url.pathname === '/' ? '/index.html' : url.pathname;
+    /* encFiles：本機預覽時換成真的課文（加密檔只放在 scratchpad，不進 repo） */
+    if (opts.encFiles && opts.encFiles[file]) { res.setHeader('Content-Type', TYPES['.js']); return fs.createReadStream(opts.encFiles[file]).pipe(res); }
     if (file === '/data/lesson06.enc.js') { if (opts.encFile) { res.setHeader('Content-Type', TYPES['.js']); return fs.createReadStream(opts.encFile).pipe(res); } file = '/tests/fixtures/fake06.enc.js'; }
     /* openLessons：測試還沒公開的課次（例如做到一半的第 7 課） */
     if (file === '/data/lessons.js' && opts.openLessons) {
