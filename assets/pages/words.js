@@ -64,8 +64,9 @@
     var sent = H3A.pages.sentenceSteps ? H3A.pages.sentenceSteps(ctx, w.phrase) : [{}, {}];
     var pics = w.vocab.filter(function (v) { return v.img && !v.noPic; });
     H3A.ui.runSteps(main, ctx, 'vocab', [
-      { key: 'cards', name: '看語詞卡', say: '點一張語詞卡，看看圖片，聽聽意思。', make: function () {
-        return [F.learn('語詞卡：點一張看看', function () { return H3A.ui.vocabCards(ctx.lessonId, w.vocab); }, '點一張語詞卡，看看圖片，聽聽意思。')];
+      { key: 'cards', name: '看語詞卡', say: '每一張語詞卡都點開，看看圖片，聽聽意思。', make: function () {
+        return [F.learn('語詞卡：每一張都點開看看', function (ready) { return H3A.ui.vocabCards(ctx.lessonId, w.vocab, ready); },
+          '點一張語詞卡，看看圖片，聽聽意思。每一張都看過，就可以按下一步。', null, true)];
       } },
       pics.length ? { key: 'picmatch', name: '圖片連連看', say: '從圖片拉一條線，連到對的語詞。', make: function (r) {
         return F.matchRounds('vm', '連連看：從圖片拉一條線，連到對的語詞', shuffle(pics, r), 4, function (v) {

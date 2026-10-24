@@ -136,7 +136,7 @@
     rhetoric: {
       cards: [
         { key: 'personify', name: '擬人', meaning: '把東西寫得像人一樣，會說話、會玩、會開心。', example: '課文說：風會「流浪」，還會在原野上「快樂的打滾」。',
-          show: { sentence: '小草在風裡開心的跳舞。' },
+          show: { sentence: '小草在風裡開心的跳舞。', mark: ['開心的跳舞'] },
           yesno: [
             { id: 'rh-pe-y1', sentence: '白雲在天上散步。', answer: true, mark: ['散步'], clue: '提示：白雲會不會像人一樣散步？', explain: '是擬人：白雲不會散步，這句把白雲寫得像人一樣。' },
             { id: 'rh-pe-y2', sentence: '天上有很多白雲。', answer: false, clue: '提示：這句話裡的白雲，有沒有做人才會做的事？', explain: '不是擬人：天上有白雲是真的會看到的，沒有把白雲寫得像人。' }
@@ -164,7 +164,7 @@
             { id: 'rh-re-p6', options: ['我大大的吸了一口氣。', '我吸了一口氣。', '風像一個調皮的孩子。', '風在我耳邊說話。'], clue: '提示：仔細聽，哪一句有重複的字？', explain: '「我大大的吸了一口氣」是疊字：「大大」重複了。' }
           ] },
         { key: 'repeat', name: '類疊', meaning: '同一個詞或同一句話，隔開來重複說好幾次，讀起來有節奏。', example: '課文裡「風的身上」、「我知道」都說了好幾次。',
-          show: { sentence: '我喜歡春天，我喜歡夏天，我也喜歡秋天。' },
+          show: { sentence: '我喜歡春天，我喜歡夏天，我也喜歡秋天。', mark: ['我喜歡', '喜歡'] },
           yesno: [
             { id: 'rh-rp-y1', sentence: '我聽到鳥叫，我聽到蟲鳴，我聽到風聲。', answer: true, mark: ['我聽到'], clue: '提示：找找看，有沒有同一句話隔開來說了好幾次？', explain: '是類疊：「我聽到」說了三次，讀起來有節奏。' },
             { id: 'rh-rp-y2', sentence: '我聽到窗外有鳥在叫。', answer: false, clue: '提示：這句話裡，有沒有同一句話說了好幾次？', explain: '不是類疊：這句話沒有重複說同一句話。' }

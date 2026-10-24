@@ -100,10 +100,18 @@
         h('span', { class: 'hanzi-mid' }, it.char), h('span', { class: 'zhuyin small' }, it.zhuyin));
     }));
   };
-  H3A.ui.vocabCards = function (lessonId, items) {
+  /* onAllSeen：每一張都點開過才呼叫（點過的卡片打勾） */
+  H3A.ui.vocabCards = function (lessonId, items, onAllSeen) {
+    var seen = {};
     return h('div', { class: 'word-grid vocab-grid' }, items.map(function (it) {
-      return h('button', { type: 'button', class: 'word-card', 'data-id': it.id, onclick: function () { vocabDetail(lessonId, it); } },
+      var card = h('button', { type: 'button', class: 'word-card', 'data-id': it.id, onclick: function () {
+        vocabDetail(lessonId, it);
+        if (seen[it.id]) return;
+        seen[it.id] = true; card.classList.add('seen');
+        if (onAllSeen && Object.keys(seen).length === items.length) onAllSeen();
+      } }, h('span', { class: 'seen-check', 'aria-hidden': 'true' }, '✔'),
         H3A.ui.picture(lessonId, it.img, it.word), h('span', { class: 'option-text' }, it.word));
+      return card;
     }));
   };
 })(this);

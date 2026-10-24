@@ -187,7 +187,7 @@
     rhetoric: {
       cards: [
         { key: 'personify', name: '擬人', meaning: '把東西寫得像人一樣，會說話、會幫忙、會笑。', example: '課文說：「木板」要幫忙解決問題。',
-          show: { sentence: '小鬧鐘每天早上叫我起床。', img: 'alarm-wake.png' },
+          show: { sentence: '小鬧鐘每天早上叫我起床。', img: 'alarm-wake.png', mark: ['叫我起床'] },
           yesno: [
             { id: 'rh-pe-y1', sentence: '花兒向我點頭微笑。', answer: true, mark: ['點頭微笑'], clue: '提示：花會不會點頭、會不會笑？', explain: '是擬人：花不會點頭微笑，這句把花寫得像人一樣。' },
             { id: 'rh-pe-y2', sentence: '花園裡開了一朵紅花。', answer: false, clue: '提示：這句話裡的花，有沒有做人才會做的事？', explain: '不是擬人：花開了是真的會發生的事，沒有把花寫得像人。' }

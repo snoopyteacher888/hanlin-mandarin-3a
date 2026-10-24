@@ -909,3 +909,9 @@ html.zhuyin .eq-part, html.zhuyin .eq-slot.filled { font-family: 'Bpmf Zihi Kai 
 html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidden; white-space: nowrap; vertical-align: bottom; clip-path: inset(0 6% 0 0); }
 .learn-word .learn-line > span { text-align: center; text-align-last: center; }
 .learn-word .fit-lines { max-width: none !important; }
+
+/* 語詞卡點開過就打勾 */
+.word-card { position: relative; }
+.word-card .seen-check { position: absolute; top: 4px; right: 10px; color: #E0322E; font-size: 1.6em; font-weight: 900; line-height: 1; visibility: hidden; }
+.word-card.seen { border-color: var(--ok); }
+.word-card.seen .seen-check { visibility: visible; }

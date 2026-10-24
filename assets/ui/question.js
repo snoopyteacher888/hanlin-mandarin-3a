@@ -34,6 +34,7 @@
     }, []);
   }
   H3A.ui.blanks = blanks;
+  H3A.ui.circled = function (text, marks) { return circled(text, marks); };
   /* 選項裡要標顏色的語詞（例如「混合」） */
   function marked(o) {
     if (!o.mark || o.text.indexOf(o.mark) < 0) return blanks(o.text);

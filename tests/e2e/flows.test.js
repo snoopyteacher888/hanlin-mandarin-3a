@@ -290,3 +290,16 @@ test('unit test draws 10-15 questions from reading and word practice', async () 
   for (const re of [/^h-/, /^v-/, /^s\d/, /^is-/, /^pt-/, /^rh/]) assert.ok(ids.some(i => re.test(i)), re + ' ' + ids.join(','));
   assert.deepEqual(p.errors, []);
 });
+
+test('vocab cards: each opened card gets a check, next only after all', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/vocab?s=bear'); await p.waitForSelector('.word-card');
+  const ids = await p.$$eval('.word-card', x => x.map(e => e.dataset.id));
+  for (const id of ids) {
+    assert.ok(await p.isHidden('.next-bar .btn-next'));
+    await p.click(`.word-card[data-id="${id}"]`);
+    await p.click('.vocab-pop .btn-secondary');
+    assert.ok(await p.$eval(`.word-card[data-id="${id}"]`, e => e.classList.contains('seen')));
+  }
+  await p.waitForSelector('.next-bar .btn-next:not([hidden])');
+  assert.deepEqual(p.errors, []);
+});

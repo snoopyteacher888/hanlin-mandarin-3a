@@ -54,7 +54,8 @@
     return F.learn(c.show.img ? '看圖聽一聽' : '聽一聽', function () {
       return h('div', { class: 'learn-box rhetoric-show' },
         c.show.img ? h('div', { class: 'show-img' }, H3A.ui.picture(ctx.lessonId, c.show.img, '')) : null,
-        F.sayLine(c.show.sentence, 'example'));
+        /* 例句裡的關鍵（像、疊字、擬人的動作……）圈起來 */
+        h('p', { class: 'learn-line example' }, h('span', {}, H3A.ui.circled(c.show.sentence, Q.rhetoricMarks(c.key, c.show.sentence, c.show.mark))), H3A.ui.speaker(c.show.sentence, null)));
     }, c.show.sentence);
   }
 
