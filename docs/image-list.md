@@ -586,6 +586,90 @@
 | 61 | `day-night.png` | 一會兒白天，一會兒黑夜 | 魚骨圖 |
 | 62 | `rabbit.png` | 時間是一隻兔子（陷阱卡） | 魚骨圖（陷阱卡） |
 
+## 第 2 課（待生成）
+
+放在 `images/L02/`。指令在 `docs/chatgpt-image-prompts-L02.txt`。
+
+| # | 檔名 | 要畫什麼 | 用在 |
+|---|---|---|---|
+| 1 | `sticky-note.png` | 便利貼 | 語詞、生字 |
+| 2 | `use-scissors.png` | 使用 | 語詞、生字 |
+| 3 | `remind.png` | 提醒 | 語詞、生字 |
+| 4 | `next-morning.png` | 隔天 | 語詞、生字 |
+| 5 | `on-time.png` | 準時 | 語詞、生字 |
+| 6 | `go-sleep.png` | 睡覺 | 語詞、生字 |
+| 7 | `alarm-clock.png` | 鬧鐘 | 語詞、生字 |
+| 8 | `good-way.png` | 有效 | 語詞、生字 |
+| 9 | `in-order.png` | 次序 | 語詞、生字 |
+| 10 | `big-sweet.png` | 而且 | 語詞、生字 |
+| 11 | `plan-day.png` | 安排 | 語詞、生字 |
+| 12 | `fridge.png` | 冰箱 | 語詞、生字 |
+| 13 | `found-pencil.png` | 原來 | 語詞、生字 |
+| 14 | `memo-note.png` | 便條 | 語詞、生字 |
+| 15 | `look-outside.png` | 情況 | 語詞、生字 |
+| 16 | `stain-shirt.png` | 明顯 | 語詞 |
+| 17 | `cw-stickers.png` | 貼紙 | 生字語詞 |
+| 18 | `cw-angel.png` | 天使 | 生字語詞 |
+| 19 | `cw-wake-up.png` | 睡醒 | 生字語詞 |
+| 20 | `cw-neighbor.png` | 隔壁 | 生字語詞 |
+| 21 | `cw-pack-bag.png` | 準備 | 生字語詞 |
+| 22 | `cw-pajamas.png` | 睡衣 | 生字語詞 |
+| 23 | `cw-wall-clock.png` | 時鐘 | 生字語詞 |
+| 24 | `cw-practice.png` | 效果 | 生字語詞 |
+| 25 | `cw-numbers-line.png` | 順序 | 生字語詞 |
+| 26 | `cw-medicine.png` | 反而 | 生字語詞 |
+| 27 | `cw-clean-room.png` | 並且 | 生字語詞 |
+| 28 | `cw-line-up.png` | 排隊 | 生字語詞 |
+| 29 | `cw-ice.png` | 冰塊 | 生字語詞 |
+| 30 | `cw-box.png` | 紙箱 | 生字語詞 |
+| 31 | `cw-rain-window.png` | 原本 | 生字語詞 |
+| 32 | `cw-stripes.png` | 條紋 | 生字語詞 |
+| 33 | `cw-traffic-jam.png` | 情況 | 生字語詞 |
+| 34 | `id-step-swim.png` | 循序漸進 | 成語情境題 |
+| 35 | `id-lift-box.png` | 輕而易舉 | 成語情境題 |
+| 36 | `id-messy-homework.png` | 得過且過 | 成語情境題 |
+| 37 | `id-big-waves.png` | 排山倒海 | 成語情境題 |
+| 38 | `id-north-pole.png` | 冰天雪地 | 成語情境題 |
+| 39 | `id-unopened-gift.png` | 原封不動 | 成語情境題 |
+| 40 | `pr-lie-grass.png` | 躺在柔軟的草地上 | 短語 |
+| 41 | `pr-hang-high.png` | 掛在高高的牆上 | 短語 |
+| 42 | `pr-cat-dark.png` | 躲在黑暗的角落 | 短語 |
+| 43 | `pr-juice-fridge.png` | 放在冰涼的冰箱裡 | 短語 |
+| 44 | `pr-curvy-path.png` | 走在彎彎的小路上 | 短語 |
+| 45 | `pr-sofa.png` | 坐在舒服的沙發上 | 短語 |
+| 46 | `pr-whiteboard.png` | 寫在乾淨的白板上 | 短語 |
+| 47 | `pr-small-pot.png` | 種在小小的花盆裡 | 短語 |
+| 48 | `pr-busy-street.png` | 站在熱鬧的街上 | 短語 |
+| 49 | `pz-rain-came.png` | 果然 | 短語 |
+| 50 | `pz-eat-manners.png` | 弟弟吃飯變得有規矩 | 短語 |
+| 51 | `pz-sing-brave.png` | 妹妹唱歌變得有自信 | 短語 |
+| 52 | `pz-strong-ball.png` | 哥哥打球變得有力氣 | 短語 |
+| 53 | `pz-lively-dog.png` | 小狗走路變得有精神 | 短語 |
+| 54 | `pz-draw-better.png` | 姐姐畫畫變得有進步 | 短語 |
+| 55 | `pz-fast-homework.png` | 我寫作業變得有效率 | 短語 |
+| 56 | `weile.png` | 為了…… | 句型 |
+| 57 | `pt-umbrella.png` | 為了不被雨淋濕，帶雨傘 | 句型配對 |
+| 58 | `pt-brush-teeth.png` | 為了牙齒健康，認真刷牙 | 句型配對 |
+| 59 | `pt-water-flower.png` | 為了花長得漂亮，每天澆水 | 句型配對 |
+| 60 | `pt-piggy-bank.png` | 為了買禮物，把零用錢存起來 | 句型填空 |
+| 61 | `pt-sunrise.png` | 為了看日出，很早起床 | 句型填空 |
+| 62 | `pt-read-lamp.png` | 為了保護眼睛，看書開燈 | 句型填空 |
+| 63 | `erqie.png` | ……，而且…… | 句型 |
+| 64 | `pt-watermelon.png` | 西瓜很大，而且很甜 | 句型配對 |
+| 65 | `pt-helpful-girl.png` | 小美很聰明，而且很樂意幫助同學 | 句型配對 |
+| 66 | `pt-big-park.png` | 公園很大，而且有好多遊樂器材 | 句型配對 |
+| 67 | `pt-light-coat.png` | 外套很溫暖，而且很輕 | 句型填空 |
+| 68 | `pt-tie-shoes.png` | 妹妹會綁鞋帶，而且會穿衣服 | 句型填空 |
+| 69 | `pt-fun-book.png` | 書很有趣，而且圖片很漂亮 | 句型填空 |
+| 70 | `sticky-head.png` | 妙用便利貼（魚頭） | 魚骨圖 |
+| 71 | `forgetful.png` | 小真常常忘東忘西 | 魚骨圖 |
+| 72 | `dad-sticky.png` | 爸爸教她用便利貼 | 魚骨圖 |
+| 73 | `mom-meeting.png` | 媽媽要開會，七點前要出門 | 魚骨圖 |
+| 74 | `check-list.png` | 完成一件事就打個勾 | 魚骨圖 |
+| 75 | `tidy-desk.png` | 做事變得有次序 | 魚骨圖 |
+| 76 | `fridge-note.png` | 用便條提醒家人 | 魚骨圖 |
+| 77 | `late-family.png` | 全家人都遲到了（陷阱卡） | 魚骨圖（陷阱卡） |
+
 ## 活動圖示（待生成）
 
 放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。

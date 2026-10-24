@@ -4,7 +4,7 @@
   if (typeof module === 'object' && module.exports) module.exports = m;
   else { root.H3A = root.H3A || {}; root.H3A.speechcheck = m; }
 })(this, function () {
-  var PATTERNS = { zhiyao: ['只要', '就'], ruguo: ['如果', '不但', '還'], yinwei: ['因為', '只能'], jingran: ['竟然'], cai: ['才'], yibian: ['一邊', '一邊'], xianzai: ['先', '再'], chule: ['除了', '還'], youren: ['有人', '有人'], caineng: ['才能'], meixiangdao: ['沒想到'], jiu: ['就'], yihuier: ['一會兒', '一會兒'] };
+  var PATTERNS = { zhiyao: ['只要', '就'], ruguo: ['如果', '不但', '還'], yinwei: ['因為', '只能'], jingran: ['竟然'], cai: ['才'], yibian: ['一邊', '一邊'], xianzai: ['先', '再'], chule: ['除了', '還'], youren: ['有人', '有人'], caineng: ['才能'], meixiangdao: ['沒想到'], jiu: ['就'], yihuier: ['一會兒', '一會兒'], weile: ['為了'], erqie: ['而且'] };
   var MIN_PART = 2;
 
   function normalize(s) {
