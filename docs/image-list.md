@@ -821,6 +821,74 @@
 | 62 | `map-calm-pot.png` | 火變小，水不滾了 | 課文地圖 |
 | 63 | `map-ice-pot.png` | 在鍋子裡加冰塊 | 課文地圖（干擾選項） |
 
+## 第 5 課（待生成）
+
+放在 `images/L05/`。指令在 `docs/chatgpt-image-prompts-L05.txt`。
+
+| # | 檔名 | 要畫什麼 | 用在 |
+|---|---|---|---|
+| 1 | `tie-rope.png` | 綁 | 語詞、生字 |
+| 2 | `drizzle.png` | 綿綿、綿 | 語詞、生字 |
+| 3 | `rotten-fruit.png` | 腐爛 | 語詞、生字 |
+| 4 | `sweet-pear.png` | 甜美、甜 | 語詞、生字 |
+| 5 | `pear-flower.png` | 梨花、梨 | 語詞、生字 |
+| 6 | `fix-shelf.png` | 固定、固 | 語詞、生字 |
+| 7 | `chopsticks.png` | 筷子、筷 | 語詞、生字 |
+| 8 | `fruit-tree.png` | 結 | 語詞、生字 |
+| 9 | `tape.png` | 膠帶 | 語詞、生字 |
+| 10 | `clip.png` | 夾子、夾 | 語詞、生字 |
+| 11 | `view-mountain.png` | 美景、景 | 語詞、生字 |
+| 12 | `juicy-pear.png` | 多汁、汁 | 語詞、生字 |
+| 13 | `shelter-rain.png` | 遮雨、遮 | 語詞、生字 |
+| 14 | `umbrella-walk.png` | 撐傘、撐 | 語詞、生字 |
+| 15 | `cw-ponytail.png` | 綁頭髮 | 生字語詞 |
+| 16 | `cw-sheep.png` | 綿羊 | 生字語詞 |
+| 17 | `cw-tofu.png` | 豆腐 | 生字語詞 |
+| 18 | `cw-dessert.png` | 甜點 | 生字語詞 |
+| 19 | `cw-pear.png` | 水梨 | 生字語詞 |
+| 20 | `cw-bright-smile.png` | 燦爛 | 生字語詞 |
+| 21 | `cw-strong-bridge.png` | 堅固 | 生字語詞 |
+| 22 | `cw-serving-chopsticks.png` | 公筷 | 生字語詞 |
+| 23 | `cw-bow.png` | 蝴蝶結 | 生字語詞 |
+| 24 | `cw-glue.png` | 膠水 | 生字語詞 |
+| 25 | `cw-pick-food.png` | 夾菜 | 生字語詞 |
+| 26 | `cw-train-view.png` | 風景 | 生字語詞 |
+| 27 | `cw-juice.png` | 果汁 | 生字語詞 |
+| 28 | `cw-sun-hat.png` | 遮陽 | 生字語詞 |
+| 29 | `cw-pillars.png` | 支撐 | 生字語詞 |
+| 30 | `id-stranger-candy.png` | 甜言蜜語 | 成語 |
+| 31 | `id-old-couple.png` | 海枯石爛 | 成語 |
+| 32 | `id-stage-fright.png` | 張口結舌 | 成語 |
+| 33 | `id-best-friends.png` | 如膠似漆 | 成語 |
+| 34 | `id-bossy-king.png` | 一手遮天 | 成語 |
+| 35 | `pr-peach.png` | 水蜜桃鮮嫩多汁 | 短語 |
+| 36 | `pr-fireworks.png` | 煙火五顏六色 | 短語 |
+| 37 | `pr-ball-game.png` | 籃球比賽緊張刺激 | 短語 |
+| 38 | `pr-tidy-room.png` | 房間乾淨整齊 | 短語 |
+| 39 | `pr-chips.png` | 洋芋片香脆可口 | 短語 |
+| 40 | `pr-puppy.png` | 小狗活潑可愛 | 短語 |
+| 41 | `pz-fold-clothes.png` | 把衣服摺起來 | 短語二 |
+| 42 | `pz-socks.png` | 把襪子穿上去 | 短語二 |
+| 43 | `pz-drink-juice.png` | 把果汁喝光光 | 短語二 |
+| 44 | `pz-trash-in.png` | 把垃圾丟進去 | 短語二 |
+| 45 | `pz-open-window.png` | 把窗戶打開來 | 短語二 |
+| 46 | `pz-toys-away.png` | 把玩具收進箱子 | 短語二 |
+| 47 | `clip-umbrella.png` | 改良（夾子小雨傘） | 課文地圖、語詞 |
+| 48 | `pz-memory.png` | 浮現 | 語詞 |
+| 49 | `buzhi.png` | 句型：不只……還…… | 句型 |
+| 50 | `pt-clean-room.png` | 打掃房間 | 句型配對 |
+| 51 | `pt-walk-dog.png` | 照顧小狗 | 句型配對 |
+| 52 | `pt-cross-road.png` | 過馬路 | 句型配對 |
+| 53 | `pt-grow-flower.png` | 種花 | 句型 |
+| 54 | `pt-school-bag.png` | 上學帶東西 | 句型 |
+| 55 | `pt-bake-cake.png` | 做蛋糕 | 句型 |
+| 56 | `map-rot-flower.png` | 梨花淋雨爛掉了 | 課文地圖 |
+| 57 | `map-worry-farmer.png` | 翁先生擔心沒有收成 | 課文地圖 |
+| 58 | `bowl-umbrella.png` | 用空碗做成小雨傘 | 課文地圖 |
+| 59 | `map-many-pears.png` | 撐傘的梨樹結了更多果實 | 課文地圖 |
+| 60 | `map-tape-slow.png` | 貼膠帶、綁線好花時間 | 課文地圖 |
+| 61 | `map-cut-tree.png` | 把梨樹全部砍掉 | 課文地圖（干擾選項） |
+
 ## 活動圖示（待生成）
 
 放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。
