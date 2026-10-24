@@ -980,16 +980,11 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
   .tree .fish-head-box strong { white-space: normal; }
 }
 
-/* 人事時地物表：正方形圖卡，上排三張、下排兩張置中 */
-.wh-table { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; width: 100%; max-width: 600px; margin: 8px auto; box-sizing: border-box; }
-/* 整理好的答案字比較多：卡片不用正方形，高度跟著內容 */
-.wh-answers .wh-tile { aspect-ratio: auto; min-height: 150px; justify-content: flex-start; }
-.wh-tile { position: relative; width: calc((100% - 24px) / 3); aspect-ratio: 1; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-  background: var(--surface); border: 3px solid var(--line); border-radius: 16px; padding: 8px 6px 40px; text-align: center; }
-.wh-icon { font-size: 2em; line-height: 1; }
-.wh-key { font-weight: 700; font-size: 1.5em; color: #AD4A6A; }
-.wh-ask { font-size: 0.95em; line-height: 1.3; overflow-wrap: anywhere; }
-.wh-tile .speaker { position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%); min-width: 36px; min-height: 36px; }
+/* 人事時地物表 */
+.wh-table { display: flex; flex-direction: column; gap: 8px; max-width: 640px; margin: 8px auto; }
+.wh-row { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 3px solid var(--line); border-radius: 14px; padding: 8px 12px; text-align: left; }
+.wh-key { flex: none; min-width: 3.2em; font-weight: 700; font-size: 1.25em; color: #AD4A6A; }
+.wh-ask { flex: 1; font-size: 1.1em; }
 
 /* 翻牌的文字卡：右下角的喇叭，按了才念 */
 .mem-face { position: relative; }
