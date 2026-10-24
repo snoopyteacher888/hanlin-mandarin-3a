@@ -293,7 +293,7 @@
 | 67 | `photo-stone.png` | 南田石只能拍照 | 魚骨圖 |
 | 68 | `take-stone.png` | 把漂亮的石頭帶回家 | 魚骨圖（陷阱卡） |
 
-## 第 10 課（待生成）
+## 第 10 課（已完成）
 
 放在 `images/L10/`。指令在 `docs/chatgpt-image-prompts-L10.txt`。
 
@@ -362,7 +362,7 @@
 | 61 | `find-bride.png` | 新郎帶親友找回新娘 | 魚骨圖 |
 | 62 | `cut-cake.png` | 切結婚蛋糕（陷阱卡） | 魚骨圖（陷阱卡） |
 
-## 第 11 課（待生成）
+## 第 11 課（已完成）
 
 放在 `images/L11/`。指令在 `docs/chatgpt-image-prompts-L11.txt`。
 
