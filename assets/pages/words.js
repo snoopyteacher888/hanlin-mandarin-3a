@@ -61,7 +61,6 @@
     /* 老師批改後「再試一次」：課本短句的造句題 */
     var retry = ctx.params && ctx.params.retry;
     if (retry && H3A.pages.sentenceRetry && H3A.pages.sentenceRetry(main, ctx, w.phrase, retry)) return;
-    var sent = H3A.pages.sentenceSteps ? H3A.pages.sentenceSteps(ctx, w.phrase) : [{}];
     var pics = w.vocab.filter(function (v) { return v.img && !v.noPic; });
     H3A.ui.runSteps(main, ctx, 'vocab', [
       { key: 'cards', name: '看語詞卡', say: '每一張語詞卡都點開，看看圖片，聽聽意思。', make: function () {
@@ -78,8 +77,7 @@
       } },
       pics.length >= 3 ? { key: 'memory', name: '翻牌配對', say: '翻開兩張牌，找出一樣的圖片和語詞。', custom: function (stage, c, done) {
         H3A.ui.memoryGame(stage, c, pics, done);
-      } } : {},
-      sent[0]
+      } } : {}
     ], function () { run(main, ctx); });
   };
   H3A.pages.similar = function run(main, ctx) {

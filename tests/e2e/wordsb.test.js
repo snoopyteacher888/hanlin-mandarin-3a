@@ -113,30 +113,10 @@ test('phrase speak exact answer is correct', async () => {
   assert.deepEqual(p.errors, []);
 });
 
-test('課本短句（混合、斷裂）在學會語詞：先看語詞卡，再用語詞造句', async () => {
-  const before = srv.posts.filter(x => x.action === 'submit').length;
-  const p = await page(); await p.goto(BASE + '#/L06/vocab?step=make&s=bear');
-  const steps = await p.$$eval('.step-tab', x => x.map(e => e.dataset.step));
-  assert.ok(steps.includes('make') && !steps.includes('use'));
-  await nextLearn(p);
-  /* 沒說到語詞 → 提示 */
-  await say(p, '我把紅色和白色放在一起');
-  await p.waitForSelector('.feedback.hint');
-  assert.match(await p.textContent('.feedback.hint'), /記得句子裡要說到「混合」/);
-  await say(p, '我把紅色和白色的顏料混合在一起');
-  await p.waitForSelector('.feedback.ok >> text=等老師批改');
-  await next(p);
-  await say(p, '鉛筆掉到地上筆芯斷裂了');
-  await p.waitForSelector('.feedback.ok >> text=等老師批改');
-  await p.click('text=看結果 ▶');
-  await p.waitForSelector('.result');
-  assert.equal(speechFor('pm1').at(-1).said, '我把紅色和白色的顏料混合在一起');
-  assert.equal(speechFor('pm1').at(-1).activity, 'vocab');
-  const rec = srv.posts.filter(x => x.action === 'submit').slice(before).map(x => x.record).find(r => r.activity === 'vocab');
-  assert.equal(rec.items.find(i => i.q === 'pm1').status, 'pending');
-  /* 說說看不進錯題複習 */
-  const queue = await p.evaluate(() => JSON.parse(localStorage.getItem('h3a.review.bear') || '{}'));
-  assert.ok(!JSON.stringify(queue).includes('pm1'));
+test('學會語詞沒有造句步驟', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/vocab?s=bear');
+  await p.waitForSelector('.step-tab');
+  assert.deepEqual(await p.$$eval('.step-tab', x => x.map(e => e.dataset.step)), ['cards', 'picmatch', 'choose', 'memory']);
   assert.deepEqual(p.errors, []);
 });
 

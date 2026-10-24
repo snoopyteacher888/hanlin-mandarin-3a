@@ -1,5 +1,5 @@
 /* 短語短句：分步驟——認識短語 → 看圖選疊字 → 看圖說說看。
-   課本「短句」用語詞造句的部分（例如混合、斷裂），老師要求放到「學會語詞」裡（sentenceSteps） */
+   課本「短句」用語詞造句的部分（例如混合、斷裂）老師要求拿掉；只留給以前已經送出的造句「再試一次」用（sentenceRetry） */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow, Q = H3A.wordq;
 
@@ -29,17 +29,6 @@
     }, p.words.map(function (w) { return w.word + '，' + w.meaning; }).join(''));
   }
 
-  /* 課本「短句」的部分（用課本語詞造句）放在「學會語詞」裡，這裡提供給 words.js 用 */
-  H3A.pages.sentenceSteps = function (ctx, p) {
-    if (!p || !p.words || !p.words.length) return [{}];
-    var names = p.words.map(function (w) { return w.word; });
-    /* 「語詞用得對」老師要求拿掉；造句前先看語詞卡 */
-    return [
-      (p.make || []).length ? { key: 'make', name: '用語詞造句', say: '先認識「' + names.join('」「') + '」，再用它說一句話。', make: function () {
-        return [wordsSlide(ctx, p)].concat(p.make.map(makeQ));
-      } } : {}
-    ];
-  };
   H3A.pages.sentenceRetry = function (main, ctx, p, id) {
     var m = p && (p.make || []).filter(function (x) { return x.id === id; })[0];
     if (!m) return false;

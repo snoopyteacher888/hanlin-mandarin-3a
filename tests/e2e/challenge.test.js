@@ -78,7 +78,7 @@ test('組合字（生字第 3 步）：選出缺的那一塊，做完接改錯�
   assert.deepEqual(p.errors, []);
 });
 
-test('翻牌配對：翻錯會蓋回去，全部配對完接下一步', async () => {
+test('翻牌配對（語詞最後一步）：翻錯會蓋回去，全部配對完看結果', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/vocab?step=memory&s=bear');
   for (let round = 0; round < 5; round++) {
     await p.waitForSelector('.mem-card');
@@ -98,8 +98,7 @@ test('翻牌配對：翻錯會蓋回去，全部配對完接下一步', async ()
     await p.click('.btn-next:not([hidden])');
     if (label.includes('完成')) break;
   }
-  /* 翻牌後面還有「語詞用得對」 */
-  await p.waitForSelector('.step-done');
+  await p.waitForSelector('.result');
   /* 翻錯的兩張都進錯題複習 */
   const q = await p.evaluate(() => JSON.parse(localStorage.getItem('h3a.review.bear') || '{}'));
   assert.equal(Object.keys(q).filter(k => k.startsWith('L06|')).length, 2);
