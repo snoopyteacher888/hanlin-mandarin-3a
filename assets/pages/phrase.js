@@ -50,7 +50,7 @@
       p.say.length ? { key: 'say', name: '看圖說說看', say: '看圖，用短語說說看。', make: function () { return p.say.map(sayQ); } } : {},
       /* 第二個短語（例如：在草地上開心的打滾） */
       p.phrase2 ? { key: 'intro2', name: '認識短語二', say: '看一看「' + p.phrase2.intro.example + '」是怎麼組成的。', make: function () { return [introSlide(ctx, p.phrase2)]; } } : {},
-      p.phrase2 ? { key: 'fill2', name: '拖拉組短語', say: '看圖，把每一塊拖到對的空格裡。', make: function (r) {
+      p.phrase2 ? { key: 'fill2', name: '拼短語', say: '看圖，把每一塊拖到對的空格裡。', make: function (r) {
         return S(p.phrase2.fill, r).map(function (x) { return Q.patternFillQuestion(x, null, r); });
       } } : {}
     ], function () { run(main, ctx); });

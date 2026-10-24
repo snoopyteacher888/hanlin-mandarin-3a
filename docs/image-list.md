@@ -751,6 +751,76 @@
 | 73 | `five-early.png` | 提早五分鐘開始 | 魚骨圖 |
 | 74 | `new-bag.png` | 爸爸買了新書包（陷阱卡） | 魚骨圖（陷阱卡） |
 
+## 第 4 課（待生成）
+
+放在 `images/L04/`。指令在 `docs/chatgpt-image-prompts-L04.txt`。
+
+| # | 檔名 | 要畫什麼 | 用在 |
+|---|---|---|---|
+| 1 | `steam-pot.png` | 冒 | 語詞、生字 |
+| 2 | `chef.png` | 師傅 | 語詞、生字 |
+| 3 | `dining-hall.png` | 食堂 | 語詞、生字 |
+| 4 | `master-apprentice.png` | 師徒 | 語詞、生字 |
+| 5 | `boiling-water.png` | 沸騰 | 語詞、生字 |
+| 6 | `scoop-soup.png` | 舀、湯 | 語詞、生字 |
+| 7 | `wind-chime.png` | 風鈴 | 語詞、生字 |
+| 8 | `pot.png` | 鍋子 | 語詞、生字 |
+| 9 | `pick-firewood.png` | 撿柴 | 語詞、生字 |
+| 10 | `solve-problem.png` | 解決 | 語詞、生字 |
+| 11 | `remove-firewood.png` | 釜底抽薪、薪 | 語詞、生字 |
+| 12 | `stop-sign.png` | 止 | 生字 |
+| 13 | `pull-book.png` | 抽 | 語詞、生字 |
+| 14 | `flag-wave.png` | 揚 | 生字 |
+| 15 | `scoop-boiling.png` | 揚湯止沸 | 語詞 |
+| 16 | `welcome-guests.png` | 接待 | 語詞 |
+| 17 | `cw-cold.png` | 感冒 | 生字語詞 |
+| 18 | `cw-mechanic.png` | 修車師傅 | 生字語詞 |
+| 19 | `cw-auditorium.png` | 禮堂 | 生字語詞 |
+| 20 | `cw-catch-fish.png` | 徒手 | 生字語詞 |
+| 21 | `cw-horses.png` | 奔騰 | 生字語詞 |
+| 22 | `cw-spoon.png` | 湯匙 | 生字語詞 |
+| 23 | `cw-doorbell.png` | 門鈴 | 生字語詞 |
+| 24 | `cw-hotpot.png` | 火鍋 | 生字語詞 |
+| 25 | `cw-pick-trash.png` | 撿垃圾 | 生字語詞 |
+| 26 | `cw-understand.png` | 了解 | 生字語詞 |
+| 27 | `cw-salary.png` | 薪水 | 生字語詞 |
+| 28 | `cw-rain-stop.png` | 停止 | 生字語詞 |
+| 29 | `cw-drawer.png` | 抽屜 | 生字語詞 |
+| 30 | `cw-praise.png` | 表揚 | 生字語詞 |
+| 31 | `id-give-up.png` | 打退堂鼓 | 成語 |
+| 32 | `id-thin-dog.png` | 骨瘦如柴 | 成語 |
+| 33 | `id-team-win.png` | 揚眉吐氣 | 成語 |
+| 34 | `id-stop-game.png` | 適可而止 | 成語 |
+| 35 | `id-half-know.png` | 一知半解 | 成語 |
+| 36 | `pr-sofa.png` | 軟軟的沙發上 | 短語 |
+| 37 | `pr-cave.png` | 黑黑的山洞裡 | 短語 |
+| 38 | `pr-peak.png` | 高高的山頂上 | 短語 |
+| 39 | `pr-clear-river.png` | 清清的河水中 | 短語 |
+| 40 | `pr-grass.png` | 綠綠的草叢裡 | 短語 |
+| 41 | `pr-fridge.png` | 冰冰的冰箱裡 | 短語 |
+| 42 | `pz-comfort.png` | 安慰哭泣的妹妹 | 短語二 |
+| 43 | `pz-help-up.png` | 扶起跌倒的小朋友 | 短語二 |
+| 44 | `pz-feed-cat.png` | 餵飽肚子餓的小貓 | 短語二 |
+| 45 | `pz-wake-dad.png` | 叫醒睡著的爸爸 | 短語二 |
+| 46 | `pz-lost-grandma.png` | 幫助迷路的奶奶 | 短語二 |
+| 47 | `pz-cheer-runner.png` | 鼓勵累壞的哥哥 | 短語二 |
+| 48 | `dang.png` | 句型：當……，…… | 句型 |
+| 49 | `pt-green-walk.png` | 當綠燈亮起 | 句型配對 |
+| 50 | `pt-dog-greet.png` | 當媽媽打開家門 | 句型配對 |
+| 51 | `pt-sunset-dark.png` | 當太陽下山 | 句型配對 |
+| 52 | `pt-teacher-enter.png` | 當老師走進教室 | 句型 |
+| 53 | `pt-rainbow-sky.png` | 當雨停了 | 句型 |
+| 54 | `pt-story-clap.png` | 當我說完故事 | 句型 |
+| 55 | `keshi.png` | 句型：……，可是…… | 句型 |
+| 56 | `pt-search-pencil.png` | 我找了好久 | 句型配對 |
+| 57 | `pt-balloon-pop.png` | 弟弟一直吹氣球 | 句型配對 |
+| 58 | `pt-push-door.png` | 我很用力的推門 | 句型配對 |
+| 59 | `pt-kick-miss.png` | 我用力踢球 | 句型 |
+| 60 | `pt-somersault.png` | 練習翻跟斗 | 句型 |
+| 61 | `pt-dirty-hands.png` | 把手洗了三次 | 句型 |
+| 62 | `map-calm-pot.png` | 火變小，水不滾了 | 課文地圖 |
+| 63 | `map-ice-pot.png` | 在鍋子裡加冰塊 | 課文地圖（干擾選項） |
+
 ## 活動圖示（待生成）
 
 放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。

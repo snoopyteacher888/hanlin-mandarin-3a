@@ -23,9 +23,11 @@
     weile: [['為了', 'conj'], ['想做到的事', 'cond'], ['誰做了什麼', 'res1']],
     erqie: [['誰或什麼東西', 'cond'], ['第一個好地方', 'res1'], ['而且', 'conj'], ['更進一步的好地方', 'res2']],
     rang: [['先發生的事', 'cond'], ['讓', 'conj'], ['接著出現的情形', 'res1']],
-    yinsuo: [['因為', 'conj'], ['什麼原因', 'cond'], ['所以', 'conj'], ['有什麼結果', 'res1']]
+    yinsuo: [['因為', 'conj'], ['什麼原因', 'cond'], ['所以', 'conj'], ['有什麼結果', 'res1']],
+    dang: [['當', 'conj'], ['先發生的事', 'cond'], ['接著發生的事', 'res1']],
+    keshi: [['做了什麼事', 'cond'], ['可是', 'conj'], ['跟想的不一樣的結果', 'res1']]
   };
-  var LABEL = { zhiyao: { cond: '條件', res1: '結果' }, ruguo: { cond: '假設', res1: '結果一', res2: '結果二' }, yinwei: { cond: '原因', res1: '結果' }, jingran: { cond: '發生的事', res1: '想不到的結果' }, cai: { cond: '先做到的事', res1: '接著發生的事' }, yibian: { cond: '這一邊', res1: '另一邊' }, xianzai: { cond: '什麼時候', res1: '第一件事', res2: '第二件事' }, chule: { cond: '做什麼事', res1: '第一個好處', res2: '第二個好處' }, youren: { cond: '有人做這個', res1: '有人做那個', res2: '大家怎麼了' }, caineng: { cond: '要先做到的事', res1: '會有的結果' }, meixiangdao: { cond: '本來以為', res1: '想不到的結果' }, jiu: { cond: '先發生的事', res1: '馬上跟著的結果' }, yihuier: { cond: '誰或什麼東西', res1: '第一種樣子', res2: '第二種樣子' }, weile: { cond: '想做到的事', res1: '做了什麼' }, erqie: { cond: '誰或什麼東西', res1: '第一個好地方', res2: '更進一步的好地方' }, rang: { cond: '先發生的事', res1: '接著出現的情形' }, yinsuo: { cond: '原因', res1: '結果' } };
+  var LABEL = { zhiyao: { cond: '條件', res1: '結果' }, ruguo: { cond: '假設', res1: '結果一', res2: '結果二' }, yinwei: { cond: '原因', res1: '結果' }, jingran: { cond: '發生的事', res1: '想不到的結果' }, cai: { cond: '先做到的事', res1: '接著發生的事' }, yibian: { cond: '這一邊', res1: '另一邊' }, xianzai: { cond: '什麼時候', res1: '第一件事', res2: '第二件事' }, chule: { cond: '做什麼事', res1: '第一個好處', res2: '第二個好處' }, youren: { cond: '有人做這個', res1: '有人做那個', res2: '大家怎麼了' }, caineng: { cond: '要先做到的事', res1: '會有的結果' }, meixiangdao: { cond: '本來以為', res1: '想不到的結果' }, jiu: { cond: '先發生的事', res1: '馬上跟著的結果' }, yihuier: { cond: '誰或什麼東西', res1: '第一種樣子', res2: '第二種樣子' }, weile: { cond: '想做到的事', res1: '做了什麼' }, erqie: { cond: '誰或什麼東西', res1: '第一個好地方', res2: '更進一步的好地方' }, rang: { cond: '先發生的事', res1: '接著出現的情形' }, yinsuo: { cond: '原因', res1: '結果' }, dang: { cond: '先發生的事', res1: '接著發生的事' }, keshi: { cond: '做了什麼事', res1: '不一樣的結果' } };
 
   function formulaRow(key) {
     return h('div', { class: 'pt-formula' }, FORMULA[key].map(function (f) {
