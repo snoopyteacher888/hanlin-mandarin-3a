@@ -2,6 +2,10 @@
    生字、語詞：options 的第一個是正確答案（作答時會打亂）。 */
 (function (root) {
   var d = {
+    /* 理解提問的分類（照課本「閱讀理解提問」學習單）：extract 提取訊息、infer 推論訊息、interpret 詮釋整合、evaluate 比較評估。
+       只放題號，不放課文 */
+    quizLevels: { qa: 'extract', qb: 'extract', qc: 'extract', qd: 'extract', qe: 'infer', qf: 'infer', qg: 'infer',
+      qh: 'interpret', qj: 'interpret', k2: 'interpret', qi: 'evaluate', k1: 'evaluate' },
     hanzi: [
       { id: 'h-鹹', combo: {'layout': 'lr', 'parts': [['鹵', 'm', '鹽巴'], ['咸', 's', '']]}, char: '鹹', zhuyin: 'ㄒㄧㄢˊ', radical: '鹵', strokes: 20, words: ['鹹味', '鹹蛋'], say: '鹹，鹹味的鹹', cloze: '＿味', img: 'salty.png', options: ['鹹', '減', '喊', '感'], clue: '這個字跟鹽巴有關。', explain: '答案是「鹹」。左邊的「鹵」是鹽巴，鹽巴的味道就是鹹。', parts: ['鹵', '咸'], story: '左邊的「鹵」是鹽巴，右邊的「咸」念起來很像「鹹」。鹽巴的味道，就是「鹹」。', sentence: '海水喝起來鹹鹹的。', build: { layout: 'lr', show: ['？', '咸'], answer: '鹵', options: ['鹵', '口', '氵', '扌'] } },
       { id: 'h-蔚', combo: {'layout': 'tb', 'parts': [['艹', 'm', '草'], ['尉', 's', '']]}, char: '蔚', zhuyin: 'ㄨㄟˋ', radical: '艸', strokes: 15, words: ['蔚藍'], say: '蔚，蔚藍的蔚', cloze: '＿藍', img: 'blue-sea.png', options: ['蔚', '慰', '衛', '位'], clue: '這個字的上面，是草字頭。', explain: '答案是「蔚」，上面是草字頭；「慰」是安慰的慰，下面是「心」。', parts: ['艹', '尉'], story: '上面是草字頭，下面的「尉」念起來很像「蔚」。「蔚藍」就是很漂亮的深藍色。', sentence: '蔚藍的天空飄著白雲。', build: { layout: 'tb', show: ['？', '尉'], answer: '艹', options: ['艹', '心', '竹', '雨'] } },

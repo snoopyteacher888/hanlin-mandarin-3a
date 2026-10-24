@@ -2,6 +2,10 @@
    生字、語詞：options 的第一個是正確答案（作答時會打亂）。 */
 (function (root) {
   var d = {
+    /* 理解提問的分類（照課本「閱讀理解提問」學習單）：extract 提取訊息、infer 推論訊息、interpret 詮釋整合、evaluate 比較評估。
+       只放題號，不放課文 */
+    quizLevels: { qa: 'extract', q2: 'extract', qb: 'extract', qc: 'extract', q4: 'extract', qd: 'extract', q5: 'extract',
+      q6: 'infer', q7: 'infer', q8: 'infer', qf: 'extract', q9: 'extract', qg: 'extract', q10: 'extract', k1: 'evaluate', k2: 'evaluate' },
     hanzi: [
       { id: 'h-墨', combo: {'layout': 'tb', 'parts': [['黑', 'm', '黑色'], ['土', 'm', '泥土']]}, char: '墨', zhuyin: 'ㄇㄛˋ', radical: '土', strokes: 15, words: ['石墨', '墨水'], say: '墨，石墨的墨', cloze: '石＿', img: 'graphite.png', options: ['墨', '黑', '默', '磨'], clue: '這個字跟泥土有關。', explain: '答案是「墨」。石墨是從地底下挖出來的黑色石頭，跟泥土一樣，所以「墨」的下面是「土」。', parts: ['黑', '土'], story: '上面是「黑」，下面是「土」。黑色的土，就是「墨」。', sentence: '爸爸用毛筆沾墨汁寫春聯。', build: { layout: 'tb', show: ['黑', '？'], answer: '土', options: ['土', '木', '火', '氵'], clue: '想一想：墨是黑黑的，從地底下挖出來，跟什麼東西有關？' } },
       { id: 'h-製', combo: {'layout': 'tb', 'parts': [['制', 's', ''], ['衣', 'm', '衣服']]}, char: '製', zhuyin: 'ㄓˋ', radical: '衣', strokes: 14, words: ['製成', '製作'], say: '製，製成的製', cloze: '＿成', img: 'materials.png', options: ['製', '制', '治', '至'], clue: '這個字跟衣服有關。', explain: '答案是「製」。「製」是做東西的意思，以前最常做的是衣服，所以下面是「衣」。', parts: ['制', '衣'], story: '下面是「衣」。以前人用布做衣服，所以「製」就是把東西做出來。', sentence: '這張桌子是用木頭製成的。', build: { layout: 'tb', show: ['制', '？'], answer: '衣', options: ['衣', '木', '土', '口'], clue: '想一想：以前的人最常做的東西是什麼？穿在身上的。' } },

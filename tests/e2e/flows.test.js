@@ -66,17 +66,17 @@ test('quiz hints never reveal the answer, then teach', async () => {
   assert.match(await p.textContent('.feedback'), /老師教你/);
   assert.match(await p.textContent('.feedback'), new RegExp('答案是「' + answerText + '」'));
   await p.click('text=我懂了');
-  /* 理解提問分步驟；這一步做完會出現「這一步完成了」 */
-  await p.waitForSelector('.step-done');
+  /* 進到下一題；如果這一步剛好做完，會出現「這一步完成了」 */
+  await p.waitForFunction(() => document.querySelectorAll('.dot.done').length === 1 || document.querySelector('.step-done'));
 });
 
 test('double tap advances once', async () => {
   const p = await page(); await unlock(p, '#/L06/quiz?s=bear'); await p.waitForSelector('.option');
   await p.click(`.option[data-index="${await answerIndex(p)}"]`);
   await p.dblclick('.btn-next');
-  /* 連點兩下不會跳過「這一步完成了」 */
-  await p.waitForSelector('.step-done');
-  assert.ok(await p.$('.step-go'));
+  /* 連點兩下只前進一題，也不會跳過「這一步完成了」 */
+  await p.waitForTimeout(300);
+  assert.ok((await p.$$eval('.dot.done', x => x.length)) === 1 || await p.$('.step-done'));
 });
 
 test('fishbone map', async () => {

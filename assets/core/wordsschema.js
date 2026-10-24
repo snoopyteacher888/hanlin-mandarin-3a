@@ -60,6 +60,10 @@
       if (!nonEmpty(s.clue) || !nonEmpty(s.explain)) errs.push(s.id + ' 缺少線索或說明');
       if (s.meaning !== undefined && (!nonEmpty(s.meaning) || s.meaning.indexOf(s.answer) >= 0)) errs.push(s.id + ' 的意思要有內容、不能說出答案');
     });
+    /* 理解提問分類：只能是四類其中之一 */
+    Object.keys(w.quizLevels || {}).forEach(function (k) {
+      if (['extract', 'infer', 'interpret', 'evaluate'].indexOf(w.quizLevels[k]) < 0) errs.push('理解提問 ' + k + ' 的分類不對');
+    });
     /* 改錯字：正確的字在句子裡剛好一次、錯字不在句子裡；提示不能出現正確的字 */
     (w.fix || []).forEach(function (f) {
       useId(f.id);
