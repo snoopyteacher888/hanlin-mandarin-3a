@@ -676,6 +676,7 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .drag-chip-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 8px 0 4px; flex-wrap: wrap; }
 .drag-chip { font-size: 1.5em; font-weight: 700; letter-spacing: .08em; background: #FFF4D6; border: 3px solid #F2A900; border-radius: 16px; padding: 6px 22px; cursor: grab; box-shadow: 0 4px 0 #E0B84D; }
 .drag-chip-tip { color: var(--ink-soft); }
+.drag-ask { text-align: center; margin: 6px 0 -2px; font-size: 1.25em; font-weight: 700; }
 
 /* ===== 配對遊戲 ===== */
 .match-board { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.4fr); gap: 14px; align-items: center; max-width: 900px; margin: 8px auto; }
