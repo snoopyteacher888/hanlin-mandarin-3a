@@ -124,7 +124,7 @@ test('pattern five steps finish', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/pattern?s=cat');
   await p.click('[data-pattern="zhiyao"]');
   /* 例句裡的關聯詞是獨立的橘色框 */
-  await p.waitForSelector('.pt-example .conj-word');
+  await p.waitForSelector('.pt-example .conj-word', { state: 'attached' });
   assert.deepEqual([...new Set(await p.$$eval('.pt-example .conj-word', x => x.map(e => e.textContent)))].sort(), ['只要', '就'].sort());
   await nextLearn(p);
   for (let i = 0; i < 3; i++) await answerChoice(p);
