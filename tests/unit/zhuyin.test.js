@@ -45,7 +45,7 @@ test('一 before a 4th-tone character is marked 2nd tone (ㄧˊ)', () => {
   assert.equal(mark('十一樣'), '十一樣');
 });
 test('reduplicated family words: second character light tone', () => {
-  ['弟弟', '妹妹', '姊姊', '哥哥', '奶奶', '爺爺', '寶寶', '娃娃', '謝謝', '叔叔', '姑姑', '舅舅'].forEach(w => assert.equal(mark(w), w + V(1), w));
+  ['弟弟', '妹妹', '姊姊', '哥哥', '奶奶', '爺爺', '寶寶', '娃娃', '謝謝', '叔叔', '姑姑', '舅舅', '嬸嬸'].forEach(w => assert.equal(mark(w), w + V(1), w));
 });
 test('一 before 1st/2nd/3rd tone is marked 4th tone (ㄧˋ)', () => {
   assert.equal(mark('一天'), '一' + V(2) + '天');

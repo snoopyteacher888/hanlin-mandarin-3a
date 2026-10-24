@@ -64,3 +64,9 @@ test('和 spoken as 漢 and 還 as 孩, except fixed words', async () => {
   assert.equal(fixSay('把書還給老師'), '把書還給老師');
   assert.equal(fixSay('歸還'), '歸還');
 });
+
+test('注音寫的狀聲詞念成同音字（老師要求）', () => {
+  const { fixSay } = require('../../assets/tts.js');
+  assert.equal(fixSay('「ㄎㄡ ㄌㄨㄛ ㄎㄡ ㄌㄨㄛ！」'), '「摳囉 摳囉！」');
+  assert.equal(fixSay('ㄉㄧㄥ ㄉㄧㄥ ㄉㄤ ㄉㄤ'), '叮叮噹噹');
+});
