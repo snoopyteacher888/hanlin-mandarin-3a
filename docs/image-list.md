@@ -517,6 +517,75 @@
 | 65 | `happy-family.png` | 全家人露出幸福的笑容 | 魚骨圖 |
 | 66 | `visit-center.png` | 全家開車去月子中心看嬸嬸（陷阱卡） | 魚骨圖（陷阱卡） |
 
+## 第 1 課（待生成）
+
+放在 `images/L01/`。指令在 `docs/chatgpt-image-prompts-L01.txt`。
+
+| # | 檔名 | 要畫什麼 | 用在 |
+|---|---|---|---|
+| 1 | `waiting.png` | 等待 | 語詞、生字 |
+| 2 | `snail.png` | 蝸牛 | 語詞、生字、魚骨圖 |
+| 3 | `cow.png` | 牛 | 生字 |
+| 4 | `dog-tail.png` | 牠 | 語詞、生字 |
+| 5 | `slow-eat.png` | 慢吞吞 | 語詞、生字、短語 |
+| 6 | `ruler.png` | 寸 | 語詞、生字 |
+| 7 | `busy-mom.png` | 忙碌 | 語詞、生字 |
+| 8 | `run-fast.png` | 飛奔 | 語詞、生字 |
+| 9 | `spring.png` | 彈簧 | 語詞、生字、魚骨圖 |
+| 10 | `blue-bag.png` | 它 | 語詞、生字 |
+| 11 | `hem-pants.png` | 縮短 | 語詞、生字、短語 |
+| 12 | `sad-girl.png` | 悲傷 | 語詞、生字 |
+| 13 | `flowing-water.png` | 流水 | 語詞、生字、魚骨圖 |
+| 14 | `forever-friends.png` | 永 | 語詞、生字 |
+| 15 | `cw-host-guest.png` | 招待 | 生字語詞 |
+| 16 | `cw-snail-shell.png` | 蝸牛（背著殼） | 生字語詞 |
+| 17 | `cw-milk.png` | 牛奶 | 生字語詞 |
+| 18 | `cw-ducks.png` | 牠們 | 生字語詞 |
+| 19 | `cw-frog-eat.png` | 吞下 | 生字語詞 |
+| 20 | `cw-shoe-size.png` | 尺寸 | 生字語詞 |
+| 21 | `cw-busy-ants.png` | 忙忙碌碌 | 生字語詞 |
+| 22 | `cw-dog-run.png` | 奔跑 | 生字語詞 |
+| 23 | `cw-piano.png` | 彈琴 | 生字語詞 |
+| 24 | `cw-spring-bed.png` | 彈簧床 | 生字語詞 |
+| 25 | `cw-apples.png` | 它們 | 生字語詞 |
+| 26 | `cw-shorts.png` | 短褲 | 生字語詞 |
+| 27 | `cw-sad-bird.png` | 悲傷（小鳥受傷） | 生字語詞 |
+| 28 | `cw-sweat.png` | 流汗 | 生字語詞 |
+| 29 | `cw-hug-friends.png` | 永遠 | 生字語詞 |
+| 30 | `id-cant-wait.png` | 迫不及待 | 成語情境題 |
+| 31 | `id-hold-back.png` | 忍氣吞聲 | 成語情境題 |
+| 32 | `id-too-busy.png` | 疲於奔命 | 成語情境題 |
+| 33 | `id-baby-math.png` | 對牛彈琴 | 成語情境題 |
+| 34 | `id-quick-talk.png` | 長話短說 | 成語情境題 |
+| 35 | `id-fix-roof.png` | 一勞永逸 | 成語情境題 |
+| 36 | `pr-laugh.png` | 笑得實在太開心了 | 短語 |
+| 37 | `pr-sleep-late.png` | 睡得實在太晚了 | 短語 |
+| 38 | `pr-sing.png` | 唱得實在太好聽了 | 短語 |
+| 39 | `pr-tall-books.png` | 書堆得實在太高了 | 短語 |
+| 40 | `pr-big-balloon.png` | 氣球吹得實在太大了 | 短語 |
+| 41 | `pr-clean-dishes.png` | 碗洗得實在太乾淨了 | 短語 |
+| 42 | `pr-slow-snail.png` | 蝸牛爬得實在太慢了 | 短語 |
+| 43 | `pr-heavy-rain.png` | 雨下得實在太大了 | 短語 |
+| 44 | `pr-long-line.png` | 隊伍排得實在太長了 | 短語 |
+| 45 | `pz-pig.png` | 小豬的肚子圓滾滾 | 短語 |
+| 46 | `pz-cat-fur.png` | 小貓的毛軟綿綿 | 短語 |
+| 47 | `pz-bread.png` | 麵包的味道香噴噴 | 短語 |
+| 48 | `pz-grass.png` | 草地的顏色綠油油 | 短語 |
+| 49 | `pz-apple.png` | 蘋果的外皮紅通通 | 短語 |
+| 50 | `pz-stars.png` | 夜空的星星亮晶晶 | 短語 |
+| 51 | `yihuier.png` | ……一會兒……一會兒…… | 句型 |
+| 52 | `pt-fog-sun.png` | 一會兒起霧，一會兒出太陽 | 句型配對 |
+| 53 | `pt-baby-mood.png` | 小嬰兒一會兒哭，一會兒笑 | 句型配對 |
+| 54 | `pt-traffic-light.png` | 一會兒紅燈，一會兒綠燈 | 句型配對 |
+| 55 | `pt-sister-busy.png` | 妹妹一會兒畫畫，一會兒看書 | 句型填空 |
+| 56 | `pt-dog-back.png` | 小狗一會兒跑到門口，一會兒跑回沙發 | 句型填空 |
+| 57 | `pt-waves.png` | 海浪一會兒衝上沙灘，一會兒退回海裡 | 句型填空 |
+| 58 | `time-clock.png` | 時間是什麼（魚頭） | 魚骨圖 |
+| 59 | `snail-slow.png` | 腳步慢吞吞 | 魚骨圖 |
+| 60 | `zebra-run.png` | 時間是飛奔的斑馬 | 魚骨圖 |
+| 61 | `day-night.png` | 一會兒白天，一會兒黑夜 | 魚骨圖 |
+| 62 | `rabbit.png` | 時間是一隻兔子（陷阱卡） | 魚骨圖（陷阱卡） |
+
 ## 活動圖示（待生成）
 
 放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。

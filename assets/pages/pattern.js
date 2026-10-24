@@ -18,9 +18,10 @@
     youren: [['什麼地方', 'cond'], ['有人', 'conj'], ['做什麼', 'cond'], ['有人', 'conj'], ['做什麼', 'res1'], ['大家怎麼了', 'res2']],
     caineng: [['要先做到的事', 'cond'], ['才能', 'conj'], ['會有的結果', 'res1']],
     meixiangdao: [['本來以為的事', 'cond'], ['沒想到', 'conj'], ['想不到的結果', 'res1']],
-    jiu: [['先發生的事', 'cond'], ['就', 'conj'], ['馬上跟著的結果', 'res1']]
+    jiu: [['先發生的事', 'cond'], ['就', 'conj'], ['馬上跟著的結果', 'res1']],
+    yihuier: [['誰或什麼東西', 'cond'], ['一會兒', 'conj'], ['第一種樣子', 'res1'], ['一會兒', 'conj'], ['第二種樣子', 'res2']]
   };
-  var LABEL = { zhiyao: { cond: '條件', res1: '結果' }, ruguo: { cond: '假設', res1: '結果一', res2: '結果二' }, yinwei: { cond: '原因', res1: '結果' }, jingran: { cond: '發生的事', res1: '想不到的結果' }, cai: { cond: '先做到的事', res1: '接著發生的事' }, yibian: { cond: '這一邊', res1: '另一邊' }, xianzai: { cond: '什麼時候', res1: '第一件事', res2: '第二件事' }, chule: { cond: '做什麼事', res1: '第一個好處', res2: '第二個好處' }, youren: { cond: '有人做這個', res1: '有人做那個', res2: '大家怎麼了' }, caineng: { cond: '要先做到的事', res1: '會有的結果' }, meixiangdao: { cond: '本來以為', res1: '想不到的結果' }, jiu: { cond: '先發生的事', res1: '馬上跟著的結果' } };
+  var LABEL = { zhiyao: { cond: '條件', res1: '結果' }, ruguo: { cond: '假設', res1: '結果一', res2: '結果二' }, yinwei: { cond: '原因', res1: '結果' }, jingran: { cond: '發生的事', res1: '想不到的結果' }, cai: { cond: '先做到的事', res1: '接著發生的事' }, yibian: { cond: '這一邊', res1: '另一邊' }, xianzai: { cond: '什麼時候', res1: '第一件事', res2: '第二件事' }, chule: { cond: '做什麼事', res1: '第一個好處', res2: '第二個好處' }, youren: { cond: '有人做這個', res1: '有人做那個', res2: '大家怎麼了' }, caineng: { cond: '要先做到的事', res1: '會有的結果' }, meixiangdao: { cond: '本來以為', res1: '想不到的結果' }, jiu: { cond: '先發生的事', res1: '馬上跟著的結果' }, yihuier: { cond: '誰或什麼東西', res1: '第一種樣子', res2: '第二種樣子' } };
 
   function formulaRow(key) {
     return h('div', { class: 'pt-formula' }, FORMULA[key].map(function (f) {
