@@ -1,5 +1,5 @@
-/* 短語短句（照課本：短語＝疊字＋的＋名詞；短句＝用課本的語詞造句）
-   分步驟——短語：認識短語 → 選疊字 → 說說看；短句：認識語詞（選用得對的句子）→ 造句 */
+/* 短語短句：分步驟——認識短語 → 看圖選疊字 → 看圖說說看。
+   課本「短句」用語詞造句的部分（例如混合、斷裂），老師要求放到「學會語詞」裡（sentenceSteps） */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow, Q = H3A.wordq;
 
@@ -21,7 +21,7 @@
     }, say, it.example);
   }
   function wordsSlide(ctx, p) {
-    return F.learn('短句要用的語詞：' + p.words.map(function (w) { return w.word; }).join('、'), function () {
+    return F.learn('認識語詞：' + p.words.map(function (w) { return w.word; }).join('、'), function () {
       return h('div', { class: 'word-grid vocab-grid' }, p.words.map(function (w) {
         return h('div', { class: 'word-card learn-word' }, H3A.ui.picture(ctx.lessonId, w.img, w.word),
           h('strong', {}, w.word, H3A.ui.speaker(w.word, null)), F.sayLine(w.meaning));
@@ -29,6 +29,25 @@
     }, p.words.map(function (w) { return w.word + '，' + w.meaning; }).join(''));
   }
 
+  /* 課本「短句」的部分（用課本語詞造句）放在「學會語詞」裡，這裡提供給 words.js 用 */
+  H3A.pages.sentenceSteps = function (ctx, p) {
+    if (!p || !p.words || !p.words.length) return [{}, {}];
+    var names = p.words.map(function (w) { return w.word; });
+    return [
+      { key: 'use', name: '語詞用得對', say: '認識「' + names.join('」「') + '」，再選出用得對的句子。', make: function (r) {
+        return [wordsSlide(ctx, p)].concat(H3A.quizgen.shuffle(p.choose || [], r).map(function (x) {
+          var w = p.words.filter(function (y) { return y.word === x.word; })[0];
+          return Q.chooseQuestion(x, r, w && w.meaning);
+        }));
+      } },
+      (p.make || []).length ? { key: 'make', name: '用語詞造句', say: '用「' + names.join('」或「') + '」說一句話。', make: function () { return p.make.map(makeQ); } } : {}
+    ];
+  };
+  H3A.pages.sentenceRetry = function (main, ctx, p, id) {
+    var m = p && (p.make || []).filter(function (x) { return x.id === id; })[0];
+    if (!m) return false;
+    F.retry(main, ctx, makeQ(m)); return true;
+  };
   H3A.pages.phrase = function run(main, ctx) {
     var p = ctx.words && ctx.words.phrase; if (!p) return F.missing(main);
     var retry = ctx.params && ctx.params.retry;
@@ -38,18 +57,11 @@
     }
     var S = H3A.quizgen.shuffle;
     H3A.ui.runSteps(main, ctx, 'phrase', [
-      { key: 'intro', name: '短語：認識短語', say: '看一看，短語是怎麼組成的。', make: function () { return [introSlide(ctx, p)]; } },
-      { key: 'pick', name: '短語：選疊字', say: '看圖，選出最適合的疊字。', make: function (r) {
+      { key: 'intro', name: '認識短語', say: '看一看，短語是怎麼組成的。', make: function () { return [introSlide(ctx, p)]; } },
+      { key: 'pick', name: '看圖選疊字', say: '看圖，選出最適合的疊字。', make: function (r) {
         return S(p.pick, r).map(function (x) { return Q.phrasePickQuestion(x, r); });
       } },
-      p.say.length ? { key: 'say', name: '短語：說說看', say: '看圖，用短語說說看。', make: function () { return p.say.map(sayQ); } } : {},
-      { key: 'words', name: '短句：認識語詞', say: '短句要用課本的語詞造句。先認識「' + p.words.map(function (w) { return w.word; }).join('」「') + '」，再選出用得對的句子。', make: function (r) {
-        return [wordsSlide(ctx, p)].concat(S(p.choose, r).map(function (x) {
-          var w = p.words.filter(function (y) { return y.word === x.word; })[0];
-          return Q.chooseQuestion(x, r, w && w.meaning);
-        }));
-      } },
-      p.make.length ? { key: 'make', name: '短句：造句', say: '用「' + p.words.map(function (w) { return w.word; }).join('」或「') + '」說一句話。', make: function () { return p.make.map(makeQ); } } : {}
+      p.say.length ? { key: 'say', name: '看圖說說看', say: '看圖，用短語說說看。', make: function () { return p.say.map(sayQ); } } : {}
     ], function () { run(main, ctx); });
   };
 })(this);

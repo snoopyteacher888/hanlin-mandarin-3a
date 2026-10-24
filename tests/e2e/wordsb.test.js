@@ -94,17 +94,31 @@ const speechFor = qid => srv.speech.filter(s => s.qid === qid);
 test('phrase speak exact answer is correct', async () => {
   const before = srv.posts.filter(x => x.action === 'submit').length;
   const p = await page(); await p.goto(BASE + '#/L06/phrase?s=bear');
+  assert.deepEqual(await p.$$eval('.step-tab', x => x.map(e => e.dataset.step)), ['intro', 'pick', 'say']);
   await nextLearn(p);
-  for (let i = 0; i < 8; i++) await answerChoice(p);
+  for (let i = 0; i < W.phrase.pick.length; i++) await answerChoice(p);
   await p.waitForSelector('.mic-btn');
   await say(p, '閃亮亮的鉛筆。');
   await p.waitForSelector('.feedback.ok.celebrate .big-check');
   await next(p);
   await say(p, '圓滾滾的小狗');
   await p.waitForSelector('.feedback.ok >> text=等老師批改');
-  await next(p);
+  await p.click('text=看結果 ▶');
+  await p.waitForSelector('.result');
+  assert.match(await p.textContent('.result p'), /1 題等老師批改/);
+  assert.equal(speechFor('ps1').at(-1).status, 'auto');
+  assert.equal(speechFor('ps2').at(-1).status, 'pending');
+  const rec = srv.posts.filter(x => x.action === 'submit').slice(before).map(x => x.record).find(r => r.activity === 'phrase');
+  assert.ok(rec, 'phrase record posted');
+  assert.deepEqual(p.errors, []);
+});
+
+test('課本短句（混合、斷裂）在學會語詞：選用得對的句子、用語詞造句', async () => {
+  const before = srv.posts.filter(x => x.action === 'submit').length;
+  const p = await page(); await p.goto(BASE + '#/L06/vocab?step=use&s=bear');
+  assert.ok((await p.$$eval('.step-tab', x => x.map(e => e.dataset.step))).includes('make'));
   await nextLearn(p);
-  for (let i = 0; i < 4; i++) await answerChoice(p);
+  for (let i = 0; i < W.phrase.choose.length; i++) await answerChoice(p);
   /* 沒說到語詞 → 提示 */
   await say(p, '我把紅色和白色放在一起');
   await p.waitForSelector('.feedback.hint');
@@ -116,17 +130,12 @@ test('phrase speak exact answer is correct', async () => {
   await p.waitForSelector('.feedback.ok >> text=等老師批改');
   await p.click('text=看結果 ▶');
   await p.waitForSelector('.result');
-  assert.match(await p.textContent('.result p'), /共 13 題，3 題等老師批改/);
-  assert.equal(speechFor('ps1').at(-1).status, 'auto');
-  assert.equal(speechFor('ps2').at(-1).status, 'pending');
   assert.equal(speechFor('pm1').at(-1).said, '我把紅色和白色的顏料混合在一起');
-  const recs = srv.posts.filter(x => x.action === 'submit').slice(before).map(x => x.record);
-  const rec = recs.find(r => r.activity === 'phrase');
-  assert.ok(rec, 'phrase record posted');
-  assert.equal(rec.items.find(i => i.q === 'pm1').result, 'pending');
+  assert.equal(speechFor('pm1').at(-1).activity, 'vocab');
+  const rec = srv.posts.filter(x => x.action === 'submit').slice(before).map(x => x.record).find(r => r.activity === 'vocab');
   assert.equal(rec.items.find(i => i.q === 'pm1').status, 'pending');
   /* 說說看不進錯題複習 */
-  const queue = await p.evaluate(() => JSON.parse(localStorage.getItem('h3a.review.bear') || '[]'));
+  const queue = await p.evaluate(() => JSON.parse(localStorage.getItem('h3a.review.bear') || '{}'));
   assert.ok(!JSON.stringify(queue).includes('pm1'));
   assert.deepEqual(p.errors, []);
 });
