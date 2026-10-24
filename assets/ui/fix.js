@@ -77,7 +77,8 @@
     function shake(el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
     function climb(asked) {
       var hs = q.hints[step], n = bad[step];
-      if (n >= 3) {
+      /* 第二次錯就老師教你（老師要求：不要兩次給同一個提示） */
+      if (n >= 2) {
         taught = true;
         if (step === 'find') {
           chars[q.at].classList.add('found');

@@ -317,6 +317,8 @@
 
   /* 改錯字：句子裡的生字被換成錯字。先點出錯的字，再選正確的字。
      at：錯字在句子裡的位置；zone：第二層提示框起來的範圍（錯字和前後各一個字） */
+  /* 老師要求：答錯後的提示要給正確語詞的意思（線索「，想一想，」前面那一段），不給字形 */
+  function clueMeaning(clue) { var i = clue.indexOf('，想一想'); return i > 0 ? clue.slice(0, i) + '。' : clue; }
   function fixQuestion(item, r) {
     var at = item.sentence.indexOf(item.char);
     var shown = item.sentence.slice(0, at) + item.wrong + item.sentence.slice(at + 1);
@@ -330,7 +332,7 @@
       hints: {
         find: { h1: { text: '按喇叭聽一聽句子，想一想，哪一個字的意思怪怪的？' }, h2: { text: '錯的字就在框起來的這幾個字裡面。' },
           teach: { text: '寫錯的是「' + item.wrong + '」，老師幫你圈起來了。接著要把它改成正確的字。' } },
-        pick: { h1: { text: item.clue }, h2: { text: '有一個字一定不對，已經拿掉了。再想一想。' },
+        pick: { h1: { text: item.clue }, h2: { text: clueMeaning(item.clue) },
           teach: { text: item.explain } }
       } };
   }
@@ -366,7 +368,7 @@
     }
     return null;
   }
-  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, vocabKind: vocabKind, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion, fixQuestion: fixQuestion,
+  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, vocabKind: vocabKind, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, partSay: partSay, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion, fixQuestion: fixQuestion,
     listenQuestion: listenQuestion, whQuestion: whQuestion, WH: WH,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
     patternFillQuestion: patternFillQuestion, rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };

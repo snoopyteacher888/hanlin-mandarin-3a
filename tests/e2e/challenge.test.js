@@ -105,7 +105,7 @@ test('翻牌配對（語詞最後一步）：翻錯會蓋回去，全部配對�
   assert.deepEqual(p.errors, []);
 });
 
-test('圖片配對：拖圖到語詞上，拖錯會提示', async () => {
+test('圖片配對：拖圖到語詞上，拖錯只搖一搖、不給提示', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/vocab?step=picmatch&s=bear');
   for (let round = 0; round < 5; round++) {
     await p.waitForSelector('.match-col.left .match-card:not(:disabled)');
@@ -121,7 +121,9 @@ test('圖片配對：拖圖到語詞上，拖錯會提示', async () => {
         await p.mouse.move(rb.x + rb.width / 2, rb.y + rb.height / 2, { steps: 8 }); await p.mouse.up();
       };
       await drag(`.match-col.left [data-id="${ids[0]}"]`, `.match-col.right [data-id="${ids[1]}"]`);
-      await p.waitForSelector('.feedback.hint');
+      await p.waitForSelector('.match-card.shake');
+      assert.equal(await p.$('.feedback.hint'), null);
+      assert.equal(await p.$('.hint-btn'), null);
       await drag(`.match-col.left [data-id="${ids[0]}"]`, `.match-col.right [data-id="${ids[0]}"]`);
       await p.waitForSelector(`.match-col.right [data-id="${ids[0]}"].matched`);
     }

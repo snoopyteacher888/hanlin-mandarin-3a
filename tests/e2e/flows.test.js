@@ -60,8 +60,7 @@ test('quiz hints never reveal the answer, then teach', async () => {
   assert.ok(!(await p.textContent('.feedback .hint-text')).includes(answerText));
   assert.ok(!(await p.innerText('.feedback')).includes('答案是'));
   assert.equal(await p.$eval('.btn-next', b => b.hidden), true);
-  en = await enabled(p); await p.click(`.option[data-index="${en.find(i => i !== a)}"]`);
-  assert.ok((await enabled(p)).length >= 2);
+  /* 第二次選錯就老師教你（老師要求：不要兩次給同一個提示） */
   en = await enabled(p); await p.click(`.option[data-index="${en.find(i => i !== a)}"]`);
   assert.match(await p.textContent('.feedback'), /老師教你/);
   assert.match(await p.textContent('.feedback'), new RegExp('答案是「' + answerText + '」'));

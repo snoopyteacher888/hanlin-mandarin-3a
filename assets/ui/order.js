@@ -78,7 +78,8 @@
       climb(false);
     }
     function climb(asked) {
-      if (bad >= 3) {
+      /* 第二次錯就老師教你（老師要求：不要兩次給同一個提示） */
+      if (bad >= 2) {
         if (taught) return;
         taught = true; bulb.remove();
         H3A.ui.showTeach(feedback, q.hints.teach, function () {

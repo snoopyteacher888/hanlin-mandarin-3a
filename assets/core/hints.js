@@ -1,7 +1,7 @@
 /* 答錯提示：選錯的選項一律停用（變淡；老師要求）。
    提示是一層一層的（level）：答錯一次或自己按 💡 一次，都往上一層。
    第 3 層 → mustTeach：由畫面顯示答案並說明原因（「老師教你」）。
-   三選一的題目，第二次選錯就「老師教你」（老師要求：不讓孩子靠刪去法猜到）。 */
+   第二次選錯就「老師教你」（老師要求：不讓孩子靠刪去法猜到，也不要兩次都給同一個提示）。 */
 (function (root, factory) {
   var m = factory();
   if (typeof module === 'object' && module.exports) module.exports = m;
@@ -28,7 +28,7 @@
   }
   function lv(state) { return state.level === undefined ? state.wrongCount : state.level; }
   function mustTeach(state) {
-    return lv(state) >= TEACH_AFTER || (state.optionCount === 3 && state.wrongCount >= 2);
+    return lv(state) >= TEACH_AFTER || state.wrongCount >= 2;
   }
   function result(state) {
     if (mustTeach(state)) return 'taught';

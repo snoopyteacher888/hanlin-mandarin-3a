@@ -86,3 +86,10 @@ test('長的句子一句一句念，下一步要等全部念完', async () => {
   const ok = await make(s, U).speak('第一句話很長很長。第二句話也很長。');
   assert.equal(ok, true); assert.deepEqual(s.spoken, ['第一句話很長很長。', '第二句話也很長。']);
 });
+
+test('破音字單獨念時換成同音字（生字卡「彈，彈簧的彈」）', () => {
+  const T = require('../../assets/tts.js');
+  assert.equal(T.fixSay('彈，彈簧的彈'), '談，彈簧的談');
+  assert.equal(T.fixSay('挑，挑戰的挑'), '窕，挑戰的窕');
+  assert.equal(T.fixSay('彈琴很好玩。'), '彈琴很好玩。');
+});

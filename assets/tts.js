@@ -40,7 +40,12 @@
       return '者';
     });
   }
-  function fixSay(t) { SAY_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return swapZhe(swapChar(t)); }
+  /* 破音字單獨念（「彈，彈簧的彈」的頭尾）時，語音引擎不知道是哪一個音：換成只有一個讀音的同音字 */
+  var SOLO = { '彈': '談', '挑': '窕', '參': '餐', '結': '節', '角': '腳', '應': '英', '乘': '成', '傅': '付', '冒': '帽', '沿': '言', '解': '姐' };
+  function fixSolo(t) {
+    return t.replace(/(^|[，。、的「])([\u4e00-\u9fff])(?=$|[，。、！？」])/g, function (all, pre, c) { return SOLO[c] ? pre + SOLO[c] : all; });
+  }
+  function fixSay(t) { t = fixSolo(t); SAY_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return swapZhe(swapChar(t)); }
   /* 長的句子分成一句一句念：有些語音引擎（Chrome 的 Google 語音）念太久會自己停掉，還說念完了，
      「下一步」就太早出現（老師要求：全部念完才出現） */
   function chunks(t) {

@@ -10,9 +10,9 @@ test('wrong 1 disables picked only', () => {
 });
 test('every wrong pick is disabled (老師要求：答錯的都變淡)', () => {
   let s = pickWrong(create(4, 2), 0); s = pickWrong(s, 1);
-  assert.deepEqual(s.disabled, [0, 1]); assert.equal(result(s), 'hint2');
-  s = pickWrong(s, 3);
-  assert.deepEqual(s.disabled, [0, 1, 3]); assert.equal(mustTeach(s), true); assert.equal(result(s), 'taught');
+  assert.deepEqual(s.disabled, [0, 1]);
+  /* 四選一也是第二次選錯就老師教你（老師要求：不要兩次給同一個提示） */
+  assert.equal(mustTeach(s), true); assert.equal(result(s), 'taught');
 });
 test('three options: second wrong pick is disabled too', () => {
   let s = pickWrong(create(3, 0), 1); s = pickWrong(s, 2);

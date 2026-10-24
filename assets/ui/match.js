@@ -29,7 +29,6 @@
         h('span', { class: 'match-text' }, p.right.text));
       R[p.id] = el; rcol.appendChild(el);
     });
-    var bulb = h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: hint }, '💡');
     /* 線畫在 svg 上，蓋在兩排卡片上面 */
     var NS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(NS, 'svg'), liveLine = null, lines = {};
     svg.setAttribute('class', 'match-lines'); svg.setAttribute('aria-hidden', 'true');
@@ -54,7 +53,6 @@
     }
     function redraw() { Object.keys(lines).forEach(function (id) { setLine(lines[id], anchor(L[id], 'r'), anchor(R[id], 'l')); }); }
     root.addEventListener('resize', redraw);
-    box.appendChild(bulb);
 
     function openRights() { return Object.keys(R).filter(function (k) { return !R[k].disabled; }).map(function (k) { return R[k]; }); }
     function pick(id) {
@@ -72,7 +70,8 @@
       L[id].classList.remove('picked'); picked = null;
       [L[id], R[rid]].forEach(function (el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); });
       if (misses[id] >= 3) { taught[id] = true; picked = id; pair(id, true); return; }
-      H3A.ui.showHint(feedback, { text: misses[id] === 1 ? '不是這一個，再想一想。' : '再看一次左邊這一個，聽聽看它是什麼。' }, ctx, false);
+      /* 老師要求：連連看不給提示，連錯只搖一搖；錯 3 次老師幫忙配好 */
+      H3A.ui.clear(feedback); feedback.className = 'feedback'; H3A.sfx.wrong();
     }
     function pair(id, byTeacher) {
       var c = color[id];
@@ -83,21 +82,13 @@
       if (byTeacher) H3A.ui.showHint(feedback, { text: '老師幫你配好了：' + p.left.text + '，' + p.right.text + '。' }, ctx, true);
       else { H3A.ui.clear(feedback); feedback.className = 'feedback'; H3A.sfx.correct(); H3A.tts.speak(p.right.text); }
       if (--left > 0) return;
-      finished = true; bulb.remove();
+      finished = true;
       H3A.ui.celebrate(feedback, null, null, box.querySelector('.match-board'));
       var items = q.pairs.map(function (x) {
         var m = misses[x.id] || 0;
         return { q: x.id, result: taught[x.id] ? 'taught' : ['first', 'hint1', 'hint2'][Math.min(m, 2)], wrong: [] };
       });
       done(items);
-    }
-    /* 💡：把還沒配好的第一對，左右兩張一起閃一下（算用了一次提示） */
-    function hint() {
-      if (finished) return;
-      var id = picked || q.pairs.filter(function (x) { return !L[x.id].disabled; })[0].id;
-      misses[id] = (misses[id] || 0) + 1;
-      [L[id], R[id]].forEach(function (el) { el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash'); });
-      H3A.ui.showHint(feedback, { text: '看！一閃一閃的兩張是一對。' }, ctx, true);
     }
   }
   H3A.ui.matchQuestion = matchQuestion;

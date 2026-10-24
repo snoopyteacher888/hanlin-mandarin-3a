@@ -60,7 +60,8 @@
       done(bad === 0 ? 'first' : bad === 1 ? 'hint1' : 'hint2', wrongs);
     }
     function climb(asked, tile) {
-      if (bad >= 3) {
+      /* 第二次錯就老師教你（老師要求：不要兩次給同一個提示） */
+      if (bad >= 2) {
         finished = true; bulb.remove();
         tiles.forEach(function (t) { if (!t.disabled) { var s = slots.filter(function (x) { return !x.classList.contains('filled') && x.getAttribute('data-answer') === t.getAttribute('data-text'); })[0]; if (s) put(t, s); } });
         H3A.ui.showTeach(feedback, q.hints.teach, function () { done('taught', wrongs); });

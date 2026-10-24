@@ -10,19 +10,35 @@
   function missing(main) { main.appendChild(h('p', { class: 'notice' }, '這一課的字詞練習還沒準備好。')); }
   function shuffle(list, r) { return H3A.quizgen.shuffle(list, r); }
 
-  /* 組合字的說明頁：黑＋土＝墨、木＋幾＝機 */
-  function buildIntro() {
-    function ex(a, b, c, tag) {
+  /* 組合字的說明頁：用這一課自己的生字當例子（老師要求：不要用別課還沒學的字），
+     上下組合、左右組合各挑一個，兩塊都是簡單、認得的字優先 */
+  var EASY = '口木土日目田心手水火山石竹金言女子大天米王牛白非黃豆皮立青舌甘吉京利快令由新走相交里反音酉衣制力台幾工黑也勿貝士車雨且兆尚寸鄉道'
+    + '阝艹刂氵扌辶亻';
+  function pickBuild(builds, layout) {
+    var list = builds.filter(function (x) { return x.build.layout === layout; });
+    if (!list.length) return null;
+    function score(x) { return x.build.show.filter(function (c) { return EASY.indexOf(c === '？' ? x.build.answer : c) >= 0; }).length; }
+    return list.reduce(function (best, x) { return score(x) > score(best) ? x : best; });
+  }
+  function buildIntro(builds) {
+    var picks = [pickBuild(builds, 'tb'), pickBuild(builds, 'lr')].filter(Boolean);
+    if (picks.length < 2) picks = builds.slice(0, 2);
+    var exs = picks.map(function (x) {
+      var b = x.build, parts = b.show.map(function (c) { return c === '？' ? b.answer : c; });
+      return { parts: parts, char: x.char, tag: b.layout === 'tb' ? '上下組合' : '左右組合' };
+    });
+    function ex(e) {
       return h('div', { class: 'combo-ex' },
-        h('div', { class: 'eq-row' }, h('span', { class: 'eq-part p0' }, H3A.ui.plainChars(a)), h('span', { class: 'eq-op' }, '＋'), h('span', { class: 'eq-part p1' }, H3A.ui.plainChars(b)),
-          h('span', { class: 'eq-op' }, '＝'), h('span', { class: 'eq-part res' }, H3A.ui.plainChars(c))),
-        h('span', { class: 'combo-tag' }, tag));
+        h('div', { class: 'eq-row' }, h('span', { class: 'eq-part p0' }, H3A.ui.plainChars(e.parts[0])), h('span', { class: 'eq-op' }, '＋'), h('span', { class: 'eq-part p1' }, H3A.ui.plainChars(e.parts[1])),
+          h('span', { class: 'eq-op' }, '＝'), h('span', { class: 'eq-part res' }, H3A.ui.plainChars(e.char))),
+        h('span', { class: 'combo-tag' }, e.tag));
     }
+    var say = exs.map(function (e) { return e.parts.map(H3A.wordq.partSay).join('加') + '，變成' + e.char + '，這是' + e.tag + '。'; }).join('');
     return F.learn('組合字', function () {
       return h('div', { class: 'learn-box combo-intro' },
-        h('div', { class: 'combo-row' }, ex('黑', '土', '墨', '上下組合'), ex('木', '幾', '機', '左右組合')),
+        h('div', { class: 'combo-row' }, exs.map(ex)),
         F.sayLine('兩塊組在一起，就變成一個新的字。看一看，哪一個字是它們組成的？'));
-    }, '黑加土，變成墨，這是上下組合。木加幾，變成機，這是左右組合。看一看，哪一個字是它們組成的？');
+    }, say + '看一看，哪一個字是它們組成的？');
   }
 
   H3A.pages.hanzi = function run(main, ctx) {
@@ -48,7 +64,7 @@
         return shuffle(w.hanzi, r).map(function (x) { return F.dragify(H3A.wordq.hanziQuestion(x, r)); });
       } },
       builds.length ? { key: 'build', name: '組合字', say: '看看兩塊組在一起變成哪一個字，把它拖進空格。', make: function (r) {
-        return [buildIntro()].concat(shuffle(builds, r).map(function (x) { return H3A.wordq.buildQuestion(x, r); }));
+        return [buildIntro(builds)].concat(shuffle(builds, r).map(function (x) { return H3A.wordq.buildQuestion(x, r); }));
       } } : {},
       w.fix ? { key: 'fix', name: '改錯字', say: '句子裡有一個字寫錯了，找出來，改成正確的字。', make: function (r) {
         return shuffle(w.fix, r).map(function (x) { return H3A.wordq.fixQuestion(x, r); });
