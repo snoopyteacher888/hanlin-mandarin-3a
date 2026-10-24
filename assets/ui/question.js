@@ -210,7 +210,6 @@
       main.appendChild(dots(questions.length, idx));
       var slot = null;
       var promptText = h('h2', { hidden: !!q.hideText }, q.equation ? eqLine() : q.headChar ? headLine() : q.drag ? withSlot(q.prompt) : q.hl ? hlWords(q.prompt, q.hl) : blanks(q.prompt));
-      if (!q.hideText) H3A.ui.sayable(promptText, q.prompt, q.say);
       function withSlot(text) {
         var m = /＿+/.exec(text);
         if (!m) return text;
@@ -258,7 +257,8 @@
       main.appendChild(h('div', { class: 'prompt' + (q.img ? ' with-img' : '') + (q.drag ? ' drag-prompt' : '') + (q.promptClass ? ' ' + q.promptClass : '') },
         q.img ? h('div', { class: 'prompt-img' }, H3A.ui.picture(ctx.lessonId, q.img, '')) : null,
         q.hideText ? h('span', { class: 'listen-icon', 'aria-hidden': 'true' }, '👂') : null,
-        promptText, showBtn, q.hideText ? H3A.ui.speaker(q.prompt, q.say) : null, bulb));
+        /* 題目按喇叭才念（老師要求；標題才是點一下就念） */
+        promptText, showBtn, H3A.ui.speaker(q.prompt, q.say), bulb));
       /* 排字、改錯字、配對自己做的 💡 也搬到題目右邊（老師要求：提示燈泡都放在題目旁邊） */
       var ownBulb = grid.querySelector('.hint-btn');
       if (ownBulb) main.lastChild.appendChild(ownBulb);
