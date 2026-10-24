@@ -30,7 +30,32 @@
       return keep ? c : SWAP[c];
     });
   }
-  function fixSay(t) { SAY_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return swapChar(t); }
+  /* 「看著、下著」的「著」念輕聲ㄓㄜ˙，語音引擎常念成ㄓㄨㄛˊ（濁）：換成「者」（老師要求）。
+     著急、著火、睡著、找不著（ㄓㄠˊ）和著名、著作、顯著（ㄓㄨˋ）不換 */
+  function swapZhe(t) {
+    return t.replace(/著/g, function (c, at, str) {
+      var prev = str.charAt(at - 1), next = str.charAt(at + 1);
+      if ('急火涼迷'.indexOf(next) >= 0 || '睡不'.indexOf(prev) >= 0) return c;
+      if ('名作'.indexOf(next) >= 0 || '顯土'.indexOf(prev) >= 0) return c;
+      return '者';
+    });
+  }
+  function fixSay(t) { SAY_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return swapZhe(swapChar(t)); }
+  /* 長的句子分成一句一句念：有些語音引擎（Chrome 的 Google 語音）念太久會自己停掉，還說念完了，
+     「下一步」就太早出現（老師要求：全部念完才出現） */
+  function chunks(t) {
+    var out = [], cur = '', q = 0;
+    for (var i = 0; i < t.length; i++) {
+      var c = t.charAt(i);
+      cur += c;
+      if (c === '「' || c === '『') q++;
+      if (c === '」' || c === '』') q = Math.max(0, q - 1);
+      var end = q === 0 && ('。！？；'.indexOf(c) >= 0 || ('」』'.indexOf(c) >= 0 && '。！？'.indexOf(t.charAt(i - 1)) >= 0));
+      if (end && '」』'.indexOf(t.charAt(i + 1)) < 0 && cur.length >= 6) { out.push(cur); cur = ''; }
+    }
+    if (cur.replace(/\s/g, '')) out.push(cur);
+    return out.length ? out : [t];
+  }
   function norm(lang) { return String(lang || '').replace('_', '-').toLowerCase(); }
   function isTaiwan(v) {
     var l = norm(v.lang);
@@ -49,20 +74,38 @@
   function make(synth, Utterance) {
     var token = 0;
     function voice() { return synth ? pickVoice(synth.getVoices()) : null; }
-    function stop() { token++; if (synth) synth.cancel(); }
+    /* intro：先念這段說明，再念緊接著要念的話（例如第一題的題目）。
+       老師要求：每一步的第一題開始前，都先把「現在要做什麼」念出來。沒有人接著念的話，等一下就自己念 */
+    var pending = null, pendingTimer = null;
+    function clean(t) { return fixSay(String(t).replace(/[\uDB40][\uDDE0-\uDDEF]/g, '')); }
+    function stop() { token++; pending = null; if (synth) synth.cancel(); }
+    function intro(text) {
+      pending = text;
+      clearTimeout(pendingTimer);
+      pendingTimer = setTimeout(function () { if (pending) speak(''); }, 400);
+    }
     function speak(text, say) {
+      var pre = pending;
       stop();
       var my = token;
       if (!synth || !Utterance) return Promise.resolve();
+      var main = String(say || text || '');
+      var parts = (pre ? chunks(clean(pre)) : []).concat(main ? chunks(clean(main)) : []);
+      if (!parts.length) return Promise.resolve(true);
       return new Promise(function (resolve) {
-        var u = new Utterance(fixSay(String(say || text).replace(/[\uDB40][\uDDE0-\uDDEF]/g, '')));
         var v = voice();
-        if (v) u.voice = v;
-        u.lang = v ? v.lang : 'zh-TW';
-        u.rate = 0.9;
-        var done = function () { resolve(my === token); };
-        u.onend = done; u.onerror = done;
-        try { synth.speak(u); } catch (e) { resolve(false); }
+        function next(i) {
+          if (my !== token) return resolve(false);
+          if (i >= parts.length) return resolve(true);
+          var u = new Utterance(parts[i]);
+          if (v) u.voice = v;
+          u.lang = v ? v.lang : 'zh-TW';
+          u.rate = 0.9;
+          u.onend = function () { next(i + 1); };
+          u.onerror = function () { next(i + 1); };
+          try { synth.speak(u); } catch (e) { resolve(false); }
+        }
+        next(0);
       });
     }
     function status() {
@@ -71,7 +114,7 @@
       return isTaiwan(v) ? 'taiwan' : 'other';
     }
     function unlock() { if (synth && Utterance) { var u = new Utterance(''); u.volume = 0; synth.speak(u); } }
-    return { speak: speak, stop: stop, status: status, unlock: unlock, hasChinese: function () { return status() !== 'none'; } };
+    return { speak: speak, stop: stop, intro: intro, status: status, unlock: unlock, hasChinese: function () { return status() !== 'none'; } };
   }
-  return { pickVoice: pickVoice, isTaiwan: isTaiwan, make: make, fixSay: fixSay };
+  return { pickVoice: pickVoice, isTaiwan: isTaiwan, make: make, fixSay: fixSay, chunks: chunks };
 });

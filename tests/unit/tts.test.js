@@ -52,7 +52,7 @@ test('3+3 words: first syllable spoken as 2nd tone', async () => {
     ['好短', '豪短'], ['想想看', '詳想看'], ['理解提問', '離解提問'], ['網址', '王址'], ['老虎', '勞虎'], ['火腿', '活腿'],
     ['引起', '銀起'], ['碗裡', '完裡'], ['兩種', '梁種'], ['東西好找', '東西豪找'],
     ['削', '消'], ['削鉛筆機', '消鉛筆機'], ['梢', '燒'], ['樹梢', '樹燒'],
-    ['認識很多字', '認是很多字'], ['木板夾著筆芯', '木板莢著筆芯'], ['黑色汁液', '黑色汁亦'], ['企鵝', '器鵝'],
+    ['認識很多字', '認是很多字'], ['木板夾著筆芯', '木板莢者筆芯'], ['黑色汁液', '黑色汁亦'], ['企鵝', '器鵝'],
     ['小雨點', '小魚點'], ['洗手', '習手'], ['哪裡來', '拿裡來'], ['帶雨傘', '帶魚傘'], ['眨眼睛', '札眼睛'], ['舔舔嘴巴', '甜甜嘴巴']];
   for (const [i, [from, to]] of cases.entries()) { await t.speak(from); assert.equal(s.spoken[i].text, to, from); }
 });
@@ -69,4 +69,20 @@ test('注音寫的狀聲詞念成同音字（老師要求）', () => {
   const { fixSay } = require('../../assets/tts.js');
   assert.equal(fixSay('「ㄎㄡ ㄌㄨㄛ ㄎㄡ ㄌㄨㄛ！」'), '「摳囉 摳囉！」');
   assert.equal(fixSay('ㄉㄧㄥ ㄉㄧㄥ ㄉㄤ ㄉㄤ'), '叮叮噹噹');
+});
+
+test('「著」念輕聲：看著、下著換成「者」，著急、睡著、著名不換（老師要求）', () => {
+  const { fixSay } = require('../../assets/tts.js');
+  assert.equal(fixSay('我看著時間，下著雨'), '我看者時間，下者雨');
+  assert.equal(fixSay('他很著急，睡著了'), '他很著急，睡著了');
+  assert.equal(fixSay('著名的作家'), '著名的作家');
+});
+test('長的句子一句一句念，下一步要等全部念完', async () => {
+  const { make, chunks } = require('../../assets/tts.js');
+  assert.deepEqual(chunks('第一句話很長很長。第二句話也很長。'), ['第一句話很長很長。', '第二句話也很長。']);
+  assert.deepEqual(chunks('他說：「你好嗎？我很好。」然後走了。'), ['他說：「你好嗎？我很好。」', '然後走了。']);
+  const s = { spoken: [], getVoices: () => [], cancel() {}, speak(u) { s.spoken.push(u.text); setTimeout(() => u.onend && u.onend(), 0); } };
+  function U(t) { this.text = t; }
+  const ok = await make(s, U).speak('第一句話很長很長。第二句話也很長。');
+  assert.equal(ok, true); assert.deepEqual(s.spoken, ['第一句話很長很長。', '第二句話也很長。']);
 });

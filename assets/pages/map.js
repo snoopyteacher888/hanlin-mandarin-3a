@@ -123,9 +123,8 @@
       slot.appendChild(h('span', {}, c.text));
       slot.setAttribute('role', 'button'); slot.setAttribute('tabindex', '0');
       slot.addEventListener('click', function () { H3A.tts.speak(c.text, c.say); });
-      /* 放對一張只有音效、念卡片；這一格的卡片全部放好才一起打勾（老師要求） */
-      if (!res.boneDone) { feedback.className = 'feedback'; H3A.ui.clear(feedback); H3A.sfx.correct(); H3A.tts.speak(c.text, c.say); }
-      else ok(c.text, c.say);
+      /* 放對卡片只有音效、念卡片；整張結構圖（連結論）都完成才打勾（老師要求） */
+      feedback.className = 'feedback'; H3A.ui.clear(feedback); H3A.sfx.correct(); H3A.tts.speak(c.text, c.say);
       refreshCards();
       if (res.boneDone) {
         items.push({ q: b.id, result: FB.result(bs), wrong: FB.wrongTexts(map, bs) });
@@ -143,7 +142,8 @@
       tailOrder = q;
       ts = H3A.hints.create(q.options.length, q.answer);
       setPrompt(q.prompt, q.say, function () { ts = H3A.hints.askHint(ts); tailHint(true); });
-      H3A.ui.clear(pool); cardEls = {};
+      /* 結論的選項字比較多：一行一個、置中，喇叭放在卡片旁邊不擋字（老師要求） */
+      H3A.ui.clear(pool); cardEls = {}; pool.classList.add('tail-list');
       q.options.forEach(function (o, i) {
         var wrap = cardButton({ id: 'opt' + i, text: o.text, img: o.img, say: o.say }, function () { pickTail(i); });
         cardEls[i] = wrap.firstChild; pool.appendChild(wrap);
@@ -178,9 +178,9 @@
       tailBox.appendChild(h('span', { class: 'fish-label' }, '結論'));
       tailBox.appendChild(h('span', {}, o.text));
       tailBox.appendChild(H3A.ui.speaker(o.text, o.say));
-      ok(o.text, o.say);
       H3A.ui.clear(pool);
-      feedback.className = 'feedback'; feedback.textContent = '';
+      /* 整張結構圖完成：這時候才打勾（老師要求） */
+      ok(o.text, o.say);
       fish.classList.add('complete');
       H3A.ui.clear(promptEl);
       promptEl.appendChild(h('h2', { class: 'step-q' }, '🎉 ' + shape + '完成了！點上面的圖卡可以再聽一次'));
@@ -214,8 +214,8 @@
     var items = wh.slice().sort(function (a, b) { return order.indexOf(a.key) - order.indexOf(b.key); });
     var intro = F.learn('認識人事時地物', function () {
       return h('div', { class: 'learn-box' }, whTable(order.map(function (k) { return { key: k, text: H3A.wordq.WH[k].ask + '？' }; })),
-        F.sayLine('讀完課文先找出有誰、發生什麼事、什麼時候、在哪裡、有什麼東西。'));
-    }, '人事時地物。人是誰。事是發生什麼事。時是什麼時候。地是在哪裡。物是有什麼東西。讀完課文先找出這五樣。');
+        F.sayLine('讀完課文先找出有誰？發生什麼事？什麼時候？在哪裡？有什麼東西？'));
+    }, '人事時地物。人是誰。事是發生什麼事。時是什麼時候。地是在哪裡。物是有什麼東西。讀完課文先找出有誰？發生什麼事？什麼時候？在哪裡？有什麼東西？');
     var sum = F.learn('這一課的人事時地物', function () {
       return h('div', { class: 'learn-box' }, whTable(items.map(function (it) { return { key: it.key, text: it.options[0] }; }), true));
     }, '這一課的人事時地物。' + items.map(function (it) { return it.key + '，' + it.options[0]; }).join('。'));

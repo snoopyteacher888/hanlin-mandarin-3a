@@ -134,7 +134,8 @@ test('fishbone map', async () => {
   /* 放對一張還不打勾，整格放好才打勾（老師要求） */
   assert.equal(await p.$$eval('.big-check', x => x.length), 0);
   await p.click('.map-card[data-card="c-fire"]');
-  assert.equal(await p.$$eval('.big-check', x => x.length), 1);
+  /* 一格放好也還不打勾，整張結構圖完成才打勾 */
+  assert.equal(await p.$$eval('.big-check', x => x.length), 0);
   await p.waitForSelector('.bone-box[data-bone="b2"].now');
   await p.click('.map-card[data-card="c-blow"]');
   await p.waitForSelector('.bone-box[data-bone="b3"].now');
@@ -143,6 +144,7 @@ test('fishbone map', async () => {
   const idx = await p.$$eval('.map-card .option-text', x => x.findIndex(e => e.textContent === '水杯可以裝水'));
   await p.click(`.map-card[data-card="opt${idx}"]`);
   await p.waitForSelector('.fish.complete');
+  assert.equal(await p.$$eval('.big-check', x => x.length), 1);
   await p.click('.btn-next'); await p.waitForSelector('.result');
   assert.equal(await p.textContent('.result p'), '第一次就答對 3 題，共 4 題');
   assert.deepEqual(p.errors, []);

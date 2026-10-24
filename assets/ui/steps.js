@@ -37,6 +37,8 @@
       boxNo.textContent = '第 ' + (i + 1) + '／' + steps.length + ' 步';
       boxText.textContent = s.name + '：' + s.say;
       boxSayText = s.name + '。' + s.say;
+      /* 每一步開始先把「現在要做什麼」念出來，再念第一題（老師要求：孩子不太看說明） */
+      H3A.tts.intro(boxSayText);
       H3A.ui.clear(stage);
       if (s.custom) return s.custom(stage, ctx, function (list) { finish(i, list); });
       var qs = H3A.quizgen.balance(s.make(r), r);
