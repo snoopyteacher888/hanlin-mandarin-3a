@@ -517,7 +517,7 @@
 | 65 | `happy-family.png` | 全家人露出幸福的笑容 | 魚骨圖 |
 | 66 | `visit-center.png` | 全家開車去月子中心看嬸嬸（陷阱卡） | 魚骨圖（陷阱卡） |
 
-## 第 1 課（待生成）
+## 第 1 課（已完成）
 
 放在 `images/L01/`。指令在 `docs/chatgpt-image-prompts-L01.txt`。
 

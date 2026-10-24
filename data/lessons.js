@@ -1,6 +1,6 @@
 /* 公開的課次清單（不含課文內容） */
 window.H3A_LESSONS = [
-  { id: 'L01', title: '時間是什麼', open: false },
+  { id: 'L01', title: '時間是什麼', open: true },
   { id: 'L02', title: '妙用便利貼', open: false },
   { id: 'L03', title: '提早五分鐘', open: false },
   { id: 'L04', title: '水滾了', open: false },
