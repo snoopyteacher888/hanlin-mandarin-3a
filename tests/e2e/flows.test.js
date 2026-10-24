@@ -297,7 +297,7 @@ test('vocab cards: each opened card gets a check, next only after all', async ()
   for (const id of ids) {
     assert.ok(await p.isHidden('.next-bar .btn-next'));
     await p.click(`.word-card[data-id="${id}"]`);
-    await p.click('.vocab-pop .btn-secondary');
+    await p.click('.vocab-pop .pop-x');
     assert.ok(await p.$eval(`.word-card[data-id="${id}"]`, e => e.classList.contains('seen')));
   }
   await p.waitForSelector('.next-bar .btn-next:not([hidden])');

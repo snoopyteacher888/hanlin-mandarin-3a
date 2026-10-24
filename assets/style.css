@@ -915,3 +915,9 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 .word-card .seen-check { position: absolute; top: 4px; right: 10px; color: #E0322E; font-size: 1.6em; font-weight: 900; line-height: 1; visibility: hidden; }
 .word-card.seen { border-color: var(--ok); }
 .word-card.seen .seen-check { visibility: visible; }
+
+/* 小視窗右上角的叉叉 */
+.vocab-box { position: relative; }
+.pop-x { position: absolute; top: 10px; right: 10px; width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--line); background: var(--surface); font-size: 1.3em; line-height: 1; color: var(--ink-soft); z-index: 2; }
+.pop-x:hover { background: var(--muted); }
+.vocab-box.wide { padding-top: 26px; }

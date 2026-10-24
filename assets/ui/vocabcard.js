@@ -7,12 +7,12 @@
     var close = function () { card.remove(); open = null; };
     var card = h('div', { class: 'vocab-pop', role: 'dialog', 'aria-label': v.word, onclick: function (e) { if (e.target === card) close(); } },
       h('div', { class: 'vocab-box wide' },
+        h('button', { type: 'button', class: 'pop-x', 'aria-label': '關閉', onclick: close }, '✕'),
         h('div', { class: 'vd-row' },
           h('div', { class: 'vd-pic' }, H3A.ui.picture(lessonId, v.img, v.word)),
           h('div', { class: 'vd-text' },
             h('h3', {}, v.word, H3A.ui.speaker(v.word, v.say)),
-            H3A.ui.infoLine('意思：', v.meaning, v.meaning))),
-        h('button', { type: 'button', class: 'btn-secondary', onclick: close }, '關閉')));
+            H3A.ui.infoLine('意思：', v.meaning, v.meaning)))));
     document.body.appendChild(card);
     open = card;
     H3A.tts.speak(v.word, v.say);

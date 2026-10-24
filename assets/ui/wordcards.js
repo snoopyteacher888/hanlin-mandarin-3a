@@ -5,7 +5,8 @@
   function strokeUrl(ch) { return 'https://stroke-order.learningweb.moe.edu.tw/dictView.jsp?ID=' + ch.codePointAt(0) + '&la=0'; }
   function popup(box) {
     var pop = h('div', { class: 'vocab-pop', role: 'dialog', onclick: function (e) { if (e.target === pop) pop.remove(); } }, box);
-    box.appendChild(h('button', { type: 'button', class: 'btn-secondary', onclick: function () { pop.remove(); } }, '關閉'));
+    /* 右上角的叉叉關掉（老師要求，不放「關閉」按鈕） */
+    box.insertBefore(h('button', { type: 'button', class: 'pop-x', 'aria-label': '關閉', onclick: function () { pop.remove(); } }, '✕'), box.firstChild);
     document.body.appendChild(pop);
   }
   /* 一段：小標題＋一句話＋🔊 */
