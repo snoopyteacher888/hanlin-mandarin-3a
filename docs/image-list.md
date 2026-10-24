@@ -444,7 +444,7 @@
 | 74 | `blessing-wave.png` | 互相祝福新年快樂、一路平安 | 魚骨圖 |
 | 75 | `walk-home.png` | 全家走路回南部（陷阱卡） | 魚骨圖（陷阱卡） |
 
-## 第 12 課（待生成）
+## 第 12 課（已完成）
 
 放在 `images/L12/`。指令在 `docs/chatgpt-image-prompts-L12.txt`。
 

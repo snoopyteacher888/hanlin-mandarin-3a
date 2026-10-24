@@ -11,5 +11,5 @@ window.H3A_LESSONS = [
   { id: 'L09', title: '阿塱壹古道', open: true },
   { id: 'L10', title: '秋千上的婚禮', open: true },
   { id: 'L11', title: '一路平安', open: true },
-  { id: 'L12', title: '不一樣的團圓', open: false }
+  { id: 'L12', title: '不一樣的團圓', open: true }
 ];
