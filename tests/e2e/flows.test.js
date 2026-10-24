@@ -79,6 +79,29 @@ test('double tap advances once', async () => {
   assert.ok((await p.$$eval('.dot.done', x => x.length)) === 1 || await p.$('.step-done'));
 });
 
+test('tree map: words.mapLayout = tree draws the same map as a tree (老師要求)', async () => {
+  const p = await page();
+  await p.addInitScript(() => {
+    let w;
+    Object.defineProperty(window, 'H3A_WORDS', { configurable: true, get() { return w; },
+      set(v) { w = new Proxy(v, { set(o, k, val) { if (k === 'L06') val.mapLayout = 'tree'; o[k] = val; return true; } }); } });
+  });
+  await unlock(p, '#/L06/map?s=cat'); await p.waitForSelector('.fish.tree .tree-branches .bone-box');
+  assert.equal(await p.$$eval('.fish-spine', x => x.length), 0);
+  assert.match(await p.textContent('main h2'), /樹狀圖/);
+  for (const id of ['c-sand', 'c-fire']) await p.click(`.map-card[data-card="${id}"]`);
+  await p.waitForSelector('.bone-box[data-bone="b2"].now');
+  await p.click('.map-card[data-card="c-blow"]');
+  await p.waitForSelector('.bone-box[data-bone="b3"].now');
+  await p.click('.map-card[data-card="c-water"]');
+  await p.waitForSelector('.fish-tail-box.now');
+  const idx = await p.$$eval('.map-card .option-text', x => x.findIndex(e => e.textContent === '水杯可以裝水'));
+  await p.click(`.map-card[data-card="opt${idx}"]`);
+  await p.waitForSelector('.fish.tree.complete');
+  assert.match(await p.textContent('.step-q'), /樹狀圖完成了/);
+  assert.deepEqual(p.errors, []);
+});
+
 test('fishbone map', async () => {
   const p = await page(); await unlock(p, '#/L06/map?s=cat'); await p.waitForSelector('.map-card');
   await p.click('.map-card[data-card="c-lead"]');

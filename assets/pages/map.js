@@ -1,4 +1,5 @@
-/* 課文地圖：依 storyMap.type 畫不同架構。第 6 課是魚骨圖：一根骨頭一根骨頭找圖卡，最後選魚尾（結論） */
+/* 課文地圖：依 storyMap.type 畫不同架構。第 6 課是魚骨圖：一根骨頭一根骨頭找圖卡，最後選魚尾（結論）
+   words.mapLayout = 'tree'：同樣的資料改畫成樹狀圖（題目在上面，分支由左往右排；老師要求：有些課文用這種結構，不一定都要魚骨圖） */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h;
   var FB = H3A.fishbone;
@@ -8,6 +9,8 @@
     var steps = map.bones.map(function (b) { return b.id; }).concat(['tail']);
     var stepIdx = 0, placed = [], items = [], startedAt = Date.now(), bs = null, ts = null, tailOrder = null;
     var cardEls = {}, boneEls = {}, finished = false;
+    var tree = (ctx.words && ctx.words.mapLayout) === 'tree';
+    var shape = tree ? '樹狀圖' : '魚骨圖';
     var r = H3A.quizgen.rng(Date.now() & 0xffffffff);
 
     H3A.ui.clear(main);
@@ -19,21 +22,23 @@
     }
     var promptEl = h('div', { class: 'prompt' });
     var feedback = h('div', { class: 'feedback', role: 'status' });
-    var fish = h('div', { class: 'fish' }, h('div', { class: 'fish-spine', 'aria-hidden': 'true' }));
+    var fish = tree ? h('div', { class: 'fish tree' }) : h('div', { class: 'fish' }, h('div', { class: 'fish-spine', 'aria-hidden': 'true' }));
     var tailBox = h('div', { class: 'fish-tail-box' }, h('span', { class: 'fish-label' }, '結論'), h('span', { class: 'fish-q' }, '？'));
     var headBox = h('div', { class: 'fish-head-box' },
-      h('span', { class: 'fish-label' }, '主題'), h('strong', {}, headLines(map.head.text)), H3A.ui.speaker(map.head.text, map.head.say));
-    fish.appendChild(tailBox); fish.appendChild(headBox);
+      h('span', { class: 'fish-label' }, '主題'), h('strong', {}, tree ? map.head.text : headLines(map.head.text)), H3A.ui.speaker(map.head.text, map.head.say));
+    var branches = tree ? h('div', { class: 'tree-branches' }) : fish;
+    if (tree) { fish.appendChild(headBox); fish.appendChild(branches); fish.appendChild(tailBox); }
+    else { fish.appendChild(tailBox); fish.appendChild(headBox); }
     map.bones.forEach(function (b, i) {
       var slots = h('div', { class: 'bone-slots' });
       b.cards.forEach(function () { slots.appendChild(h('span', { class: 'bone-slot' })); });
       var el = h('div', { class: 'bone-box bone-' + (i + 1), 'data-bone': b.id },
         h('div', { class: 'bone-title' }, b.title, H3A.ui.speaker(b.title, null)), slots);
-      boneEls[b.id] = el; fish.appendChild(el);
+      boneEls[b.id] = el; branches.appendChild(el);
     });
     var pool = h('div', { class: 'map-cards' });
     var nextBar = h('div', { class: 'next-bar' });
-    main.appendChild(h('div', { class: 'prompt' }, H3A.ui.sayable(h('h2', {}, '用魚骨圖整理課文重點'), '用魚骨圖整理課文重點')));
+    main.appendChild(h('div', { class: 'prompt' }, H3A.ui.sayable(h('h2', {}, '用' + shape + '整理課文重點'), '用' + shape + '整理課文重點')));
     main.appendChild(fish);
     main.appendChild(promptEl);
     main.appendChild(feedback);
@@ -175,7 +180,7 @@
       feedback.className = 'feedback'; feedback.textContent = '';
       fish.classList.add('complete');
       H3A.ui.clear(promptEl);
-      promptEl.appendChild(h('h2', { class: 'step-q' }, '🎉 魚骨圖完成了！點上面的圖卡可以再聽一次'));
+      promptEl.appendChild(h('h2', { class: 'step-q' }, '🎉 ' + shape + '完成了！點上面的圖卡可以再聽一次'));
       nextBar.appendChild(h('button', { type: 'button', class: 'btn-next', onclick: function (e) {
         e.currentTarget.disabled = true;
         var rate = H3A.scoring.firstTryRate(items.map(function (x) { return x.result; }));

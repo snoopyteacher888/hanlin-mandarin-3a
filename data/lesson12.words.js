@@ -2,6 +2,8 @@
    生字、語詞：options 的第一個是正確答案（作答時會打亂）。 */
 (function (root) {
   var d = {
+    /* 課文地圖畫成樹狀圖（照課本的課文結構表） */
+    mapLayout: 'tree',
     /* 理解提問的分類（照課本「閱讀理解提問」學習單）：extract 提取訊息、infer 推論訊息、interpret 詮釋整合、evaluate 比較評估。
        只放題號，不放課文 */
     quizLevels: { qa: 'extract', qd: 'extract', qf: 'extract', qg: 'extract', qb: 'infer', qc: 'infer', qh: 'infer',
@@ -23,10 +25,10 @@
       { id: 'h-握', combo: {'layout': 'lr', 'parts': [['扌', 'm', '手'], ['屋', 's', '']]}, char: '握', zhuyin: 'ㄨㄛˋ', radical: '手', strokes: 12, words: ['握手', '握住'], say: '握，握手的握', cloze: '＿手', img: 'hold-hands.png', options: ['握', '屋', '渥', '喔'], clue: '這個字的左邊，是提手旁。', explain: '答案是「握」，左邊是提手旁；「屋」是房屋的屋，沒有提手旁。', parts: ['扌', '屋'], story: '左邊是提手旁，右邊的「屋」念起來像「握」。用手把東西抓緊，就是「握」。', sentence: '比賽結束，兩隊互相握手。', build: { layout: 'lr', show: ['？', '屋'], answer: '扌', options: ['扌', '口', '氵', '木'], clue: '想一想：把東西抓緊，要用身體的哪個部分？' } }
     ],
     vocab: [
-      { id: 'v-團圓', cloze: true, clozeOptions: ['團圓', '吵架', '分開', '搬家'], word: '團圓', meaning: '分開的家人，又聚在一起。', example: '過年時，家人從各地回來＿＿。', img: 'reunion-table.png', options: ['團圓', '視訊', '鏡頭', '叔叔'] },
+      { id: 'v-團圓', cloze: true, clozeOptions: ['團圓', '吵架', '分開', '上學'], word: '團圓', meaning: '分開的家人，又聚在一起。', example: '過年時，家人從各地回來＿＿。', img: 'reunion-table.png', options: ['團圓', '視訊', '鏡頭', '叔叔'] },
       { id: 'v-剩下', cloze: true, clozeOptions: ['剩下', '吃光', '買到', '丟掉'], word: '剩下', meaning: '用掉一些以後，還留著的。', example: '餅乾吃了好多，盒子裡只＿＿兩片。', img: 'leftover.png', options: ['剩下', '透過', '默默', '團圓'] },
-      { id: 'v-默默', cloze: true, clozeOptions: ['默默', '大聲', '生氣', '吵鬧'], word: '默默', meaning: '不說話，靜靜的。', example: '她＿＿的把椅子排好，一句話都沒說。', img: 'quiet-window.png', options: ['默默', '匆匆忙忙', '剩下', '逗'] },
-      { id: 'v-匆匆忙忙', cloze: true, clozeOptions: ['匆匆忙忙', '慢慢吞吞', '安安靜靜', '高高興興'], word: '匆匆忙忙', meaning: '很急、很趕的樣子。', example: '快遲到了，哥哥＿＿＿＿的跑出門。', img: 'hurry.png', options: ['匆匆忙忙', '默默', '透過', '剩下'] },
+      { id: 'v-默默', cloze: true, clozeOptions: ['默默', '大聲', '熱鬧', '吵鬧'], word: '默默', meaning: '不說話，靜靜的。', example: '她＿＿的把椅子排好，一句話都沒說。', img: 'quiet-window.png', options: ['默默', '匆匆忙忙', '剩下', '逗'] },
+      { id: 'v-匆匆忙忙', cloze: true, clozeOptions: ['匆匆忙忙', '慢慢吞吞', '悠悠閒閒', '輕輕鬆鬆'], word: '匆匆忙忙', meaning: '很急、很趕的樣子。', example: '快遲到了，哥哥＿＿＿＿的跑出門。', img: 'hurry.png', options: ['匆匆忙忙', '默默', '透過', '剩下'] },
       { id: 'v-樓', cloze: true, clozeOptions: ['樓', '船', '車', '球'], word: '樓', meaning: '房子的一層。', example: '我家住在大廈的三＿。', img: 'upstairs.png', options: ['樓', '娃娃', '握', '逗'] },
       { id: 'v-視訊', word: '視訊', meaning: '用手機或電腦，一邊看到對方的臉，一邊說話。', example: '阿姨住在國外，我們常常和她＿＿聊天。', img: 'video-call.png', options: ['視訊', '鏡頭', '壓歲錢', '叔叔'] },
       { id: 'v-叔叔', word: '叔叔', meaning: '爸爸的弟弟。', example: '＿＿和爸爸長得好像，因為他們是兄弟。', img: 'uncle.png', options: ['叔叔', '娃娃', '鏡頭', '團圓'] },

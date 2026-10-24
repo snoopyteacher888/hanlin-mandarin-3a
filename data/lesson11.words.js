@@ -2,6 +2,8 @@
    生字、語詞：options 的第一個是正確答案（作答時會打亂）。 */
 (function (root) {
   var d = {
+    /* 課文地圖畫成樹狀圖（照課本的課文結構表） */
+    mapLayout: 'tree',
     /* 理解提問的分類（照課本「閱讀理解提問」學習單）：extract 提取訊息、infer 推論訊息、interpret 詮釋整合、evaluate 比較評估。
        只放題號，不放課文 */
     quizLevels: { qa: 'extract', qb: 'extract', qe: 'extract', qf: 'extract', qc: 'infer', qd: 'infer', qh: 'infer',
@@ -36,7 +38,7 @@
       { id: 'v-檢查', cloze: true, clozeOptions: ['檢查', '丟掉', '弄壞', '藏起來'], word: '檢查', meaning: '仔細的看一看，找找有沒有問題。', example: '交作業前，要先＿＿有沒有寫錯。', img: 'check-car.png', options: ['檢查', '休息', '打擾', '幸好'] },
       { id: 'v-拖', cloze: true, clozeOptions: ['拖', '吃', '唱', '寫'], word: '拖', meaning: '拉著東西，讓它跟著走。', example: '大卡車把壞掉的汽車＿走了。', img: 'tow-car.png', options: ['拖', '關', '擺', '檢查'] },
       { id: 'v-擺', cloze: true, clozeOptions: ['擺', '跳', '飛', '哭'], word: '擺', meaning: '把東西放好、排好。', example: '餐桌上＿滿了好吃的菜。', img: 'new-year-dishes.png', options: ['擺', '拖', '關', '零件'] },
-      { id: 'v-打擾', cloze: true, clozeOptions: ['打擾', '幫助', '感謝', '照顧'], word: '打擾', meaning: '讓別人沒辦法好好做事或休息。', example: '弟弟在寫功課，我們不要去＿＿他。', img: 'disturb.png', options: ['打擾', '休息', '檢查', '幸好'] },
+      { id: 'v-打擾', cloze: true, clozeOptions: ['打擾', '感謝', '借', '洗'], word: '打擾', meaning: '讓別人沒辦法好好做事或休息。', example: '弟弟在寫功課，我們不要去＿＿他。', img: 'disturb.png', options: ['打擾', '休息', '檢查', '幸好'] },
       { id: 'v-幸好', cloze: true, clozeOptions: ['幸好', '可惜', '因為', '如果'], word: '幸好', meaning: '運氣不錯，事情沒有變得更糟。', example: '突然下大雨，＿＿我有帶雨傘。', img: 'lucky.png', options: ['幸好', '打擾', '陣陣', '附近'] },
       { id: 'v-零件', word: '零件', meaning: '機器或車子裡面，一個一個小小的東西。', example: '腳踏車壞了，要換一個新的＿＿。', img: 'small-part.png', options: ['零件', '煙火', '店家', '嬸嬸'] }
     ],

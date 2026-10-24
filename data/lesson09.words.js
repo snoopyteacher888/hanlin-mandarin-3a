@@ -33,9 +33,9 @@
       { id: 'v-繼續', cloze: true, clozeOptions: ['繼續', '停止', '忘記', '回家'], word: '繼續', meaning: '不停下來，一直做下去。', example: '休息一下，我們再＿＿往前走。', img: 'keep-going.png', options: ['繼續', '挑戰', '一般', '隨'] },
       { id: 'v-木棧道', word: '木棧道', meaning: '用木頭架起來、讓人走的步道。', example: '我們走在森林裡的＿＿＿上，聽小鳥唱歌。', img: 'boardwalk.png', options: ['木棧道', '林投樹', '交通', '鳳梨'] },
       { id: 'v-岸邊', word: '岸邊', meaning: '海或河旁邊的陸地。', example: '風浪很大，不要太靠近＿＿。', img: 'shore.png', options: ['岸邊', '木棧道', '導遊', '交通'] },
-      { id: 'v-淺', cloze: true, clozeOptions: ['淺', '深', '黑', '重'], word: '淺', meaning: '顏色淡淡的；也可以說水不多、看得到底。', example: '妹妹喜歡＿粉紅色的衣服。', img: 'sea-colors.png', options: ['淺', '踩', '疊', '沿'] },
+      { id: 'v-淺', cloze: true, clozeOptions: ['淺', '深', '黑', '重'], word: '淺', meaning: '顏色淡淡的；也可以說水不多、看得到底。', example: '小溪的水很＿，只到我的小腿，可以放心玩水。', img: 'sea-colors.png', options: ['淺', '踩', '疊', '沿'] },
       { id: 'v-沿', cloze: true, clozeOptions: ['沿', '跳', '飛', '拿'], word: '沿', meaning: '順著。', example: '我們＿著小河一直走，就到海邊了。', img: 'along-coast.png', options: ['沿', '隨', '淺', '踩'] },
-      { id: 'v-踩', cloze: true, clozeOptions: ['踩', '拿', '吃', '看'], word: '踩', meaning: '用腳往下踏。', example: '下雨天，弟弟喜歡＿水坑。', img: 'step-stones.png', options: ['踩', '疊', '淺', '隨'] },
+      { id: 'v-踩', cloze: true, clozeOptions: ['踩', '拿', '吃', '寫'], word: '踩', meaning: '用腳往下踏。', example: '下雨天，弟弟喜歡＿水坑。', img: 'step-stones.png', options: ['踩', '疊', '淺', '隨'] },
       { id: 'v-疊', cloze: true, clozeOptions: ['疊', '丟', '踢', '吹'], word: '疊', meaning: '一層一層往上堆。', example: '我們把石頭一顆一顆＿起來。', img: 'stack-stones.png', options: ['疊', '踩', '沿', '一般'] },
       { id: 'v-一般', word: '一般', meaning: '普通、平常的。', example: '這不是＿＿的石頭，是很特別的石頭。', img: 'normal-stone.png', options: ['一般', '繼續', '挑戰', '岸邊'] }
     ],
@@ -167,7 +167,7 @@
         match: [
           { id: 'pt-ca-m1', img: 'pt-green-light.png', front: '等綠燈亮了，', options: ['我們才過馬路。', '我們才去睡覺。', '小狗才會飛。'], clue: '提示：看看圖片，綠燈亮了可以做什麼？', explain: '答案是「我們才過馬路」：要等綠燈亮了，才可以過馬路。' },
           { id: 'pt-ca-m2', img: 'pt-wash-hands.png', front: '把手洗乾淨以後，', options: ['我才吃飯。', '我才變成大人。', '太陽才下山。'], clue: '提示：吃飯前要先做什麼？', explain: '答案是「我才吃飯」：先把手洗乾淨，才可以吃飯。' },
-          { id: 'pt-ca-m3', img: 'pt-cake-cool.png', front: '等蛋糕放涼了，', options: ['媽媽才開始抹奶油。', '媽媽才去上班。', '蛋糕才會唱歌。'], clue: '提示：看看圖片，蛋糕放涼以後，媽媽要做什麼？', explain: '答案是「媽媽才開始抹奶油」：蛋糕要先放涼，才能抹奶油。' }
+          { id: 'pt-ca-m3', img: 'pt-cake-cool.png', front: '等蛋糕放涼了，', options: ['媽媽才開始抹奶油。', '烤箱才會飛起來。', '蛋糕才會唱歌。'], clue: '提示：看看圖片，蛋糕放涼以後，媽媽要做什麼？', explain: '答案是「媽媽才開始抹奶油」：蛋糕要先放涼，才能抹奶油。' }
         ],
         conj: [
           { id: 'pt-ca-c1', full: '雨停了以後，我們才出去玩。', img: 'pt-rain-stop.png', sentence: '雨停了以後，我們＿出去玩。', options: ['……才……', '一邊……一邊……', '因為……只能……'], clue: '提示：要先等雨停，接著才能出去玩。數數看有幾個空格。', explain: '答案是「……才……」：雨停了以後，我們才出去玩。' },

@@ -2,6 +2,8 @@
    生字、語詞：options 的第一個是正確答案（作答時會打亂）。 */
 (function (root) {
   var d = {
+    /* 課文地圖畫成樹狀圖（照課本的課文結構表） */
+    mapLayout: 'tree',
     /* 理解提問的分類（照課本「閱讀理解提問」學習單）：extract 提取訊息、infer 推論訊息、interpret 詮釋整合、evaluate 比較評估。
        只放題號，不放課文 */
     quizLevels: { qa: 'extract', qb: 'extract', qd: 'extract', qe: 'extract', qc: 'infer', qf: 'infer', qh: 'infer',
@@ -28,18 +30,18 @@
     vocab: [
       { id: 'v-便利貼', word: '便利貼', meaning: '背面有一點點黏膠，可以貼上、再撕下來的小紙片。', example: '我把要做的事寫在＿＿＿上。', img: 'sticky-note.png', options: ['便利貼', '鬧鐘', '冰箱', '便條'] },
       { id: 'v-使用', cloze: true, clozeOptions: ['使用', '丟掉', '弄壞', '藏起'], word: '使用', meaning: '把東西拿來做事。', example: '這把剪刀很利，＿＿時要小心。', img: 'use-scissors.png', options: ['使用', '提醒', '安排', '睡覺'] },
-      { id: 'v-明顯', cloze: true, clozeOptions: ['明顯', '隱藏', '黑暗', '模糊'], word: '明顯', meaning: '很清楚，一眼就看得到。', example: '他的白衣服上，有一塊很＿＿的污漬。', img: 'stain-shirt.png', options: ['明顯', '準時', '有效', '原來'] },
-      { id: 'v-提醒', cloze: true, clozeOptions: ['提醒', '忘記', '打擾', '責罵'], word: '提醒', meaning: '告訴別人，讓他記得。', example: '媽媽＿＿我出門要帶雨傘。', img: 'remind.png', options: ['提醒', '使用', '睡覺', '安排'] },
+      { id: 'v-明顯', cloze: true, clozeOptions: ['明顯', '隱藏', '黑暗', '安靜'], word: '明顯', meaning: '很清楚，一眼就看得到。', example: '他的白衣服上，有一塊很＿＿的污漬。', img: 'stain-shirt.png', options: ['明顯', '準時', '有效', '原來'] },
+      { id: 'v-提醒', cloze: true, clozeOptions: ['提醒', '忘記', '打擾', '拿走'], word: '提醒', meaning: '告訴別人，讓他記得。', example: '媽媽＿＿我出門要帶雨傘。', img: 'remind.png', options: ['提醒', '使用', '睡覺', '安排'] },
       { id: 'v-隔天', cloze: true, clozeOptions: ['隔天', '昨天', '去年', '從前'], word: '隔天', meaning: '過了一個晚上，到了下一日。', example: '今天先把書包整理好，＿＿早上就不會忘東西。', img: 'next-morning.png', options: ['隔天', '準時', '次序', '而且'] },
       { id: 'v-準時', cloze: true, clozeOptions: ['準時', '遲到', '偷懶', '忘記'], word: '準時', meaning: '說好幾點就幾點，一分鐘也不晚。', example: '我們每天都要＿＿到學校。', img: 'on-time.png', options: ['準時', '隔天', '有效', '明顯'] },
       { id: 'v-睡覺', cloze: true, clozeOptions: ['睡覺', '跑步', '唱歌', '吃飯'], word: '睡覺', meaning: '閉上眼睛休息，進入夢鄉。', example: '晚上九點了，我該上床＿＿了。', img: 'go-sleep.png', options: ['睡覺', '使用', '提醒', '安排'] },
       { id: 'v-鬧鐘', word: '鬧鐘', meaning: '時間一到，就會響起來叫人起床的時鐘。', example: '早上六點，＿＿響了，我趕快起床。', img: 'alarm-clock.png', options: ['鬧鐘', '冰箱', '便利貼', '便條'] },
       { id: 'v-有效', cloze: true, clozeOptions: ['有效', '無聊', '失敗', '麻煩'], word: '有效', meaning: '做了以後，真的變好了。', example: '這個方法很＿＿，我再也沒有忘記帶作業。', img: 'good-way.png', options: ['有效', '明顯', '準時', '原來'] },
       { id: 'v-次序', cloze: true, clozeOptions: ['次序', '垃圾', '聲音', '顏色'], word: '次序', meaning: '先做什麼、後做什麼，一個接著一個。', example: '大家排好隊，照＿＿上車。', img: 'in-order.png', options: ['次序', '情況', '隔天', '便條'] },
-      { id: 'v-而且', cloze: true, clozeOptions: ['而且', '可是', '所以', '如果'], word: '而且', meaning: '表示還有更多的。', example: '這顆蘋果很大，＿＿很甜。', img: 'big-sweet.png', options: ['而且', '原來', '隔天', '準時'] },
+      { id: 'v-而且', cloze: true, clozeOptions: ['而且', '雖然', '所以', '如果'], word: '而且', meaning: '表示還有更多的。', example: '這顆蘋果很大，＿＿很甜。', img: 'big-sweet.png', options: ['而且', '原來', '隔天', '準時'] },
       { id: 'v-安排', cloze: true, clozeOptions: ['安排', '忘記', '弄亂', '丟掉'], word: '安排', meaning: '先想好什麼時候做什麼事。', example: '爸爸＿＿好星期天要去動物園。', img: 'plan-day.png', options: ['安排', '提醒', '使用', '睡覺'] },
       { id: 'v-冰箱', word: '冰箱', meaning: '可以把食物冰起來、保持新鮮的電器。', example: '牛奶要放進＿＿裡。', img: 'fridge.png', options: ['冰箱', '鬧鐘', '便利貼', '情況'] },
-      { id: 'v-原來', cloze: true, clozeOptions: ['原來', '突然', '已經', '一定'], word: '原來', meaning: '發現事情真相的時候用的詞。', example: '我找了好久的鉛筆，＿＿掉在椅子底下。', img: 'found-pencil.png', options: ['原來', '而且', '明顯', '有效'] },
+      { id: 'v-原來', cloze: true, clozeOptions: ['原來', '突然', '已經', '從來'], word: '原來', meaning: '發現事情真相的時候用的詞。', example: '我找了好久的鉛筆，＿＿掉在椅子底下，終於找到了。', img: 'found-pencil.png', options: ['原來', '而且', '明顯', '有效'] },
       { id: 'v-便條', word: '便條', meaning: '隨手寫下要告訴別人的事，留下來的小紙條。', example: '媽媽在桌上留了一張＿＿，說她去買菜了。', img: 'memo-note.png', options: ['便條', '冰箱', '鬧鐘', '次序'] },
       { id: 'v-情況', word: '情況', meaning: '事情現在的樣子。', example: '下大雨了，老師先看看外面的＿＿，再決定要不要去操場。', img: 'look-outside.png', options: ['情況', '次序', '便條', '冰箱'] }
     ],
@@ -54,7 +56,7 @@
       { id: 'cw-鐘', char: '鐘', img: 'cw-wall-clock.png', charMeaning: '看時間、會報時的東西。', word: '時鐘', meaning: '掛在牆上或放在桌上，用來看時間的東西。', example: '牆上的＿＿滴答滴答的走。', options: ['時鐘', '貼紙', '隔壁', '原本'] },
       { id: 'cw-效', char: '效', img: 'cw-practice.png', charMeaning: '做了以後的好結果。', word: '效果', meaning: '做了以後得到的結果。', example: '每天練習跳繩，進步的＿＿很明顯。', options: ['效果', '準備', '排隊', '條紋'] },
       { id: 'cw-序', char: '序', img: 'cw-numbers-line.png', charMeaning: '先後排好。', word: '順序', meaning: '先、後排好的樣子。', example: '請照＿＿一個一個上台。', options: ['順序', '睡醒', '冰塊', '天使'] },
-      { id: 'cw-而', char: '而', img: 'cw-medicine.png', charMeaning: '用來連接句子的字。', word: '反而', meaning: '跟原本想的剛好相反。', example: '吃了藥睡一覺，他的病沒有變嚴重，＿＿好多了。', options: ['反而', '並且', '隔壁', '時鐘'] },
+      { id: 'cw-而', char: '而', img: 'cw-medicine.png', charMeaning: '用來連接句子的字。', word: '反而', meaning: '跟原本想的剛好相反。', example: '吃了藥睡一覺，他的病沒有變嚴重，＿＿好多了。', options: ['反而', '冰塊', '隔壁', '時鐘'] },
       { id: 'cw-且', char: '且', img: 'cw-clean-room.png', charMeaning: '還有、再加上。', word: '並且', meaning: '和「而」字開頭的那個詞一樣，表示還有。', example: '他把房間掃乾淨，＿＿把垃圾拿去倒。', options: ['並且', '反而', '睡衣', '效果'] },
       { id: 'cw-排', char: '排', img: 'cw-line-up.png', charMeaning: '一個接一個擺好。', word: '排隊', meaning: '一個接一個站好，照先後輪流。', example: '買東西要＿＿，不可以插隊。', options: ['排隊', '準備', '紙箱', '睡醒'] },
       { id: 'cw-冰', char: '冰', img: 'cw-ice.png', charMeaning: '水凍起來變成的硬硬的東西。', word: '冰塊', meaning: '一塊一塊凍起來的冰。', example: '果汁裡放了幾顆＿＿，好涼快。', options: ['冰塊', '貼紙', '順序', '反而'] },

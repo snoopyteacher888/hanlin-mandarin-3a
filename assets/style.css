@@ -958,3 +958,24 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 .pt-example .pt-grid { gap: 8px 6px; align-items: center; }
 .pt-cell { display: inline-flex; align-items: center; }
 .pt-flat > * { flex-shrink: 0; white-space: nowrap; }
+
+/* 樹狀圖：題目在最上面，下面一條橫線分出幾個分支（第一幕、第二幕……由左往右），最下面是結論 */
+.fish.tree { display: flex; flex-direction: column; align-items: center; gap: 0; }
+.tree .fish-head-box, .tree .fish-tail-box { border-radius: 16px; padding: 6px 18px; }
+.tree .fish-head-box strong { font-size: 1.3em; white-space: nowrap; }
+.tree-branches { display: flex; justify-content: center; align-items: flex-start; gap: 18px; width: 100%; position: relative; padding-top: 48px; margin-bottom: 30px; }
+.tree-branches::before { content: ""; position: absolute; top: 0; left: 50%; width: 8px; height: 24px; margin-left: -4px; background: var(--ink-soft); border-radius: 4px; }
+.tree-branches > .bone-box { flex: 1 1 0; max-width: 330px; min-width: 0; align-self: flex-start; }
+.tree-branches > .bone-box::before { content: ""; position: absolute; bottom: 100%; left: 50%; width: 8px; height: 24px; margin-left: -4px; background: var(--ink-soft); border-radius: 4px; }
+.tree-branches > .bone-box::after { content: ""; position: absolute; top: -27px; bottom: auto; left: -12px; right: -12px; width: auto; height: 8px; transform: none; background: var(--ink-soft); border-radius: 4px; }
+.tree-branches > .bone-box:first-child::after { left: 50%; }
+.tree-branches > .bone-box:last-child::after { right: 50%; }
+.tree-branches::after { content: ""; position: absolute; bottom: -30px; left: 50%; width: 8px; height: 30px; margin-left: -4px; background: var(--ink-soft); border-radius: 4px; }
+.fish.tree.complete .tree-branches::before, .fish.tree.complete .tree-branches::after,
+.fish.tree.complete .bone-box::before, .fish.tree.complete .bone-box::after { background: var(--ok); }
+@media (orientation: portrait) and (max-width: 700px) {
+  .tree-branches { flex-direction: column; align-items: stretch; padding-top: 12px; gap: 8px; margin-bottom: 8px; }
+  .tree-branches::before, .tree-branches::after, .tree-branches > .bone-box::before, .tree-branches > .bone-box::after { display: none; }
+  .tree-branches > .bone-box { max-width: none; align-self: stretch; }
+  .tree .fish-head-box strong { white-space: normal; }
+}

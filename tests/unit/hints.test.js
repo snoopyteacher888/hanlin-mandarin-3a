@@ -18,6 +18,16 @@ test('three options: second wrong pick is disabled too', () => {
   let s = pickWrong(create(3, 0), 1); s = pickWrong(s, 2);
   assert.deepEqual(enabled(s), [0]);
 });
+test('three options: second wrong pick means 老師教你', () => {
+  let s = pickWrong(create(3, 0), 1);
+  assert.equal(mustTeach(s), false); assert.equal(result(s), 'hint1');
+  s = pickWrong(s, 2);
+  assert.equal(mustTeach(s), true); assert.equal(result(s), 'taught');
+});
+test('three options: hint press then one wrong is not yet taught', () => {
+  let s = pickWrong(askHint(create(3, 0)), 1);
+  assert.equal(mustTeach(s), false);
+});
 test('picking correct index throws', () => { assert.throws(() => pickWrong(create(4, 2), 2)); });
 test('re-picking a disabled option changes nothing', () => {
   const s = pickWrong(create(4, 2), 0); assert.equal(pickWrong(s, 0), s);

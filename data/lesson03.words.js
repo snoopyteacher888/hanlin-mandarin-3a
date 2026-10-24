@@ -29,7 +29,7 @@
       { id: 'v-三角板', word: '三角板', meaning: '有三個角，可以畫直線、量角度的尺。', example: '老師請我們拿出＿＿＿，畫一個直角。', img: 'triangle-ruler.png', options: ['三角板', '公車票', '作業本', '情況'] },
       { id: 'v-作業本', word: '作業本', meaning: '寫回家功課用的本子。', example: '我把功課寫在＿＿＿上。', img: 'homework-book.png', options: ['作業本', '三角板', '公車票', '文具'] },
       { id: 'v-情況', word: '情況', meaning: '事情發生的樣子。', example: '醫生問媽媽，弟弟生病的＿＿怎麼樣。', img: 'doctor-ask.png', options: ['情況', '文具', '有餘', '因此'] },
-      { id: 'v-匆忙', cloze: true, clozeOptions: ['匆忙', '安靜', '悠閒', '輕鬆'], word: '匆忙', meaning: '很急、很趕的樣子。', example: '快遲到了，哥哥＿＿的跑出門。', img: 'rush-out.png', options: ['匆忙', '容易', '有餘', '整理'] },
+      { id: 'v-匆忙', cloze: true, clozeOptions: ['匆忙', '緩慢', '悠閒', '輕鬆'], word: '匆忙', meaning: '很急、很趕的樣子。', example: '快遲到了，哥哥＿＿的跑出門。', img: 'rush-out.png', options: ['匆忙', '容易', '有餘', '整理'] },
       { id: 'v-該', word: '該', meaning: '照道理要這樣做。', example: '時間到了，我們＿回家了。', img: 'time-go-home.png', options: ['該', '喊', '情況', '有餘'] },
       { id: 'v-喊', cloze: true, clozeOptions: ['喊', '聽', '看', '睡'], word: '喊', meaning: '用很大的聲音叫。', example: '弟弟在操場上大＿我的名字。', img: 'shout-name.png', options: ['喊', '該', '整理', '準備'] },
       { id: 'v-文具', word: '文具', meaning: '讀書寫字要用的東西，像鉛筆、橡皮擦和尺。', example: '我把鉛筆、橡皮擦這些＿＿放進鉛筆盒。', img: 'stationery.png', options: ['文具', '作業本', '公車票', '情況'] },

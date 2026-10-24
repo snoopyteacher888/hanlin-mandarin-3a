@@ -259,6 +259,7 @@
         var ask = '👉 把正確的' + (word ? '語詞' : '字') + '拖到方框裡';
         main.appendChild(H3A.ui.sayable(h('p', { class: 'drag-ask' }, ask), ask.replace('👉 ', '')));
       }
+      else if (q.ask) main.appendChild(H3A.ui.sayable(h('p', { class: 'drag-ask' }, q.ask), q.ask.replace('👉 ', '')));
       var showBtn = q.hideText ? h('button', { type: 'button', class: 'btn-secondary small-btn', onclick: function () { promptText.hidden = false; showBtn.remove(); } }, '👀 看文字') : null;
       main.appendChild(h('div', { class: 'prompt' + (q.img ? ' with-img' : '') + (q.drag ? ' drag-prompt' : '') + (q.promptClass ? ' ' + q.promptClass : '') },
         q.img ? h('div', { class: 'prompt-img' }, H3A.ui.picture(ctx.lessonId, q.img, '')) : null,

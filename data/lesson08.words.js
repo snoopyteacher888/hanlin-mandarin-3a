@@ -2,6 +2,8 @@
    生字、語詞：options 的第一個是正確答案（作答時會打亂）。 */
 (function (root) {
   var d = {
+    /* 課文地圖畫成樹狀圖（照課本的課文結構表） */
+    mapLayout: 'tree',
     /* 理解提問的分類（照課本「閱讀理解提問」學習單）：extract 提取訊息、infer 推論訊息、interpret 詮釋整合、evaluate 比較評估。
        只放題號，不放課文 */
     quizLevels: { qa: 'extract', qb: 'extract', qe: 'extract', qf: 'extract', qj: 'extract', qc: 'infer', qd: 'infer', qh: 'infer',
@@ -29,7 +31,7 @@
       { id: 'v-殼', cloze: true, clozeOptions: ['殼', '手', '花', '書'], word: '殼', meaning: '包在外面、硬硬的一層。', example: '蝸牛的背上，有一個硬硬的＿。', img: 'shell.png', options: ['殼', '幕', '位', '紙杯'] },
       { id: 'v-人類', word: '人類', meaning: '所有的人。', example: '狗是＿＿的好朋友。', img: 'people.png', options: ['人類', '志工', '寄居蟹', '垃圾'] },
       { id: 'v-瓶蓋', word: '瓶蓋', meaning: '蓋在瓶子口上的蓋子。', example: '喝完水，要把＿＿轉緊。', img: 'bottle-cap.png', options: ['瓶蓋', '紙杯', '殼', '淨灘'] },
-      { id: 'v-淨灘', cloze: true, clozeOptions: ['淨灘', '游泳', '玩沙', '釣魚'], word: '淨灘', meaning: '到海邊把沙子上的垃圾撿起來，讓海邊變漂亮。', example: '星期六，我們跟著志工去海邊＿＿。', img: 'beach-clean.png', options: ['淨灘', '愛護', '應該', '人類'] },
+      { id: 'v-淨灘', cloze: true, clozeOptions: ['淨灘', '游泳', '玩沙', '釣魚'], word: '淨灘', meaning: '到海邊把沙子上的垃圾撿起來，讓海邊變漂亮。', example: '星期六，我們跟著志工去海邊＿＿，撿了好多垃圾。', img: 'beach-clean.png', options: ['淨灘', '愛護', '應該', '人類'] },
       { id: 'v-志工', word: '志工', meaning: '自己願意來幫忙、不拿錢的人。', example: '圖書館裡有很多＿＿，幫忙整理書。', img: 'volunteer.png', options: ['志工', '人類', '寄居蟹', '紙杯'] },
       { id: 'v-垃圾', word: '垃圾', meaning: '不要了、丟掉的東西。', example: '吃完的餅乾袋，要丟進＿＿桶。', img: 'trash.png', options: ['垃圾', '瓶蓋', '紙杯', '殼'] },
       { id: 'v-位', cloze: true, clozeOptions: ['位', '隻', '條', '張'], word: '位', meaning: '算人數的時候用，說起來比較有禮貌。', example: '今天有兩＿客人來我們班上。', img: 'two-guests.png', options: ['位', '幕', '殼', '淨灘'] },

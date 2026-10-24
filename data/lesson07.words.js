@@ -32,7 +32,7 @@
       { id: 'v-閉上', word: '閉上', meaning: '合起來、關起來。', example: '睡覺的時候要＿＿眼睛。', img: 'eyes-closed.png', options: ['閉上', '欣賞', '乘', '瞞'] },
       { id: 'v-深呼吸', word: '深呼吸', meaning: '用力吸一大口氣，再慢慢吐出來。', example: '上臺前很緊張，我先＿＿＿。', img: 'deep-breath.png', options: ['深呼吸', '回航', '閉上', '欣賞'] },
       { id: 'v-欣賞', cloze: true, clozeOptions: ['欣賞', '打掃', '收拾', '修理'], word: '欣賞', meaning: '很喜歡的看或聽。', example: '我們坐在海邊，＿＿美麗的夕陽。', img: 'enjoy-view.png', options: ['欣賞', '瞞', '深呼吸', '乘'] },
-      { id: 'v-瞞', cloze: true, clozeOptions: ['瞞', '陪', '抱', '等'], word: '瞞', meaning: '把事情藏起來，不讓別人知道。', example: '做錯事要說實話，不要＿著爸爸媽媽。', img: 'keep-secret.png', options: ['瞞', '乘', '閉上', '回航'] }
+      { id: 'v-瞞', cloze: true, clozeOptions: ['瞞', '陪', '抱', '吃'], word: '瞞', meaning: '把事情藏起來，不讓別人知道。', example: '做錯事要說實話，不要＿著爸爸媽媽。', img: 'keep-secret.png', options: ['瞞', '乘', '閉上', '回航'] }
     ],
     /* 生字語詞：每個生字再學一個課本以外、孩子聽得懂的語詞 */
     charwords: [
