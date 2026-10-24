@@ -17,13 +17,21 @@
       return h('span', { class: 'pt-chip ' + f[1] }, f[0]);
     }));
   }
-  /* 例句切成色塊，每塊下面標「條件／結果」 */
+  /* 例句切成色塊：關聯詞（如果、不但、還、只要、就）是獨立的橘色框，跟上面的公式一樣；
+     其他的字放在藍／綠色塊裡，下面標「條件／結果」 */
   function clauseBlocks(text, key) {
-    return h('div', { class: 'pt-sentence' }, Q.patternClauses(text, key).map(function (c) {
-      return h('span', { class: 'pt-block ' + c.kind },
-        h('span', { class: 'pt-text' }, c.parts.map(function (p) { return p.conj ? h('span', { class: 'conj-word' }, p.text) : p.text; })),
-        h('span', { class: 'pt-label' }, LABEL[key][c.kind] || ''));
-    }), H3A.ui.speaker(text, null));
+    var out = [];
+    Q.patternClauses(text, key).forEach(function (c) {
+      var labeled = false;
+      c.parts.forEach(function (p) {
+        if (p.conj) { out.push(h('span', { class: 'pt-chip conj pt-conj-chip' }, p.text)); return; }
+        out.push(h('span', { class: 'pt-block ' + c.kind },
+          h('span', { class: 'pt-text' }, p.text),
+          h('span', { class: 'pt-label' }, labeled ? '' : (LABEL[key][c.kind] || ''))));
+        labeled = true;
+      });
+    });
+    return h('div', { class: 'pt-sentence' }, out, H3A.ui.speaker(text, null));
   }
 
   function introSlide(ctx, pt) {

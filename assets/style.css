@@ -927,3 +927,8 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 .learn-box .pt-sentence > .speaker { align-self: center; }
 .learn-box .pt-sentence .pt-block { white-space: nowrap; }
 @media (min-width: 700px) { .learn-box .pt-sentence { flex-wrap: nowrap; } }
+.learn-box .pt-sentence { gap: 8px; align-items: center; }
+.pt-conj-chip { align-self: stretch; display: inline-flex; align-items: center; }
+.pt-conj-chip { white-space: nowrap; flex-shrink: 0; font-size: 1.05em; padding: 6px 12px; }
+.learn-box .pt-sentence .pt-block { flex-shrink: 0; }
+@media (min-width: 700px) { .learn-box .pt-sentence { flex-wrap: wrap; } }
