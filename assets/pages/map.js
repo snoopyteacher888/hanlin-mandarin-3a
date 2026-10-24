@@ -200,10 +200,11 @@
   }
 
   /* 人事時地物：先認識五個字，再一個字一題，最後把答案整理成一張表 */
-  function whTable(rows) {
-    return h('div', { class: 'wh-table' }, rows.map(function (row) {
+  function whTable(rows, answers) {
+    /* 正方形圖卡：上排「人事時」、下排「地物」（老師要求） */
+    return h('div', { class: 'wh-table' + (answers ? ' wh-answers' : '') }, rows.map(function (row) {
       var k = H3A.wordq.WH[row.key];
-      return h('div', { class: 'wh-row' }, h('span', { class: 'wh-key' }, h('span', { 'aria-hidden': 'true' }, k.icon), ' ', row.key),
+      return h('div', { class: 'wh-tile' }, h('span', { class: 'wh-icon', 'aria-hidden': 'true' }, k.icon), h('span', { class: 'wh-key' }, row.key),
         h('span', { class: 'wh-ask' }, row.text), H3A.ui.speaker(row.key + '，' + row.text, null));
     }));
   }
@@ -213,10 +214,10 @@
     var items = wh.slice().sort(function (a, b) { return order.indexOf(a.key) - order.indexOf(b.key); });
     var intro = F.learn('認識人事時地物', function () {
       return h('div', { class: 'learn-box' }, whTable(order.map(function (k) { return { key: k, text: H3A.wordq.WH[k].ask + '？' }; })),
-        F.sayLine('讀一篇課文，先找出：有誰、發生什麼事、什麼時候、在哪裡、有什麼東西。'));
-    }, '人事時地物。人，是誰。事，是發生什麼事。時，是什麼時候。地，是在哪裡。物，是有什麼東西。讀一篇課文，先找出這五樣。');
+        F.sayLine('讀完課文先找出有誰、發生什麼事、什麼時候、在哪裡、有什麼東西。'));
+    }, '人事時地物。人是誰。事是發生什麼事。時是什麼時候。地是在哪裡。物是有什麼東西。讀完課文先找出這五樣。');
     var sum = F.learn('這一課的人事時地物', function () {
-      return h('div', { class: 'learn-box' }, whTable(items.map(function (it) { return { key: it.key, text: it.options[0] }; })));
+      return h('div', { class: 'learn-box' }, whTable(items.map(function (it) { return { key: it.key, text: it.options[0] }; }), true));
     }, '這一課的人事時地物。' + items.map(function (it) { return it.key + '，' + it.options[0]; }).join('。'));
     return [intro].concat(items.map(function (it) { return H3A.wordq.whQuestion(it, r); })).concat([sum]);
   }
@@ -228,8 +229,9 @@
     if (map && map.type === 'fishbone' && wh && wh.length) {
       var shape = ctx.words.mapLayout === 'tree' ? '樹狀圖' : '魚骨圖';
       H3A.ui.runSteps(main, ctx, 'map', [
-        { key: 'map', name: '課文架構', say: '用' + shape + '整理課文重點。', custom: function (stage, c, done) { fishbone(stage, ctx, done); } },
-        { key: 'wh', name: '人事時地物', say: '找出課文裡的人、事、時、地、物。', make: function (r) { return whSteps(wh, r); } }
+        /* 先練人事時地物，再練課文架構（老師要求） */
+        { key: 'wh', name: '人事時地物', say: '找出課文裡的人、事、時、地、物。', make: function (r) { return whSteps(wh, r); } },
+        { key: 'map', name: '課文架構', say: '用' + shape + '整理課文重點。', custom: function (stage, c, done) { fishbone(stage, ctx, done); } }
       ], function () { H3A.pages.map(main, ctx); });
       return;
     }

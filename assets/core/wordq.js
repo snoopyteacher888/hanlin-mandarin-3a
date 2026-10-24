@@ -134,7 +134,7 @@
     '事': { icon: '🎬', ask: '發生什麼事', prompt: '「事」：課文裡發生了什麼事？' },
     '時': { icon: '🕒', ask: '什麼時候', prompt: '「時」：事情發生在什麼時候？' },
     '地': { icon: '📍', ask: '在哪裡', prompt: '「地」：事情發生在哪裡？' },
-    '物': { icon: '🎁', ask: '有什麼東西', prompt: '「物」：課文裡有什麼重要的東西？' }
+    '物': { icon: '✏️', ask: '有什麼東西', prompt: '「物」：課文裡有什麼重要的東西？' }
   };
   function whQuestion(it, r) {
     var k = WH[it.key];

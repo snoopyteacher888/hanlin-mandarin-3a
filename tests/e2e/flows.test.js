@@ -112,9 +112,10 @@ test('map has a 人事時地物 step when words.wh exists (老師要求)', async
         { id: 'wh-di', key: '地', options: ['學校', '海邊', '森林', '動物園'], paras: [1], why: '測試說明。' }]; o[k] = val; return true; } }); } });
   });
   await unlock(p, '#/L06/map?s=cat'); await p.waitForSelector('.step-tab[data-step="wh"]');
-  assert.ok(await p.$('.step-stage .fish'));
-  await p.click('.step-tab[data-step="wh"]');
+  /* 先練人事時地物，再練課文架構（老師要求） */
+  assert.deepEqual(await p.$$eval('.step-tab', x => x.map(e => e.dataset.step)), ['wh', 'map']);
   await p.waitForSelector('.wh-table');
+  assert.equal(await p.$$eval('.wh-tile', x => x.length), 5);
   await p.click('.btn-next:not([hidden])');
   await p.waitForSelector('.option');
   assert.match(await p.textContent('.prompt h2'), /「人」/);
