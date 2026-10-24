@@ -129,7 +129,11 @@ test('fishbone map', async () => {
   await p.click('.map-card[data-card="c-lead"]');
   assert.equal(await p.$$eval('.map-card.is-off', x => x.length), 1);
   await p.waitForFunction(() => window.__spoken.some(s => s.includes('這張卡跟')));
-  for (const id of ['c-sand', 'c-fire']) await p.click(`.map-card[data-card="${id}"]`);
+  await p.click('.map-card[data-card="c-sand"]');
+  /* 放對一張還不打勾，整格放好才打勾（老師要求） */
+  assert.equal(await p.$$eval('.big-check', x => x.length), 0);
+  await p.click('.map-card[data-card="c-fire"]');
+  assert.equal(await p.$$eval('.big-check', x => x.length), 1);
   await p.waitForSelector('.bone-box[data-bone="b2"].now');
   await p.click('.map-card[data-card="c-blow"]');
   await p.waitForSelector('.bone-box[data-bone="b3"].now');

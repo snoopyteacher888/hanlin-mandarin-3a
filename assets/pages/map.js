@@ -123,7 +123,9 @@
       slot.appendChild(h('span', {}, c.text));
       slot.setAttribute('role', 'button'); slot.setAttribute('tabindex', '0');
       slot.addEventListener('click', function () { H3A.tts.speak(c.text, c.say); });
-      ok(c.text, c.say);
+      /* 放對一張只有音效、念卡片；這一格的卡片全部放好才一起打勾（老師要求） */
+      if (!res.boneDone) { feedback.className = 'feedback'; H3A.ui.clear(feedback); H3A.sfx.correct(); H3A.tts.speak(c.text, c.say); }
+      else ok(c.text, c.say);
       refreshCards();
       if (res.boneDone) {
         items.push({ q: b.id, result: FB.result(bs), wrong: FB.wrongTexts(map, bs) });
