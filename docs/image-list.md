@@ -150,7 +150,7 @@
 | 40 | `pz-sleep.png` | 在床上舒服的睡覺 | 短語 |
 | 41 | `pz-show.png` | 在舞臺上認真的表演 | 短語 |
 
-## 第 8 課（待生成）
+## 第 8 課（已完成）
 
 放在 `images/L08/`。指令在 `docs/chatgpt-image-prompts-L08.txt`。
 
