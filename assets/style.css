@@ -921,3 +921,9 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 .pop-x { position: absolute; top: 10px; right: 10px; width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--line); background: var(--surface); font-size: 1.3em; line-height: 1; color: var(--ink-soft); z-index: 2; }
 .pop-x:hover { background: var(--muted); }
 .vocab-box.wide { padding-top: 26px; }
+
+/* 句型例句：色塊排成一行（手機太窄才換行） */
+.learn-box .pt-sentence { flex-direction: row; flex-wrap: wrap; align-items: stretch; justify-content: center; }
+.learn-box .pt-sentence > .speaker { align-self: center; }
+.learn-box .pt-sentence .pt-block { white-space: nowrap; }
+@media (min-width: 700px) { .learn-box .pt-sentence { flex-wrap: nowrap; } }

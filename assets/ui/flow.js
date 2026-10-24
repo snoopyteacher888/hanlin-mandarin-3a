@@ -25,7 +25,12 @@
     }
     el.style.maxWidth = Math.ceil(hi) + 'px';
   }
-  function fitSoon(el) { setTimeout(function () { fitLines(el); }, 0); }
+  /* 注音字型載入前量的寬度不準，字型載好後再量一次 */
+  function fitSoon(el) {
+    setTimeout(function () { fitLines(el); }, 0);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { fitLines(el); });
+    setTimeout(function () { fitLines(el); }, 800);
+  }
   var resizeTimer = null;
   root.addEventListener && root.addEventListener('resize', function () {
     clearTimeout(resizeTimer);
