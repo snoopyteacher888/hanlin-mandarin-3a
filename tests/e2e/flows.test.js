@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
-const { start, dragTo } = require('./server.js');
+const { start, dragTo, nextQ } = require('./server.js');
 
 const PORT = 8181, BASE = `http://localhost:${PORT}/`;
 const ANSWERS = { '小水杯是用什麼做的？': '玻璃', '水杯可以做什麼？': '裝水', '做杯子要先做什麼？': '把沙子燒熱', '吹成杯子之前要做什麼？': '把沙子燒熱' };
@@ -66,14 +66,17 @@ test('quiz hints never reveal the answer, then teach', async () => {
   assert.match(await p.textContent('.feedback'), /老師教你/);
   assert.match(await p.textContent('.feedback'), new RegExp('答案是「' + answerText + '」'));
   await p.click('text=我懂了');
-  await p.waitForFunction(() => document.querySelectorAll('.dot.done').length === 1);
+  /* 理解提問分步驟；這一步做完會出現「這一步完成了」 */
+  await p.waitForSelector('.step-done');
 });
 
 test('double tap advances once', async () => {
   const p = await page(); await unlock(p, '#/L06/quiz?s=bear'); await p.waitForSelector('.option');
   await p.click(`.option[data-index="${await answerIndex(p)}"]`);
   await p.dblclick('.btn-next');
-  assert.equal(await p.$$eval('.dot.done', x => x.length), 1);
+  /* 連點兩下不會跳過「這一步完成了」 */
+  await p.waitForSelector('.step-done');
+  assert.ok(await p.$('.step-go'));
 });
 
 test('fishbone map', async () => {
@@ -110,8 +113,9 @@ test('fishbone bulb gives a hint without disabling cards', async () => {
 test('record posted with student from link', async () => {
   const before = submits().length;
   const p = await page(); await unlock(p, '#/L06/quiz?s=bear');
-  for (let k = 0; k < 3; k++) { await p.waitForSelector('.option:not(:disabled)'); await p.click(`.option[data-index="${await answerIndex(p)}"]`); await p.click('.btn-next'); }
-  await p.waitForSelector('.result');
+  for (let k = 0; k < 3; k++) { await p.waitForSelector('.option:not(:disabled)'); await p.click(`.option[data-index="${await answerIndex(p)}"]`); await nextQ(p); }
+  /* 最後一步是說說你的想法，直接按上面的步驟跳過，算前面三步的成績 */
+  await p.waitForSelector('.result, .mic-btn');
   for (let i = 0; i < 20 && submits().length === before; i++) await p.waitForTimeout(50);
   const r = submits().at(-1);
   assert.equal(r.student, 'bear'); assert.equal(r.place, 'home'); assert.equal(r.activity, 'quiz'); assert.equal(r.stars, 3);

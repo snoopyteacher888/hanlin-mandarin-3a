@@ -58,10 +58,11 @@
     function between(n) {
       drawTabs();
       H3A.ui.clear(stage);
-      var msg = '這一步完成了！下一步是「' + steps[n].name + '」。';
+      var msg = '這一步完成了！下一步是「' + steps[n].name + '」。', shownAt = Date.now();
       stage.appendChild(h('div', { class: 'step-done' }, h('div', { class: 'step-done-icon', 'aria-hidden': 'true' }, '🎉'),
         h('p', {}, msg, H3A.ui.speaker(msg, null)),
-        h('button', { type: 'button', class: 'btn-next step-go', onclick: function () { go(n); } }, '下一步：' + steps[n].name + ' ▶')));
+        /* 剛出現的一下子不接受點擊，免得連點兩下就跳過這個畫面 */
+        h('button', { type: 'button', class: 'btn-next step-go', onclick: function () { if (Date.now() - shownAt > 700) go(n); } }, '下一步：' + steps[n].name + ' ▶')));
       H3A.sfx.correct();
       H3A.tts.speak(msg);
     }

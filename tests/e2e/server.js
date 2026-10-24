@@ -57,5 +57,11 @@ async function dragTo(p, from, to) {
   await p.mouse.move(a.x + a.width / 2 + 20, a.y + a.height / 2 + 20, { steps: 3 });
   await p.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 8 }); await p.mouse.up();
 }
-module.exports = { start, dragTo };
+/* 按「下一題」；這一步做完會出現「這一步完成了」，再按「下一步」進到下一步 */
+async function nextQ(p) {
+  await p.click('.btn-next:not([hidden]):not(.step-go)');
+  await p.waitForTimeout(50);
+  if (await p.$('.step-go')) { await p.waitForTimeout(750); await p.click('.step-go'); }
+}
+module.exports = { start, dragTo, nextQ };
 if (require.main === module) start(Number(process.argv[2] || 8080)).then(() => console.log('serving'));

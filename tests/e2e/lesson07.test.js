@@ -90,7 +90,7 @@ test('第 7 課生字：認識生字卡片，再拖字填空', async () => {
     for (const c of await p.$$('.hl-card')) await c.click();
     await p.click('.btn-next:not([hidden])');
   }
-  await p.click('.step-go');
+  await p.waitForTimeout(750); await p.click('.step-go');
   for (let i = 0; i < W.hanzi.length; i++) {
     await p.waitForSelector('.drag-tile:not(:disabled)');
     const t = (await p.textContent('.prompt h2')).replace('　', '＿');

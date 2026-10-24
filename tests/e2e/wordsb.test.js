@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
-const { start, dragTo } = require('./server.js');
+const { start, dragTo, nextQ } = require('./server.js');
 const W = require('../../data/lesson06.words.js');
 const Q = require('../../assets/core/wordq.js');
 
@@ -64,7 +64,7 @@ async function answerChoice(p) {
   }, CORRECT);
   assert.ok(idx >= 0, 'no answer for ' + await p.textContent('.prompt h2'));
   await p.click(`.option[data-index="${idx}"]`);
-  await p.click('.btn-next:not([hidden])');
+  await nextQ(p);
 }
 async function fillSlots(p) {
   await p.waitForSelector('.fill-tile');
@@ -76,16 +76,19 @@ async function fillSlots(p) {
     await dragTo(p, `.fill-tile[data-text="${ans}"]`, '.fill-slot:not(.filled)');
     await p.waitForFunction(c => document.querySelectorAll('.fill-slot.filled').length === c, k + 1);
   }
-  await p.click('.btn-next:not([hidden])');
+  await nextQ(p);
 }
-async function nextLearn(p) { await p.waitForSelector('text=下一步 ▶'); await p.click('text=下一步 ▶'); }
+async function nextLearn(p) {
+  await p.waitForSelector('.btn-next:not([hidden]):not(.step-go)');
+  await nextQ(p);
+}
 async function say(p, text) {
   await p.evaluate(t => window.__sayNext.push(t), text);
   await p.click('.mic-btn');
   await p.waitForSelector('.said-box:not([hidden])');
   await p.click('.speak-actions >> text=✅ 送出');
 }
-async function next(p) { await p.click('.btn-next:not([hidden])'); }
+async function next(p) { await nextQ(p); }
 const speechFor = qid => srv.speech.filter(s => s.qid === qid);
 
 test('phrase speak exact answer is correct', async () => {

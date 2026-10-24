@@ -1,4 +1,4 @@
-/* 句型：先選句型，再走五步：認識 → 前後配對 → 把句子的每一塊拖進空格 → 說後半句 → 自己說一整句 */
+/* 句型：先選句型，再分五步：認識句型 → 前後配對 → 拖拉造句 → 說後半句 → 自己說一句 */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow, Q = H3A.wordq;
 
@@ -63,12 +63,15 @@
     }
     var pt = list.filter(function (y) { return y.key === params.p; })[0];
     if (!pt) return choose(main, ctx, list);
-    var r = H3A.quizgen.rng(Date.now() & 0xffffffff);
-    var qs = [introSlide(ctx, pt)]
-      .concat(H3A.quizgen.shuffle(pt.match, r).map(function (y) { return Q.matchQuestion(y, r); }))
-      .concat(H3A.quizgen.shuffle(pt.conj, r).map(function (y) { return y.full ? Q.patternFillQuestion(y, pt.key, r) : Q.conjQuestion(y, r); }))
-      .concat(pt.half.map(function (y) { return halfQ(pt, y); }))
-      .concat(pt.whole.map(function (y) { return wholeQ(pt, y); }));
-    F.run(main, ctx, 'pattern', qs, function () { run(main, ctx); });
+    var S = H3A.quizgen.shuffle;
+    H3A.ui.runSteps(main, ctx, 'pattern', [
+      { key: 'intro', name: '認識句型', say: '看一看「' + pt.title + '」怎麼用。', make: function () { return [introSlide(ctx, pt)]; } },
+      { key: 'match', name: '前後配對', say: '看圖，選出接在後面最合理的句子。', make: function (r) { return S(pt.match, r).map(function (y) { return Q.matchQuestion(y, r); }); } },
+      { key: 'fill', name: '拖拉造句', say: '把句子的每一塊拖到對的空格裡。', make: function (r) {
+        return S(pt.conj, r).map(function (y) { return y.full ? Q.patternFillQuestion(y, pt.key, r) : Q.conjQuestion(y, r); });
+      } },
+      { key: 'half', name: '說後半句', say: '前半句已經說好了，把後半句說完。', make: function () { return pt.half.map(function (y) { return halfQ(pt, y); }); } },
+      { key: 'whole', name: '自己說一句', say: '用「' + pt.title + '」自己說一句話。', make: function () { return pt.whole.map(function (y) { return wholeQ(pt, y); }); } }
+    ], function () { run(main, ctx); }, { backHash: '#/' + ctx.lessonId + '/pattern', backText: '回到句型' });
   };
 })(this);

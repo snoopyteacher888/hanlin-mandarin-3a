@@ -14,8 +14,8 @@
   function buildIntro() {
     function ex(a, b, c, tag) {
       return h('div', { class: 'combo-ex' },
-        h('div', { class: 'eq-row' }, h('span', { class: 'eq-part p0' }, a), h('span', { class: 'eq-op' }, '＋'), h('span', { class: 'eq-part p1' }, b),
-          h('span', { class: 'eq-op' }, '＝'), h('span', { class: 'eq-part res' }, c)),
+        h('div', { class: 'eq-row' }, h('span', { class: 'eq-part p0' }, H3A.ui.plainChars(a)), h('span', { class: 'eq-op' }, '＋'), h('span', { class: 'eq-part p1' }, H3A.ui.plainChars(b)),
+          h('span', { class: 'eq-op' }, '＝'), h('span', { class: 'eq-part res' }, H3A.ui.plainChars(c))),
         h('span', { class: 'combo-tag' }, tag));
     }
     return F.learn('組合字', function () {

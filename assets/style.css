@@ -902,3 +902,8 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
   .eq-tag { flex-basis: 100%; max-width: none; text-align: center; }
 }
 @media (max-width: 600px) { .eq-tagrow { flex-basis: 100%; text-align: center; } .eq-tag { flex-basis: auto; display: inline-block; } }
+
+/* 組合字上面那一排：跟選項同一套字形，但不顯示注音 */
+.eq-part, .eq-slot.filled { font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", var(--font); }
+html.zhuyin .eq-part, html.zhuyin .eq-slot.filled { font-family: 'Bpmf Zihi Kai Std', "LXGW WenKai TC", sans-serif; }
+html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidden; white-space: nowrap; vertical-align: bottom; clip-path: inset(0 6% 0 0); }

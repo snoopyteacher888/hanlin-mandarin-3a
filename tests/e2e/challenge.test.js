@@ -72,7 +72,7 @@ test('組合字（生字第 3 步）：選出缺的那一塊，做完接改錯�
   }
   await p.waitForSelector('.step-done');
   assert.match(await p.textContent('.step-tab[data-step="build"]'), /✓/);
-  await p.click('.step-go');
+  await p.waitForTimeout(750); await p.click('.step-go');
   assert.match(await p.textContent('.step-tab.now'), /改錯字/);
   await p.waitForSelector('.fix-char');
   assert.deepEqual(p.errors, []);

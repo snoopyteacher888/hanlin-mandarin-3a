@@ -2,7 +2,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { chromium } = require('playwright');
-const { start, dragTo } = require('./server.js');
+const { start, dragTo, nextQ } = require('./server.js');
 const W = require('../../data/lesson06.words.js');
 const Q = require('../../assets/core/wordq.js');
 
@@ -50,7 +50,7 @@ test('理解提問：選擇題做完，最後說想法，送給老師批改', as
   for (let k = 0; k < 3; k++) {
     await p.waitForSelector('.option:not(:disabled)');
     const idx = await p.evaluate(m => [...document.querySelectorAll('.option')].findIndex(o => o.querySelector('.option-text').textContent === m[document.querySelector('.prompt h2').textContent]), ANSWERS);
-    await p.click(`.option[data-index="${idx}"]`); await p.click('.btn-next:not([hidden])');
+    await p.click(`.option[data-index="${idx}"]`); await nextQ(p);
   }
   await p.waitForSelector('.mic-btn');
   assert.match(await p.textContent('.prompt h2'), /以後你會怎麼使用杯子/);
@@ -85,7 +85,7 @@ test('生字語詞：翻翻卡、拖詞填空、意思配對，十四個生字�
     await p.click('.btn-next:not([hidden])');
   }
   assert.equal(seen.join(''), W.hanzi.map(h => h.char).join(''));
-  await p.click('.step-go');
+  await p.waitForTimeout(750); await p.click('.step-go');
   for (let i = 0; i < W.charwords.length; i++) {
     await p.waitForSelector('.drag-tile:not(:disabled)');
     const t = (await p.textContent('.prompt h2')).replace('　', '＿');
@@ -99,7 +99,7 @@ test('生字語詞：翻翻卡、拖詞填空、意思配對，十四個生字�
     assert.equal(await p.textContent('.drop-slot.filled'), c.word);
     await p.click('.btn-next:not([hidden])');
   }
-  await p.click('.step-go');
+  await p.waitForTimeout(750); await p.click('.step-go');
   for (let round = 0; round < 6; round++) {
     await p.waitForSelector('.match-col.left .match-card:not(:disabled)');
     for (const id of await p.$$eval('.match-col.left .match-card', cs => cs.map(c => c.dataset.id))) {

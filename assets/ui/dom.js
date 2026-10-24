@@ -47,5 +47,10 @@
     box.appendChild(img);
     return box;
   }
+  /* 不要注音、但字形要跟有注音的字一樣（同一套字嗨楷體）：每個字裁成一個字寬，把右邊的注音藏起來 */
+  function plainChars(text) {
+    return h('span', { class: 'plain-chars' }, String(text).split('').map(function (c) { return h('span', { class: 'pc' }, c); }));
+  }
+  H3A.ui.plainChars = plainChars;
   H3A.ui.h = h; H3A.ui.clear = clear; H3A.ui.picture = picture; H3A.ui.teacherFace = teacherFace; H3A.ui.activityIcon = activityIcon;
 })(this);

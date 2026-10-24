@@ -222,7 +222,7 @@
         var out = [];
         q.equation.parts.forEach(function (p, i) {
           if (i) out.push(h('span', { class: 'eq-op' }, '＋'));
-          out.push(h('span', { class: 'eq-part p' + i }, p));
+          out.push(h('span', { class: 'eq-part p' + i }, H3A.ui.plainChars(p)));
         });
         slot = h('span', { class: 'drop-slot eq-slot' });
         out.push(h('span', { class: 'eq-op' }, '＝'), slot, h('span', { class: 'eq-tagrow' }, h('span', { class: 'head-tag eq-tag' }, q.equation.kind)));
@@ -233,7 +233,12 @@
         return [h('span', { class: 'head-char' }, q.headChar), h('span', { class: 'head-tag' }, rest), h('span', { class: 'head-line' }, lines.slice(1).join(''))];
       }
       function fillSlot() {
-        if (slot) { slot.textContent = q.options[q.answer].text; slot.classList.add('filled'); }
+        if (slot) {
+          H3A.ui.clear(slot);
+          if (q.equation) slot.appendChild(H3A.ui.plainChars(q.options[q.answer].text.replace(/[\uDB40][\uDC00-\uDFFF]/g, '')));
+          else slot.textContent = q.options[q.answer].text;
+          slot.classList.add('filled');
+        }
         /* 拖進句子：成語放進那一句的方框，上面的成語收起來 */
         if (chip) {
           var box = buttons[q.answer].querySelector('.blank-box');
