@@ -127,6 +127,24 @@
       hints: { h1: { text: '再仔細聽一次。', say: l.text }, h2: { text: '看著文字，再聽一次。', say: l.text, showText: true, slow: true },
         teach: { text: '答案是「' + right + '」，因為句子說：「' + l.text + '」' } } };
   }
+  /* 人事時地物：每一個字一題（人＝誰、事＝發生什麼事、時＝什麼時候、地＝在哪裡、物＝有什麼東西）。
+     公開資料只放短短的答案和段落號碼，提示時才從（解密後的）課文拿出那幾段給孩子看 */
+  var WH = {
+    '人': { icon: '👤', ask: '誰', prompt: '「人」：課文裡有誰？' },
+    '事': { icon: '🎬', ask: '發生什麼事', prompt: '「事」：課文裡發生了什麼事？' },
+    '時': { icon: '🕒', ask: '什麼時候', prompt: '「時」：事情發生在什麼時候？' },
+    '地': { icon: '📍', ask: '在哪裡', prompt: '「地」：事情發生在哪裡？' },
+    '物': { icon: '🎁', ask: '有什麼東西', prompt: '「物」：課文裡有什麼重要的東西？' }
+  };
+  function whQuestion(it, r) {
+    var k = WH[it.key];
+    var x = shuffled(it.options, it.options[0], r);
+    var where = '答案在課文第 ' + it.paras.join('、') + ' 段。';
+    return { id: it.id, prompt: k.icon + ' ' + k.prompt, say: k.prompt, options: x.options, answer: x.answer, list: true,
+      hints: { h1: { text: '「' + it.key + '」就是問「' + k.ask + '」。' + where, para: { paras: it.paras, sentIds: [], highlight: false } },
+        h2: { text: '讀一讀第 ' + it.paras.join('、') + ' 段，找找看「' + k.ask + '」。', para: { paras: it.paras, sentIds: [], highlight: true } },
+        teach: { text: '答案是「' + it.options[0] + '」。' + it.why } } };
+  }
   /* 閱讀題：h1 告訴在第幾段、h2 把相關句子亮起來、teach 才說答案和依據 */
   function readingHints(lesson, q) {
     var loc = locator.locate(lesson, q.evidence);
@@ -329,6 +347,7 @@
     if (bz) return buildQuestion(bz, r);
     if ((x = pick(w.charwords))) return charWordQuestion(x, r, (w.hanzi || []).map(function (y) { return y.char; }));
     if ((x = pick(w.listen))) return listenQuestion(x, r);
+    if ((x = pick(w.wh))) return whQuestion(x, r);
     if (w.phrase && (x = pick(w.phrase.pick))) return phrasePickQuestion(x, r);
     if (w.phrase && w.phrase.phrase2 && (x = pick(w.phrase.phrase2.fill))) return patternFillQuestion(x, null, r);
     if (w.phrase && (x = pick(w.phrase.choose))) {
@@ -348,7 +367,7 @@
     return null;
   }
   return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, vocabKind: vocabKind, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion, fixQuestion: fixQuestion,
-    listenQuestion: listenQuestion,
+    listenQuestion: listenQuestion, whQuestion: whQuestion, WH: WH,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
     patternFillQuestion: patternFillQuestion, rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };
 });

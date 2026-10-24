@@ -10,7 +10,7 @@
       { a: 'charword', icon: '🔤', c: '#3E8A99', desc: '每個生字再學一個語詞，翻卡、填空、連連看' },
       { a: 'phrase', icon: '📒', c: '#7A6BB5', desc: '認識短語：形容樣子＋的＋東西，看圖選疊字、說說看' },
       { a: 'pattern', icon: '🧩', c: '#C47A2C', desc: '學會句型，把兩件事用連接詞接起來' },
-      { a: 'map', icon: '🗺️', c: '#AD4A6A', desc: '整理課文重點，放進課文地圖' },
+      { a: 'map', icon: '🗺️', c: '#AD4A6A', desc: '整理課文重點，放進課文地圖；找出人事時地物' },
       { a: 'quiz', icon: '❓', c: '#B0563A', desc: '讀完課文，回答理解問題' }] },
     { title: '⭐ 加練挑戰', cards: [
       { a: 'similar', icon: '🔍', c: '#6A5AAE', desc: '長得很像的字，看句子選對的那一個' },

@@ -1,4 +1,4 @@
-/* 句型：先選句型，再分五步：認識句型 → 前後配對 → 拖拉造句 → 說後半句 → 自己說一句 */
+/* 句型：先選句型，再分五步：認識句型 → 前後配對 → 拼句子 → 說後半句 → 自己說一句 */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow, Q = H3A.wordq;
 
@@ -32,7 +32,7 @@
       return h('span', { class: 'pt-chip ' + f[1] }, f[0]);
     }));
   }
-  /* 例句：跟「拖拉造句」做完的樣子一樣——關聯詞是淡橘色字，其他每一塊放在框裡，
+  /* 例句：跟「拼句子」做完的樣子一樣——關聯詞是淡橘色字，其他每一塊放在框裡，
      條件（要做到的事）藍框、結果一綠框、結果二藍綠框，標點放在框外（老師要求）。
      一行放不下就變成一個分句一行，關聯詞那一欄上下對齊 */
   function clauseBlocks(text, key) {
@@ -109,7 +109,7 @@
     H3A.ui.runSteps(main, ctx, 'pattern', [
       { key: 'intro', name: '認識句型', say: '看一看「' + pt.title + '」怎麼用。', make: function () { return [introSlide(ctx, pt)]; } },
       { key: 'match', name: '前後配對', say: '看圖，選出接在後面最合理的句子。', make: function (r) { return S(pt.match, r).map(function (y) { return Q.matchQuestion(y, r); }); } },
-      { key: 'fill', name: '拖拉造句', say: '把句子的每一塊拖到對的空格裡。', make: function (r) {
+      { key: 'fill', name: '拼句子', say: '把句子的每一塊拖到對的空格裡。', make: function (r) {
         return S(pt.conj, r).map(function (y) { return y.full ? Q.patternFillQuestion(y, pt.key, r) : Q.conjQuestion(y, r); });
       } },
       { key: 'half', name: '說後半句', say: '前半句已經說好了，把後半句說完。', make: function () { return pt.half.map(function (y) { return halfQ(pt, y); }); } },

@@ -26,12 +26,14 @@
       var nextBtn = h('button', { type: 'button', class: 'btn-next', hidden: true, onclick: function () { H3A.tts.stop(); round(k + 1); } },
         k + 1 < rounds.length ? '下一回 ▶' : '完成 ▶');
       cards.forEach(function (c) {
-        var face = c.kind === 'pic' ? H3A.ui.picture(ctx.lessonId, c.v.img, c.v.word) : h('span', { class: 'mem-word' }, c.v.word);
+        /* 文字卡翻開不念，按卡上的喇叭才念；圖片卡翻開就念（老師要求） */
+        var face = c.kind === 'pic' ? H3A.ui.picture(ctx.lessonId, c.v.img, c.v.word) : [h('span', { class: 'mem-word' }, c.v.word),
+          h('span', { class: 'mem-say', role: 'button', tabindex: '0', 'aria-label': '念出來', onclick: function (e) { e.stopPropagation(); H3A.tts.speak(c.v.word); } }, '🔊')];
         var btn = h('button', { type: 'button', class: 'mem-card', 'data-id': c.v.id, 'data-kind': c.kind, 'aria-label': '翻牌' },
           h('span', { class: 'mem-back', 'aria-hidden': 'true' }, '❓'), h('span', { class: 'mem-face' }, face));
         btn.onclick = function () {
           if (busy || btn.classList.contains('open') || btn.classList.contains('matched')) return;
-          btn.classList.add('open'); H3A.tts.speak(c.v.word);
+          btn.classList.add('open'); if (c.kind === 'pic') H3A.tts.speak(c.v.word);
           open.push({ btn: btn, c: c });
           if (open.length < 2) return;
           var a = open[0], b = open[1]; open = [];

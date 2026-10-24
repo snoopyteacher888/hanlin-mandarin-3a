@@ -83,6 +83,18 @@
       opts(l.id, (l.options || []).map(function (o) { return o.text; }), 4);
       if (!(l.answer >= 0 && l.answer < (l.options || []).length)) errs.push(l.id + ' 的答案編號不對');
     });
+    /* 人事時地物：每個字最多一題，選項第一個是答案，提示要用到的段落號碼 */
+    if (w.wh) {
+      var keys = {};
+      w.wh.forEach(function (x) {
+        useId(x.id);
+        if ('人事時地物'.indexOf(x.key) < 0 || !nonEmpty(x.key) || x.key.length !== 1) errs.push(x.id + ' 的 key 要是人、事、時、地、物其中一個');
+        else if (keys[x.key]) errs.push('人事時地物的「' + x.key + '」重複'); else keys[x.key] = true;
+        opts(x.id, x.options, 4);
+        if (!Array.isArray(x.paras) || !x.paras.length || x.paras.some(function (n) { return !(n >= 1); })) errs.push(x.id + ' 缺少段落號碼');
+        if (!nonEmpty(x.why)) errs.push(x.id + ' 缺少說明');
+      });
+    }
     if (w.charwords) charwords(w.charwords);
     if (w.idioms) w.idioms.forEach(function (x) {
       useId(x.id);

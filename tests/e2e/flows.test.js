@@ -102,6 +102,28 @@ test('tree map: words.mapLayout = tree draws the same map as a tree (老師要�
   assert.deepEqual(p.errors, []);
 });
 
+test('map has a 人事時地物 step when words.wh exists (老師要求)', async () => {
+  const p = await page();
+  await p.addInitScript(() => {
+    let w;
+    Object.defineProperty(window, 'H3A_WORDS', { configurable: true, get() { return w; },
+      set(v) { w = new Proxy(v, { set(o, k, val) { if (k === 'L06') val.wh = [
+        { id: 'wh-ren', key: '人', options: ['阿明', '小狗', '老師', '醫生'], paras: [1], why: '測試說明。' },
+        { id: 'wh-di', key: '地', options: ['學校', '海邊', '森林', '動物園'], paras: [1], why: '測試說明。' }]; o[k] = val; return true; } }); } });
+  });
+  await unlock(p, '#/L06/map?s=cat'); await p.waitForSelector('.step-tab[data-step="wh"]');
+  assert.ok(await p.$('.step-stage .fish'));
+  await p.click('.step-tab[data-step="wh"]');
+  await p.waitForSelector('.wh-table');
+  await p.click('.btn-next:not([hidden])');
+  await p.waitForSelector('.option');
+  assert.match(await p.textContent('.prompt h2'), /「人」/);
+  const wrong = await p.$$eval('.option .option-text', x => x.findIndex(e => e.textContent !== '阿明'));
+  await p.click(`.option[data-index="${wrong}"]`);
+  await p.waitForSelector('.feedback .hint-para');
+  assert.deepEqual(p.errors, []);
+});
+
 test('fishbone map', async () => {
   const p = await page(); await unlock(p, '#/L06/map?s=cat'); await p.waitForSelector('.map-card');
   await p.click('.map-card[data-card="c-lead"]');

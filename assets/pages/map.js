@@ -4,7 +4,8 @@
   var H3A = root.H3A; var h = H3A.ui.h;
   var FB = H3A.fishbone;
 
-  function fishbone(main, ctx) {
+  /* done：放在「課文地圖」的步驟裡時，做完交給下一步（人事時地物），不自己算分 */
+  function fishbone(main, ctx, done) {
     var map = ctx.lesson.storyMap;
     var steps = map.bones.map(function (b) { return b.id; }).concat(['tail']);
     var stepIdx = 0, placed = [], items = [], startedAt = Date.now(), bs = null, ts = null, tailOrder = null;
@@ -181,6 +182,10 @@
       fish.classList.add('complete');
       H3A.ui.clear(promptEl);
       promptEl.appendChild(h('h2', { class: 'step-q' }, '🎉 ' + shape + '完成了！點上面的圖卡可以再聽一次'));
+      if (done) {
+        nextBar.appendChild(h('button', { type: 'button', class: 'btn-next', onclick: function (e) { e.currentTarget.disabled = true; done(items); } }, '下一步 ▶'));
+        return;
+      }
       nextBar.appendChild(h('button', { type: 'button', class: 'btn-next', onclick: function (e) {
         e.currentTarget.disabled = true;
         var rate = H3A.scoring.firstTryRate(items.map(function (x) { return x.result; }));
@@ -192,8 +197,40 @@
     showBone();
   }
 
+  /* 人事時地物：先認識五個字，再一個字一題，最後把答案整理成一張表 */
+  function whTable(rows) {
+    return h('div', { class: 'wh-table' }, rows.map(function (row) {
+      var k = H3A.wordq.WH[row.key];
+      return h('div', { class: 'wh-row' }, h('span', { class: 'wh-key' }, h('span', { 'aria-hidden': 'true' }, k.icon), ' ', row.key),
+        h('span', { class: 'wh-ask' }, row.text), H3A.ui.speaker(row.key + '，' + row.text, null));
+    }));
+  }
+  function whSteps(wh, r) {
+    var F = H3A.ui.flow;
+    var order = ['人', '事', '時', '地', '物'];
+    var items = wh.slice().sort(function (a, b) { return order.indexOf(a.key) - order.indexOf(b.key); });
+    var intro = F.learn('認識人事時地物', function () {
+      return h('div', { class: 'learn-box' }, whTable(order.map(function (k) { return { key: k, text: H3A.wordq.WH[k].ask + '？' }; })),
+        F.sayLine('讀一篇課文，先找出：有誰、發生什麼事、什麼時候、在哪裡、有什麼東西。'));
+    }, '人事時地物。人，是誰。事，是發生什麼事。時，是什麼時候。地，是在哪裡。物，是有什麼東西。讀一篇課文，先找出這五樣。');
+    var sum = F.learn('這一課的人事時地物', function () {
+      return h('div', { class: 'learn-box' }, whTable(items.map(function (it) { return { key: it.key, text: it.options[0] }; })));
+    }, '這一課的人事時地物。' + items.map(function (it) { return it.key + '，' + it.options[0]; }).join('。'));
+    return [intro].concat(items.map(function (it) { return H3A.wordq.whQuestion(it, r); })).concat([sum]);
+  }
+
   H3A.pages.map = function (main, ctx) {
     var map = ctx.lesson.storyMap;
+    var wh = ctx.words && ctx.words.wh;
+    /* 有人事時地物的課：課文地圖分兩步（老師要求：三年級也要練習人事時地物，放在課文地圖裡再開一個小標） */
+    if (map && map.type === 'fishbone' && wh && wh.length) {
+      var shape = ctx.words.mapLayout === 'tree' ? '樹狀圖' : '魚骨圖';
+      H3A.ui.runSteps(main, ctx, 'map', [
+        { key: 'map', name: '課文架構', say: '用' + shape + '整理課文重點。', custom: function (stage, c, done) { fishbone(stage, ctx, done); } },
+        { key: 'wh', name: '人事時地物', say: '找出課文裡的人、事、時、地、物。', make: function (r) { return whSteps(wh, r); } }
+      ], function () { H3A.pages.map(main, ctx); });
+      return;
+    }
     if (map && map.type === 'fishbone') { fishbone(main, ctx); return; }
     main.appendChild(h('p', { class: 'notice' }, '這一課的課文地圖還沒準備好。'));
   };
