@@ -200,8 +200,8 @@
         var onPick = q.dragChip ? function () { H3A.tts.speak(o.say || o.text); } : function () { pick(i); };
         var b = o.big
           ? h('button', { type: 'button', class: 'option big', 'data-index': i, onclick: onPick }, h('span', { class: 'option-text' }, o.text))
-          : h('button', { type: 'button', class: 'option' + (o.img ? '' : ' text-only'), 'data-index': i, onclick: onPick },
-            o.img ? H3A.ui.picture(ctx.lessonId, o.img, o.text) : null,
+          /* 選項不放圖（老師要求）：圖只放在題目上方 */
+          : h('button', { type: 'button', class: 'option text-only', 'data-index': i, onclick: onPick },
             o.icon ? h('span', { class: 'option-icon', 'aria-hidden': 'true' }, o.icon) : null, h('span', { class: 'option-text' }, q.hl && !o.mark ? hlWords(o.text, q.hl) : marked(o)));
         buttons.push(b);
         grid.appendChild(h('div', { class: 'option-wrap' }, b, H3A.ui.speaker(o.text, o.say)));

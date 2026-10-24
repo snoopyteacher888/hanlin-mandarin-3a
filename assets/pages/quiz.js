@@ -18,8 +18,8 @@
     function lv(id, fallback) { return levels[id] || fallback; }
     function prep(q, r) {
       var x = H3A.quizgen.prepare(q, r);
-      /* 沒有圖的選項文字比較長，一個選項一行比較好讀 */
-      if (!x.options.some(function (o) { return o.img; })) x.list = true;
+      /* 選項不放圖，一個選項一行比較好讀 */
+      x.list = true;
       return x;
     }
     var steps = LEVELS.map(function (L) {
