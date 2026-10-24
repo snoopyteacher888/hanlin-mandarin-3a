@@ -907,3 +907,5 @@ html.zhuyin .parts-opts .option.big .option-text, .parts-opts .option.big .optio
 .eq-part, .eq-slot.filled { font-family: "LXGW WenKai TC", "Kaiti TC", "DFKai-SB", "BiauKai", var(--font); }
 html.zhuyin .eq-part, html.zhuyin .eq-slot.filled { font-family: 'Bpmf Zihi Kai Std', "LXGW WenKai TC", sans-serif; }
 html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidden; white-space: nowrap; vertical-align: bottom; clip-path: inset(0 6% 0 0); }
+.learn-word .learn-line > span { text-align: center; text-align-last: center; }
+.learn-word .fit-lines { max-width: none !important; }
