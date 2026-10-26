@@ -37,7 +37,24 @@
       h('span', { class: 'mic-icon', 'aria-hidden': 'true' }, '🎤'), h('span', { class: 'mic-label' }, '按我說話'));
     var actions = h('div', { class: 'speak-actions', hidden: true });
     var typing = null, lastText = '';
-    if (q.front) box.appendChild(h('div', { class: 'speak-front' }, h('span', { class: 'pt-block cond' }, H3A.ui.hlWords ? H3A.ui.hlWords(q.front, (H3A.speechcheck.PATTERNS[q.rule && q.rule.key] || [])) : q.front), h('span', { class: 'pt-block res1 speak-blank' }, '🎤 換你說'), H3A.ui.speaker(q.front, null)));
+    /* 前半句：一行放得下就排一行；放不下先把字縮小（最小到七成），還是放不下才換行（老師要求） */
+    function frontRow(front, key) {
+      var cond = h('span', { class: 'pt-block cond' }, H3A.ui.hlWords ? H3A.ui.hlWords(front, (H3A.speechcheck.PATTERNS[key] || [])) : front);
+      var row = h('div', { class: 'speak-front', style: 'flex-wrap: wrap; justify-content: center;' }, cond, h('span', { class: 'pt-block res1 speak-blank' }, '🎤 換你說'), H3A.ui.speaker(front, null));
+      function fit() {
+        if (!row.isConnected) return;
+        cond.style.fontSize = ''; cond.style.whiteSpace = 'nowrap';
+        var avail = (row.parentElement || row).clientWidth - 4, need = cond.scrollWidth;
+        /* 放得下就一行；整句加「換你說」放不下，「換你說」會自己換到下一行；句子本身放不下才縮小字 */
+        if (need > avail && avail > 0) cond.style.fontSize = Math.max(0.7, avail / need) + 'em';
+        if (cond.scrollWidth > avail + 2) cond.style.whiteSpace = '';
+      }
+      setTimeout(fit, 0);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+      root.addEventListener('resize', fit);
+      return row;
+    }
+    if (q.front) box.appendChild(frontRow(q.front, q.rule && q.rule.key));
     var helps = 0, frontGiven = false;
     var bulb = h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: function () {
       if (finished || taught) return;
@@ -54,8 +71,7 @@
       frontGiven = true;
       q.front = q.scaffold.front;
       var rule = {}; for (var k in q.rule) rule[k] = q.rule[k]; rule.front = q.front; q.rule = rule;
-      var row = h('div', { class: 'speak-front' }, h('span', { class: 'pt-block cond' }, H3A.ui.hlWords ? H3A.ui.hlWords(q.front, (H3A.speechcheck.PATTERNS[rule.key] || [])) : q.front),
-        h('span', { class: 'pt-block res1 speak-blank' }, '🎤 換你說'), H3A.ui.speaker(q.front, null));
+      var row = frontRow(q.front, rule.key);
       box.insertBefore(row, box.querySelector('.speak-tools'));
       H3A.ui.showHint(feedback, { text: q.hints.h2.text, say: q.hints.h2.text + q.front }, ctx, asked);
     }
