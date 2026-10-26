@@ -118,6 +118,14 @@
     return { id: s.id, prompt: s.sentence, say: blankSay(s.sentence), options: x.options, answer: x.answer, optionsClass: s.frame ? 'frame-opts' : undefined,
       hints: { h1: s.meaning ? { text: '提示：' + s.meaning, say: '提示：' + s.meaning.replace(/＿/g, '什麼') } : { text: '再讀一次句子，想想這個詞是什麼意思。', say: blankSay(s.sentence) }, h2: { text: s.clue }, teach: { text: s.explain } } };
   }
+  /* 形近字第一關：只看語詞（例如「大＿」），把正確的字放進去。答錯先給語詞的意思，再給字形的線索（老師要求：先練語詞，再練句子） */
+  function similarWordQuestion(s, r) {
+    var x = shuffled(s.options, s.answer, r, { big: true });
+    var meaning = (s.meaning || '').replace(/^「[^」]*」/, '這個語詞');
+    return { id: 'sw-' + s.id, prompt: s.frame, say: blankSay(s.frame), options: x.options, answer: x.answer,
+      ask: '👉 把正確的字拖到方框裡，變成一個語詞',
+      hints: { h1: { text: '提示：' + meaning }, h2: { text: '提示：' + meaning + s.clue.replace(/^提示：/, '') }, teach: { text: s.explain } } };
+  }
   function listenQuestion(l, r) {
     var order = quizgen.shuffle(l.options.map(function (_, i) { return i; }), r);
     var right = l.options[l.answer].text;
@@ -154,9 +162,14 @@
     var help = q.help || (words && words.quizHelp && words.quizHelp[q.id]);
     if (help) {
       var think = '想一想：\n① ' + help.think[0] + '\n② ' + help.think[1];
+      /* 第二次答錯：說明的第一句（不含答案的字句）當作再進一步的提示 */
+      var ans = q.options[q.answer].text.replace(/[，。、]/g, ''), first = help.why.split('。')[0] + '。';
+      var leaks = false;
+      for (var i = 0; i + 4 <= ans.length; i++) if (first.indexOf(ans.substr(i, 4)) >= 0) leaks = true;
       return {
         h1: { text: think + where, para: { paras: loc.paras, sentIds: loc.sentIds, highlight: false } },
         h2: { text: think, para: { paras: loc.paras, sentIds: loc.sentIds, highlight: true } },
+        h3: leaks ? undefined : { text: '老師再提示你：' + first, para: { paras: loc.paras, sentIds: loc.sentIds, highlight: true } },
         teach: { text: '答案是「' + q.options[q.answer].text + '」。' + help.why }
       };
     }
@@ -353,6 +366,7 @@
     if ((x = pick(w.hanzi))) return hanziQuestion(x, r);
     if ((x = pick(w.vocab))) return vocabQuestion(x, vocabKind(x, r() < 0.5), r);
     if ((x = pick(w.similar))) return similarQuestion(x, r);
+    if (id.indexOf('sw-') === 0 && (x = (w.similar || []).filter(function (y) { return 'sw-' + y.id === id; })[0])) return similarWordQuestion(x, r);
     if ((x = pick(w.fix))) return fixQuestion(x, r);
     var idm = (w.idioms || []).filter(function (y) { return ['io-', 'is-', 'if-'].some(function (p) { return p + y.idiom === id; }); })[0];
     if (idm) return id.indexOf('io-') === 0 ? idiomOrderQuestion(idm, r) : id.indexOf('if-') === 0 ? idiomFillQuestion(idm, r) : idiomSituationQuestion(idm, w.idioms, r);
@@ -379,7 +393,7 @@
     }
     return null;
   }
-  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, vocabKind: vocabKind, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, partSay: partSay, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion, fixQuestion: fixQuestion,
+  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, vocabKind: vocabKind, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, partSay: partSay, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion, similarWordQuestion: similarWordQuestion, fixQuestion: fixQuestion,
     listenQuestion: listenQuestion, whQuestion: whQuestion, WH: WH,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
     patternFillQuestion: patternFillQuestion, rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };

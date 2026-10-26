@@ -1,13 +1,13 @@
 /* 答錯提示：選錯的選項一律停用（變淡；老師要求）。
    提示是一層一層的（level）：答錯一次或自己按 💡 一次，都往上一層。
    第 3 層 → mustTeach：由畫面顯示答案並說明原因（「老師教你」）。
-   第二次選錯就「老師教你」（老師要求：不讓孩子靠刪去法猜到，也不要兩次都給同一個提示）。 */
+   錯的選項都選過才「老師教你」（老師要求：還有選項沒選就不要公布答案）；
+   第一次錯給第二層提示，第二次錯換另一個提示（老師要求：不要兩次都給同一個提示）。 */
 (function (root, factory) {
   var m = factory();
   if (typeof module === 'object' && module.exports) module.exports = m;
   else { root.H3A = root.H3A || {}; root.H3A.hints = m; }
 })(this, function () {
-  var TEACH_AFTER = 3;
   function create(optionCount, correctIndex) {
     return { optionCount: optionCount, correctIndex: correctIndex, disabled: [], wrongCount: 0, wrongPicked: [], level: 0 };
   }
@@ -28,7 +28,9 @@
   }
   function lv(state) { return state.level === undefined ? state.wrongCount : state.level; }
   function mustTeach(state) {
-    return lv(state) >= TEACH_AFTER || state.wrongCount >= 2;
+    /* 錯的選項都選過了（只剩答案）才老師教你；二選一錯一次給線索，讓孩子自己選剩下那一個 */
+    /* 自己按 💡 一路按到第 3 層，也算要老師教 */
+    return state.wrongCount >= Math.max(2, state.optionCount - 1) || (lv(state) >= 3 && lv(state) > state.wrongCount);
   }
   function result(state) {
     if (mustTeach(state)) return 'taught';

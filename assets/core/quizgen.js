@@ -39,6 +39,8 @@
       var out = {}; for (var k in q) if (Object.prototype.hasOwnProperty.call(q, k)) out[k] = q[k];
       var opts = q.options.slice(); var t = opts[target]; opts[target] = opts[q.answer]; opts[q.answer] = t;
       out.options = opts; out.answer = target;
+      /* 也算對的選項（alsoRight）如果剛好被換位置，跟著換 */
+      if (q.alsoRight) out.alsoRight = q.alsoRight.map(function (i) { return i === target ? q.answer : i; });
       return out;
     });
   }

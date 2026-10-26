@@ -9,6 +9,8 @@
     var n = Math.ceil(pool.length / PAIRS), rounds = [];
     for (var i = 0, at = 0; i < n; i++) { var size = Math.ceil((pool.length - at) / (n - i)); rounds.push(pool.slice(at, at + size)); at += size; }
     var misses = {};
+    /* 一開始就把所有圖片先載入，翻開時才不會是空白的（老師回報） */
+    pool.forEach(function (v) { if (v.img) { var im = new Image(); im.src = 'images/' + ctx.lessonId + '/' + v.img; } });
 
     function finish() {
       onDone(pool.map(function (v) { var m = misses[v.id] || 0; return { q: v.id, result: m === 0 ? 'first' : m === 1 ? 'hint1' : 'hint2', wrong: [] }; }));

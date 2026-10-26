@@ -60,7 +60,11 @@ test('quiz hints never reveal the answer, then teach', async () => {
   assert.ok(!(await p.textContent('.feedback .hint-text')).includes(answerText));
   assert.ok(!(await p.innerText('.feedback')).includes('答案是'));
   assert.equal(await p.$eval('.btn-next', b => b.hidden), true);
-  /* 第二次選錯就老師教你（老師要求：不要兩次給同一個提示） */
+  /* 第二次選錯換另一個提示，還有錯的選項沒選就不公布答案（老師要求） */
+  const first = await p.textContent('.feedback .hint-text');
+  en = await enabled(p); await p.click(`.option[data-index="${en.find(i => i !== a)}"]`);
+  assert.notEqual(await p.textContent('.feedback .hint-text'), first);
+  assert.ok(!(await p.innerText('.feedback')).includes('答案是'));
   en = await enabled(p); await p.click(`.option[data-index="${en.find(i => i !== a)}"]`);
   assert.match(await p.textContent('.feedback'), /老師教你/);
   assert.match(await p.textContent('.feedback'), new RegExp('答案是「' + answerText + '」'));
@@ -274,7 +278,7 @@ test('listen hides text and repeats on wrong', async () => {
 });
 
 test('similar wrong shows hint', async () => {
-  const p = await page(); await p.goto(BASE + '#/L06/similar?s=bear'); await p.waitForSelector('.option');
+  const p = await page(); await p.goto(BASE + '#/L06/similar?s=bear&step=sentence'); await p.waitForSelector('.option');
   const sentence = (await p.textContent('.prompt h2')).replace('　', '＿');
   const item = WORDS.similar.find(s => s.sentence === sentence);
   /* 選項只有那一個字，不會整個詞重複出現 */
@@ -306,17 +310,18 @@ test('review without unlock shows word items only', async () => {
 test('word record posted with activity similar', async () => {
   const before = submits().length;
   const p = await page(); await p.goto(BASE + '#/L06/similar?s=cat');
-  for (let k = 0; k < WORDS.similar.length; k++) {
+  /* 兩關：第一關語詞（只有 frame）、第二關句子 */
+  for (let k = 0; k < WORDS.similar.length * 2; k++) {
     await p.waitForSelector('.option:not(:disabled)');
-    const sentence = (await p.textContent('.prompt h2')).replace('　', '＿');
-    const it = WORDS.similar.find(s => s.sentence === sentence); const ans = it.answer;
-    const idx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent === a), ans);
-    await dragTo(p, `.option[data-index="${idx}"]`, '.drop-slot'); await p.click('.btn-next');
+    const shown = (await p.textContent('.prompt h2')).replace('　', '＿');
+    const it = WORDS.similar.find(s => s.sentence === shown) || WORDS.similar.find(s => s.frame === shown);
+    const idx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent === a), it.answer);
+    await dragTo(p, `.option[data-index="${idx}"]`, '.drop-slot'); await nextQ(p);
   }
   await p.waitForSelector('.result');
   for (let i = 0; i < 20 && submits().length === before; i++) await p.waitForTimeout(50);
   const r = submits().at(-1);
-  assert.equal(r.activity, 'similar'); assert.equal(r.student, 'cat'); assert.equal(r.items.length, 11); assert.equal(r.stars, 3);
+  assert.equal(r.activity, 'similar'); assert.equal(r.student, 'cat'); assert.equal(r.items.length, 22); assert.equal(r.stars, 3);
 });
 
 test('zhuyin on: font class, polyphone marks, speech without marks', async () => {

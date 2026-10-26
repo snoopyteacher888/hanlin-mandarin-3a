@@ -253,3 +253,14 @@ test('詮釋整合、比較評估：提示給「想一想」步驟，老師教�
   /* 沒有鷹架的題目照舊 */
   assert.match(Q.readingHints(lesson, lesson.quiz.find(x => x.id === 'qa'), words).h2.text, /亮起來/);
 });
+
+test('形近字第一關：只看語詞，提示先給語詞的意思（老師要求）', () => {
+  const W12 = require('../../data/lesson12.words.js');
+  const s = W12.similar[0];
+  const q = Q.similarWordQuestion(s, () => 0.3);
+  assert.equal(q.id, 'sw-' + s.id); assert.equal(q.prompt, s.frame);
+  assert.equal(q.options[q.answer].text, s.answer);
+  assert.match(q.hints.h1.text, /^提示：這個語詞/);
+  assert.ok(!q.hints.h2.text.includes(s.answer));
+  assert.equal(Q.findWordQuestion(W12, 'sw-' + s.id, () => 0.3).id, 'sw-' + s.id);
+});

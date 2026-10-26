@@ -87,7 +87,7 @@
       var q = questions[idx];
       if (q.type === 'learn') return showLearn(q);
       var speak = q.type === 'speak' || q.type === 'order' || q.type === 'fix' || q.type === 'match' || q.type === 'fill';
-      var hs = speak ? null : H3A.hints.create(q.options.length, q.answer);
+      var hs = speak ? null : H3A.hints.create(q.options.length - (q.alsoRight || []).length, q.answer);
       var hints = speak ? q.hints : q.hints || (ctx.lesson && q.evidence ? H3A.wordq.readingHints(ctx.lesson, q, ctx.words) : null) ||
         { h1: { text: '再想想看。' }, h2: { text: '再仔細看一次題目。' }, teach: { text: '答案是「' + q.options[q.answer].text + '」。' } };
       var locked = false;
@@ -176,7 +176,12 @@
           return;
         }
         /* 答錯一次就直接給第二層的線索（資源班的孩子，方法提示幫助不大；老師要求）；自己按 💡 才從第一層開始 */
+        /* 第二次答錯換另一個提示（h3，沒有就用第一層的說法，但保留亮起來的句子；老師要求：不要兩次都給同一個提示） */
         var hint = hs.level === 1 && asked ? hints.h1 : hints.h2;
+        if (!asked && hs.wrongCount >= 2) {
+          var alt = hints.h3 || hints.h1;
+          if (alt && alt.text !== hints.h2.text) { hint = {}; for (var k in alt) hint[k] = alt[k]; if (!hint.para && hints.h2.para) hint.para = hints.h2.para; }
+        }
         if (hint.showText) { promptText.hidden = false; if (showBtn) showBtn.remove(); }
         H3A.ui.showHint(feedback, hint, ctx, asked);
       }
@@ -265,7 +270,7 @@
       /* 拖曳填空：題目上面寫清楚要做什麼（老師要求），點一下會念 */
       if (q.drag) {
         var word = q.options.some(function (o) { return o.text.replace(/[\uDB40][\uDC00-\uDFFF]/g, '').length > 1; });
-        var ask = '👉 把正確的' + (word ? '語詞' : '字') + '拖到方框裡';
+        var ask = q.ask || '👉 把正確的' + (word ? '語詞' : '字') + '拖到方框裡';
         main.appendChild(H3A.ui.sayable(h('p', { class: 'drag-ask' }, ask), ask.replace('👉 ', '')));
         if (idx === 0) H3A.tts.intro(ask.replace('👉 ', '') + '。');
       }

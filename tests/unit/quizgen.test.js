@@ -32,3 +32,12 @@ test('balance leaves fixed-order and non-choice questions alone', () => {
   const out = balance([yn, learn], rng(1));
   assert.equal(out[0].answer, 1); assert.equal(out[0].options[0].text, '⭕'); assert.equal(out[1], learn);
 });
+
+test('balance 換位置時，也算對的選項（alsoRight）跟著換', () => {
+  const { balance, rng } = require('../../assets/core/quizgen.js');
+  for (let seed = 1; seed < 40; seed++) {
+    const q = { options: ['a', 'b', 'c', 'd'], answer: 0, alsoRight: [1] };
+    const out = balance([q, q, q, q], rng(seed));
+    out.forEach(x => { assert.equal(x.options[x.answer], 'a'); assert.deepEqual(x.alsoRight.map(i => x.options[i]), ['b']); });
+  }
+});

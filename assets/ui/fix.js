@@ -77,8 +77,8 @@
     function shake(el) { el.classList.remove('shake'); void el.offsetWidth; el.classList.add('shake'); }
     function climb(asked) {
       var hs = q.hints[step], n = bad[step];
-      /* 第二次錯就老師教你（老師要求：不要兩次給同一個提示） */
-      if (n >= 2) {
+      /* 選字：拿掉一個以後只剩答案，第二次錯就老師教你。找錯字：框起來的字還沒點完，第三次錯才老師教你（老師要求：還有選項沒選就不要公布答案） */
+      if (n >= (step === 'find' ? 3 : 2)) {
         taught = true;
         if (step === 'find') {
           chars[q.at].classList.add('found');
@@ -99,7 +99,9 @@
         /* 拿掉一個不是錯字、也不是答案的選項 */
         buttons.forEach(function (b, k) { if (k !== q.answer && q.options[k].text !== q.wrong) { b.disabled = true; b.classList.add('is-off'); } });
       }
-      H3A.ui.showHint(feedback, lv === 1 ? hs.h1 : hs.h2, ctx, asked);
+      /* 第二次錯換另一個提示（老師要求：不要兩次都給同一個提示） */
+      var hint = lv === 1 ? hs.h1 : (n === 2 && !asked ? hs.h1 : hs.h2);
+      H3A.ui.showHint(feedback, hint, ctx, asked);
     }
   }
   H3A.ui.fixQuestion = fixQuestion;

@@ -27,7 +27,12 @@
     var box = h('div', { class: 'pic' });
     if (!file) { box.classList.add('pic-missing'); box.appendChild(h('span', { text: label })); return box; }
     var img = h('img', { src: 'images/' + lessonId + '/' + file, alt: label, draggable: 'false' });
-    img.onerror = function () { clear(box); box.classList.add('pic-missing'); box.appendChild(h('span', { text: label })); };
+    /* 網路不穩（學校 Wi-Fi）載入失敗時，等一下再試一次；還是不行才顯示文字（老師回報：翻牌時出現空白的圖） */
+    var tried = false;
+    img.onerror = function () {
+      if (!tried) { tried = true; setTimeout(function () { img.src = 'images/' + lessonId + '/' + file + '?retry=1'; }, 800); return; }
+      clear(box); box.classList.add('pic-missing'); box.appendChild(h('span', { text: label }));
+    };
     box.appendChild(img);
     return box;
   }
