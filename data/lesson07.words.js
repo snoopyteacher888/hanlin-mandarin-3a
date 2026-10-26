@@ -2,6 +2,8 @@
    生字、語詞：options 的第一個是正確答案（作答時會打亂）。 */
 (function (root) {
   var d = {
+    /* 課文地圖畫成樹狀圖：詩的每一段是並列的想法，不是一步一步的因果（老師要求：這課不適合魚骨圖） */
+    mapLayout: 'tree',
     /* 理解提問的分類（照課本「閱讀理解提問」學習單）：extract 提取訊息、infer 推論訊息、interpret 詮釋整合、evaluate 比較評估。
        只放題號，不放課文 */
     quizLevels: { qa: 'extract', qb: 'extract', qc: 'extract', qd: 'extract', qe: 'infer', qf: 'infer', qg: 'infer',
