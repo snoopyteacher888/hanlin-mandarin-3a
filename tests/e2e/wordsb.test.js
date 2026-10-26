@@ -346,3 +346,20 @@ test('teacher face shows in 老師教你, falling back to 👩‍🏫 when the p
   });
   assert.deepEqual(p.errors, []);
 });
+
+test('自己說一句：第一下 💡 給圖，第二下 💡 或說錯就給前半句（老師要求）', async () => {
+  const pt = W.pattern.find(x => x.key === 'zhiyao'), m = pt.match[pt.match.length - 1];
+  const p = await page(); await p.goto(BASE + '#/L06/pattern?s=bear&retry=pt-zy-w1');
+  await p.waitForSelector('.prompt .hint-btn');
+  await p.click('.prompt .hint-btn');
+  await p.waitForSelector('.feedback.hint .hint-pic img');
+  assert.equal(await p.$('.speak-front'), null);
+  await p.click('.prompt .hint-btn');
+  await p.waitForSelector('.speak-front');
+  assert.ok((await p.textContent('.speak-front')).includes(m.front.replace(/[，。]/g, '').slice(0, 4)));
+  /* 說錯也會給前半句 */
+  const s = await page(); await s.goto(BASE + '#/L06/pattern?s=bear&retry=pt-zy-w1');
+  await say(s, '我喜歡吃蘋果');
+  await s.waitForSelector('.speak-front');
+  assert.deepEqual(p.errors, []); assert.deepEqual(s.errors, []);
+});

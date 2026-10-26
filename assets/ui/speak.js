@@ -38,11 +38,27 @@
     var actions = h('div', { class: 'speak-actions', hidden: true });
     var typing = null, lastText = '';
     if (q.front) box.appendChild(h('div', { class: 'speak-front' }, h('span', { class: 'pt-block cond' }, H3A.ui.hlWords ? H3A.ui.hlWords(q.front, (H3A.speechcheck.PATTERNS[q.rule && q.rule.key] || [])) : q.front), h('span', { class: 'pt-block res1 speak-blank' }, '🎤 換你說'), H3A.ui.speaker(q.front, null)));
+    var helps = 0, frontGiven = false;
     var bulb = h('button', { type: 'button', class: 'hint-btn', 'aria-label': '提示', onclick: function () {
       if (finished || taught) return;
+      /* 有鷹架的題目：第一下給圖、第二下給前半句（不算說錯） */
+      if (q.scaffold && !frontGiven) {
+        helps++;
+        if (helps === 1) { H3A.ui.showHint(feedback, q.hints.h1, ctx, true); return; }
+        giveFront(true); return;
+      }
       badCount++;
       climb(true);
     } }, '💡');
+    function giveFront(asked) {
+      frontGiven = true;
+      q.front = q.scaffold.front;
+      var rule = {}; for (var k in q.rule) rule[k] = q.rule[k]; rule.front = q.front; q.rule = rule;
+      var row = h('div', { class: 'speak-front' }, h('span', { class: 'pt-block cond' }, H3A.ui.hlWords ? H3A.ui.hlWords(q.front, (H3A.speechcheck.PATTERNS[rule.key] || [])) : q.front),
+        h('span', { class: 'pt-block res1 speak-blank' }, '🎤 換你說'), H3A.ui.speaker(q.front, null));
+      box.insertBefore(row, box.querySelector('.speak-tools'));
+      H3A.ui.showHint(feedback, { text: q.hints.h2.text, say: q.hints.h2.text + q.front }, ctx, asked);
+    }
     box.appendChild(h('div', { class: 'speak-tools' }, mic, bulb)); box.appendChild(status); box.appendChild(said); box.appendChild(actions);
     if (!Recognition()) useTyping();
 
@@ -111,6 +127,8 @@
       if (r.status === 'bad') {
         badCount++;
         actions.hidden = true;
+        /* 有鷹架的題目，說錯就先給前半句（老師要求） */
+        if (q.scaffold && !frontGiven) { giveFront(false); return; }
         if (climb(false)) return;
         /* 老師示範後還是不行（例如電腦一直聽錯），讓學生能把句子交給老師，或請大人打字 */
         if (taught) showEscape(text);
@@ -129,7 +147,7 @@
       });
       if (st === 'auto') {
         H3A.ui.celebrate(feedback);
-        done(taught ? 'taught' : ['first', 'hint1', 'hint2'][Math.min(badCount, 2)], { said: full, status: st });
+        done(taught ? 'taught' : ['first', 'hint1', 'hint2'][Math.min(badCount + helps, 2)], { said: full, status: st });
       } else {
         feedback.className = 'feedback ok'; feedback.textContent = '👩‍🏫 已送出，等老師批改';
         H3A.tts.speak('已送出，等老師批改');

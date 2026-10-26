@@ -26,6 +26,8 @@
     feedback.className = 'feedback hint';
     var row = h('div', { class: 'hint-row' }, h('span', { class: 'hint-icon', 'aria-hidden': 'true' }, '💡'), h('span', { class: 'hint-text' }, H3A.ui.blanks ? H3A.ui.blanks(hint.text) : hint.text), H3A.ui.speaker(hint.say || hint.text, null));
     feedback.appendChild(row);
+    /* 提示可以帶一張圖（例如自己說一句：看圖想想可以怎麼說） */
+    if (hint.img) feedback.appendChild(h('div', { class: 'hint-pic' }, H3A.ui.picture(ctx.lessonId, hint.img, '')));
     if (hint.para && ctx.lesson && hint.para.paras.length) {
       var block = paraBlock(ctx.lesson, hint.para);
       if (hint.para.highlight) feedback.appendChild(block);

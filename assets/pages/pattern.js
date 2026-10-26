@@ -3,7 +3,18 @@
   var H3A = root.H3A; var h = H3A.ui.h; var F = H3A.ui.flow, Q = H3A.wordq;
 
   function halfQ(pt, x) { return Q.speakQuestion(x, { kind: 'pattern', key: pt.key, front: x.front }, '說說看：把句子說完'); }
-  function wholeQ(pt, x) { return Q.speakQuestion(x, { kind: 'pattern', key: pt.key }, '用「' + pt.title + '」說一句話'); }
+  /* 自己說一句的鷹架（老師要求）：按第一下 💡 給一張圖、說可以怎麼造句；第二下 💡 或說錯，就給前半句，讓孩子自己說後半句。
+     圖和前半句用「前後配對」最後一題的（同一個句型） */
+  function wholeQ(pt, x) {
+    var q = Q.speakQuestion(x, { kind: 'pattern', key: pt.key }, '用「' + pt.title + '」說一句話');
+    var m = pt.match && pt.match[pt.match.length - 1];
+    if (m && m.img && m.front) {
+      q.scaffold = { front: m.front };
+      q.hints.h1 = { text: x.clue.split('想想看')[0] + '看看這張圖，可以怎麼說？', img: m.img };
+      q.hints.h2 = { text: '老師幫你說好前半句了，換你把後半句說完。' };
+    }
+    return q;
+  }
 
   /* 句型公式：🟧關聯詞、🟦條件（假設）、🟩結果 */
   var FORMULA = {
