@@ -145,10 +145,20 @@
         h2: { text: '讀一讀第 ' + it.paras.join('、') + ' 段，找找看「' + k.ask + '」。', para: { paras: it.paras, sentIds: [], highlight: true } },
         teach: { text: '答案是「' + it.options[0] + '」。' + it.why } } };
   }
-  /* 閱讀題：h1 告訴在第幾段、h2 把相關句子亮起來、teach 才說答案和依據 */
-  function readingHints(lesson, q) {
+  /* 閱讀題：h1 告訴在第幾段、h2 把相關句子亮起來、teach 才說答案和依據。
+     詮釋整合、比較評估的題目有 quizHelp（字詞資料）：提示改成「想一想」的兩個步驟，老師教你要解釋為什麼選這個答案 */
+  function readingHints(lesson, q, words) {
     var loc = locator.locate(lesson, q.evidence);
     var where = loc.paras.length ? '答案在課文第 ' + loc.paras.join('、') + ' 段。' : '回到課文找找看。';
+    var help = q.help || (words && words.quizHelp && words.quizHelp[q.id]);
+    if (help) {
+      var think = '想一想：\n① ' + help.think[0] + '\n② ' + help.think[1];
+      return {
+        h1: { text: think + where, para: { paras: loc.paras, sentIds: loc.sentIds, highlight: false } },
+        h2: { text: think, para: { paras: loc.paras, sentIds: loc.sentIds, highlight: true } },
+        teach: { text: '答案是「' + q.options[q.answer].text + '」。' + help.why }
+      };
+    }
     return {
       h1: { text: '再想想看。' + where, para: { paras: loc.paras, sentIds: loc.sentIds, highlight: false } },
       h2: { text: '再找找看，注意亮起來的句子。', para: { paras: loc.paras, sentIds: loc.sentIds, highlight: true } },

@@ -88,7 +88,7 @@
       if (q.type === 'learn') return showLearn(q);
       var speak = q.type === 'speak' || q.type === 'order' || q.type === 'fix' || q.type === 'match' || q.type === 'fill';
       var hs = speak ? null : H3A.hints.create(q.options.length, q.answer);
-      var hints = speak ? q.hints : q.hints || (ctx.lesson && q.evidence ? H3A.wordq.readingHints(ctx.lesson, q) : null) ||
+      var hints = speak ? q.hints : q.hints || (ctx.lesson && q.evidence ? H3A.wordq.readingHints(ctx.lesson, q, ctx.words) : null) ||
         { h1: { text: '再想想看。' }, h2: { text: '再仔細看一次題目。' }, teach: { text: '答案是「' + q.options[q.answer].text + '」。' } };
       var locked = false;
       H3A.ui.clear(main);

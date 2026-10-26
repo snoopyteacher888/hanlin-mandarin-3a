@@ -67,6 +67,12 @@
     Object.keys(w.quizLevels || {}).forEach(function (k) {
       if (['extract', 'infer', 'interpret', 'evaluate'].indexOf(w.quizLevels[k]) < 0) errs.push('理解提問 ' + k + ' 的分類不對');
     });
+    /* 理解提問的鷹架：一定要有兩個「想一想」步驟和「為什麼」的說明，只能給有分類的題目 */
+    Object.keys(w.quizHelp || {}).forEach(function (k) {
+      var x = w.quizHelp[k];
+      if (!w.quizLevels || !w.quizLevels[k]) errs.push('理解提問鷹架 ' + k + ' 沒有分類');
+      if (!x || !Array.isArray(x.think) || x.think.length !== 2 || !x.think.every(nonEmpty) || !nonEmpty(x.why)) errs.push('理解提問鷹架 ' + k + ' 要有兩個想一想步驟和說明');
+    });
     /* 改錯字：正確的字在句子裡剛好一次、錯字不在句子裡；提示不能出現正確的字 */
     (w.fix || []).forEach(function (f) {
       useId(f.id);

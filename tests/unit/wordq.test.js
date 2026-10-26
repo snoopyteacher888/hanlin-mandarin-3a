@@ -238,3 +238,18 @@ test('fixQuestion swaps in the wrong char and keeps hints answer-free', () => {
     for (const k of ['h1', 'h2']) { assert.ok(!q.hints.find[k].text.includes(it.char)); assert.ok(!q.hints.pick[k].text.includes(it.char)); }
   }
 });
+
+test('詮釋整合、比較評估：提示給「想一想」步驟，老師教你解釋為什麼（老師要求）', () => {
+  const fs = require('node:fs'), path = require('node:path');
+  const f = path.join(__dirname, '../../content/lesson01.plain.json');
+  if (!fs.existsSync(f)) return;
+  const lesson = JSON.parse(fs.readFileSync(f, 'utf8'));
+  const words = require('../../data/lesson01.words.js');
+  const q = lesson.quiz.find(x => x.id === 'qj');
+  const hs = Q.readingHints(lesson, q, words);
+  assert.match(hs.h2.text, /^想一想：\n① .+\n② /);
+  assert.ok(!hs.h2.text.includes(q.options[q.answer].text));
+  assert.ok(hs.teach.text.includes(words.quizHelp.qj.why));
+  /* 沒有鷹架的題目照舊 */
+  assert.match(Q.readingHints(lesson, lesson.quiz.find(x => x.id === 'qa'), words).h2.text, /亮起來/);
+});

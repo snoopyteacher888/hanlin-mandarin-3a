@@ -16,6 +16,12 @@
        只放題號，不放課文 */
     quizLevels: { qa: 'extract', qb: 'extract', qc: 'extract', qd: 'extract', qe: 'extract', qg: 'extract', qf: 'infer', qj: 'infer',
       qh: 'evaluate', qi: 'interpret', k1: 'interpret', k2: 'evaluate' },
+    /* 詮釋整合、比較評估的鷹架（老師要求：不能只給課文，要教孩子怎麼想、解釋為什麼選這個答案）：
+       think 是提示裡「想一想」的兩個步驟（不說答案），why 是「老師教你」的說明。不放課文原句 */
+    quizHelp: {
+      qh: { think: ["空碗做的小雨傘，要怎麼固定在樹上？", "加了夾子的小雨傘，只要怎麼做？哪一個比較快？"], why: "空碗做的雨傘要花功夫綁上去；有夾子的只要一夾就固定好了，比較方便，也比較省時間。" },
+      qi: { think: ["課文一開始，梨花遇到什麼問題？", "後面一段一段都在說什麼？（想辦法、再改良）"], why: "課文先說梨花怕淋雨，接著說翁先生想出撐傘的方法，梨農再一次一次改良。整課都在說梨農怎麼解決梨花淋雨的問題。" }
+    },
     hanzi: [
       { id: 'h-綁', combo: {'layout': 'lr', 'parts': [['糸', 'm', '絲線'], ['邦', 's', '']]}, char: '綁', zhuyin: 'ㄅㄤˇ', radical: '糸', strokes: 13, words: ['綁鞋帶', '綁頭髮'], say: '綁，綁鞋帶的綁', cloze: '＿鞋帶', img: 'tie-rope.png', options: ['綁', '幫', '邦', '梆'], clue: '這個字的左邊是糸字旁。', explain: '答案是「綁」，左邊是糸字旁；「幫」是幫忙的幫，「邦」的左邊沒有糸字旁。', parts: ['糸', '邦'], story: '左邊是糸字旁，就是絲線、繩子；右邊的「邦」念起來像「綁」。用繩子繞起來、打個結，就是「綁」。', sentence: '爸爸把舊報紙綁成一捆。', build: { layout: 'lr', show: ['？', '邦'], answer: '糸', options: ['糸', '木', '巾', '扌'], clue: '想一想：綁東西要用繩子，左邊放什麼？' } },
       { id: 'h-綿', combo: {'layout': 'lr', 'parts': [['糸', 'm', '絲線'], ['帛', 's', '']]}, char: '綿', zhuyin: 'ㄇㄧㄢˊ', radical: '糸', strokes: 14, words: ['綿綿', '綿羊'], say: '綿，綿綿的綿', cloze: '綿＿', img: 'drizzle.png', options: ['綿', '棉', '錦', '帛'], clue: '這個字的左邊是糸字旁。', explain: '答案是「綿」，左邊是糸字旁；「棉」是棉被的棉，左邊是「木」；「錦」的左邊是「金」。', parts: ['糸', '帛'], story: '左邊是糸字旁，右邊的「帛」是布。絲線又細又長，一直連下去不會斷，所以「綿綿」是一直不停的意思。', sentence: '細雨綿綿，下了好幾天。', build: { layout: 'lr', show: ['？', '帛'], answer: '糸', options: ['糸', '木', '金', '亻'], clue: '想一想：又細又長、連著不斷的是絲線，左邊放什麼？' } },

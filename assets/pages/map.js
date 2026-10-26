@@ -151,7 +151,7 @@
     }
     function tailHint(asked) {
       var q = tailOrder;
-      var th = H3A.wordq.readingHints(ctx.lesson, q);
+      var th = H3A.wordq.readingHints(ctx.lesson, q, ctx.words);
       if (H3A.hints.mustTeach(ts)) {
         dropBulb();
         Object.keys(cardEls).forEach(function (k) { cardEls[k].disabled = +k !== q.answer; });

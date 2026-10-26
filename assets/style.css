@@ -1005,6 +1005,6 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 /* 提示一行放得下就放一行：喇叭移到黃框外面（老師要求）；老師教你的說明置中 */
 .feedback.hint { position: relative; margin-right: 66px; }
 .feedback.hint > .hint-row > .speaker { position: absolute; right: -64px; top: 10px; }
-.feedback.hint .hint-text { text-align: center; }
+.feedback.hint .hint-text { text-align: center; white-space: pre-line; }
 /* 空格和後面的標點黏在一起，逗號不會跑到下一行的開頭（老師要求） */
 .nobreak { white-space: nowrap; display: inline-block; }
