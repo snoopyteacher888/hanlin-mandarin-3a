@@ -586,7 +586,7 @@
 | 61 | `day-night.png` | 一會兒白天，一會兒黑夜 | 魚骨圖 |
 | 62 | `rabbit.png` | 時間是一隻兔子（陷阱卡） | 魚骨圖（陷阱卡） |
 
-## 第 2 課（待生成）
+## 第 2 課（已完成）
 
 放在 `images/L02/`。指令在 `docs/chatgpt-image-prompts-L02.txt`。
 
@@ -670,7 +670,7 @@
 | 76 | `fridge-note.png` | 用便條提醒家人 | 魚骨圖 |
 | 77 | `late-family.png` | 全家人都遲到了（陷阱卡） | 魚骨圖（陷阱卡） |
 
-## 第 3 課（待生成）
+## 第 3 課（已完成）
 
 放在 `images/L03/`。指令在 `docs/chatgpt-image-prompts-L03.txt`。
 
