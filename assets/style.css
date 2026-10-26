@@ -1022,3 +1022,7 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 /* 提示裡的圖（自己說一句） */
 .hint-pic { display: flex; justify-content: center; margin-top: 8px; }
 .hint-pic .pic { width: min(200px, 26vh); height: min(200px, 26vh); }
+
+/* 說後半句、自己說一句：前半句的文字要接成一行，不要每一段各自分欄（老師回報排版跑掉） */
+.speak-front .pt-block.cond { display: block; line-height: 1.9; }
+.speak-front .pt-block.cond .conj-word { display: inline; }
