@@ -55,7 +55,7 @@
 
 ## B 批（已完成）
 
-短語短句、句型用的新圖，指令在 `docs/chatgpt-image-prompts-b.txt`。上傳後網站會自動顯示。
+短語短句、句型用的新圖。上傳後網站會自動顯示。
 
 | # | 檔名 | 要畫什麼 |
 |---|---|---|
@@ -72,7 +72,7 @@
 
 ## 修辭闖關（待生成）
 
-指令在 `docs/chatgpt-image-prompts-rhetoric.txt`。
+
 
 | # | 檔名 | 要畫什麼 |
 |---|---|---|
@@ -83,7 +83,7 @@
 
 ## 生字語詞（已上傳）
 
-指令在 `docs/chatgpt-image-prompts-charword.txt`。
+
 
 | # | 檔名 | 要畫什麼 |
 |---|---|---|
@@ -104,7 +104,7 @@
 
 ## 第 7 課（已完成）
 
-放在 `images/L07/`。指令在 `docs/chatgpt-image-prompts-L07.txt`。
+放在 `images/L07/`。
 
 | # | 檔名 | 要畫什麼 | 用在 |
 |---|---|---|---|
@@ -152,7 +152,7 @@
 
 ## 第 8 課（已完成）
 
-放在 `images/L08/`。指令在 `docs/chatgpt-image-prompts-L08.txt`。
+放在 `images/L08/`。
 
 | # | 檔名 | 要畫什麼 | 用在 |
 |---|---|---|---|
@@ -220,7 +220,7 @@
 
 ## 第 9 課（已完成）
 
-放在 `images/L09/`。指令在 `docs/chatgpt-image-prompts-L09.txt`。
+放在 `images/L09/`。
 
 | # | 檔名 | 要畫什麼 | 用在 |
 |---|---|---|---|
@@ -295,7 +295,7 @@
 
 ## 第 10 課（已完成）
 
-放在 `images/L10/`。指令在 `docs/chatgpt-image-prompts-L10.txt`。
+放在 `images/L10/`。
 
 | # | 檔名 | 要畫什麼 | 用在 |
 |---|---|---|---|
@@ -364,7 +364,7 @@
 
 ## 第 11 課（已完成）
 
-放在 `images/L11/`。指令在 `docs/chatgpt-image-prompts-L11.txt`。
+放在 `images/L11/`。
 
 | # | 檔名 | 要畫什麼 | 用在 |
 |---|---|---|---|
@@ -446,7 +446,7 @@
 
 ## 第 12 課（已完成）
 
-放在 `images/L12/`。指令在 `docs/chatgpt-image-prompts-L12.txt`。
+放在 `images/L12/`。
 
 | # | 檔名 | 要畫什麼 | 用在 |
 |---|---|---|---|
@@ -519,7 +519,7 @@
 
 ## 第 1 課（已完成）
 
-放在 `images/L01/`。指令在 `docs/chatgpt-image-prompts-L01.txt`。
+放在 `images/L01/`。
 
 | # | 檔名 | 要畫什麼 | 用在 |
 |---|---|---|---|
@@ -588,7 +588,7 @@
 
 ## 第 2 課（已完成）
 
-放在 `images/L02/`。指令在 `docs/chatgpt-image-prompts-L02.txt`。
+放在 `images/L02/`。
 
 | # | 檔名 | 要畫什麼 | 用在 |
 |---|---|---|---|
@@ -672,7 +672,7 @@
 
 ## 第 3 課（已完成）
 
-放在 `images/L03/`。指令在 `docs/chatgpt-image-prompts-L03.txt`。
+放在 `images/L03/`。
 
 | # | 檔名 | 要畫什麼 | 用在 |
 |---|---|---|---|
@@ -751,9 +751,9 @@
 | 73 | `five-early.png` | 提早五分鐘開始 | 魚骨圖 |
 | 74 | `new-bag.png` | 爸爸買了新書包（陷阱卡） | 魚骨圖（陷阱卡） |
 
-## 第 4 課（待生成）
+## 第 4 課（已完成）
 
-放在 `images/L04/`。指令在 `docs/chatgpt-image-prompts-L04.txt`。
+放在 `images/L04/`。
 
 | # | 檔名 | 要畫什麼 | 用在 |
 |---|---|---|---|
@@ -821,9 +821,9 @@
 | 62 | `map-calm-pot.png` | 火變小，水不滾了 | 課文地圖 |
 | 63 | `map-ice-pot.png` | 在鍋子裡加冰塊 | 課文地圖（干擾選項） |
 
-## 第 5 課（待生成）
+## 第 5 課（已完成）
 
-放在 `images/L05/`。指令在 `docs/chatgpt-image-prompts-L05.txt`。
+放在 `images/L05/`。
 
 | # | 檔名 | 要畫什麼 | 用在 |
 |---|---|---|---|
@@ -891,7 +891,7 @@
 
 ## 活動圖示（待生成）
 
-放在 `images/icons/`。指令在 `docs/chatgpt-image-prompts-icons.txt`。
+放在 `images/icons/`。
 
 | # | 檔名 | 活動 |
 |---|---|---|
@@ -914,7 +914,7 @@
 
 ## 句型配對（已上傳）
 
-放在 `images/L06/`。指令在 `docs/chatgpt-image-prompts-pattern.txt`。
+放在 `images/L06/`。
 
 | # | 檔名 | 前半句 |
 |---|---|---|
@@ -926,7 +926,7 @@
 
 ## 成語情境題（已完成）
 
-指令在 `docs/chatgpt-image-prompts-idiom.txt`。
+
 
 | # | 檔名 | 用在 |
 |---|---|---|
@@ -943,7 +943,7 @@
 
 ## 生字卡圖（已完成）
 
-指令在 `docs/chatgpt-image-prompts-hanzi.txt`。
+
 
 | # | 檔名 | 用在 |
 |---|---|---|
@@ -954,7 +954,7 @@
 
 ## 句型填空（已完成）
 
-指令在 `docs/chatgpt-image-prompts-pattern-fill.txt`，放在 `images/L06/`。
+放在 `images/L06/`。
 
 | # | 檔名 | 用在 |
 |---|---|---|
