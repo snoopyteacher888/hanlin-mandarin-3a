@@ -93,3 +93,8 @@ test('破音字單獨念時換成同音字（生字卡「彈，彈簧的彈」�
   assert.equal(T.fixSay('挑，挑戰的挑'), '窕，挑戰的窕');
   assert.equal(T.fixSay('彈琴很好玩。'), '彈琴很好玩。');
 });
+
+test('圈圈數字念「第一、第二」，不念成「兩」', () => {
+  const T = require('../../assets/tts.js');
+  assert.equal(T.fixSay('① 比一比 ② 再想'), '第一， 比一比 第二， 再想');
+});
