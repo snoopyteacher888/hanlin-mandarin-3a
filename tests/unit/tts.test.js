@@ -98,3 +98,11 @@ test('圈圈數字念「第一、第二」，不念成「兩」', () => {
   const T = require('../../assets/tts.js');
   assert.equal(T.fixSay('① 比一比 ② 再想'), '第一， 比一比 第二， 再想');
 });
+
+test('人事時地物的「地」單獨念ㄉㄧˋ，不念成「的」（老師要求）', () => {
+  const T = require('../../assets/tts.js');
+  assert.equal(T.fixSay('地，在哪裡？'), '弟，在拿裡？');
+  assert.equal(T.fixSay('「地」：事情發生在哪裡？'), '「弟」：事情發生在拿裡？');
+  assert.equal(T.fixSay('人、事、時、地、物'), '人、事、時、弟、物');
+  assert.equal(T.fixSay('他慢慢地走。'), '他慢慢地走。');
+});
