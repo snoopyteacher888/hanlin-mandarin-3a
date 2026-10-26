@@ -142,6 +142,8 @@
     ],
     /* ---------- B 批：短語短句、句型、修辭（句子都是 Claude 自己寫的） ---------- */
     phrase: {
+      /* 拼短語（短語一）每一格下面寫要放什麼樣的詞（老師要求） */
+      fillLabels: {"before": "什麼東西", "answer": "怎麼樣（四個字）"},
       pickName: '看圖選一選', pickSay: '看圖，選出最適合的四個字。',
       /* 短語一：什麼東西＋四個字說它怎麼樣（課本的例子是課文原句，這裡換成自己寫的） */
       intro: { example: '這顆水蜜桃鮮嫩多汁', img: 'pr-peach.png',
@@ -161,7 +163,14 @@
         intro: { example: '把衣服摺起來', img: 'pz-fold-clothes.png',
           parts: [{ text: '把' }, { text: '衣服', role: '什麼東西' }, { text: '摺起來', role: '怎麼做' }],
           explain: '先說「把」，再說什麼東西，最後說要對它做什麼動作。' },
-        fill: [
+        pick: [
+        { id: 'p2-pz1', img: 'pz-socks.png', before: '把襪子', join: '', noun: '', ask: '把襪子什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["穿上去", "喝光光", "打開來", "吃下去"], clue: '提示：這是要套在腳丫的東西。', explain: '答案是「穿上去」，完整的短語是「把襪子穿上去」。' },
+        { id: 'p2-pz2', img: 'pz-drink-juice.png', before: '把果汁', join: '', noun: '', ask: '把果汁什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["喝光光", "穿上去", "打開來", "摺起來"], clue: '提示：杯子裡一滴都不剩了。', explain: '答案是「喝光光」，完整的短語是「把果汁喝光光」。' },
+        { id: 'p2-pz3', img: 'pz-trash-in.png', before: '把垃圾', join: '', noun: '', ask: '把垃圾什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["丟進去", "穿上去", "喝光光", "吃下去"], clue: '提示：垃圾要放到垃圾桶裡。', explain: '答案是「丟進去」，完整的短語是「把垃圾丟進去」。' },
+        { id: 'p2-pz4', img: 'pz-open-window.png', before: '把窗戶', join: '', noun: '', ask: '把窗戶什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["打開來", "喝光光", "穿上去", "吃下去"], clue: '提示：把窗戶推一推，風就吹進屋裡了。', explain: '答案是「打開來」，完整的短語是「把窗戶打開來」。' },
+        { id: 'p2-pz5', img: 'pz-toys-away.png', before: '把玩具', join: '', noun: '', ask: '把玩具什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["收進箱子", "喝光光", "穿上去", "吃下去"], clue: '提示：玩完了，要把它們放回原來的地方。', explain: '答案是「收進箱子」，完整的短語是「把玩具收進箱子」。' }
+      ],
+      fill: [
           { id: 'pz1', img: 'pz-socks.png', parts: ['把', '襪子', '穿上去'] },
           { id: 'pz2', img: 'pz-drink-juice.png', parts: ['把', '果汁', '喝光光'] },
           { id: 'pz3', img: 'pz-trash-in.png', parts: ['把', '垃圾', '丟進去'] },

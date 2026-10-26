@@ -116,6 +116,8 @@
     ],
     /* ---------- B 批：短語短句、句型、修辭（句子都是 Claude 自己寫的） ---------- */
     phrase: {
+      /* 拼短語（短語一）每一格下面寫要放什麼樣的詞（老師要求） */
+      fillLabels: {"answer": "什麼樣子（疊字）", "noun": "什麼東西"},
       pickName: '看圖選疊字', pickSay: '看圖，選出最適合的疊字。',
       intro: { example: '閃亮亮的鉛筆', img: 'finished.png',
         parts: [{ text: '閃亮亮', role: '形容東西的樣子' }, { text: '的' }, { text: '鉛筆', role: '是什麼東西' }] },

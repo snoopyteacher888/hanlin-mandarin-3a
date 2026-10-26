@@ -156,6 +156,8 @@
     ],
     /* ---------- B 批：短語短句、句型、修辭（句子都是 Claude 自己寫的） ---------- */
     phrase: {
+      /* 拼短語（短語一）每一格下面寫要放什麼樣的詞（老師要求） */
+      fillLabels: {"before": "做什麼", "answer": "什麼樣子", "noun": "什麼地方"},
       pickName: '看圖選一選', pickSay: '看圖，選出最適合的詞，說說看在什麼樣的地方。',
       /* 短語一：做什麼＋在＋什麼樣子＋的＋地方（課本的例子是課文原句，這裡換成自己寫的） */
       intro: { example: '躺在柔軟的草地上', img: 'pr-lie-grass.png',
@@ -177,7 +179,14 @@
         intro: { example: '弟弟吃飯變得有規矩', img: 'pz-eat-manners.png',
           parts: [{ text: '弟弟', role: '誰' }, { text: '吃飯', role: '做什麼' }, { text: '變得有' }, { text: '規矩', role: '變成什麼樣子' }],
           explain: '先說是誰、做什麼事，再說「變得有」，最後說變成什麼樣子，表示和以前不一樣了。' },
-        fill: [
+        pick: [
+        { id: 'p2-pz1', img: 'pz-sing-brave.png', before: '妹妹唱歌變得有', join: '', noun: '', ask: '妹妹唱歌變得有什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["自信", "灰塵", "蛀牙", "雨水"], clue: '提示：妹妹站在臺上大聲唱，不再害怕了。', explain: '答案是「自信」，完整的短語是「妹妹唱歌變得有自信」。' },
+        { id: 'p2-pz2', img: 'pz-strong-ball.png', before: '哥哥打球變得有', join: '', noun: '', ask: '哥哥打球變得有什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["力氣", "灰塵", "皺紋", "雨水"], clue: '提示：哥哥把球丟得又高又遠。', explain: '答案是「力氣」，完整的短語是「哥哥打球變得有力氣」。' },
+        { id: 'p2-pz3', img: 'pz-lively-dog.png', before: '小狗走路變得有', join: '', noun: '', ask: '小狗走路變得有什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["精神", "蛀牙", "灰塵", "雨水"], clue: '提示：小狗走起路來活蹦亂跳的。', explain: '答案是「精神」，完整的短語是「小狗走路變得有精神」。' },
+        { id: 'p2-pz4', img: 'pz-draw-better.png', before: '姐姐畫畫變得有', join: '', noun: '', ask: '姐姐畫畫變得有什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["進步", "皺紋", "蛀牙", "灰塵"], clue: '提示：姐姐現在畫得比以前好很多。', explain: '答案是「進步」，完整的短語是「姐姐畫畫變得有進步」。' },
+        { id: 'p2-pz5', img: 'pz-fast-homework.png', before: '我寫作業變得有', join: '', noun: '', ask: '我寫作業變得有什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["效率", "雨水", "灰塵", "皺紋"], clue: '提示：我很快就把作業寫完了。', explain: '答案是「效率」，完整的短語是「我寫作業變得有效率」。' }
+      ],
+      fill: [
           { id: 'pz1', img: 'pz-sing-brave.png', parts: ['妹妹', '唱歌', '變得有', '自信'] },
           { id: 'pz2', img: 'pz-strong-ball.png', parts: ['哥哥', '打球', '變得有', '力氣'] },
           { id: 'pz3', img: 'pz-lively-dog.png', parts: ['小狗', '走路', '變得有', '精神'] },

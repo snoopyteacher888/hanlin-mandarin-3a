@@ -1014,3 +1014,7 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 /* 句型例句放不下一行時：一個分句一行、靠左排 */
 .pt-sentence.stacked .pt-grid { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
 .pt-grid .pt-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+
+/* 拼短語：每一格下面的小字（要放什麼樣的詞） */
+.slot-wrap { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; vertical-align: top; }
+.slot-label { font-size: .62em; color: #8A6A44; white-space: nowrap; }

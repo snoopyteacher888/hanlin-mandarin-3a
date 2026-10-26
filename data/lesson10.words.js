@@ -147,6 +147,8 @@
     ],
     /* ---------- B 批：短語短句、句型、修辭（句子都是 Claude 自己寫的） ---------- */
     phrase: {
+      /* 拼短語（短語一）每一格下面寫要放什麼樣的詞（老師要求） */
+      fillLabels: {"answer": "怎麼做（疊字）", "noun": "做什麼"},
       pickName: '看圖選疊字', pickSay: '看圖，選出最適合的疊字。',
       /* 短語一：疊字＋的＋動作＋東西（課本的例子是課文原句，這裡換成自己寫的） */
       intro: { example: '高高興興的拿回獎狀', img: 'pr-award.png',
@@ -171,7 +173,14 @@
         intro: { example: '好像為我的進步拍手', img: 'pz-leaves-clap.png',
           parts: [{ text: '好像為' }, { text: '我', role: '為誰' }, { text: '的' }, { text: '進步', role: '什麼事' }, { text: '拍手', role: '做什麼' }],
           explain: '把東西發出的聲音或樣子，說成「好像為」誰的什麼事在做動作。例如樹葉沙沙響，好像為我的進步拍手。' },
-        fill: [
+        pick: [
+        { id: 'p2-pz1', img: 'pz-birds-spring.png', before: '好像為春天的', join: '', noun: '唱歌', ask: '好像為春天的什麼唱歌', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["到來", "蛀牙", "感冒", "垃圾"], clue: '提示：冬天過去，花開的季節出現了。', explain: '答案是「到來」，完整的短語是「好像為春天的到來唱歌」。' },
+        { id: 'p2-pz2', img: 'pz-waves-clap.png', before: '好像為我們的', join: '', noun: '鼓掌', ask: '好像為我們的什麼鼓掌', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["勝利", "蛀牙", "灰塵", "拖鞋"], clue: '提示：我們比賽贏了，大家都在拍手。', explain: '答案是「勝利」，完整的短語是「好像為我們的勝利鼓掌」。' },
+        { id: 'p2-pz3', img: 'pz-balloons-dance.png', before: '好像為姐姐的', join: '', noun: '跳舞', ask: '好像為姐姐的什麼跳舞', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["生日", "感冒", "垃圾", "灰塵"], clue: '提示：今天姐姐又長大一歲了。', explain: '答案是「生日」，完整的短語是「好像為姐姐的生日跳舞」。' },
+        { id: 'p2-pz4', img: 'pz-fireworks.png', before: '好像為大家的', join: '', noun: '歡呼', ask: '好像為大家的什麼歡呼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["新年", "蛀牙", "拖鞋", "感冒"], clue: '提示：一月一號這天，天上放起煙火。', explain: '答案是「新年」，完整的短語是「好像為大家的新年歡呼」。' },
+        { id: 'p2-pz5', img: 'pz-flag-cheer.png', before: '好像為弟弟的', join: '', noun: '加油', ask: '好像為弟弟的什麼加油', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["勇敢", "垃圾", "感冒", "拖鞋"], clue: '提示：弟弟一點都不怕，大家為他加油。', explain: '答案是「勇敢」，完整的短語是「好像為弟弟的勇敢加油」。' }
+      ],
+      fill: [
           { id: 'pz1', img: 'pz-birds-spring.png', parts: ['好像為', '春天', '的', '到來', '唱歌'] },
           { id: 'pz2', img: 'pz-waves-clap.png', parts: ['好像為', '我們', '的', '勝利', '鼓掌'] },
           { id: 'pz3', img: 'pz-balloons-dance.png', parts: ['好像為', '姐姐', '的', '生日', '跳舞'] },

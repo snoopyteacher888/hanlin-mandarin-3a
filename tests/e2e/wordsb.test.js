@@ -94,9 +94,9 @@ const speechFor = qid => srv.speech.filter(s => s.qid === qid);
 test('phrase speak exact answer is correct', async () => {
   const before = srv.posts.filter(x => x.action === 'submit').length;
   const p = await page(); await p.goto(BASE + '#/L06/phrase?s=bear');
-  assert.deepEqual(await p.$$eval('.step-tab', x => x.map(e => e.dataset.step)), ['intro', 'pick', 'say']);
-  await nextLearn(p);
-  for (let i = 0; i < W.phrase.pick.length; i++) await answerChoice(p);
+  /* 每個短語都是：認識短語 → 看圖選詞 → 拼短語（老師要求），最後才是看圖說說看 */
+  assert.deepEqual(await p.$$eval('.step-tab', x => x.map(e => e.dataset.step)), ['intro', 'pick', 'fill1', 'say']);
+  await p.goto(BASE + '#/L06/phrase?s=bear&step=say');
   await p.waitForSelector('.mic-btn');
   await say(p, '閃亮亮的鉛筆。');
   await p.waitForSelector('.feedback.ok.celebrate .big-check');

@@ -139,6 +139,8 @@
     ],
     /* ---------- B 批：短語短句、句型、修辭（句子都是 Claude 自己寫的） ---------- */
     phrase: {
+      /* 拼短語（短語一）每一格下面寫要放什麼樣的詞（老師要求） */
+      fillLabels: {"answer": "怎麼做（疊字）", "noun": "做什麼"},
       pickName: '看圖選疊字', pickSay: '看圖，選出最適合的疊字。',
       /* 短語一：疊字＋的＋動作（課本的例子是課文原句，這裡換成自己寫的） */
       intro: { example: '急急忙忙的跑出門', img: 'pr-hurry.png',
@@ -163,7 +165,14 @@
         intro: { example: '從樹上掉下來', img: 'pz-apple-fall.png',
           parts: [{ text: '從' }, { text: '樹上', role: '從哪裡' }, { text: '掉下來', role: '做什麼動作' }],
           explain: '先說「從」哪裡，再說做了什麼動作，就知道東西是從哪裡移動到別的地方。' },
-        fill: [
+        pick: [
+        { id: 'p2-pz1', img: 'pz-slide.png', before: '從溜滑梯上', join: '', noun: '', ask: '從溜滑梯上什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["滑下來", "拿出來", "飛進來", "游過去"], clue: '提示：坐著從高高的地方溜到最底部。', explain: '答案是「滑下來」，完整的短語是「從溜滑梯上滑下來」。' },
+        { id: 'p2-pz2', img: 'pz-bag.png', before: '從書包裡', join: '', noun: '', ask: '從書包裡什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["拿出來", "滑下來", "游過去", "飛上去"], clue: '提示：東西原本在書包裡，現在到了外面。', explain: '答案是「拿出來」，完整的短語是「從書包裡拿出來」。' },
+        { id: 'p2-pz3', img: 'pz-fish.png', before: '從水裡', join: '', noun: '', ask: '從水裡什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["跳起來", "拿出來", "走進來", "滑下來"], clue: '提示：魚從水面一下子往上衝到空中。', explain: '答案是「跳起來」，完整的短語是「從水裡跳起來」。' },
+        { id: 'p2-pz4', img: 'pz-door.png', before: '從門口', join: '', noun: '', ask: '從門口什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["走進來", "游過去", "滑下來", "跳下水"], clue: '提示：有人從外面到了屋子裡。', explain: '答案是「走進來」，完整的短語是「從門口走進來」。' },
+        { id: 'p2-pz5', img: 'pz-crab-hole.png', before: '從洞裡', join: '', noun: '', ask: '從洞裡什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["爬出來", "滑下來", "游過去", "飛上去"], clue: '提示：螃蟹從洞裡用腳慢慢移到外面。', explain: '答案是「爬出來」，完整的短語是「從洞裡爬出來」。' }
+      ],
+      fill: [
           { id: 'pz1', img: 'pz-slide.png', parts: ['從', '溜滑梯上', '滑下來'] },
           { id: 'pz2', img: 'pz-bag.png', parts: ['從', '書包裡', '拿出來'] },
           { id: 'pz3', img: 'pz-fish.png', parts: ['從', '水裡', '跳起來'] },

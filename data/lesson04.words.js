@@ -141,6 +141,8 @@
     ],
     /* ---------- B 批：短語短句、句型、修辭（句子都是 Claude 自己寫的） ---------- */
     phrase: {
+      /* 拼短語（短語一）每一格下面寫要放什麼樣的詞（老師要求） */
+      fillLabels: {"before": "誰做什麼", "answer": "什麼樣子（疊字）", "noun": "什麼地方"},
       pickName: '看圖選疊字', pickSay: '看圖，選出最適合的疊字。',
       /* 短語一：疊字＋的＋什麼地方＋方位詞（課本的例子是課文原句，這裡換成自己寫的） */
       intro: { example: '軟軟的沙發上', img: 'pr-sofa.png',
@@ -160,7 +162,14 @@
         intro: { example: '安慰哭泣的妹妹', img: 'pz-comfort.png',
           parts: [{ text: '安慰', role: '做什麼' }, { text: '哭泣', role: '怎麼樣' }, { text: '的' }, { text: '妹妹', role: '誰' }],
           explain: '先說做什麼事，再說這個人怎麼了，加上「的」，最後說是誰。' },
-        fill: [
+        pick: [
+        { id: 'p2-pz1', img: 'pz-help-up.png', before: '扶起', join: '', noun: '的小朋友', ask: '扶起什麼的小朋友', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["跌倒", "唱歌", "吃飽", "開心"], clue: '提示：小朋友摔在地上，需要人扶。', explain: '答案是「跌倒」，完整的短語是「扶起跌倒的小朋友」。' },
+        { id: 'p2-pz2', img: 'pz-feed-cat.png', before: '餵飽', join: '', noun: '的小貓', ask: '餵飽什麼的小貓', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["肚子餓", "吃很飽", "愛唱歌", "很乾淨"], clue: '提示：小貓好久沒吃東西了。', explain: '答案是「肚子餓」，完整的短語是「餵飽肚子餓的小貓」。' },
+        { id: 'p2-pz3', img: 'pz-wake-dad.png', before: '叫醒', join: '', noun: '的爸爸', ask: '叫醒什麼的爸爸', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["睡著", "醒著", "唱歌", "吃飯"], clue: '提示：爸爸閉上眼睛，還躺在床上休息。', explain: '答案是「睡著」，完整的短語是「叫醒睡著的爸爸」。' },
+        { id: 'p2-pz4', img: 'pz-lost-grandma.png', before: '幫助', join: '', noun: '的奶奶', ask: '幫助什麼的奶奶', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["迷路", "跳舞", "唱歌", "睡覺"], clue: '提示：奶奶找不到回家的方向。', explain: '答案是「迷路」，完整的短語是「幫助迷路的奶奶」。' },
+        { id: 'p2-pz5', img: 'pz-cheer-runner.png', before: '鼓勵', join: '', noun: '的哥哥', ask: '鼓勵什麼的哥哥', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["累壞", "睡著", "吃飯", "洗澡"], clue: '提示：哥哥滿頭大汗，快要跑不動了。', explain: '答案是「累壞」，完整的短語是「鼓勵累壞的哥哥」。' }
+      ],
+      fill: [
           { id: 'pz1', img: 'pz-help-up.png', parts: ['扶起', '跌倒', '的', '小朋友'] },
           { id: 'pz2', img: 'pz-feed-cat.png', parts: ['餵飽', '肚子餓', '的', '小貓'] },
           { id: 'pz3', img: 'pz-wake-dad.png', parts: ['叫醒', '睡著', '的', '爸爸'] },

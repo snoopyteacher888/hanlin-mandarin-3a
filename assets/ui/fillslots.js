@@ -9,7 +9,8 @@
       if (s.kind === 'punct') return h('span', { class: 'fill-punct' }, s.text);
       var slot = h('span', { class: 'drop-slot fill-slot role-' + (s.role || 'cond'), 'data-answer': s.text });
       slots.push(slot); left++;
-      return slot;
+      /* 每一格下面寫要放什麼樣的詞（老師要求） */
+      return s.label ? h('span', { class: 'slot-wrap' }, slot, h('span', { class: 'slot-label' }, s.label)) : slot;
     });
     /* 標點跟前面那一塊黏在一起，不會換到下一行開頭（老師要求） */
     var glued = [];

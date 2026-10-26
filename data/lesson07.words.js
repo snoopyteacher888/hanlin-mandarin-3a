@@ -123,6 +123,8 @@
     ],
     /* ---------- B 批：短語短句、修辭（句子都是 Claude 自己寫的） ---------- */
     phrase: {
+      /* 拼短語（短語一）每一格下面寫要放什麼樣的詞（老師要求） */
+      fillLabels: {"answer": "什麼樣子", "noun": "什麼東西"},
       intro: { example: '冰涼的雪花', img: 'snowflake.png',
         parts: [{ text: '冰涼', role: '形容東西的樣子' }, { text: '的' }, { text: '雪花', role: '是什麼東西' }] },
       pick: [
@@ -145,7 +147,14 @@
         intro: { example: '在草地上開心的打滾', img: 'roll-grass.png',
           parts: [{ text: '在' }, { text: '草地上', role: '在哪裡' }, { text: '開心', role: '怎麼做' }, { text: '的' }, { text: '打滾', role: '做什麼' }],
           explain: '先說「在」哪裡，再說怎麼做，加上「的」，最後說做什麼，就能把動作說得更清楚。' },
-        fill: [
+        pick: [
+        { id: 'p2-pz1', img: 'pz-run.png', before: '在操場上開心的', join: '', noun: '', ask: '在操場上開心的什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["奔跑", "游泳", "洗澡", "刷牙"], clue: '提示：在操場上，用腳飛快的前進。', explain: '答案是「奔跑」，完整的短語是「在操場上開心的奔跑」。' },
+        { id: 'p2-pz2', img: 'pz-swim.png', before: '在游泳池裡快樂的', join: '', noun: '', ask: '在游泳池裡快樂的什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["游泳", "睡覺", "寫字", "刷牙"], clue: '提示：這裡有很多水，大家在水裡划手踢腳。', explain: '答案是「游泳」，完整的短語是「在游泳池裡快樂的游泳」。' },
+        { id: 'p2-pz3', img: 'pz-read.png', before: '在大樹下安靜的', join: '', noun: '', ask: '在大樹下安靜的什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["看書", "游泳", "洗澡", "刷牙"], clue: '提示：大樹下很安靜，手上拿著故事，一頁一頁的翻。', explain: '答案是「看書」，完整的短語是「在大樹下安靜的看書」。' },
+        { id: 'p2-pz4', img: 'pz-sleep.png', before: '在床上舒服的', join: '', noun: '', ask: '在床上舒服的什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["睡覺", "游泳", "奔跑", "刷牙"], clue: '提示：躺在床上，閉上眼睛休息。', explain: '答案是「睡覺」，完整的短語是「在床上舒服的睡覺」。' },
+        { id: 'p2-pz5', img: 'pz-show.png', before: '在舞臺上認真的', join: '', noun: '', ask: '在舞臺上認真的什麼', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["表演", "睡覺", "游泳", "洗澡"], clue: '提示：站在臺上，給下面的人看。', explain: '答案是「表演」，完整的短語是「在舞臺上認真的表演」。' }
+      ],
+      fill: [
           { id: 'pz1', img: 'pz-run.png', parts: ['在', '操場上', '開心', '的', '奔跑'] },
           { id: 'pz2', img: 'pz-swim.png', parts: ['在', '游泳池裡', '快樂', '的', '游泳'] },
           { id: 'pz3', img: 'pz-read.png', parts: ['在', '大樹下', '安靜', '的', '看書'] },

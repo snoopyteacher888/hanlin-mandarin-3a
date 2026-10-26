@@ -224,8 +224,10 @@
     /* c.parts：已經切好的短語（例如 在｜操場上｜開心｜的｜奔跑、從｜房間裡｜走出來），「在」「從」「一」「好像為」「的」印好，其他依序是在哪裡、怎麼做、做什麼 */
     if (c.parts) {
       var ROLES = ['cond', 'res1', 'res2'], FIXED = ['在', '從', '一', '好像為', '的', '變得有', '不', '就不', '把'], n = 0;
-      c = { id: c.id, img: c.img, full: c.parts.join(''), segs: c.parts.map(function (t) {
-        return FIXED.indexOf(t) >= 0 ? { text: t, kind: 'conj' } : { text: t, kind: 'blank', role: ROLES[Math.min(n++, 2)] };
+      var labels = c.labels;
+      c = { id: c.id, img: c.img, full: c.parts.join(''), segs: c.parts.map(function (t, i) {
+        return FIXED.indexOf(t) >= 0 || (labels && !labels[i] && t.length <= 2) ? { text: t, kind: 'conj' }
+          : { text: t, kind: 'blank', role: ROLES[Math.min(n++, 2)], label: labels ? labels[i] : '' };
       }) };
     }
     var words = c.segs ? [] : speechcheck.PATTERNS[key], text = c.full, segs = c.segs ? c.segs.slice() : [], rest = c.segs ? '' : text, clause = 0;

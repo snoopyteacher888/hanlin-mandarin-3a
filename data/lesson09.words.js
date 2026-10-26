@@ -142,6 +142,8 @@
     ],
     /* ---------- B 批：短語短句、句型、修辭（句子都是 Claude 自己寫的） ---------- */
     phrase: {
+      /* 拼短語（短語一）每一格下面寫要放什麼樣的詞（老師要求） */
+      fillLabels: {"before": "做什麼", "answer": "什麼樣子（疊字）", "noun": "什麼東西"},
       pickName: '看圖選疊字', pickSay: '看圖，選出最適合的疊字。',
       /* 短語一：動作＋著＋疊字＋的＋東西（課本的例子是課文原句，這裡換成自己寫的） */
       intro: { example: '穿著花花綠綠的衣服', img: 'pr-clothes.png',
@@ -166,7 +168,14 @@
         intro: { example: '星星一顆顆亮起來', img: 'pz-stars.png',
           parts: [{ text: '星星', role: '是什麼' }, { text: '一' }, { text: '顆顆', role: '量詞疊字' }, { text: '亮起來', role: '做什麼' }],
           explain: '先說是什麼，再說「一」加上量詞疊字，像一顆顆、一朵朵，最後說做什麼，就能說出一個接著一個的樣子。' },
-        fill: [
+        pick: [
+        { id: 'p2-pz1', img: 'pz-flowers.png', before: '小花一', join: '', noun: '開出來', ask: '小花一什麼開出來', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["朵朵", "盞盞", "隻隻", "條條"], clue: '提示：我們會說「一（什麼）花」？', explain: '答案是「朵朵」，完整的短語是「小花一朵朵開出來」。' },
+        { id: 'p2-pz2', img: 'pz-lanterns.png', before: '燈籠一', join: '', noun: '掛起來', ask: '燈籠一什麼掛起來', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["盞盞", "朵朵", "隻隻", "條條"], clue: '提示：我們會說「一（什麼）燈籠」？', explain: '答案是「盞盞」，完整的短語是「燈籠一盞盞掛起來」。' },
+        { id: 'p2-pz3', img: 'pz-students.png', before: '小朋友一', join: '', noun: '走進教室', ask: '小朋友一什麼走進教室', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["個個", "朵朵", "盞盞", "片片"], clue: '提示：我們會說「一（什麼）小朋友」？', explain: '答案是「個個」，完整的短語是「小朋友一個個走進教室」。' },
+        { id: 'p2-pz4', img: 'pz-raindrops.png', before: '雨滴一', join: '', noun: '落下來', ask: '雨滴一什麼落下來', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["顆顆", "盞盞", "隻隻", "朵朵"], clue: '提示：我們會說「一（什麼）雨滴」？像珠子一樣圓圓的。', explain: '答案是「顆顆」，完整的短語是「雨滴一顆顆落下來」。' },
+        { id: 'p2-pz5', img: 'pz-ducks.png', before: '小鴨一', join: '', noun: '跳下水', ask: '小鴨一什麼跳下水', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["隻隻", "朵朵", "盞盞", "片片"], clue: '提示：我們會說「一（什麼）小鴨」？', explain: '答案是「隻隻」，完整的短語是「小鴨一隻隻跳下水」。' }
+      ],
+      fill: [
           { id: 'pz1', img: 'pz-flowers.png', parts: ['小花', '一', '朵朵', '開出來'] },
           { id: 'pz2', img: 'pz-lanterns.png', parts: ['燈籠', '一', '盞盞', '掛起來'] },
           { id: 'pz3', img: 'pz-students.png', parts: ['小朋友', '一', '個個', '走進教室'] },

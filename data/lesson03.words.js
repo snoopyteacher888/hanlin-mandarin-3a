@@ -144,6 +144,8 @@
     ],
     /* ---------- B 批：短語短句、句型、修辭（句子都是 Claude 自己寫的） ---------- */
     phrase: {
+      /* 拼短語（短語一）每一格下面寫要放什麼樣的詞（老師要求） */
+      fillLabels: {"before": "誰", "answer": "不做什麼事"},
       pickName: '看圖選一選', pickSay: '看圖，選出最適合的詞，說說看誰是不做什麼的。',
       /* 短語一：誰＋是不＋做什麼事＋的（課本的例子是課文原句，這裡換成自己寫的） */
       intro: { example: '機器人是不怕累的', img: 'pr-robot.png',
@@ -165,7 +167,14 @@
         intro: { example: '不吃早餐就不會有力氣', img: 'pz-breakfast.png',
           parts: [{ text: '不' }, { text: '吃早餐', role: '做什麼' }, { text: '就不' }, { text: '會有力氣', role: '什麼結果' }],
           explain: '先說「不」做什麼事，再說「就不」，最後說會有什麼結果。前面的事不做，後面的結果就不會出現。' },
-        fill: [
+        pick: [
+        { id: 'p2-pz1', img: 'pz-practice-piano.png', before: '不', join: '', noun: '就不會進步', ask: '不什麼就不會進步', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["練習", "偷懶", "吃糖", "看電視"], clue: '提示：鋼琴要常常彈，才會越彈越好。', explain: '答案是「練習」，完整的短語是「不練習就不會進步」。' },
+        { id: 'p2-pz2', img: 'pz-dry-flower.png', before: '不', join: '', noun: '就不會開花', ask: '不什麼就不會開花', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["澆水", "唱歌", "洗碗", "畫畫"], clue: '提示：花沒有喝到東西，會怎麼樣？', explain: '答案是「澆水」，完整的短語是「不澆水就不會開花」。' },
+        { id: 'p2-pz3', img: 'pz-bus-line.png', before: '不', join: '', noun: '就不能上車', ask: '不什麼就不能上車', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["排隊", "跳舞", "唱歌", "畫畫"], clue: '提示：大家一個接一個站好，才能上車。', explain: '答案是「排隊」，完整的短語是「不排隊就不能上車」。' },
+        { id: 'p2-pz4', img: 'pz-exercise.png', before: '不', join: '', noun: '就不會健康', ask: '不什麼就不會健康', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["運動", "熬夜", "吃糖", "看電視"], clue: '提示：常常跑跑跳跳，身體才會好。', explain: '答案是「運動」，完整的短語是「不運動就不會健康」。' },
+        { id: 'p2-pz5', img: 'pz-reading.png', before: '不', join: '', noun: '就不會認字', ask: '不什麼就不會認字', look: '再看看圖片，想一想哪一個放進去最合適？', options: ["讀書", "睡覺", "跳舞", "洗碗"], clue: '提示：常常翻開課本，才會認得很多字。', explain: '答案是「讀書」，完整的短語是「不讀書就不會認字」。' }
+      ],
+      fill: [
           { id: 'pz1', img: 'pz-practice-piano.png', parts: ['不', '練習', '就不', '會進步'] },
           { id: 'pz2', img: 'pz-dry-flower.png', parts: ['不', '澆水', '就不', '會開花'] },
           { id: 'pz3', img: 'pz-bus-line.png', parts: ['不', '排隊', '就不', '能上車'] },
