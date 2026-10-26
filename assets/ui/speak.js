@@ -6,14 +6,28 @@
 
   function Recognition() { return root.SpeechRecognition || root.webkitSpeechRecognition || null; }
 
-  /* listen(onText, onFail)：onFail('no-speech') 請學生再說一次；其他原因改用打字 */
-  function listen(onText, onFail) {
+  /* 語音轉文字常聽錯、三年級孩子不會說的詞：換成他們真正要說的（老師回報：「爬上樹」變成「爬上述」） */
+  var HEAR_FIX = [[/上述/g, '上樹'], [/數上/g, '樹上'], [/數下/g, '樹下'], [/大數/g, '大樹']];
+  function fixHeard(t) { HEAR_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return t; }
+  /* 幾個聽到的候選裡，挑跟這一題（題目、前半句、示範句）用字最像的 */
+  function pickHeard(alts, context) {
+    var best = alts[0], score = -1;
+    alts.forEach(function (a) {
+      var s = 0; for (var i = 0; i < a.length; i++) if (context.indexOf(a.charAt(i)) >= 0) s++;
+      if (s > score) { score = s; best = a; }
+    });
+    return best;
+  }
+  /* listen(onText, onFail, context)：onFail('no-speech') 請學生再說一次；其他原因改用打字 */
+  function listen(onText, onFail, context) {
     var R = Recognition();
     if (!R) { onFail('unsupported'); return null; }
     var rec = new R(), got = false, failed = false;
-    rec.lang = 'zh-TW'; rec.interimResults = false; rec.maxAlternatives = 1; rec.continuous = false;
+    rec.lang = 'zh-TW'; rec.interimResults = false; rec.maxAlternatives = 5; rec.continuous = false;
     rec.onresult = function (e) {
-      var t = e.results && e.results[0] && e.results[0][0] ? e.results[0][0].transcript : '';
+      var res = e.results && e.results[0], alts = [];
+      if (res) for (var i = 0; i < res.length; i++) if (res[i] && res[i].transcript) alts.push(res[i].transcript);
+      var t = alts.length ? fixHeard(pickHeard(alts, context || '')) : '';
       if (t) { got = true; onText(t); }
     };
     rec.onerror = function (e) { failed = true; onFail(e.error || 'unknown'); };
@@ -93,7 +107,7 @@
         if (why === 'no-speech' || why === 'aborted') { status.textContent = '我沒聽到，請再按 🎤 說一次'; H3A.tts.speak(status.textContent); return; }
         if (TYPE_ERRORS.indexOf(why) >= 0 || why === 'unsupported') useTyping();
         else status.textContent = '我沒聽清楚，請再按 🎤 說一次';
-      });
+      }, String(q.prompt || '') + (q.front || '') + (q.model || '') + (H3A.speechcheck.PATTERNS[q.rule && q.rule.key] || []).join(''));
     }
     function useTyping() {
       if (typing) return;

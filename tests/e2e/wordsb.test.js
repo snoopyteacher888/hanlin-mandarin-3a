@@ -363,3 +363,12 @@ test('自己說一句：第一下 💡 給圖，第二下 💡 或說錯就給�
   await s.waitForSelector('.speak-front');
   assert.deepEqual(p.errors, []); assert.deepEqual(s.errors, []);
 });
+
+test('語音聽錯的常見詞會改回來：爬上述 → 爬上樹（老師回報）', async () => {
+  const p = await page(); await p.goto(BASE + '#/L06/pattern?s=bear&retry=pt-zy-w1');
+  await p.evaluate(() => window.__sayNext.push('球卡在樹上，我爬上述把它拿下來'));
+  await p.click('.mic-btn');
+  await p.waitForSelector('.said-box:not([hidden])');
+  const t = await p.textContent('.said-box strong');
+  assert.ok(t.includes('爬上樹') && !t.includes('上述'), t);
+});
