@@ -394,7 +394,19 @@
     }
     return null;
   }
-  return { hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, vocabKind: vocabKind, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, partSay: partSay, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion, similarWordQuestion: similarWordQuestion, fixQuestion: fixQuestion,
+  /* 說說看的題目文字（老師後台用；錯題複習不出說說看，所以 findWordQuestion 不找這些題目）。文字和 phrase.js、pattern.js 一樣 */
+  function findSpeakPrompt(w, id) {
+    var pick = function (list) { return (list || []).filter(function (x) { return x.id === id; })[0]; };
+    var x;
+    if (w.phrase && (x = pick(w.phrase.say))) return x.ask ? '看圖說說看：' + x.ask + '？' : '看圖說說看：這是什麼樣的' + x.noun + '？';
+    if (w.phrase && (x = pick(w.phrase.make))) return '用「' + x.word + '」說一句話';
+    for (var i = 0; i < (w.pattern || []).length; i++) {
+      if ((x = pick(w.pattern[i].half))) return '說說看：把句子說完（' + x.front + '＿＿）';
+      if ((x = pick(w.pattern[i].whole))) return '用「' + w.pattern[i].title + '」說一句話';
+    }
+    return null;
+  }
+  return { findSpeakPrompt: findSpeakPrompt, hanziQuestion: hanziQuestion, vocabQuestion: vocabQuestion, vocabKind: vocabKind, charWordQuestion: charWordQuestion, buildQuestion: buildQuestion, partSay: partSay, idiomOrderQuestion: idiomOrderQuestion, idiomSituationQuestion: idiomSituationQuestion, idiomFillQuestion: idiomFillQuestion, similarQuestion: similarQuestion, similarWordQuestion: similarWordQuestion, fixQuestion: fixQuestion,
     listenQuestion: listenQuestion, whQuestion: whQuestion, WH: WH,
     phrasePickQuestion: phrasePickQuestion, chooseQuestion: chooseQuestion, matchQuestion: matchQuestion, conjQuestion: conjQuestion,
     patternFillQuestion: patternFillQuestion, rhetoricQuestion: rhetoricQuestion, rhetoricMarks: rhetoricMarks, rhYesNoQuestion: rhYesNoQuestion, rhPickQuestion: rhPickQuestion, patternClauses: patternClauses, speakQuestion: speakQuestion, readingHints: readingHints, findWordQuestion: findWordQuestion };

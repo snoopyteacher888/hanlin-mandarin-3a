@@ -112,3 +112,12 @@ test('引號裡句子最後的句號不念出來（老師要求）', () => {
   assert.equal(T.fixSay('「門鈴叮咚叮咚的響了。　」是不是狀聲詞？'), '「門鈴叮咚叮咚的響了」是不是狀聲詞？');
   assert.equal(T.fixSay('我回家了。'), '我回家了。');
 });
+
+test('種子念ㄓㄨㄥˇ、乾淨念ㄍㄢ（老師要求）', () => {
+  const { fixSay } = require('../../assets/tts.js');
+  assert.equal(fixSay('每天幫種子澆水'), '每天幫腫子澆水');
+  assert.equal(fixSay('種子才會長出花'), '腫子才會長出花');
+  assert.equal(fixSay('種花'), '種花');
+  assert.equal(fixSay('房間乾乾淨淨'), '房間甘甘淨淨');
+  assert.equal(fixSay('餅乾'), '餅甘');
+});

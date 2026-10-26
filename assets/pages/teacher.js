@@ -121,7 +121,8 @@
       }
       var w = root.H3A_WORDS && root.H3A_WORDS[lessonId];
       var wq = w ? H3A.wordq.findWordQuestion(w, id, function () { return 0; }) : null;
-      return wq ? wq.prompt : id;
+      if (wq) return wq.prompt;
+      return (w && H3A.wordq.findSpeakPrompt(w, id)) || id;
     }
     function load() {
       H3A.ui.clear(listBox); listBox.appendChild(h('p', {}, '載入中…'));
@@ -156,7 +157,9 @@
       records.forEach(function (r) {
         var detail = h('tr', { class: 'rec-detail', hidden: true }, h('td', { colspan: '6' },
           r.items.length ? h('ul', {}, r.items.map(function (it) {
-            return h('li', {}, qText(it.q, r.lesson) + '：' + (RESULT[it.result] || it.result) + (it.wrong && it.wrong.length ? '（選錯：' + it.wrong.join('、') + '）' : ''));
+            return h('li', {}, qText(it.q, r.lesson) + '：' + (RESULT[it.result] || it.result) + (it.wrong && it.wrong.length ? '（選錯：' + it.wrong.join('、') + '）' : ''),
+              /* 說說看：顯示學生說的句子（老師要求） */
+              it.said ? h('p', { class: 'speech-said' }, '學生說：', h('strong', {}, it.said), H3A.ui.speaker(it.said, null)) : null);
           })) : '讀完課文', h('p', { class: 'small' }, '花費 ' + Math.floor(r.durationSec / 60) + ' 分 ' + (r.durationSec % 60) + ' 秒')));
         var res = r.score !== null && r.score !== undefined ? r.score + ' 分' : r.activity === 'read' ? '完成' : Math.round(r.firstTryRate * 100) + '%';
         tb.appendChild(h('tr', {},

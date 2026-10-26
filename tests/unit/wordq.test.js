@@ -264,3 +264,12 @@ test('形近字第一關：只看語詞，提示先給語詞的意思（老師�
   assert.ok(!q.hints.h2.text.includes(s.answer));
   assert.equal(Q.findWordQuestion(W12, 'sw-' + s.id, () => 0.3).id, 'sw-' + s.id);
 });
+
+test('findSpeakPrompt gives the 說說看 prompt for the teacher page', () => {
+  const W11 = require('../../data/lesson11.words.js');
+  assert.equal(Q.findSpeakPrompt(W11, 'pt-cn-w1'), '用「……才能……」說一句話');
+  assert.equal(Q.findSpeakPrompt(W11, 'pt-cn-h1'), '說說看：把句子說完（上課要認真聽，＿＿）');
+  const mk = W11.phrase.make[0];
+  assert.equal(Q.findSpeakPrompt(W11, mk.id), '用「' + mk.word + '」說一句話');
+  assert.equal(Q.findSpeakPrompt(W11, 'h-除'), null);
+});
