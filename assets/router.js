@@ -14,8 +14,8 @@
     var app = document.getElementById('app');
     H3A.ui.clear(app);
     var header = h('header', { class: 'topbar' },
-      opts.back ? h('button', { class: 'btn-back', type: 'button', onclick: function () { go(opts.back); } }, '← 返回') : h('span', { class: 'brand' }, '翰林國語三上'),
-      opts.titleSay ? H3A.ui.sayable(h('div', { class: 'title' }, opts.title || ''), opts.title) : h('div', { class: 'title' }, opts.title || ''),
+      opts.back ? h('button', { class: 'btn-back', type: 'button', onclick: function () { go(opts.back); } }, '← 返回') : h('span'),
+      opts.titleSay ? H3A.ui.sayable(h('div', { class: 'title' }, opts.title || ''), opts.title) : h('div', { class: 'title' + (opts.brand ? ' brand' : '') }, opts.title || ''),
       opts.student ? h('div', { class: 'who' }, opts.student.emoji + ' ' + opts.student.name) : h('span'),
       H3A.ui.gear ? H3A.ui.gear() : h('span'));
     app.appendChild(header);
@@ -34,7 +34,8 @@
     var parsed = H3A.links.parseHash(root.location.hash);
     var p = parsed.path;
     var settings = H3A.session.settings();
-    if (!p.length) { H3A.pages.home(shell({ title: '國語三上學習樂園' }), { go: go, settings: settings }); return; }
+    if (!p.length) { /* 首頁上方只放橘色的「翰林國語三上」，放中間（老師要求） */
+      H3A.pages.home(shell({ title: '翰林國語三上', brand: true }), { go: go, settings: settings }); return; }
     if (p[0] === 'settings' || p[0] === 'teacher') {
       var name = p[0] === 'teacher' && p[1] === 'encrypt' ? 'encrypt' : p[0];
       if (!H3A.pages[name]) { go('#/'); return; }

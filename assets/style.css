@@ -27,7 +27,6 @@ button:disabled { cursor: default; }
 .voice-help p { margin: 4px 0; }
 
 .page { max-width: 1080px; margin: 0 auto; padding: 20px clamp(16px, 4vw, 48px) 130px; }
-.page-title { text-align: center; margin: 12px 0 20px; }
 .notice { background: var(--surface); border-radius: var(--radius); padding: 20px; text-align: center; }
 .small { font-size: 0.75em; color: var(--ink-soft); }
 

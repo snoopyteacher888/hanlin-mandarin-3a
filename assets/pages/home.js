@@ -6,7 +6,6 @@
     phrase: '短語短句', pattern: '句型', rhetoric: '修辭小偵探', feedback: '老師的批改' };
   H3A.pages.activityTitle = function (a) { return NAMES[a] || ''; };
   H3A.pages.home = function (main, ctx) {
-    main.appendChild(h('h1', { class: 'page-title' }, '國語三上學習樂園'));
     var grid = h('div', { class: 'lesson-grid' });
     (root.H3A_LESSONS || []).forEach(function (l) {
       var n = parseInt(l.id.slice(1), 10);
