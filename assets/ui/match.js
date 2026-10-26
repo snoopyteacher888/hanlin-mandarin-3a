@@ -25,7 +25,7 @@
       lcol.appendChild(el);
     });
     rights.forEach(function (p) {
-      var el = h('button', { type: 'button', class: 'match-card right', 'data-id': p.id, onclick: function () { H3A.tts.speak(p.right.text); } },
+      var el = h('button', { type: 'button', class: 'match-card right', 'data-id': p.id, onclick: function () { H3A.tts.speak(p.right.say || p.right.text); } },
         h('span', { class: 'match-text' }, p.right.text));
       R[p.id] = el; rcol.appendChild(el);
     });
@@ -79,8 +79,10 @@
       picked = null;
       lines[id] = mkLine('done', c); redraw();
       var p = q.pairs.filter(function (x) { return x.id === id; })[0];
-      if (byTeacher) H3A.ui.showHint(feedback, { text: '老師幫你配好了：' + p.left.text + '，' + p.right.text + '。' }, ctx, true);
-      else { H3A.ui.clear(feedback); feedback.className = 'feedback'; H3A.sfx.correct(); H3A.tts.speak(p.right.text); }
+      /* 句子挖空的連連看：配好了就把成語填回句子裡 */
+      if (p.right.full) { var span = R[id].querySelector('.match-text'); span.textContent = p.right.full; }
+      if (byTeacher) H3A.ui.showHint(feedback, { text: '老師幫你配好了：' + p.left.text + '，' + (p.right.full || p.right.text) + (p.right.full ? '' : '。') }, ctx, true);
+      else { H3A.ui.clear(feedback); feedback.className = 'feedback'; H3A.sfx.correct(); H3A.tts.speak(p.right.full || p.right.text); }
       if (--left > 0) return;
       finished = true;
       H3A.ui.celebrate(feedback, null, null, box.querySelector('.match-board'));

@@ -43,9 +43,11 @@
       { key: 'situation', name: '看情境選成語', say: '看圖和句子，選出正確的成語。', make: function (r) {
         return H3A.quizgen.shuffle(list, r).map(function (x) { return Q.idiomSituationQuestion(x, list, r); });
       } },
-      { key: 'match', name: '連連看', say: '從成語拉一條線，連到它的意思。', make: function (r) {
-        return F.matchRounds('im', '連連看：從成語拉一條線，連到它的意思', H3A.quizgen.shuffle(list, r), 3, function (x) {
-          return { id: 'is-' + x.idiom, left: { text: x.idiom }, right: { text: x.meaning }, say: x.idiom };
+      /* 連連看：成語連到用得上它的句子，句子裡成語的地方挖空（老師要求） */
+      { key: 'match', name: '連連看', say: '從成語拉一條線，連到可以放進去的句子。', make: function (r) {
+        return F.matchRounds('im', '連連看：從成語拉一條線，連到可以放進去的句子', H3A.quizgen.shuffle(list, r), 3, function (x) {
+          var blank = x.example.replace(x.idiom, '＿＿＿＿');
+          return { id: 'is-' + x.idiom, left: { text: x.idiom }, right: { text: blank, say: blank.replace(/＿+/, '什麼'), full: x.example }, say: x.idiom };
         });
       } }
     ], function () { run(main, ctx); });
