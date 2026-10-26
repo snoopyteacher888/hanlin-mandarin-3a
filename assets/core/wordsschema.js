@@ -79,6 +79,11 @@
       if (!x || !Array.isArray(x.good) || x.good.length !== 2 || !Array.isArray(x.bad) || x.bad.length !== 2 ||
         !x.good.concat(x.bad).every(nonEmpty) || !nonEmpty(x.why)) errs.push('說說看選項 ' + k + ' 要兩個合理、兩個不合理，還要有說明');
     });
+    /* 理解提問錯的選項：每題三個，不能空白 */
+    Object.keys(w.quizDistractors || {}).forEach(function (k) {
+      var x = w.quizDistractors[k];
+      if (!Array.isArray(x) || x.length !== 3 || !x.every(nonEmpty)) errs.push('理解提問錯的選項 ' + k + ' 要三個');
+    });
     /* 改錯字：正確的字在句子裡剛好一次、錯字不在句子裡；提示不能出現正確的字 */
     (w.fix || []).forEach(function (f) {
       useId(f.id);

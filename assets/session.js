@@ -26,6 +26,17 @@
     return r || { id: id, emoji: '🙂', name: id };
   }
 
+  /* 理解提問錯的選項換成字詞資料裡長度差不多的（quizDistractors；老師要求：正確答案不要特別長） */
+  function patch(id, lesson) {
+    var w = root.H3A_WORDS && root.H3A_WORDS[id], d = w && w.quizDistractors;
+    if (d && lesson && lesson.quiz) lesson.quiz.forEach(function (q) {
+      var list = d[q.id];
+      if (!list || list.length !== q.options.length - 1) return;
+      var k = 0;
+      q.options = q.options.map(function (o, i) { return i === q.answer ? o : { text: list[k++] }; });
+    });
+    return lesson;
+  }
   /* 課文：用這台裝置記住的金鑰解密 window.ENC[id] */
   function getLesson(id) {
     if (lessonCache[id]) return Promise.resolve(lessonCache[id]);
@@ -35,7 +46,7 @@
     if (!k) return Promise.reject(new Error('NEED_KEY'));
     return H3A.cryptobox.importKey(k)
       .then(function (key) { return H3A.cryptobox.decryptJson(box, key); })
-      .then(function (lesson) { lessonCache[id] = lesson; return lesson; },
+      .then(function (lesson) { lessonCache[id] = patch(id, lesson); return lesson; },
         function () { store.remove('key'); throw new Error('NEED_KEY'); });
   }
   /* 用密碼解開某一課；成功才記住金鑰 */
@@ -44,7 +55,7 @@
     if (!box) return Promise.reject(new Error('NO_DATA'));
     return H3A.cryptobox.deriveKey(password, root.H3A_SALT).then(function (key) {
       return H3A.cryptobox.decryptJson(box, key).then(function (lesson) {
-        lessonCache[id] = lesson;
+        lessonCache[id] = patch(id, lesson);
         return H3A.cryptobox.exportKey(key).then(function (b64) { store.set('key', b64); return lesson; });
       });
     });

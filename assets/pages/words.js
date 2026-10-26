@@ -101,10 +101,10 @@
     var r = rng();
     /* 兩關：第一關只看語詞，第二關看句子（老師要求：語詞是第二關句子的鷹架） */
     H3A.ui.runSteps(main, ctx, 'similar', [
-      { key: 'word', name: '第一關：語詞', say: '把正確的字放進去，變成一個語詞。', make: function (r2) {
+      { key: 'word', name: '看語詞選字', say: '有些字長得很像，或是讀起來一樣，但意思卻不一樣。請你想一想，哪一個字放進去，才是正確的語詞？', make: function (r2) {
         return shuffle(w.similar, r2).map(function (x) { return F.dragify(H3A.wordq.similarWordQuestion(x, r2)); });
       } },
-      { key: 'sentence', name: '第二關：句子', say: '讀一讀句子，把正確的字放進去。', make: function (r2) {
+      { key: 'sentence', name: '看句子選字', say: '有些字長得很像，或是讀起來一樣，但意思卻不一樣。請你讀一讀句子，想一想哪一個字才對？', make: function (r2) {
         return shuffle(w.similar, r2).map(function (x) { return F.dragify(H3A.wordq.similarQuestion(F.plainSimilar(x), r2)); });
       } }
     ], function () { run(main, ctx); });

@@ -123,7 +123,6 @@
     var x = shuffled(s.options, s.answer, r, { big: true });
     var meaning = (s.meaning || '').replace(/^「[^」]*」/, '這個語詞');
     return { id: 'sw-' + s.id, prompt: s.frame, say: blankSay(s.frame), options: x.options, answer: x.answer,
-      ask: '👉 把正確的字拖到方框裡，變成一個語詞',
       hints: { h1: { text: '提示：' + meaning }, h2: { text: '提示：' + meaning + s.clue.replace(/^提示：/, '') }, teach: { text: s.explain } } };
   }
   function listenQuestion(l, r) {
