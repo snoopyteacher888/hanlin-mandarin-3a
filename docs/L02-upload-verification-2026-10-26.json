@@ -1,0 +1,584 @@
+{
+  "lesson": 2,
+  "title": "妙用便利貼",
+  "verified_date": "2026-10-26",
+  "total": 77,
+  "preserved": "1-41",
+  "generated_this_session": "42-77",
+  "records": [
+    {
+      "number": 1,
+      "file": "images/L02/sticky-note.png",
+      "sha": "adc9e51021ab6af913b92677d7ad7a96ab8f1cdb",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 2,
+      "file": "images/L02/use-scissors.png",
+      "sha": "d6aaa510eaeb68437aad10677bdc435000402d49",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 3,
+      "file": "images/L02/remind.png",
+      "sha": "10c1953a6246cf55cd1e55dece71eab8b9994d5a",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 4,
+      "file": "images/L02/next-morning.png",
+      "sha": "cd1ee203873ae5942556fddaac9c92b8c64aca80",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 5,
+      "file": "images/L02/on-time.png",
+      "sha": "8f3aa363cb713525307315957a27ab73a9cca396",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 6,
+      "file": "images/L02/go-sleep.png",
+      "sha": "3d0db646d6e0d678f6d8ce6f54e58828b49abddd",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 7,
+      "file": "images/L02/alarm-clock.png",
+      "sha": "0399b848830702d4102d6915d3fd3b331e51dca2",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 8,
+      "file": "images/L02/good-way.png",
+      "sha": "f619017f79977b342f71f49ce1949cbdb01666bd",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 9,
+      "file": "images/L02/in-order.png",
+      "sha": "bf5ec010ea5e050d6a8fee276ff2774b7a15c917",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 10,
+      "file": "images/L02/big-sweet.png",
+      "sha": "77645d82c5a060a837c27aee4fc3be679f649c7c",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 11,
+      "file": "images/L02/plan-day.png",
+      "sha": "96014b1512520717813e226e76e369a5bb0ff972",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 12,
+      "file": "images/L02/fridge.png",
+      "sha": "94a1618ffaaee186a7b03c9723077abb99bbd4f2",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 13,
+      "file": "images/L02/found-pencil.png",
+      "sha": "20206cedbfbbb93ab0f0e4b7346a4e50c941f8e7",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 14,
+      "file": "images/L02/memo-note.png",
+      "sha": "48bb59c0cea64b378cd46247ba30b71be9c0f93b",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 15,
+      "file": "images/L02/look-outside.png",
+      "sha": "48a0c6963fba72b2384cab565f4bb0a5e0046c0f",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 16,
+      "file": "images/L02/stain-shirt.png",
+      "sha": "f2ac68de650d7afa54f6a96f30f2095f99d2d39d",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 17,
+      "file": "images/L02/cw-stickers.png",
+      "sha": "8f370938cc4a46d2cdd04cd14838214956296da6",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 18,
+      "file": "images/L02/cw-angel.png",
+      "sha": "2616df27e2b4d9698d5773ee895f1d946e4d8f26",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 19,
+      "file": "images/L02/cw-wake-up.png",
+      "sha": "5778fbad31473fe529ede060cf02869d1fbce9d9",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 20,
+      "file": "images/L02/cw-neighbor.png",
+      "sha": "c2dc1d3cd30882cebca0eddc0662fe722ded358d",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 21,
+      "file": "images/L02/cw-pack-bag.png",
+      "sha": "ceacdc4b74fed13b54870c33c367254b8126f464",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 22,
+      "file": "images/L02/cw-pajamas.png",
+      "sha": "871071ff16867f0db543d5c77b67f29350b55b17",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 23,
+      "file": "images/L02/cw-wall-clock.png",
+      "sha": "55cb631906b349a6160dfb8e92dc4d8130770424",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 24,
+      "file": "images/L02/cw-practice.png",
+      "sha": "c461f68bbd7b672829f4592ad4489dad5bd33fe7",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 25,
+      "file": "images/L02/cw-numbers-line.png",
+      "sha": "c01615e408809ad8497fff26d297e8de548967c9",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 26,
+      "file": "images/L02/cw-medicine.png",
+      "sha": "965cebcfe8c4db771f8ef6238fab9d9ca821d041",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 27,
+      "file": "images/L02/cw-clean-room.png",
+      "sha": "1739148dac0142440d50ad1699934b169cd556e1",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 28,
+      "file": "images/L02/cw-line-up.png",
+      "sha": "80a6bc6c382b7352914118741b51242047787fdc",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 29,
+      "file": "images/L02/cw-ice.png",
+      "sha": "06c3e1b6d6b27ba9b4ada63e970223f068927565",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 30,
+      "file": "images/L02/cw-box.png",
+      "sha": "d7cbc5ae7b84f91b984231149f31aba428f2d3e7",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 31,
+      "file": "images/L02/cw-rain-window.png",
+      "sha": "d415f4010eee7713391c57afeafcd3f140c5e7c9",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 32,
+      "file": "images/L02/cw-stripes.png",
+      "sha": "3ddd595ace3824851c1a2857c40ee2db033cff07",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 33,
+      "file": "images/L02/cw-traffic-jam.png",
+      "sha": "add58fd358a6da48f3c14548a3244872a1cf653b",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 34,
+      "file": "images/L02/id-step-swim.png",
+      "sha": "1afb47bdcdf0cbab6d4e08f37fc970a06e7f57f5",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 35,
+      "file": "images/L02/id-lift-box.png",
+      "sha": "852bcbb1d7df7ff5ae61ab05e5271a85df2875c8",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 36,
+      "file": "images/L02/id-messy-homework.png",
+      "sha": "94a7af018fc2df33b3938c7c2d7e1afe014b81c3",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 37,
+      "file": "images/L02/id-big-waves.png",
+      "sha": "6c19e76c0c425d58d8e3f6bad4f71d3df1f12bd7",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 38,
+      "file": "images/L02/id-north-pole.png",
+      "sha": "93d93e3d00854d0bd93d80dd5faa2245ba8aaee6",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 39,
+      "file": "images/L02/id-unopened-gift.png",
+      "sha": "19f584a8766c676e77a2e3442824cac0875265d8",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 40,
+      "file": "images/L02/pr-lie-grass.png",
+      "sha": "9a6acf94e05c09ce1f0ebb8dacf58e02a1560241",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 41,
+      "file": "images/L02/pr-hang-high.png",
+      "sha": "cd8e259e667b1fd376293728f09681dfd3dc4bee",
+      "status": "uploaded_verified",
+      "action": "preserved"
+    },
+    {
+      "number": 42,
+      "file": "images/L02/pr-cat-dark.png",
+      "sha": "d33fab5150bbed1274a735e70ed43037fe98164c",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded"
+    },
+    {
+      "number": 43,
+      "file": "images/L02/pr-juice-fridge.png",
+      "sha": "29b4c9451e4a34ec828243c3deb67c9026c24d66",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "44693cc0483a444da9b4de25e8a8dfaeb0aee59f"
+    },
+    {
+      "number": 44,
+      "file": "images/L02/pr-curvy-path.png",
+      "sha": "eaa8fd994895cc12b130f150d9e23313a4a220b8",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "cfb83e74b498def61d8f7b91044aea2f24a385b2"
+    },
+    {
+      "number": 45,
+      "file": "images/L02/pr-sofa.png",
+      "sha": "f50bc8ae5b3eeecd97aa114518bb2b64cfbd2db0",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "e88c4a1373609037d601afb3ff876ccf481e22b6"
+    },
+    {
+      "number": 46,
+      "file": "images/L02/pr-whiteboard.png",
+      "sha": "b15d31f14fb4a83b490c3554bfc3e07cf3b63aa6",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "f79c79360ea949ffb401d87f45494396bc64c7d5"
+    },
+    {
+      "number": 47,
+      "file": "images/L02/pr-small-pot.png",
+      "sha": "20cc83c5942b5b1f21baf7c4b2dc9333c834764c",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "6fe31f89572b5f60d5ddf639de39bf38d5917360"
+    },
+    {
+      "number": 48,
+      "file": "images/L02/pr-busy-street.png",
+      "sha": "231903fdd03ac595d2b22c9df20b2b70afd871aa",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "4b7fe1cc6d8cc9c63848e5f1d5a8b2a21dd67ed5"
+    },
+    {
+      "number": 49,
+      "file": "images/L02/pz-rain-came.png",
+      "sha": "7a88156f089e2bc8b3340228e04bc45ab1717d4c",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "c84dc177e4433069464fc80957ad42cbe49135df"
+    },
+    {
+      "number": 50,
+      "file": "images/L02/pz-eat-manners.png",
+      "sha": "daa18cbfae9d26e624f8193e8869a8188ccf5c63",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "8e33e99cde3e68d9a95fa6cee73116654504f79f"
+    },
+    {
+      "number": 51,
+      "file": "images/L02/pz-sing-brave.png",
+      "sha": "0dff6efdead109602eedca5297806cec266438b3",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "45b32e5c6bf1de2a512b217c53188913c5114773"
+    },
+    {
+      "number": 52,
+      "file": "images/L02/pz-strong-ball.png",
+      "sha": "53e88b18230df12ae880a09143070a53d83cfc03",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "14df242c0ee345d8e7092b15203bdcac827ea884"
+    },
+    {
+      "number": 53,
+      "file": "images/L02/pz-lively-dog.png",
+      "sha": "c987fa2723cd1c10f200770320273b738340230e",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "798b26fec925026a8d748628c43760f9ffd340bc"
+    },
+    {
+      "number": 54,
+      "file": "images/L02/pz-draw-better.png",
+      "sha": "6d4319a0a9e8b3f49130eee4b35ad41e74f31777",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "b42486d5c57df043960fdc04855d10c40420ac75"
+    },
+    {
+      "number": 55,
+      "file": "images/L02/pz-fast-homework.png",
+      "sha": "04b54a6c25212c5ea8f538293cde4497d6a6fea3",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "5b164667c60e8fb98acba239a17d4854eb8aa7b7"
+    },
+    {
+      "number": 56,
+      "file": "images/L02/weile.png",
+      "sha": "e1bcd7f684dddb5b58e7f0b4c04679977c37adcd",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "4a84184833f12327a237f01bd71f4797fcc16b6c"
+    },
+    {
+      "number": 57,
+      "file": "images/L02/pt-umbrella.png",
+      "sha": "af771ded8211e314ace73dac30a5ef6e9ac6c58c",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "80d8b52d29641b6a5b7d5624070f5cbf2c657ea6"
+    },
+    {
+      "number": 58,
+      "file": "images/L02/pt-brush-teeth.png",
+      "sha": "678c6a88aa4d7c5e6eaa1d5303b66a9b09878c81",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "d428268604ae8f7abce2a928fee6b36869509636"
+    },
+    {
+      "number": 59,
+      "file": "images/L02/pt-water-flower.png",
+      "sha": "ece688ef60a3c968528d8a5cdc7ffc371904678c",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "bccfc16e9e6b4a25d8e82922c2441d8d03c819dc"
+    },
+    {
+      "number": 60,
+      "file": "images/L02/pt-piggy-bank.png",
+      "sha": "9b973bf496aacb70465e40f70788c63a8237788c",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "2ecf8670dbfef475b7bea6b2023ee945e7768d65"
+    },
+    {
+      "number": 61,
+      "file": "images/L02/pt-sunrise.png",
+      "sha": "6ee2fc0f7dbaf6a90480eae2168826402a0caa25",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "0c6f9aa0f308e5e9a99612b319d1209201489d07"
+    },
+    {
+      "number": 62,
+      "file": "images/L02/pt-read-lamp.png",
+      "sha": "64d8f63e0700a25ca1beecab7042ddc4cb1fded3",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "18fd40c17c4e02da0d46fb4aef7128ad960795ff"
+    },
+    {
+      "number": 63,
+      "file": "images/L02/erqie.png",
+      "sha": "2e1cd04ae1422981cf16b4e13b14ffbb86516a2b",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "95d076a9572f8c4945be4afba74df06af0ae8e19"
+    },
+    {
+      "number": 64,
+      "file": "images/L02/pt-watermelon.png",
+      "sha": "0552f21f4eb33fd99bd66463a2173895387bea2f",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "5ad5cfcdaa4c2d948bee489c18e34654a3166a94"
+    },
+    {
+      "number": 65,
+      "file": "images/L02/pt-helpful-girl.png",
+      "sha": "d568fd5ddb8d4f57975658defbc7f974ab09a75b",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "b723064e6f3315e16f9913c4e20459f5966edc56"
+    },
+    {
+      "number": 66,
+      "file": "images/L02/pt-big-park.png",
+      "sha": "616908bb8f52c84847c21f6f61cd451849352320",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "816870f6b28dce3f8f46cea0a54120383f0eafc4"
+    },
+    {
+      "number": 67,
+      "file": "images/L02/pt-light-coat.png",
+      "sha": "2be91e4ca8b56f466d36a55ea2f6209cf2b66ec9",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "43f8750063555c9206da2a18329c2c30e7fba1b7"
+    },
+    {
+      "number": 68,
+      "file": "images/L02/pt-tie-shoes.png",
+      "sha": "748567526d6c7faae1cea53155c9ebc504917730",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "9a5ebd4cf6e2315395c20e2a711795f2cd8f4e34"
+    },
+    {
+      "number": 69,
+      "file": "images/L02/pt-fun-book.png",
+      "sha": "25e80fefe81d2b260d3bff6e2696a283c87941b3",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "0a6688f9bec361d757da12003ff19ce850b479d4"
+    },
+    {
+      "number": 70,
+      "file": "images/L02/sticky-head.png",
+      "sha": "4f5f3732af66fce1d3ba721867f28bbd18074c3f",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "7273c2c9ab4f24412f34282caa62879eed746464"
+    },
+    {
+      "number": 71,
+      "file": "images/L02/forgetful.png",
+      "sha": "200dde5cde4223e4d2ec05a0ecfd19dfb8739cda",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "b9cfdac911a8d4def23ba5e2d5e44f75429b8fe2"
+    },
+    {
+      "number": 72,
+      "file": "images/L02/dad-sticky.png",
+      "sha": "e545a3aa2db1d30518b395388bf4b9cb83b1f54e",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "052ec6a4a47177c0e2a64aaffaa4e57499e027a8"
+    },
+    {
+      "number": 73,
+      "file": "images/L02/mom-meeting.png",
+      "sha": "6da54e4a44f0716b33dd97553a896cf96d8f2bb1",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "fe5fbb4b39463f87d6ea269efabb60b68147e4ec"
+    },
+    {
+      "number": 74,
+      "file": "images/L02/check-list.png",
+      "sha": "c90ffbaa5c6773c39d2e7e9ffaf181ce6117d487",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "8f3f2aa80733cf016c6ac73696e046e81418ac6b"
+    },
+    {
+      "number": 75,
+      "file": "images/L02/tidy-desk.png",
+      "sha": "4b0adc9d09fd7a7d1ca2373db8609c571f562b23",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "0828614f74c40f2945cb686b26998dcfddb9ee6d"
+    },
+    {
+      "number": 76,
+      "file": "images/L02/fridge-note.png",
+      "sha": "cdb3b95409b79fc1bf1eda4aef50563698bc5cff",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "1ceff57a16984a989ea5b86e874037aaf1e3852f"
+    },
+    {
+      "number": 77,
+      "file": "images/L02/late-family.png",
+      "sha": "40a6cfd2a874eaef1230ced4c76ba5fb6bcacebc",
+      "status": "uploaded_verified",
+      "action": "generated_and_uploaded",
+      "commit": "b2e6e6297975920426bc21dca42f5c6bfcf2cca6"
+    }
+  ]
+}
