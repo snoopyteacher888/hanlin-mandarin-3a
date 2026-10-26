@@ -106,3 +106,9 @@ test('人事時地物的「地」單獨念ㄉㄧˋ，不念成「的」（老師
   assert.equal(T.fixSay('人、事、時、地、物'), '人、事、時、弟、物');
   assert.equal(T.fixSay('他慢慢地走。'), '他慢慢地走。');
 });
+
+test('引號裡句子最後的句號不念出來（老師要求）', () => {
+  const T = require('../../assets/tts.js');
+  assert.equal(T.fixSay('「門鈴叮咚叮咚的響了。　」是不是狀聲詞？'), '「門鈴叮咚叮咚的響了」是不是狀聲詞？');
+  assert.equal(T.fixSay('我回家了。'), '我回家了。');
+});

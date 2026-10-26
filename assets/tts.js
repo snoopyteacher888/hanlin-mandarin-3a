@@ -47,7 +47,9 @@
   function fixSolo(t) {
     return t.replace(/(^|[，。、的「])([\u4e00-\u9fff])(?=$|[，。、！？」])/g, function (all, pre, c) { return SOLO[c] ? pre + SOLO[c] : all; });
   }
-  function fixSay(t) { t = fixSolo(t); SAY_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return swapZhe(swapChar(t)); }
+  /* 引號裡的句子最後的「。」（例如「門鈴響了。」是不是……），語音引擎會念出「句號」：念的時候拿掉（老師要求） */
+  function dropQuotedStop(t) { return t.replace(/[。．][\s　]*(?=[」』])/g, ''); }
+  function fixSay(t) { t = fixSolo(dropQuotedStop(t)); SAY_FIX.forEach(function (f) { t = t.replace(f[0], f[1]); }); return swapZhe(swapChar(t)); }
   /* 長的句子分成一句一句念：有些語音引擎（Chrome 的 Google 語音）念太久會自己停掉，還說念完了，
      「下一步」就太早出現（老師要求：全部念完才出現） */
   function chunks(t) {
