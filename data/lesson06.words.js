@@ -6,6 +6,11 @@
        只放題號，不放課文 */
     quizLevels: { qa: 'extract', q2: 'extract', qb: 'extract', qc: 'extract', q4: 'extract', qd: 'extract', q5: 'extract',
       q6: 'infer', q7: 'infer', q8: 'infer', qf: 'extract', q9: 'extract', qg: 'extract', q10: 'extract', k1: 'evaluate', k2: 'evaluate' },
+    /* 「說說看」改成選選看（老師要求：直接說太難）：good 兩個合理的想法（選哪一個都對）、bad 兩個不合理的，why 是老師教你的說明。不放課文原句 */
+    talkChoices: {
+      k1: { good: ["我以前不知道，鉛筆不是用鉛做的。", "我以前不知道，筆芯是夾在兩片木板中間的。"], bad: ["我以前不知道，鉛筆可以拿來吃。", "我以前不知道，鉛筆是長在樹上的。"], why: "鉛筆的原料、筆芯怎麼放進木頭裡，都是這一課教的新知識。鉛筆不能吃，也不是長在樹上的。" },
+      k2: { good: ["鉛筆做起來很不容易，我會好好愛惜它。", "我會用到很短才換新的，不浪費鉛筆。"], bad: ["鉛筆很便宜，壞了就丟掉。", "我會把鉛筆折斷，看看筆芯長什麼樣子。"], why: "一枝鉛筆要經過很多步驟才做好，所以要珍惜、不浪費。隨便丟掉、故意折斷，都是浪費。" }
+    },
     hanzi: [
       { id: 'h-墨', combo: {'layout': 'tb', 'parts': [['黑', 'm', '黑色'], ['土', 'm', '泥土']]}, char: '墨', zhuyin: 'ㄇㄛˋ', radical: '土', strokes: 15, words: ['石墨', '墨水'], say: '墨，石墨的墨', cloze: '石＿', img: 'graphite.png', options: ['墨', '黑', '默', '磨'], clue: '這個字跟泥土有關。', explain: '答案是「墨」。石墨是從地底下挖出來的黑色石頭，跟泥土一樣，所以「墨」的下面是「土」。', parts: ['黑', '土'], story: '上面是「黑」，下面是「土」。黑色的土，就是「墨」。', sentence: '爸爸用毛筆沾墨汁寫春聯。', build: { layout: 'tb', show: ['黑', '？'], answer: '土', options: ['土', '木', '火', '氵'], clue: '想一想：墨是黑黑的，從地底下挖出來，跟什麼東西有關？' } },
       { id: 'h-製', combo: {'layout': 'tb', 'parts': [['制', 's', ''], ['衣', 'm', '衣服']]}, char: '製', zhuyin: 'ㄓˋ', radical: '衣', strokes: 14, words: ['製成', '製作'], say: '製，製成的製', cloze: '＿成', img: 'materials.png', options: ['製', '制', '治', '至'], clue: '這個字跟衣服有關。', explain: '答案是「製」。「製」是做東西的意思，以前最常做的是衣服，所以下面是「衣」。', parts: ['制', '衣'], story: '下面是「衣」。以前人用布做衣服，所以「製」就是把東西做出來。', sentence: '這張桌子是用木頭製成的。', build: { layout: 'tb', show: ['制', '？'], answer: '衣', options: ['衣', '木', '土', '口'], clue: '想一想：以前的人最常做的東西是什麼？穿在身上的。' } },

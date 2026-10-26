@@ -44,7 +44,7 @@ async function page() {
 
 const ANSWERS = { '小水杯是用什麼做的？': '玻璃', '水杯可以做什麼？': '裝水', '做杯子要先做什麼？': '把沙子燒熱' };
 
-test('理解提問：選擇題做完，最後說想法，送給老師批改', async () => {
+test('理解提問：選擇題做完，最後的說說看改成選選看，不用口頭回答（老師要求）', async () => {
   const p = await page(); await p.goto(BASE + '#/L06/quiz?s=bear');
   await p.fill('input[type=password]', 'test-pass'); await p.click('button[type=submit]');
   for (let k = 0; k < 3; k++) {
@@ -52,20 +52,9 @@ test('理解提問：選擇題做完，最後說想法，送給老師批改', as
     const idx = await p.evaluate(m => [...document.querySelectorAll('.option')].findIndex(o => o.querySelector('.option-text').textContent === m[document.querySelector('.prompt h2').textContent]), ANSWERS);
     await p.click(`.option[data-index="${idx}"]`); await nextQ(p);
   }
-  await p.waitForSelector('.mic-btn');
-  assert.match(await p.textContent('.prompt h2'), /以後你會怎麼使用杯子/);
-  /* 太短 → 提示方法 */
-  await p.evaluate(() => window.__sayNext.push('杯子'));
-  await p.click('.mic-btn'); await p.waitForSelector('.said-box:not([hidden])'); await p.click('.speak-actions >> text=✅ 送出');
-  await p.waitForSelector('.feedback.hint');
-  assert.match(await p.textContent('.feedback.hint'), /自己的想法/);
-  await p.evaluate(() => window.__sayNext.push('我會小心的拿杯子'));
-  await p.click('.mic-btn'); await p.waitForSelector('.said-box:not([hidden])'); await p.click('.speak-actions >> text=✅ 送出');
-  await p.waitForSelector('.feedback.ok >> text=等老師批改');
-  const s = srv.speech.filter(x => x.qid === 'k1').at(-1);
-  assert.equal(s.activity, 'quiz'); assert.equal(s.status, 'pending'); assert.equal(s.said, '我會小心的拿杯子');
-  await p.click('.btn-next:not([hidden])');
-  await p.waitForSelector('.result');
+  await p.waitForSelector('.drag-ask');
+  assert.match(await p.textContent('.prompt h2'), /選選看：以後你會怎麼使用杯子/);
+  assert.equal(await p.$('.mic-btn'), null);
   assert.deepEqual(p.errors, []);
 });
 

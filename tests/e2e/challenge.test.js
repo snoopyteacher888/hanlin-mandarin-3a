@@ -138,3 +138,26 @@ test('圖片配對：拖圖到語詞上，拖錯只搖一搖、不給提示', as
   await p.waitForSelector('.step-done');
   assert.deepEqual(p.errors, []);
 });
+
+test('說說看改成選選看：兩個合理的想法選哪一個都對，錯兩次老師教你兩個都標出來（老師要求）', async () => {
+  const W6 = require('../../data/lesson06.words.js');
+  const c = W6.talkChoices.k1;
+  const strip = t => t.replace(/[\uDB40][\uDC00-\uDFFF]/g, '');
+  const p = await page(); await p.goto(BASE + '#/L06/quiz?s=bear&step=evaluate'); await p.fill('input[type=password]', 'test-pass'); await p.click('button[type=submit]');
+  await p.waitForSelector('.option');
+  assert.match(await p.textContent('.drag-ask'), /兩個想法是合理的/);
+  const texts = (await p.$$eval('.option .option-text', x => x.map(e => e.textContent))).map(strip);
+  /* 選第二個合理的想法也算對 */
+  await p.click(`.option[data-index="${texts.indexOf(c.good[1])}"]`);
+  await p.waitForSelector('.option.is-correct');
+  /* 再來一次：錯兩次 → 老師教你，兩個合理的都標出來 */
+  const p2 = await page(); await p2.goto(BASE + '#/L06/quiz?s=bear&step=evaluate'); await p2.fill('input[type=password]', 'test-pass'); await p2.click('button[type=submit]');
+  await p2.waitForSelector('.option');
+  const t2 = (await p2.$$eval('.option .option-text', x => x.map(e => e.textContent))).map(strip);
+  await p2.click(`.option[data-index="${t2.indexOf(c.bad[0])}"]`);
+  await p2.waitForSelector('.feedback.hint');
+  await p2.click(`.option[data-index="${t2.indexOf(c.bad[1])}"]`);
+  assert.match(await p2.textContent('.feedback'), /老師教你/);
+  assert.equal(await p2.$$eval('.option.is-correct', x => x.length), 2);
+  assert.deepEqual(p.errors, []); assert.deepEqual(p2.errors, []);
+});

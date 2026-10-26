@@ -73,6 +73,12 @@
       if (!w.quizLevels || !w.quizLevels[k]) errs.push('理解提問鷹架 ' + k + ' 沒有分類');
       if (!x || !Array.isArray(x.think) || x.think.length !== 2 || !x.think.every(nonEmpty) || !nonEmpty(x.why)) errs.push('理解提問鷹架 ' + k + ' 要有兩個想一想步驟和說明');
     });
+    /* 說說看的選項：兩個合理、兩個不合理，要有說明 */
+    Object.keys(w.talkChoices || {}).forEach(function (k) {
+      var x = w.talkChoices[k];
+      if (!x || !Array.isArray(x.good) || x.good.length !== 2 || !Array.isArray(x.bad) || x.bad.length !== 2 ||
+        !x.good.concat(x.bad).every(nonEmpty) || !nonEmpty(x.why)) errs.push('說說看選項 ' + k + ' 要兩個合理、兩個不合理，還要有說明');
+    });
     /* 改錯字：正確的字在句子裡剛好一次、錯字不在句子裡；提示不能出現正確的字 */
     (w.fix || []).forEach(function (f) {
       useId(f.id);

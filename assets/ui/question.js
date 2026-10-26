@@ -137,7 +137,8 @@
 
       function pick(i) {
         if (locked || hs.disabled.indexOf(i) >= 0) return;
-        if (i === q.answer) {
+        /* q.alsoRight：也算對的選項（例如「選選看」有兩個合理的想法，選哪一個都對） */
+        if (i === q.answer || (q.alsoRight || []).indexOf(i) >= 0) {
           buttons[i].classList.add('is-correct');
           fillSlot();
           H3A.ui.celebrate(feedback, null, null, buttons[i]);
@@ -169,6 +170,7 @@
           if (bulb) bulb.remove();
           buttons.forEach(function (b) { b.disabled = true; });
           buttons[q.answer].classList.add('is-correct');
+          (q.alsoRight || []).forEach(function (k) { buttons[k].classList.add('is-correct'); });
           revealMarks(); fillSlot();
           H3A.ui.showTeach(feedback, hints.teach, function () { done('taught', wrongTexts()); nextBtn.click(); });
           return;
