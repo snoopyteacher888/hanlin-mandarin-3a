@@ -1011,3 +1011,7 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 
 /* 成語情境題：整行排滿，不要平均分行（text-wrap: balance 會讓右邊空一大塊） */
 .prompt.situation-prompt h2 { text-wrap: wrap; }
+
+/* 句型例句放不下一行時：一個分句一行、靠左排 */
+.pt-sentence.stacked .pt-grid { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.pt-grid .pt-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }

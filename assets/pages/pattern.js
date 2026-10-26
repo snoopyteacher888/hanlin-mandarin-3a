@@ -37,7 +37,7 @@
   }
   /* 例句：跟「拼句子」做完的樣子一樣——關聯詞是淡橘色字，其他每一塊放在框裡，
      條件（要做到的事）藍框、結果一綠框、結果二藍綠框，標點放在框外（老師要求）。
-     一行放不下就變成一個分句一行，關聯詞那一欄上下對齊 */
+     一行放不下就變成一個分句一行，靠左排 */
   function clauseBlocks(text, key) {
     var clauses = Q.patternClauses(text, key);
     function conj(t) { return h('span', { class: 'conj-word fill-conj' }, t); }
@@ -49,14 +49,11 @@
     }
     var flat = h('div', { class: 'pt-flat fill-sentence' }), grid = h('div', { class: 'pt-grid fill-sentence' });
     function add(el, nodes) { [].concat(nodes).forEach(function (n) { el.appendChild(n); }); }
+    /* 放不下一行時：一個分句一行、靠左排（老師要求：關聯詞上下對齊的排法看起來很怪） */
     clauses.forEach(function (c) {
-      var ci = -1;
-      c.parts.forEach(function (p, i) { if (p.conj) { add(flat, conj(p.text)); if (ci < 0) ci = i; } else add(flat, part(c.kind, p.text)); });
-      var before = ci > 0 ? c.parts.slice(0, ci).map(function (x) { return x.text; }).join('') : '';
-      var after = c.parts.slice(ci + 1).map(function (x) { return x.text; }).join('');
-      grid.appendChild(before ? h('span', { class: 'pt-cell' }, part(c.kind, before)) : h('span', { class: 'pt-cell-empty' }));
-      grid.appendChild(ci >= 0 ? h('span', { class: 'pt-cell' }, conj(c.parts[ci].text)) : h('span', { class: 'pt-cell-empty' }));
-      grid.appendChild(after ? h('span', { class: 'pt-cell' }, part(c.kind, after)) : h('span', { class: 'pt-cell-empty' }));
+      var row = h('div', { class: 'pt-row' });
+      c.parts.forEach(function (p) { var n = p.conj ? conj(p.text) : part(c.kind, p.text); add(flat, n); add(row, p.conj ? conj(p.text) : part(c.kind, p.text)); });
+      grid.appendChild(row);
     });
     var box = h('div', { class: 'pt-sentence pt-example' }, flat, grid, H3A.ui.speaker(text, null));
     function fit() {
