@@ -4,10 +4,11 @@
   var H3A = root.H3A;
   function talkQ(t) { return H3A.wordq.speakQuestion(t, { kind: 'free', min: t.min || 6 }, t.prompt); }
   var LEVELS = [
-    { key: 'extract', name: '提取訊息', say: '從課文裡找出答案。' },
-    { key: 'infer', name: '推論訊息', say: '想一想，課文沒有直接說的意思。' },
-    { key: 'interpret', name: '詮釋整合', say: '把課文前後連起來，想一想整體的意思。' },
-    { key: 'evaluate', name: '比較評估', say: '說說你自己的想法和看法。' }
+    /* 小標用孩子聽得懂的說法（老師要求：學生不懂「提取訊息、推論訊息、詮釋整合、比較評估」） */
+    { key: 'extract', name: '找答案', say: '答案就寫在課文裡，回去課文找一找。' },
+    { key: 'infer', name: '動動腦', say: '課文沒有直接寫出來，要動動腦想一想。' },
+    { key: 'interpret', name: '前後連起來', say: '把課文前面和後面連起來，想一想整課在說什麼。' },
+    { key: 'evaluate', name: '我的看法', say: '說說你自己的想法和看法。' }
   ];
   H3A.pages.quiz = function run(main, ctx) {
     var talk = ctx.lesson.talk || [];
