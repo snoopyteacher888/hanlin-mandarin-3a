@@ -1090,19 +1090,9 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 .ia-sky { background: linear-gradient(#9BD3F5, #E3F4FD); }
 .ia-night { background: linear-gradient(#22305A 0 70%, #3C4A72 70%); }
 .ia-actor { position: absolute; line-height: 1; user-select: none; pointer-events: none; }
-.ia-person { display: flex; flex-direction: column; align-items: center; }
-.ia-head { line-height: 1; position: relative; z-index: 2; }
-.ia-body { position: relative; z-index: 1; width: .6em; height: .55em; margin-top: -.12em; background: var(--shirt); border-radius: .28em .28em .12em .12em; }
-.ia-arm { position: absolute; top: .06em; width: .17em; height: .46em; background: var(--shirt); border-radius: .1em; }
-.ia-arm::after { content: ""; position: absolute; bottom: -.08em; left: 0; width: .17em; height: .15em; background: #F6C99A; border-radius: 50%; }
-.ia-arm-l { left: -.1em; transform: rotate(18deg); transform-origin: top center; }
-.ia-arm-r { right: -.1em; transform: rotate(-18deg); transform-origin: top center; }
-.ia-leg { position: absolute; top: 96%; width: .2em; height: .42em; background: var(--pants); border-radius: 0 0 .06em .06em; }
-.ia-leg::after { content: ""; position: absolute; bottom: -.04em; width: .26em; height: .1em; background: #3A2E28; border-radius: .06em; }
-.ia-leg-l { left: .07em; } .ia-leg-l::after { right: 0; }
-.ia-leg-r { right: .07em; } .ia-leg-r::after { left: 0; }
-.ia-baby .ia-body { width: .55em; height: .42em; border-radius: .25em; }
-.ia-baby .ia-leg { height: .2em; }
+.ia-person { display: block; width: 1em; height: 1.96em; }
+.ia-person.ia-baby { height: 1.66em; }
+.ia-person svg { display: block; overflow: visible; }
 .ia-cap { min-height: 2.6em; font-size: 1.15em; text-align: center; max-width: 560px; }
 .ia-end { display: flex; flex-direction: column; align-items: center; gap: 2px; background: #FFF6EA; border-radius: 12px; padding: 6px 14px; text-align: center; }
 .ia-end[hidden] { display: none; }

@@ -9,21 +9,71 @@
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h;
   var STEP = 1800; /* 一段最少演多久（毫秒）；有語音時等念完 */
-  /* 只有頭的人物表情符號：加上衣服、手腳（老師要求：只有頭看起來很可怕） */
-  var FACES = ['🧒', '👦', '👧', '👩', '👨', '🧑', '👶', '👴', '👵', '🧓', '👱', '👲', '🧔',
-    '🤐', '😠', '😡', '😢', '😭', '😊', '😄', '😮', '😴', '🤔', '😋', '😳', '😨', '🥵', '😵', '🥰', '😎', '🙂', '😟'];
+  /* 人物：表情符號的臉在每台裝置長得不一樣、只有頭很可怕（老師要求），改成自己畫的小人：
+     圓臉、頭髮、脖子、衣服、手腳。哪一種人看表情符號決定，換表情的符號（🤐😠😢…）用 'as:' 那個人的樣子 */
+  var KIND = { '🧒': 'kid', '👦': 'boy', '👧': 'girl', '👩': 'woman', '👨': 'man', '🧑': 'teen', '👶': 'baby', '👴': 'grandpa', '👵': 'grandma', '🧓': 'grandpa', '👱': 'man', '👲': 'boy', '🧔': 'man' };
+  var FACE = { '🤐': 'zip', '😠': 'angry', '😡': 'angry', '😢': 'cry', '😭': 'cry', '😊': 'happy', '😄': 'happy', '🙂': 'happy', '🥰': 'happy', '😎': 'happy',
+    '😮': 'wow', '😳': 'wow', '😨': 'wow', '😴': 'sleep', '🤔': 'think', '😋': 'happy', '🥵': 'tired', '😵': 'tired', '😟': 'sad' };
+  var FACES = Object.keys(KIND).concat(Object.keys(FACE));
   var SHIRTS = ['#E0603A', '#3A86C8', '#F2B233', '#5BAA5B', '#9A6BC4', '#E07AA8', '#2E9E9A'];
   var PANTS = ['#3B4A6B', '#6B4E3B', '#4A4A4A', '#2F5D8A'];
+  var SKIN = '#FBD9B9', HAIR = '#4A3222', GREY = '#C9C9C9', INK = '#3A2A22';
   function hash(k) { var n = 0; for (var i = 0; i < k.length; i++) n = (n * 31 + k.charCodeAt(i)) % 997; return n; }
-  function figure(k, emoji) {
+  function hair(kind) {
+    var c = kind === 'grandpa' || kind === 'grandma' ? GREY : HAIR;
+    switch (kind) {
+      case 'girl': return '<circle cx="18" cy="40" r="11" fill="' + c + '"/><circle cx="82" cy="40" r="11" fill="' + c + '"/>' +
+        '<path d="M20 44 Q20 12 50 12 Q80 12 80 44 Q70 26 50 27 Q30 26 20 44Z" fill="' + c + '"/>';
+      case 'woman': return '<path d="M18 46 Q16 10 50 10 Q84 10 82 46 L84 82 L16 82Z" fill="' + c + '"/>';
+      case 'grandma': return '<circle cx="50" cy="12" r="10" fill="' + c + '"/><path d="M20 44 Q20 14 50 14 Q80 14 80 44 Q68 28 50 28 Q32 28 20 44Z" fill="' + c + '"/>';
+      case 'grandpa': return '<path d="M20 50 Q18 30 28 26 L30 44Z M80 50 Q82 30 72 26 L70 44Z" fill="' + c + '"/>';
+      case 'man': return '<path d="M21 42 Q20 12 50 12 Q80 12 79 42 Q76 26 50 25 Q24 26 21 42Z" fill="' + c + '"/>';
+      case 'baby': return '<path d="M46 16 Q50 6 56 14" stroke="' + c + '" stroke-width="4" fill="none" stroke-linecap="round"/>';
+      default: return '<path d="M20 44 Q18 12 50 12 Q82 12 80 44 Q74 24 58 26 Q50 34 38 26 Q26 28 20 44Z" fill="' + c + '"/>';
+    }
+  }
+  function face(mood) {
+    var eyes = '<circle cx="39" cy="46" r="3.6" fill="' + INK + '"/><circle cx="61" cy="46" r="3.6" fill="' + INK + '"/>';
+    var cheeks = '<circle cx="31" cy="56" r="4.5" fill="#F6A7A0" opacity=".7"/><circle cx="69" cy="56" r="4.5" fill="#F6A7A0" opacity=".7"/>';
+    var line = 'stroke="' + INK + '" stroke-width="3" fill="none" stroke-linecap="round"';
+    var mouth = '<path d="M42 58 Q50 65 58 58" ' + line + '/>';
+    var extra = '';
+    switch (mood) {
+      case 'happy': eyes = '<path d="M34 47 Q39 41 44 47 M56 47 Q61 41 66 47" ' + line + '/>'; mouth = '<path d="M40 56 Q50 68 60 56Z" fill="#C0504D"/>'; break;
+      case 'angry': extra = '<path d="M32 38 L45 42 M68 38 L55 42" ' + line + '/>'; mouth = '<path d="M42 62 Q50 57 58 62" ' + line + '/>'; cheeks = '<circle cx="31" cy="56" r="5" fill="#F07070" opacity=".8"/><circle cx="69" cy="56" r="5" fill="#F07070" opacity=".8"/>'; break;
+      case 'cry': extra = '<path d="M36 52 Q34 60 36 64 Q39 60 36 52Z M64 52 Q62 60 64 64 Q67 60 64 52Z" fill="#6EC1F0"/>'; mouth = '<path d="M42 63 Q50 56 58 63" ' + line + '/>'; break;
+      case 'sad': extra = '<path d="M33 40 L44 37 M67 40 L56 37" ' + line + '/>'; mouth = '<path d="M43 62 Q50 57 57 62" ' + line + '/>'; break;
+      case 'zip': mouth = '<path d="M38 60 L62 60" ' + line + '/><path d="M42 56 L42 64 M47 56 L47 64 M52 56 L52 64 M57 56 L57 64" stroke="' + INK + '" stroke-width="2"/>'; break;
+      case 'wow': mouth = '<ellipse cx="50" cy="61" rx="5" ry="6" fill="#C0504D"/>'; break;
+      case 'sleep': eyes = '<path d="M34 46 Q39 50 44 46 M56 46 Q61 50 66 46" ' + line + '/>'; mouth = '<path d="M46 60 L54 60" ' + line + '/>'; break;
+      case 'think': extra = '<path d="M56 38 L67 36" ' + line + '/>'; mouth = '<path d="M44 61 L56 59" ' + line + '/>'; break;
+      case 'tired': eyes = '<path d="M35 43 L43 49 M43 43 L35 49 M57 43 L65 49 M65 43 L57 49" ' + line + '/>'; mouth = '<path d="M42 62 Q46 58 50 62 Q54 66 58 62" ' + line + '/>'; extra = '<path d="M78 30 Q74 38 78 42 Q82 38 78 30Z" fill="#6EC1F0"/>'; break;
+    }
+    return eyes + cheeks + mouth + extra;
+  }
+  function person(kind, mood, shirt, pants) {
+    var baby = kind === 'baby', old = kind === 'grandpa' || kind === 'grandma';
+    var legs = baby ? '<rect x="38" y="148" width="10" height="14" rx="5" fill="' + pants + '"/><rect x="52" y="148" width="10" height="14" rx="5" fill="' + pants + '"/>'
+      : '<rect x="37" y="146" width="11" height="40" rx="4" fill="' + pants + '"/><rect x="52" y="146" width="11" height="40" rx="4" fill="' + pants + '"/>' +
+        '<ellipse cx="40" cy="188" rx="9" ry="5" fill="#3A2E28"/><ellipse cx="60" cy="188" rx="9" ry="5" fill="#3A2E28"/>';
+    var skirt = kind === 'girl' || kind === 'woman' || kind === 'grandma';
+    var body = skirt ? '<path d="M32 96 Q50 88 68 96 L76 150 L24 150Z" fill="' + shirt + '"/>' : '<rect x="30" y="92" width="40" height="58" rx="14" fill="' + shirt + '"/>';
+    var arms = '<rect x="18" y="96" width="11" height="44" rx="5.5" fill="' + shirt + '" transform="rotate(14 23 96)"/>' +
+      '<rect x="71" y="96" width="11" height="44" rx="5.5" fill="' + shirt + '" transform="rotate(-14 77 96)"/>' +
+      '<circle cx="14" cy="140" r="6" fill="' + SKIN + '"/><circle cx="86" cy="140" r="6" fill="' + SKIN + '"/>';
+    var back = kind === 'woman' ? hair(kind) : '';
+    var front = kind === 'woman' ? '<path d="M22 42 Q22 16 50 16 Q78 16 78 42 Q66 26 50 27 Q34 26 22 42Z" fill="' + HAIR + '"/>' : hair(kind);
+    var glasses = old ? '<circle cx="39" cy="46" r="7" fill="none" stroke="#555" stroke-width="2"/><circle cx="61" cy="46" r="7" fill="none" stroke="#555" stroke-width="2"/><path d="M46 46 L54 46" stroke="#555" stroke-width="2"/>' : '';
+    return '<svg viewBox="0 0 100 ' + (baby ? 166 : 196) + '" width="100%" height="100%" aria-hidden="true">' + back + legs + arms + body +
+      '<rect x="43" y="74" width="14" height="22" rx="5" fill="' + SKIN + '"/>' +
+      '<circle cx="50" cy="46" r="30" fill="' + SKIN + '"/>' + front + face(mood) + glasses + '</svg>';
+  }
+  /* k：演員名（決定衣服顏色）；base：這個人原本的表情符號（換表情時用來決定是哪一種人） */
+  function figure(k, emoji, base) {
     if (FACES.indexOf(emoji) < 0) return h('span', { class: 'ia-actor', 'aria-hidden': 'true' }, emoji);
-    var n = hash(k), baby = emoji === '👶';
-    var el = h('span', { class: 'ia-actor ia-person' + (baby ? ' ia-baby' : ''), 'aria-hidden': 'true' },
-      h('span', { class: 'ia-head' }, emoji),
-      h('span', { class: 'ia-body' }, h('span', { class: 'ia-arm ia-arm-l' }), h('span', { class: 'ia-arm ia-arm-r' }),
-        h('span', { class: 'ia-leg ia-leg-l' }), h('span', { class: 'ia-leg ia-leg-r' })));
-    el.style.setProperty('--shirt', SHIRTS[n % SHIRTS.length]);
-    el.style.setProperty('--pants', PANTS[n % PANTS.length]);
+    var n = hash(k), kind = KIND[emoji] || KIND[base] || 'kid', mood = FACE[emoji] || '';
+    var el = h('span', { class: 'ia-actor ia-person' + (kind === 'baby' ? ' ia-baby' : ''), 'aria-hidden': 'true' });
+    el.innerHTML = person(kind, mood, SHIRTS[n % SHIRTS.length], PANTS[n % PANTS.length]);
     return el;
   }
 
@@ -50,7 +100,7 @@
         /* 有身體的人物整個比較高，字小一點，才不會太大 */
         /* 'as:演員名'：換表情時穿一樣的衣服（例如小明變成 🤐） */
         var same = d.slice(4).filter(function (v) { return /^as:/.test(v); })[0];
-        if (!o) { o = actors[k] = { el: figure(same ? same.slice(3) : k, d[0]), size: FACES.indexOf(d[0]) >= 0 ? d[3] * 0.85 : d[3] }; stage.appendChild(o.el); }
+        if (!o) { var ck = same ? same.slice(3) : k; o = actors[k] = { el: figure(ck, d[0], (A.a[ck] || [])[0]), size: d[3] }; stage.appendChild(o.el); }
         o.el.getAnimations && o.el.getAnimations().forEach(function (an) { an.cancel(); });
         o.x = d[1]; o.y = d[2];
         o.flip = d.indexOf('f', 4) >= 4;
