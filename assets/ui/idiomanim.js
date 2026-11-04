@@ -1,10 +1,10 @@
 /* 成語小動畫（老師要求：認識成語那一頁用動畫解釋）：用表情符號當演員，一句旁白一段動作，邊演邊念。
    資料寫在字詞資料的 idioms[].anim：
-     bg：背景（room 室內、school 教室、park 戶外、home 家、sky 天空、night 晚上、farm 田野）
+     bg：背景（room 室內、school 教室、park 戶外、home 家、sky 天空、night 晚上、farm 田野、sea 海邊、snow 雪地、desk 桌面）
      a：演員 { 名字: [表情符號, x%, y%, 大小(畫面寬的%), 'h' 一開始藏起來, 'f' 左右翻面, 'as:別的演員' 穿一樣的衣服] }
        人物的臉（🧒👩😠…）會自動加上衣服和手腳
      s：一段一段 [[旁白, [[動作, 演員, 參數], ...]], ...]
-       動作：in 出現、out 消失、mv 移到 [x, y]、jump 跳、shake 搖、wig 晃、bob 上下飄、pop 放大一下、spin 轉一圈、grow 變大 [倍數]
+       動作：in 出現、out 消失、mv 移到 [x, y]、jump 跳、shake 搖、wig 晃、bob 上下飄、pop 放大一下、spin 轉一圈、grow 變大 [倍數]、bow 鞠躬、fall 倒下
    最後一段念完，畫面下方出現成語和意思。 */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h;
@@ -128,6 +128,8 @@
         case 'bob': return anim(el, [{ transform: b }, { transform: b + ' translateY(-15%)' }, { transform: b }, { transform: b + ' translateY(-15%)' }, { transform: b }], 1400);
         case 'pop': return anim(el, [{ transform: b }, { transform: b + ' scale(1.4)' }, { transform: b }], 600);
         case 'spin': return anim(el, [{ transform: b + ' rotate(0)' }, { transform: b + ' rotate(360deg)' }], 900);
+        case 'bow': return anim(el, [{ transform: b }, { transform: b + ' rotate(18deg)' }, { transform: b + ' rotate(18deg)' }, { transform: b }], 1200);
+        case 'fall': return anim(el, [{ transform: b }, { transform: b + ' rotate(85deg) translateX(20%)' }], 700, true);
         case 'grow': return anim(el, [{ transform: b }, { transform: b + ' scale(' + (arg || 1.6) + ')' }], 700, true);
       }
       return Promise.resolve();

@@ -1089,6 +1089,9 @@ html.zhuyin .plain-chars .pc { display: inline-block; width: 1em; overflow: hidd
 .ia-farm { background: linear-gradient(#D6EEFB 0 58%, #B9DB7E 58%); }
 .ia-sky { background: linear-gradient(#9BD3F5, #E3F4FD); }
 .ia-night { background: linear-gradient(#22305A 0 70%, #3C4A72 70%); }
+.ia-sea { background: linear-gradient(#BFE6FA 0 46%, #3D9BD6 46%); }
+.ia-snow { background: linear-gradient(#D9ECF8 0 60%, #FFFFFF 60%); }
+.ia-desk { background: linear-gradient(#FFF4E0 0 55%, #C99A6B 55%); }
 .ia-actor { position: absolute; line-height: 1; user-select: none; pointer-events: none; }
 .ia-person { display: block; width: 1em; height: 1.96em; }
 .ia-person.ia-baby { height: 1.66em; }
