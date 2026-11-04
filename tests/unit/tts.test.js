@@ -104,7 +104,7 @@ test('人事時地物的「地」單獨念ㄉㄧˋ，不念成「的」（老師
   assert.equal(T.fixSay('地，在哪裡？'), '弟，在拿裡？');
   assert.equal(T.fixSay('「地」：事情發生在哪裡？'), '「弟」：事情發生在拿裡？');
   assert.equal(T.fixSay('人、事、時、地、物'), '人、事、時、弟、物');
-  assert.equal(T.fixSay('他慢慢地走。'), '他慢慢地走。');
+  assert.equal(T.fixSay('他慢慢地走。'), '他慢慢的走。');
 });
 
 test('引號裡句子最後的句號不念出來（老師要求）', () => {
@@ -120,4 +120,9 @@ test('種子念ㄓㄨㄥˇ、乾淨念ㄍㄢ（老師要求）', () => {
   assert.equal(fixSay('種花'), '種花');
   assert.equal(fixSay('房間乾乾淨淨'), '房間甘甘淨淨');
   assert.equal(fixSay('餅乾'), '餅甘');
+});
+test('地 always dì (人事時地物), 都 dōu except 首都/都市', async () => {
+  const s = fakeSynth([{ lang: 'zh-TW', name: 'Mei' }]); const t = make(s, Utt);
+  const cases = [['人事時地物', '人事時弟物'], ['什麼地方', '什麼弟方'], ['大家都來了', '大家兜來了'], ['臺北是首都', '臺北是首都'], ['都市很熱鬧', '都市很熱鬧']];
+  for (const [i, [a, b]] of cases.entries()) { await t.speak(a); assert.equal(s.spoken[i].text, b, a); }
 });
