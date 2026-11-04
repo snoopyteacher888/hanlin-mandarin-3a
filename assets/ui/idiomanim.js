@@ -1,13 +1,31 @@
 /* 成語小動畫（老師要求：認識成語那一頁用動畫解釋）：用表情符號當演員，一句旁白一段動作，邊演邊念。
    資料寫在字詞資料的 idioms[].anim：
      bg：背景（room 室內、school 教室、park 戶外、home 家、sky 天空、night 晚上、farm 田野）
-     a：演員 { 名字: [表情符號, x%, y%, 大小(畫面寬的%), 'h' 一開始藏起來, 'f' 左右翻面] }
+     a：演員 { 名字: [表情符號, x%, y%, 大小(畫面寬的%), 'h' 一開始藏起來, 'f' 左右翻面, 'as:別的演員' 穿一樣的衣服] }
+       人物的臉（🧒👩😠…）會自動加上衣服和手腳
      s：一段一段 [[旁白, [[動作, 演員, 參數], ...]], ...]
        動作：in 出現、out 消失、mv 移到 [x, y]、jump 跳、shake 搖、wig 晃、bob 上下飄、pop 放大一下、spin 轉一圈、grow 變大 [倍數]
    最後一段念完，畫面下方出現成語和意思。 */
 (function (root) {
   var H3A = root.H3A; var h = H3A.ui.h;
   var STEP = 1800; /* 一段最少演多久（毫秒）；有語音時等念完 */
+  /* 只有頭的人物表情符號：加上衣服、手腳（老師要求：只有頭看起來很可怕） */
+  var FACES = ['🧒', '👦', '👧', '👩', '👨', '🧑', '👶', '👴', '👵', '🧓', '👱', '👲', '🧔',
+    '🤐', '😠', '😡', '😢', '😭', '😊', '😄', '😮', '😴', '🤔', '😋', '😳', '😨', '🥵', '😵', '🥰', '😎', '🙂', '😟'];
+  var SHIRTS = ['#E0603A', '#3A86C8', '#F2B233', '#5BAA5B', '#9A6BC4', '#E07AA8', '#2E9E9A'];
+  var PANTS = ['#3B4A6B', '#6B4E3B', '#4A4A4A', '#2F5D8A'];
+  function hash(k) { var n = 0; for (var i = 0; i < k.length; i++) n = (n * 31 + k.charCodeAt(i)) % 997; return n; }
+  function figure(k, emoji) {
+    if (FACES.indexOf(emoji) < 0) return h('span', { class: 'ia-actor', 'aria-hidden': 'true' }, emoji);
+    var n = hash(k), baby = emoji === '👶';
+    var el = h('span', { class: 'ia-actor ia-person' + (baby ? ' ia-baby' : ''), 'aria-hidden': 'true' },
+      h('span', { class: 'ia-head' }, emoji),
+      h('span', { class: 'ia-body' }, h('span', { class: 'ia-arm ia-arm-l' }), h('span', { class: 'ia-arm ia-arm-r' }),
+        h('span', { class: 'ia-leg ia-leg-l' }), h('span', { class: 'ia-leg ia-leg-r' })));
+    el.style.setProperty('--shirt', SHIRTS[n % SHIRTS.length]);
+    el.style.setProperty('--pants', PANTS[n % PANTS.length]);
+    return el;
+  }
 
   function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
   function anim(el, frames, ms, keep) {
@@ -29,7 +47,10 @@
     function reset() {
       Object.keys(A.a).forEach(function (k) {
         var d = A.a[k], o = actors[k];
-        if (!o) { o = actors[k] = { el: h('span', { class: 'ia-actor', 'aria-hidden': 'true' }, d[0]), size: d[3] }; stage.appendChild(o.el); }
+        /* 有身體的人物整個比較高，字小一點，才不會太大 */
+        /* 'as:演員名'：換表情時穿一樣的衣服（例如小明變成 🤐） */
+        var same = d.slice(4).filter(function (v) { return /^as:/.test(v); })[0];
+        if (!o) { o = actors[k] = { el: figure(same ? same.slice(3) : k, d[0]), size: FACES.indexOf(d[0]) >= 0 ? d[3] * 0.85 : d[3] }; stage.appendChild(o.el); }
         o.el.getAnimations && o.el.getAnimations().forEach(function (an) { an.cancel(); });
         o.x = d[1]; o.y = d[2];
         o.flip = d.indexOf('f', 4) >= 4;
