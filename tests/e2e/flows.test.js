@@ -298,14 +298,19 @@ test('similar wrong shows hint', async () => {
 test('review without unlock shows word items only', async () => {
   const p = await page(() => localStorage.setItem('h3a.review.bear', JSON.stringify({ q1: { last: '2000-01-01', streak: 0 }, s1: { last: '2000-01-01', streak: 0 } })));
   await p.goto(BASE + '#/L06/review?s=bear'); await p.waitForSelector('.option');
-  assert.equal(await p.$$eval('.dot', x => x.length), 1);
+  /* 錯題複習：每題一隻錯題怪獸 */
+  assert.equal(await p.$$eval('.monster-bar .mon', x => x.length), 1);
   assert.equal(await p.textContent('.prompt h2'), WORDS.similar[0].sentence.replace(/＿+/, ''));
   assert.ok(await p.$('.prompt h2 .blank-box'));
   /* 第一次就答對，連續 2 次才移除 */
   const it = WORDS.similar[0], ans = it.frame ? it.frame.replace('＿', it.answer) : it.answer;
   const idx = await p.$$eval('.option .option-text', (x, a) => x.findIndex(e => e.textContent === a), ans);
-  await p.click(`.option[data-index="${idx}"]`); await p.click('.btn-next');
+  await p.click(`.option[data-index="${idx}"]`);
+  /* 答對有稱讚的話（老師要求：答對了你超棒） */
+  assert.ok((await p.textContent('.praise-pop')).length > 2);
+  await p.click('.btn-next');
   await p.waitForSelector('.result');
+  assert.ok((await p.textContent('.monster-win')).startsWith('你打敗了 1 隻錯題怪獸！'));
   const q = await p.evaluate(() => JSON.parse(localStorage.getItem('h3a.review.bear')));
   assert.equal(q.s1.streak, 1);
 });
